@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  postgresql-db:
+    image: postgres:16.1-alpine3.19
+    networks:
+      - default
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: admin
+      POSTGRES_DB: api_postgresql_database
+    ports:
+      - 5432:5432

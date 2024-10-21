@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+<!--    <link rel="stylesheet" href="/static/css/user_profile_styles.css">-->
+    <link rel="stylesheet" href="/css/user_profile_styles.css">
+</head>
+<body>
+<div id="move-to-clicker">
+    <a href="/clicker">
+        <button>
+            <img src="/images/clicker-icon.png" alt="Clicker" style="width: 30px; height: 30px;">
+            clicker
+        </button>
+    </a>
+</div>
+<div class="profile-container">
+    <h1>
+        Profile
+    </h1>
+    <p>
+        <strong>Email:</strong>
+        <span th:text="${user.email}"></span>
+    </p>
+    <p>
+        <strong>Registration date:</strong>
+        <span th:text="${user.createdAt}"></span>
+    </p>
+    <p th:if="${user.wallet != null}">
+        <strong>Wallet:</strong>
+        <span th:text="${user.wallet}"></span>
+    </p>
+
+    <div class="button-container">
+        <button id="connect-wallet" th:if="${user.wallet == null}"> Connect Wallet </button>
+        <button id="change-account"> Change account </button>
+        <button id="logout"> Logout </button>
+        <button id="delete-account" class="delete-button"> Delete account </button>
+    </div>
+</div>
+
+<!--<script src="/static/js/user_profile_scripts.js"></script>-->
+<script src="/js/user_profile_scripts.js"></script>
+</body>
+</html>

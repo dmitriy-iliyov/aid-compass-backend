@@ -1,0 +1,21 @@
+package aidcompass.api.doctor.validation.email;
+
+import aidcompass.api.doctor.DoctorRepository;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class UniqueDoctorEmailValidator implements ConstraintValidator<UniqueDoctorEmail, String> {
+
+    @Autowired
+    private DoctorRepository doctorRepository;
+
+    @Override
+    public boolean isValid(String email, ConstraintValidatorContext context) {
+        if (doctorRepository == null) {
+            return true;
+        }
+        return !doctorRepository.existsByEmail(email);
+    }
+}
+
