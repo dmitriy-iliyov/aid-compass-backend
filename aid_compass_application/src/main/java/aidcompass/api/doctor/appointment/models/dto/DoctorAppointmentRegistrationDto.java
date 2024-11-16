@@ -1,4 +1,4 @@
-package aidcompass.api.doctor.appointment.models;
+package aidcompass.api.doctor.appointment.models.dto;
 
 import aidcompass.api.doctor.appointment.validation.doctor_appointment_date.UniqueDoctorAppointmentDate;
 import aidcompass.api.general.models.CustomBindingErrors;

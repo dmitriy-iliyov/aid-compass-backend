@@ -1,7 +1,8 @@
 package aidcompass.api.doctor.appointment.validation.doctor_appointment_update;
 
 import aidcompass.api.doctor.appointment.DoctorAppointmentServices;
-import aidcompass.api.doctor.appointment.models.DoctorAppointmentUpdateDto;
+import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentUpdateDto;
+import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentResponseDto;
 import aidcompass.api.general.models.appointment.AppointmentResponseDto;
 import aidcompass.api.user.appointment.UserAppointmentService;
 import jakarta.validation.ConstraintValidator;
@@ -42,9 +43,9 @@ public class DoctorAppointmentUpdateValidator implements ConstraintValidator<Val
         Long userId = doctorAppointmentUpdateDto.getUserId();
         Long doctorId = doctorAppointmentUpdateDto.getVolunteerId();
 
-        List<aidcompass.api.doctor.appointment.models.DoctorAppointmentResponseDto> doctorAppointments = doctorAppointmentServices.findAllByDoctorId(doctorId);
+        List<DoctorAppointmentResponseDto> doctorAppointments = doctorAppointmentServices.findAllByDoctorId(doctorId);
         List<AppointmentResponseDto> userAppointments = userAppointmentService.getAllUserAppointments(userId);
-        for(aidcompass.api.doctor.appointment.models.DoctorAppointmentResponseDto doctorAppointment : doctorAppointments){
+        for(DoctorAppointmentResponseDto doctorAppointment : doctorAppointments){
             if (!Objects.equals(doctorAppointment.getId(), existingDoctorAppointmentId) &&
                     doctorAppointment.getAppointmentDate().equals(existingAppointmentDate)){
                 constraintValidatorContext.buildConstraintViolationWithTemplate("Doctor have an appointment at this time!")

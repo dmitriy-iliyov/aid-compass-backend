@@ -1,4 +1,4 @@
-package aidcompass.api.doctor.appointment.models;
+package aidcompass.api.doctor.appointment.models.dto;
 
 
 import aidcompass.api.general.models.appointment.AppointmentResponseDto;

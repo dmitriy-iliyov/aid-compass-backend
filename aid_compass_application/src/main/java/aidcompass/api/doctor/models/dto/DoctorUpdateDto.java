@@ -1,4 +1,4 @@
-package aidcompass.api.doctor.models;
+package aidcompass.api.doctor.models.dto;
 
 import aidcompass.api.doctor.validation.doctor_update.ValidDoctorUpdate;
 import aidcompass.api.general.models.CustomBindingErrors;

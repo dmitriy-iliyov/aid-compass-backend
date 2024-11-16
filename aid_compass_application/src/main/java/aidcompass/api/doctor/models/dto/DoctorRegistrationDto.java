@@ -1,4 +1,4 @@
-package aidcompass.api.doctor.models;
+package aidcompass.api.doctor.models.dto;
 
 import aidcompass.api.doctor.validation.email.UniqueDoctorEmail;
 import aidcompass.api.doctor.validation.license_number.UniqueDoctorLicenseNumber;

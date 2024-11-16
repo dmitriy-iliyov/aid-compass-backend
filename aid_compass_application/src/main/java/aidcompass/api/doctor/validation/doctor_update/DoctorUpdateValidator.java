@@ -2,8 +2,7 @@ package aidcompass.api.doctor.validation.doctor_update;
 
 import aidcompass.api.doctor.DoctorRepository;
 import aidcompass.api.doctor.models.DoctorEntity;
-import aidcompass.api.doctor.models.DoctorUpdateDto;
-import jakarta.persistence.EntityNotFoundException;
+import aidcompass.api.doctor.models.dto.DoctorUpdateDto;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ public class DoctorUpdateValidator implements ConstraintValidator<ValidDoctorUpd
 
     @Autowired
     private DoctorRepository doctorRepository;
+
 
     @Override
     public boolean isValid(DoctorUpdateDto doctorUpdateDto, ConstraintValidatorContext constraintValidatorContext) {

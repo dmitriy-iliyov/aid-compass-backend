@@ -1,22 +1,19 @@
 package aidcompass.api.doctor.mapper;
 
 import aidcompass.api.doctor.models.DoctorEntity;
-import aidcompass.api.doctor.models.DoctorRegistrationDto;
-import aidcompass.api.doctor.models.DoctorResponseDto;
-import aidcompass.api.doctor.models.DoctorUpdateDto;
+import aidcompass.api.doctor.models.dto.DoctorRegistrationDto;
+import aidcompass.api.doctor.models.dto.DoctorResponseDto;
+import aidcompass.api.doctor.models.dto.DoctorUpdateDto;
 import aidcompass.api.general.utils.MapperUtils;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {MapperUtils.class})
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        uses = {MapperUtils.class})
 public interface DoctorMapper {
 
-    @Mapping(target = "createdAt", expression = "java(java.time.Instant.now())")
-    @Mapping(target = "approved", constant = "false")
     DoctorEntity toEntity(DoctorRegistrationDto doctorRegistrationDto);
 
     DoctorResponseDto toResponseDto(DoctorEntity doctorEntity);
@@ -26,6 +23,5 @@ public interface DoctorMapper {
     DoctorUpdateDto toUpdateDto(DoctorRegistrationDto doctorRegistrationDto);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "updatedAt", expression = "java(java.time.Instant.now())")
     void updateEntityFromUpdateDto(DoctorUpdateDto doctorUpdateDto, @MappingTarget DoctorEntity entity);
 }

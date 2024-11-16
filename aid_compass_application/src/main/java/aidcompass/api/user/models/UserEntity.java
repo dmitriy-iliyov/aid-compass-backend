@@ -9,6 +9,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -43,9 +46,15 @@ public class UserEntity{
     @Temporal(TemporalType.TIMESTAMP)
     private Instant createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Instant updatedAt;
+
+    @Column(name = "is_expired", nullable = false)
+    private boolean isExpired;
+
+    @Column(name = "is_locked", nullable = false)
+    private boolean isLocked;
 
     @OneToOne(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private VolunteerEntitySuperclass volunteer;
@@ -53,13 +62,24 @@ public class UserEntity{
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<DoctorAppointmentEntity> appointmentsToDoctor;
 
-    public UserEntity(String email, String password, String username, String number, Role role, Instant createdAt, Instant updatedAt) {
+    public UserEntity(String email, String password, String username, String number, Role role) {
         this.email = email;
         this.password = password;
         this.username = username;
         this.number = number;
         this.role = role;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void beforeCreate(){
+        createdAt = Instant.now();
+        updatedAt = createdAt;
+        isExpired = false;
+        isLocked = false;
+    }
+
+    @PreUpdate
+    public void beforeUpdate(){
+        updatedAt = Instant.now();
     }
 }

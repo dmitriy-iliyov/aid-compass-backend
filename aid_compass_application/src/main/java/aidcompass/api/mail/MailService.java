@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class MailService {
 
     private final MailRepository mailRepository;
-
     private final JavaMailSender mailSender;
 
 

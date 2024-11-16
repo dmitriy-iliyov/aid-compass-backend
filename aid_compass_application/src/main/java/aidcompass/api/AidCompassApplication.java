@@ -33,25 +33,25 @@ public class AidCompassApplication {
         return args -> {
             List<UserEntity> userEntityList = List.of(
                     new UserEntity("john.doe@example.com", "passwordJohn123", "Іван Іванович Петренко",
-                            "+380123456789", Role.ROLE_USER, Instant.now(), null),
+                            "+380123456789", Role.ROLE_USER),
                     new UserEntity("jane.smith@example.com", "passwordJane456", "Олена Сергіївна Коваленко",
-                            "+380123456790", Role.ROLE_USER, Instant.now(), null),
+                            "+380123456790", Role.ROLE_USER),
                     new UserEntity("michael.jones@example.com", "passwordMichael789", "Сергій Олександрович Маленко",
-                            null, Role.ROLE_USER, Instant.now(), null),
+                            null, Role.ROLE_USER),
                     new UserEntity("susan.adams@example.com", "passwordSusan101", "Наталія Василівна Бондаренко",
-                            "+380123456791", Role.ROLE_USER, Instant.now(), null),
+                            "+380123456791", Role.ROLE_USER),
                     new UserEntity("robert.brown@example.com", "passwordRobert102", "Олександр Миколайович Таран",
-                            "+380123456792", Role.ROLE_USER, Instant.now(), null),
+                            "+380123456792", Role.ROLE_USER),
                     new UserEntity("emma.white@example.com", "passwordEmma103", "Світлана Вікторівна Іванова",
-                            null, Role.ROLE_USER, Instant.now(), null),
+                            null, Role.ROLE_USER),
                     new UserEntity("charles.wilson@example.com", "passwordCharles104", "Дмитро Олегович Павленко",
-                            "+380123456793", Role.ROLE_USER, Instant.now(), null),
+                            "+380123456793", Role.ROLE_USER),
                     new UserEntity("linda.clark@example.com", "passwordLinda105", "Юлія Петрівна Гаврилюк",
-                            null, Role.ROLE_USER, Instant.now(), null),
+                            null, Role.ROLE_USER),
                     new UserEntity("david.miller@example.com", "passwordDavid106", "Віталій Олексійович Денисенко",
-                            "+380123456794", Role.ROLE_USER, Instant.now(), null),
+                            "+380123456794", Role.ROLE_USER),
                     new UserEntity("elizabeth.davis@example.com", "passwordElizabeth107", "Тетяна Сергіївна Миколаївна",
-                            "+380123456795", Role.ROLE_USER, Instant.now(), null)
+                            "+380123456795", Role.ROLE_USER)
             );
             userRepository.saveAll(userEntityList);
 

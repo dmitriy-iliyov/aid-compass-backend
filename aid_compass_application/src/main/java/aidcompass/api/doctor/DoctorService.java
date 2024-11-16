@@ -3,9 +3,9 @@ package aidcompass.api.doctor;
 
 import aidcompass.api.doctor.mapper.DoctorMapper;
 import aidcompass.api.doctor.models.DoctorEntity;
-import aidcompass.api.doctor.models.DoctorRegistrationDto;
-import aidcompass.api.doctor.models.DoctorResponseDto;
-import aidcompass.api.doctor.models.DoctorUpdateDto;
+import aidcompass.api.doctor.models.dto.DoctorRegistrationDto;
+import aidcompass.api.doctor.models.dto.DoctorResponseDto;
+import aidcompass.api.doctor.models.dto.DoctorUpdateDto;
 import aidcompass.api.general.comparators.UsernameComparator;
 import aidcompass.api.security.models.Role;
 import aidcompass.api.user.UserService;
@@ -22,12 +22,10 @@ import java.util.List;
 public class DoctorService {
 
     private final DoctorRepository doctorRepository;
-
     private final UserService userService;
-
     private final DoctorMapper doctorMapper;
-
     private final UsernameComparator usernameComparator;
+
 
     @Transactional
     public void save(DoctorRegistrationDto doctorRegistrationDTO, Long id){
@@ -54,25 +52,35 @@ public class DoctorService {
         doctorRepository.save(doctorEntity);
     }
 
+    @Transactional(readOnly = true)
     public boolean existingById(Long id){
         return doctorRepository.existsById(id);
     }
 
+    @Transactional(readOnly = true)
     public DoctorResponseDto findById(Long id){
-        return doctorMapper.toResponseDto(doctorRepository.findById(id).orElseThrow(EntityNotFoundException::new));
-    }
-
-    public DoctorResponseDto findByUsername(String username){
-        DoctorEntity doctorEntity = doctorRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        DoctorEntity doctorEntity = doctorRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        if (!doctorEntity.isApproved())
+            throw new IllegalArgumentException("Doctor is unapproved.");
         return doctorMapper.toResponseDto(doctorEntity);
     }
 
+    @Transactional(readOnly = true)
+    public DoctorResponseDto findByUsername(String username){
+        DoctorEntity doctorEntity = doctorRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        if (!doctorEntity.isApproved())
+            throw new IllegalArgumentException("Doctor is unapproved.");
+        return doctorMapper.toResponseDto(doctorEntity);
+    }
+
+    @Transactional(readOnly = true)
     public List<DoctorResponseDto> findAllUnapproved(){
         List<DoctorResponseDto> doctorResponseDtoList = doctorMapper.toResponseDtoList(doctorRepository.findAllByApproved(false));
         doctorResponseDtoList.sort(usernameComparator);
         return doctorResponseDtoList;
     }
 
+    @Transactional(readOnly = true)
     public List<DoctorResponseDto> findAllApprovedBySpecialization(String specialization){
         List<DoctorResponseDto> doctorResponseDtoList = doctorMapper.toResponseDtoList(
                 doctorRepository.findAllByApprovedAndSpecialization(true, specialization));

@@ -1,8 +1,8 @@
 package aidcompass.api.doctor;
 
-import aidcompass.api.doctor.models.DoctorRegistrationDto;
-import aidcompass.api.doctor.models.DoctorResponseDto;
-import aidcompass.api.doctor.models.DoctorUpdateDto;
+import aidcompass.api.doctor.models.dto.DoctorRegistrationDto;
+import aidcompass.api.doctor.models.dto.DoctorResponseDto;
+import aidcompass.api.doctor.models.dto.DoctorUpdateDto;
 import aidcompass.api.general.utils.ControllerUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
@@ -26,8 +26,8 @@ import java.util.Set;
 public class DoctorController {
 
     private final DoctorService doctorService;
-
     private final Validator validator;
+
 
     @PostMapping("/{id}")
     public ResponseEntity<?> createDoctor(@RequestBody @Valid DoctorRegistrationDto doctorRegistrationDto,
@@ -89,6 +89,11 @@ public class DoctorController {
                         .status(HttpStatus.BAD_REQUEST)
                         .headers(httpHeaders)
                         .build();
+            if (e instanceof IllegalArgumentException)
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .headers(httpHeaders)
+                        .body(e.getMessage());
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .headers(httpHeaders)

@@ -30,8 +30,8 @@ import java.util.Set;
 public class UserController {
 
     private final UserService userService;
-
     private final Validator validator;
+
 
     @PostMapping("")
     public ResponseEntity<?> createUser(@RequestBody @Valid UserRegistrationDto userRegistrationDto,

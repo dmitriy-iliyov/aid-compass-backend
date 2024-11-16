@@ -1,11 +1,11 @@
 package aidcompass.api.doctor.appointment;
 
 import aidcompass.api.doctor.DoctorRepository;
-import aidcompass.api.doctor.appointment.models.DoctorAppointmentUpdateDto;
+import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentUpdateDto;
 import aidcompass.api.doctor.appointment.mapper.DoctorAppointmentMapper;
 import aidcompass.api.doctor.appointment.models.DoctorAppointmentEntity;
-import aidcompass.api.doctor.appointment.models.DoctorAppointmentRegistrationDto;
-import aidcompass.api.doctor.appointment.models.DoctorAppointmentResponseDto;
+import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentRegistrationDto;
+import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentResponseDto;
 import aidcompass.api.doctor.models.DoctorEntity;
 import aidcompass.api.user.UserRepository;
 import aidcompass.api.user.models.UserEntity;
@@ -21,12 +21,10 @@ import java.util.List;
 public class DoctorAppointmentServices {
 
     private final DoctorAppointmentRepository doctorAppointmentRepository;
-
     private final DoctorAppointmentMapper doctorAppointmentMapper;
-
     private final UserRepository userRepository;
-
     private final DoctorRepository doctorRepository;
+
 
     @Transactional
     public void save(DoctorAppointmentRegistrationDto doctorAppointmentRegistrationDto) throws IllegalArgumentException{
@@ -51,22 +49,26 @@ public class DoctorAppointmentServices {
         doctorAppointmentRepository.save(exitingDoctorAppointmentEntity);
     }
 
+    @Transactional(readOnly = true)
     public boolean existingByDoctorNUserId(Long userId, Long doctorId){
         if (userId == null || doctorId == null)
             return false;
         return userRepository.existsById(userId) && doctorRepository.existsById(doctorId);
     }
 
+    @Transactional(readOnly = true)
     public List<DoctorAppointmentResponseDto> findAllByDoctorId(Long id) throws EntityNotFoundException{
         DoctorEntity doctorEntity = doctorRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return doctorAppointmentMapper.toResponseDtoList(doctorAppointmentRepository.findAllByVolunteer(doctorEntity));
     }
 
+    @Transactional(readOnly = true)
     public List<DoctorAppointmentResponseDto> findAllByUserId(Long id){
         UserEntity userEntity = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return doctorAppointmentMapper.toResponseDtoList(doctorAppointmentRepository.findAllByUser(userEntity));
     }
 
+    @Transactional(readOnly = true)
     public DoctorAppointmentResponseDto findById(Long id){
         return doctorAppointmentMapper.toResponseDto(doctorAppointmentRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new));

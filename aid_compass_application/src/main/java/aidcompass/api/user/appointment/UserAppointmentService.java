@@ -16,8 +16,8 @@ import java.util.List;
 public class UserAppointmentService {
 
     private final UserRepository userRepository;
-
     private final DoctorAppointmentMapper doctorAppointmentMapper;
+
 
     public List<AppointmentResponseDto> getAllUserAppointments(Long id){
         List<AppointmentResponseDto> userAppointmentsResponseDtoList = new ArrayList<>();

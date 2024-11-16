@@ -26,7 +26,6 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
-
     private final UserMapper userMapper;
 
     //    @Override
@@ -63,21 +62,23 @@ public class UserService {
     @Transactional
     public UserEntity systemUpdate(Long id, Role role){
         UserEntity userEntity = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        userEntity.setUpdatedAt(Instant.now());
         userEntity.setRole(role);
         userRepository.save(userEntity);
         return userEntity;
     }
 
+    @Transactional(readOnly = true)
     public boolean existingById(Long id){
         return userRepository.existsById(id);
     }
 
+    @Transactional(readOnly = true)
     public UserResponseDto findById(Long id) {
         UserEntity customerEntity = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return userMapper.toResponseDto(customerEntity);
     }
 
+    @Transactional(readOnly = true)
     public List<UserResponseDto> findAll(){
         return userMapper.toResponseDtoList(userRepository.findAll());
     }

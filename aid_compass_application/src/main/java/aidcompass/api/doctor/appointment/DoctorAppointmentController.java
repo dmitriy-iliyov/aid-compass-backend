@@ -1,8 +1,8 @@
 package aidcompass.api.doctor.appointment;
 
-import aidcompass.api.doctor.appointment.models.DoctorAppointmentRegistrationDto;
-import aidcompass.api.doctor.appointment.models.DoctorAppointmentResponseDto;
-import aidcompass.api.doctor.appointment.models.DoctorAppointmentUpdateDto;
+import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentRegistrationDto;
+import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentResponseDto;
+import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentUpdateDto;
 import aidcompass.api.general.utils.ControllerUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
@@ -24,8 +24,8 @@ import java.util.Set;
 public class DoctorAppointmentController {
 
     private final DoctorAppointmentServices doctorAppointmentServices;
-
     private final Validator validator;
+
 
     @PostMapping("")
     public ResponseEntity<?> createDoctorAppointment(@RequestBody DoctorAppointmentRegistrationDto

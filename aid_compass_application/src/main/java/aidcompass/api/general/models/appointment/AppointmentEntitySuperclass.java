@@ -1,6 +1,5 @@
 package aidcompass.api.general.models.appointment;
 
-import aidcompass.api.doctor.models.DoctorEntity;
 import aidcompass.api.general.models.VolunteerEntitySuperclass;
 import aidcompass.api.user.models.UserEntity;
 import jakarta.persistence.*;
@@ -35,7 +34,7 @@ public abstract class AppointmentEntitySuperclass{
     @Temporal(TemporalType.TIMESTAMP)
     private Instant createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Instant updatedAt;
 
@@ -46,5 +45,17 @@ public abstract class AppointmentEntitySuperclass{
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "volunteer_id", referencedColumnName = "id", nullable = false)
     private VolunteerEntitySuperclass volunteer;
+
+
+    @PrePersist
+    public void beforePersist(){
+        createdAt = Instant.now();
+        updatedAt = createdAt;
+    }
+
+    @PreUpdate
+    public void beforeUpdate(){
+        updatedAt = Instant.now();
+    }
 }
 

@@ -1,8 +1,8 @@
 package aidcompass.api.doctor.appointment.validation.doctor_appointment_date;
 
 import aidcompass.api.doctor.appointment.DoctorAppointmentServices;
-import aidcompass.api.doctor.appointment.models.DoctorAppointmentRegistrationDto;
-import aidcompass.api.doctor.appointment.models.DoctorAppointmentResponseDto;
+import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentRegistrationDto;
+import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentResponseDto;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;

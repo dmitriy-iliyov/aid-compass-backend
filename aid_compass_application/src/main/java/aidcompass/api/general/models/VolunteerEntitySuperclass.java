@@ -35,11 +35,24 @@ public abstract class VolunteerEntitySuperclass {
     @Temporal(TemporalType.TIMESTAMP)
     private Instant createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Instant updatedAt;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
+
+    @PrePersist
+    public void beforeCreate(){
+        createdAt = Instant.now();
+        updatedAt = createdAt;
+        approved = false;
+    }
+
+    @PreUpdate
+    public void beforeUpdate(){
+        updatedAt = Instant.now();
+    }
+
 }
