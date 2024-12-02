@@ -6,7 +6,7 @@ import aidcompass.api.doctor.models.DoctorEntity;
 import aidcompass.api.doctor.models.dto.DoctorRegistrationDto;
 import aidcompass.api.doctor.models.dto.DoctorResponseDto;
 import aidcompass.api.doctor.models.dto.DoctorUpdateDto;
-import aidcompass.api.general.comparators.UsernameComparator;
+import aidcompass.api.general.utils.comparators.UsernameComparator;
 import aidcompass.api.security.models.Role;
 import aidcompass.api.user.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,9 +28,9 @@ public class DoctorService {
 
 
     @Transactional
-    public void save(DoctorRegistrationDto doctorRegistrationDTO, Long id){
+    public void save(DoctorRegistrationDto doctorRegistrationDTO, Long userId){
         DoctorEntity doctorEntity = doctorMapper.toEntity(doctorRegistrationDTO);
-        doctorEntity.setUser(userService.systemUpdate(id, Role.ROLE_DOCTOR));
+        doctorEntity.setUser(userService.systemUpdate(userId, Role.ROLE_DOCTOR));
         doctorRepository.save(doctorEntity);
     }
 
