@@ -3,20 +3,25 @@ package aidcompass.api.doctor;
 import aidcompass.api.doctor.models.dto.DoctorRegistrationDto;
 import aidcompass.api.doctor.models.dto.DoctorResponseDto;
 import aidcompass.api.doctor.models.dto.DoctorUpdateDto;
-import aidcompass.api.general.utils.ControllerUtils;
+import aidcompass.api.general.utils.MapUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 @Log4j2
@@ -27,22 +32,26 @@ public class DoctorController {
 
     private final DoctorService doctorService;
     private final Validator validator;
+    private MessageSource messageSource;
 
 
-    @PostMapping("/{id}")
+    @PostMapping("/{userId}")
     public ResponseEntity<?> createDoctor(@RequestBody @Valid DoctorRegistrationDto doctorRegistrationDto,
                                           BindingResult bindingResult,
-                                          @PathVariable Long id) {
+                                          @PathVariable @Positive Long userId, Locale locale) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("X-Info", "Create doctor");
         if (bindingResult.hasErrors()){
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+                    this.messageSource.getMessage("400", new Object[0], "error.400", locale));
+            problemDetail.setProperty("errors", MapUtils.bindingErrors(bindingResult));
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .headers(httpHeaders)
-                    .body(ControllerUtils.bindingErrors(bindingResult));
+                    .body(problemDetail);
         }
         try {
-            doctorService.save(doctorRegistrationDto, id);
+            doctorService.save(doctorRegistrationDto, userId);
         } catch (Exception e) {
             log.error("Error occurred while saving the doctor: ", e);
             return ResponseEntity
@@ -51,13 +60,13 @@ public class DoctorController {
                     .build();
         }
         return ResponseEntity
-                .ok()
+                .status(HttpStatus.CREATED)
                 .headers(httpHeaders)
                 .build();
     }
 
     @PostMapping("/approve/{id}")
-    public ResponseEntity<?> approveDoctor(@PathVariable Long id){
+    public ResponseEntity<?> approveDoctor(@Positive @PathVariable Long id){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("X-Info", "Approving doctor");
         try{
@@ -106,7 +115,7 @@ public class DoctorController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateDoctor(@RequestBody DoctorRegistrationDto doctorRegistrationDto,
-                                          @PathVariable Long id){
+                                          @Positive @PathVariable Long id, Locale locale){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("X-info", "Updating doctor");
         if (!doctorService.existingById(id))
@@ -119,10 +128,13 @@ public class DoctorController {
         try {
             Set<ConstraintViolation<DoctorUpdateDto>> bindingResult = validator.validate(doctorUpdateDto);
             if(!bindingResult.isEmpty()){
+                ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+                        this.messageSource.getMessage("400", null, "error.400", locale));
+                problemDetail.setProperty("error", MapUtils.bindingErrorsFromConstraintValidatorContext(bindingResult));
                 return ResponseEntity
                         .status(HttpStatus.BAD_REQUEST)
                         .headers(httpHeaders)
-                        .body(ControllerUtils.bindingErrorsFromConstraintValidatorContext(bindingResult));
+                        .body(problemDetail);
             }
         } catch (Exception e){
             log.error("Error occurred while validate doctor: ", e);
@@ -166,7 +178,7 @@ public class DoctorController {
     }
 
     @GetMapping("/approved/{specialization}")
-    public ResponseEntity<?> getDoctorsBySpecialization(@PathVariable String specialization){
+    public ResponseEntity<?> getDoctorsBySpecialization(@PathVariable @Pattern(regexp = "^[a-zA-z]+$]") String specialization){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("X-Info", "Get doctors by specialization");
         List<DoctorResponseDto> doctorResponseDtoList;
@@ -186,7 +198,7 @@ public class DoctorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteDoctorById(@PathVariable Long id){
+    public ResponseEntity<?> deleteDoctorById(@PathVariable @Positive Long id){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("X-Info", "Deleting doctor by id");
         try {
