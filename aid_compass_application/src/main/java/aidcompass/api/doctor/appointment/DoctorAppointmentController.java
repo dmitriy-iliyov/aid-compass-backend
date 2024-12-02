@@ -3,18 +3,22 @@ package aidcompass.api.doctor.appointment;
 import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentRegistrationDto;
 import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentResponseDto;
 import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentUpdateDto;
-import aidcompass.api.general.utils.ControllerUtils;
+import aidcompass.api.general.utils.MapUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 @Log4j2
@@ -25,11 +29,12 @@ public class DoctorAppointmentController {
 
     private final DoctorAppointmentServices doctorAppointmentServices;
     private final Validator validator;
+    private final MessageSource messageSource;
 
 
     @PostMapping("")
     public ResponseEntity<?> createDoctorAppointment(@RequestBody DoctorAppointmentRegistrationDto
-                                                                 doctorAppointmentRegistrationDto){
+                                                                 doctorAppointmentRegistrationDto, Locale locale){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("X-Info", "Creating appointment to doctor");
         if(!doctorAppointmentServices.existingByDoctorNUserId(doctorAppointmentRegistrationDto.getUserId(),
@@ -40,10 +45,13 @@ public class DoctorAppointmentController {
                     .build();
         Set<ConstraintViolation<DoctorAppointmentRegistrationDto>> bindingResult = validator.validate(doctorAppointmentRegistrationDto);
         if(!bindingResult.isEmpty()){
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+                    this.messageSource.getMessage("400", new Object[0], "error.400",locale));
+            problemDetail.setProperty("errors", MapUtils.bindingErrorsFromConstraintValidatorContext(bindingResult));
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .headers(httpHeaders)
-                    .body(ControllerUtils.bindingErrorsFromConstraintValidatorContext(bindingResult));
+                    .body(problemDetail);
         }
         try{
             doctorAppointmentServices.save(doctorAppointmentRegistrationDto);
@@ -60,13 +68,13 @@ public class DoctorAppointmentController {
                     .build();
         }
         return ResponseEntity
-                .ok()
+                .status(HttpStatus.CREATED)
                 .headers(httpHeaders)
                 .build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getDoctorAppointment(@PathVariable Long id){
+    public ResponseEntity<?> getDoctorAppointment(@PathVariable @Positive Long id){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("X-Info", "Get doctor appointment by id");
         DoctorAppointmentResponseDto doctorAppointmentResponseDto;
@@ -91,7 +99,7 @@ public class DoctorAppointmentController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateDoctorAppointmentsById(@RequestBody DoctorAppointmentUpdateDto
-                                                                      doctorAppointmentUpdateDto){
+                                                                      doctorAppointmentUpdateDto, Locale locale){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("X-Info", "Updating appointment by id");
         if(!doctorAppointmentServices.existingByDoctorNUserId(doctorAppointmentUpdateDto.getUserId(),
@@ -102,10 +110,13 @@ public class DoctorAppointmentController {
                     .build();
         Set<ConstraintViolation<DoctorAppointmentUpdateDto>> bindingResult = validator.validate(doctorAppointmentUpdateDto);
         if(!bindingResult.isEmpty()){
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+                    this.messageSource.getMessage("400", null, "error.400", locale));
+            problemDetail.setProperty("error", MapUtils.bindingErrorsFromConstraintValidatorContext(bindingResult));
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .headers(httpHeaders)
-                    .body(ControllerUtils.bindingErrorsFromConstraintValidatorContext(bindingResult));
+                    .body(problemDetail);
         }
         try{
             doctorAppointmentServices.update(doctorAppointmentUpdateDto);
@@ -123,7 +134,7 @@ public class DoctorAppointmentController {
     }
 
     @GetMapping("/doctor/{id}")
-    public ResponseEntity<?> getAllDoctorAppointmentsByDoctorId(@PathVariable Long id){
+    public ResponseEntity<?> getAllDoctorAppointmentsByDoctorId(@PathVariable @Positive Long id){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("X-Info", "Creating appointment to doctor");
         List<DoctorAppointmentResponseDto> doctorAppointmentResponseDtoList;
@@ -143,7 +154,7 @@ public class DoctorAppointmentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteDoctorAppointment(@PathVariable Long id){
+    public ResponseEntity<?> deleteDoctorAppointment(@PathVariable @Positive Long id){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("X-Info", "Creating appointment to doctor");
         try{
