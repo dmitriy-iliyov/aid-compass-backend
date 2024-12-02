@@ -18,8 +18,8 @@ import java.time.Instant;
 @ValidDoctorAppointmentUpdate
 public class DoctorAppointmentUpdateDto extends CustomBindingErrors implements AppointmentUpdateDto {
 
-    @NotNull(message = "Appointment id shouldn't be null!")
-    @Min(value = 0, message = "Invalid value!")
+    @NotNull(message = "Id shouldn't be null!")
+    @Positive(message = "Invalid value!")
     private Long id;
 
     @NotNull(message = "Appointment date must not be null!")
@@ -31,15 +31,15 @@ public class DoctorAppointmentUpdateDto extends CustomBindingErrors implements A
     private String topic;
 
     @NotBlank(message = "Description shouldn't be empty or blank!")
-    @Size(max = 80)
+    @Size(max = 80, message = "Description should less than 40!")
     private String description;
 
     @NotNull(message = "User id shouldn't be empty or blank!")
-    @Min(value = 0, message = "Invalid value!")
+    @Positive(message = "Invalid value!")
     private Long userId;
 
     @NotNull(message = "Doctor id shouldn't be empty or blank!")
-    @Min(value = 0, message = "Invalid value!")
+    @Positive(message = "Invalid value!")
     private Long volunteerId;
 
 }

@@ -6,6 +6,7 @@ import aidcompass.api.user.validation.email.UniqueUserEmail;
 import aidcompass.api.user.validation.number.UniqueUserNumber;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class UserRegistrationDto {
 
     @NotBlank(message = "Username shouldn't be empty or blank!")
     @Size(min = 10, max = 30, message = "Username length must be greater than 10 and less than 30!")
+    @Pattern(regexp = "^[а-яА-ЯєЄїЇіІґҐ]+$", message = "Username should contain only Ukrainian")
     private String username;
 
     @NotBlank(message = "Email shouldn't be empty or blank!")

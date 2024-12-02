@@ -3,9 +3,7 @@ package aidcompass.api.user.models.dto;
 import aidcompass.api.general.models.CustomBindingErrors;
 import aidcompass.api.general.validation.PhoneNumber;
 import aidcompass.api.user.validation.user_update.ValidUserUpdate;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,10 +16,13 @@ import lombok.NoArgsConstructor;
 @ValidUserUpdate
 public class UserUpdateDto extends CustomBindingErrors {
 
+    @NotNull(message = "Id shouldn't be null!")
+    @Positive(message = "Invalid value!")
     private Long id;
 
     @NotBlank(message = "Username shouldn't be empty or blank!")
     @Size(min = 10, max = 30, message = "Username length must be greater than 10 and less than 30!")
+    @Pattern(regexp = "^[а-яА-ЯєЄїЇіІґҐ]+$", message = "Username should contain only Ukrainian")
     private String username;
 
     @NotBlank(message = "Email shouldn't be empty or blank!")

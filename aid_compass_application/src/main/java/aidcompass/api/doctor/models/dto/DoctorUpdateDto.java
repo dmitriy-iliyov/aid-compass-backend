@@ -3,10 +3,7 @@ package aidcompass.api.doctor.models.dto;
 import aidcompass.api.doctor.validation.doctor_update.ValidDoctorUpdate;
 import aidcompass.api.general.models.CustomBindingErrors;
 import aidcompass.api.general.validation.PhoneNumber;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,10 +12,13 @@ import lombok.EqualsAndHashCode;
 @ValidDoctorUpdate
 public class DoctorUpdateDto extends CustomBindingErrors {
 
+    @NotNull(message = "Id shouldn't be null!")
+    @Positive(message = "Invalid value!")
     private Long id;
 
     @NotBlank(message = "Username shouldn't be empty or blank!")
     @Size(min = 10, max = 30, message = "Username length must be greater than 10 and less than 30!")
+    @Pattern(regexp = "^[а-яА-ЯєЄїЇіІґҐ]+$", message = "Username should contain only Ukrainian")
     private String username;
 
     @NotBlank(message = "Email shouldn't be empty or blank!")
@@ -41,7 +41,8 @@ public class DoctorUpdateDto extends CustomBindingErrors {
     @NotBlank(message = "Specialization can't be empty or blank")
     private String specialization;
 
-    @Max(value = 100, message = "Years of experience exceed max 2 digits!")
+    @Min(value = 2, message = "Years of experience must be positive!")
+    @Max(value = 60, message = "Years of experience exceed the maximum of 60 years!")
     private Integer yearsOfExperience;
 
     @Size(max = 255, message = "Address can't exceed 255 characters!")

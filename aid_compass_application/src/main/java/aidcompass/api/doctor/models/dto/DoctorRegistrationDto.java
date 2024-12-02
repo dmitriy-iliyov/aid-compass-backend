@@ -4,10 +4,7 @@ import aidcompass.api.doctor.validation.email.UniqueDoctorEmail;
 import aidcompass.api.doctor.validation.license_number.UniqueDoctorLicenseNumber;
 import aidcompass.api.doctor.validation.number.UniqueDoctorNumber;
 import aidcompass.api.general.validation.PhoneNumber;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,11 +15,11 @@ import lombok.NoArgsConstructor;
 public class DoctorRegistrationDto{
 
         @NotBlank(message = "Username shouldn't be empty or blank!")
-        @Size(min = 10, max = 30)
+        @Size(min = 10, max = 40, message = "Should has lengths from 10 to 40 characters!")
         private String username;
 
         @NotBlank(message = "Email shouldn't be empty or blank!")
-        @Size(min = 11, max = 50)
+        @Size(min = 11, max = 50, message = "Should has lengths from 11 to 50 characters!")
         @Email(message = "Email should be valid!")
         @UniqueDoctorEmail
         private String email;
@@ -32,7 +29,7 @@ public class DoctorRegistrationDto{
         private String password;
 
         @NotBlank(message = "Number can't be empty or blank!")
-        @Size(min = 13, max = 17, message = "Number should has valid lengths!")
+        @Size(min = 13, max = 17, message = "Number should has lengths from 13 to 17!")
         @PhoneNumber
         @UniqueDoctorNumber
         private String number;
@@ -44,10 +41,11 @@ public class DoctorRegistrationDto{
         @NotBlank(message = "Specialization can't be empty or blank")
         private String specialization;
 
-        @Max(value = 100, message = "Years of experience exceed max 2 digits!")
+        @Min(value = 2, message = "Years of experience must be positive!")
+        @Max(value = 60, message = "Years of experience exceed the maximum of 60 years!")
         private Integer yearsOfExperience;
 
-        @Size(max = 255, message = "Address can't exceed 255 characters!")
+        @Size(max = 100, message = "Address can't exceed 100 characters!")
         private String address;
 
         @Size(max = 255, message = "Achievements can't exceed 255 characters!")
