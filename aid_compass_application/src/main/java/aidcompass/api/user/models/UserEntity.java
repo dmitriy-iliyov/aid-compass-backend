@@ -1,7 +1,7 @@
 package aidcompass.api.user.models;
 
 import aidcompass.api.doctor.appointment.models.DoctorAppointmentEntity;
-import aidcompass.api.general.models.VolunteerEntitySuperclass;
+import aidcompass.api.general.models.VolunteerBaseEntity;
 import aidcompass.api.security.models.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,9 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -23,7 +20,7 @@ import java.util.List;
 public class UserEntity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "email", nullable = false, unique = true, length = 50)
@@ -57,7 +54,7 @@ public class UserEntity{
     private boolean isLocked;
 
     @OneToOne(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private VolunteerEntitySuperclass volunteer;
+    private VolunteerBaseEntity volunteer;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<DoctorAppointmentEntity> appointmentsToDoctor;

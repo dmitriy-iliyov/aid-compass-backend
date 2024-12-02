@@ -2,7 +2,7 @@ package aidcompass.api.doctor.appointment.models;
 
 
 import aidcompass.api.doctor.models.DoctorEntity;
-import aidcompass.api.general.models.appointment.AppointmentEntitySuperclass;
+import aidcompass.api.general.models.appointment.AppointmentBaseEntity;
 import aidcompass.api.user.models.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,7 +15,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @Entity
 @Table(name = "doctor_appointments")
-public class DoctorAppointmentEntity extends AppointmentEntitySuperclass {
+public class DoctorAppointmentEntity extends AppointmentBaseEntity {
 
     public DoctorAppointmentEntity(Instant appointmentDate, String topic, String description, UserEntity user,
                                    DoctorEntity doctor){

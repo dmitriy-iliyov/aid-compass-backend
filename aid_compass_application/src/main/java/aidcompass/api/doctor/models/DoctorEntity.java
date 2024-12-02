@@ -1,7 +1,7 @@
 package aidcompass.api.doctor.models;
 
 import aidcompass.api.doctor.appointment.models.DoctorAppointmentEntity;
-import aidcompass.api.general.models.VolunteerEntitySuperclass;
+import aidcompass.api.general.models.VolunteerBaseEntity;
 import aidcompass.api.user.models.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "doctors")
-public class DoctorEntity extends VolunteerEntitySuperclass {
+public class DoctorEntity extends VolunteerBaseEntity {
 
     @Column(name = "license_number", nullable = false, unique = true)
     private String licenseNumber;
