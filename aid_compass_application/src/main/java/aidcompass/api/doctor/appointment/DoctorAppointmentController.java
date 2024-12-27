@@ -11,7 +11,6 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.MessageSource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -35,145 +34,64 @@ public class DoctorAppointmentController {
     @PostMapping("")
     public ResponseEntity<?> createDoctorAppointment(@RequestBody DoctorAppointmentRegistrationDto
                                                                  doctorAppointmentRegistrationDto, Locale locale){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("X-Info", "Creating appointment to doctor");
-        if(!doctorAppointmentServices.existingByDoctorNUserId(doctorAppointmentRegistrationDto.getUserId(),
-                doctorAppointmentRegistrationDto.getDoctorId()))
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .headers(httpHeaders)
-                    .build();
+
         Set<ConstraintViolation<DoctorAppointmentRegistrationDto>> bindingResult = validator.validate(doctorAppointmentRegistrationDto);
         if(!bindingResult.isEmpty()){
             ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
                     this.messageSource.getMessage("400", new Object[0], "error.400",locale));
             problemDetail.setProperty("errors", MapUtils.bindingErrorsFromConstraintValidatorContext(bindingResult));
+
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .headers(httpHeaders)
                     .body(problemDetail);
         }
-        try{
-            doctorAppointmentServices.save(doctorAppointmentRegistrationDto);
-        } catch (Exception e){
-            log.error("Error occurred while creating appointment to doctor: ", e);
-            if (e instanceof IllegalArgumentException)
-                return ResponseEntity
-                        .status(HttpStatus.BAD_REQUEST)
-                        .headers(httpHeaders)
-                        .body(e.getMessage());
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .headers(httpHeaders)
-                    .build();
-        }
+
+        doctorAppointmentServices.save(doctorAppointmentRegistrationDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .headers(httpHeaders)
                 .build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getDoctorAppointment(@PathVariable @Positive Long id){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("X-Info", "Get doctor appointment by id");
-        DoctorAppointmentResponseDto doctorAppointmentResponseDto;
-        try {
-            doctorAppointmentResponseDto = doctorAppointmentServices.findById(id);
-        } catch (Exception e){
-            log.error("Error occurred while getting appointment to doctor: ", e);
-            if (e instanceof EntityNotFoundException)
-                return ResponseEntity
-                        .status(HttpStatus.NOT_FOUND)
-                        .headers(httpHeaders)
-                        .build();
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .headers(httpHeaders)
-                    .build();
-        }
-        return doctorAppointmentResponseDto == null
-                ? ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).build()
-                : ResponseEntity.ok().headers(httpHeaders).body(doctorAppointmentResponseDto);
+    public ResponseEntity<?> getDoctorAppointment(@PathVariable("id") @Positive Long id){
+        DoctorAppointmentResponseDto doctorAppointmentResponseDto = doctorAppointmentServices.findById(id);
+        return ResponseEntity.ok(doctorAppointmentResponseDto);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("")
     public ResponseEntity<?> updateDoctorAppointmentsById(@RequestBody DoctorAppointmentUpdateDto
                                                                       doctorAppointmentUpdateDto, Locale locale){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("X-Info", "Updating appointment by id");
+
         if(!doctorAppointmentServices.existingByDoctorNUserId(doctorAppointmentUpdateDto.getUserId(),
                 doctorAppointmentUpdateDto.getVolunteerId()))
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .headers(httpHeaders)
-                    .build();
+            throw new EntityNotFoundException();
+
         Set<ConstraintViolation<DoctorAppointmentUpdateDto>> bindingResult = validator.validate(doctorAppointmentUpdateDto);
         if(!bindingResult.isEmpty()){
             ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
-                    this.messageSource.getMessage("400", null, "error.400", locale));
+                    this.messageSource.getMessage("400", null, "error.appointment.400", locale));
             problemDetail.setProperty("error", MapUtils.bindingErrorsFromConstraintValidatorContext(bindingResult));
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .headers(httpHeaders)
                     .body(problemDetail);
         }
-        try{
-            doctorAppointmentServices.update(doctorAppointmentUpdateDto);
-        } catch (Exception e){
-            log.error("Error occurred while creating appointment to doctor: ", e);
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .headers(httpHeaders)
-                    .build();
-        }
-        return ResponseEntity
-                .ok()
-                .headers(httpHeaders)
-                .build();
+
+        doctorAppointmentServices.update(doctorAppointmentUpdateDto);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/doctor/{id}")
-    public ResponseEntity<?> getAllDoctorAppointmentsByDoctorId(@PathVariable @Positive Long id){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("X-Info", "Creating appointment to doctor");
+    public ResponseEntity<?> getAllDoctorAppointmentsByDoctorId(@PathVariable("id") @Positive Long id){
         List<DoctorAppointmentResponseDto> doctorAppointmentResponseDtoList;
-        try{
-            doctorAppointmentResponseDtoList = doctorAppointmentServices.findAllByDoctorId(id);
-        } catch (Exception e){
-            log.error("Error occurred while creating appointment to doctor: ", e);
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .headers(httpHeaders)
-                    .build();
-        }
-        return ResponseEntity
-                .ok()
-                .headers(httpHeaders)
-                .body(doctorAppointmentResponseDtoList);
+        doctorAppointmentResponseDtoList = doctorAppointmentServices.findAllByDoctorId(id);
+        return ResponseEntity.ok(doctorAppointmentResponseDtoList);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteDoctorAppointment(@PathVariable @Positive Long id){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("X-Info", "Creating appointment to doctor");
-        try{
-            doctorAppointmentServices.deleteById(id);
-        } catch (Exception e){
-            log.error("Error occurred while deleting appointment to doctor: ", e);
-            if (e instanceof EntityNotFoundException)
-                return ResponseEntity
-                        .status(HttpStatus.NOT_FOUND)
-                        .headers(httpHeaders)
-                        .build();
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .headers(httpHeaders)
-                    .build();
-        }
+    public ResponseEntity<?> deleteDoctorAppointment(@PathVariable("id") @Positive Long id){
+        doctorAppointmentServices.deleteById(id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
-                .headers(httpHeaders)
                 .build();
     }
 }
