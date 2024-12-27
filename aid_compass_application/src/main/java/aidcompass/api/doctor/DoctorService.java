@@ -81,6 +81,14 @@ public class DoctorService {
     }
 
     @Transactional(readOnly = true)
+    public List<DoctorResponseDto> findAllApproved(){
+        List<DoctorResponseDto> doctorResponseDtoList = doctorMapper.toResponseDtoList(
+                doctorRepository.findAllByApproved(true));
+        doctorResponseDtoList.sort(usernameComparator);
+        return doctorResponseDtoList;
+    }
+
+    @Transactional(readOnly = true)
     public List<DoctorResponseDto> findAllApprovedBySpecialization(String specialization){
         List<DoctorResponseDto> doctorResponseDtoList = doctorMapper.toResponseDtoList(
                 doctorRepository.findAllByApprovedAndSpecialization(true, specialization));
