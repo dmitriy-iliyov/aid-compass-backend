@@ -25,13 +25,13 @@ public class DoctorAppointmentUpdateValidator implements ConstraintValidator<Val
     @Override
     public boolean isValid(DoctorAppointmentUpdateDto doctorAppointmentUpdateDto, ConstraintValidatorContext constraintValidatorContext) {
 
-        if (doctorAppointmentServices == null){
-            return true;
+        if (doctorAppointmentServices == null) {
+            throw new IllegalStateException("DoctorAppointmentServices is not properly initialized.");
         }
 
         constraintValidatorContext.disableDefaultConstraintViolation();
 
-        if (doctorAppointmentUpdateDto == null){
+        if (doctorAppointmentUpdateDto == null) {
             constraintValidatorContext.buildConstraintViolationWithTemplate("Appointment not passed!")
                     .addPropertyNode("appointment")
                     .addConstraintViolation();
@@ -46,9 +46,6 @@ public class DoctorAppointmentUpdateValidator implements ConstraintValidator<Val
 
         List<DoctorAppointmentResponseDto> doctorAppointments = doctorAppointmentServices.findAllByDoctorId(doctorId);
         List<AppointmentResponseDto> userAppointments = userAppointmentService.getAllUserAppointments(userId);
-
-        if(doctorAppointments.isEmpty() || userAppointments.isEmpty())
-            throw new EntityNotFoundException();
 
         for(DoctorAppointmentResponseDto doctorAppointment : doctorAppointments){
             if (!Objects.equals(doctorAppointment.getId(), existingDoctorAppointmentId) &&
