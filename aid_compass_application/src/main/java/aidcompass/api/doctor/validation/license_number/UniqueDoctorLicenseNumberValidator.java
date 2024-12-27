@@ -12,6 +12,9 @@ public class UniqueDoctorLicenseNumberValidator implements ConstraintValidator<U
 
     @Override
     public boolean isValid(String licenseNumber, ConstraintValidatorContext constraintValidatorContext) {
+        if (doctorRepository == null) {
+            throw new IllegalStateException("DoctorRepository is not properly initialized.");
+        }
         return !doctorRepository.existsByLicenseNumber(licenseNumber);
     }
 }

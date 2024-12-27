@@ -12,8 +12,9 @@ public class UniqueUserNumberValidator implements ConstraintValidator<UniqueUser
 
     @Override
     public boolean isValid(String number, ConstraintValidatorContext constraintValidatorContext) {
-        if(userRepository == null)
-            return true;
+        if(userRepository == null) {
+            throw new IllegalStateException("UserRepository is not properly initialized.");
+        }
         return !userRepository.existsByNumber(number);
     }
 }

@@ -13,7 +13,7 @@ public class UniqueDoctorEmailValidator implements ConstraintValidator<UniqueDoc
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
         if (doctorRepository == null) {
-            return true;
+            throw new IllegalStateException("DoctorRepository is not properly initialized.");
         }
         return !doctorRepository.existsByEmail(email);
     }

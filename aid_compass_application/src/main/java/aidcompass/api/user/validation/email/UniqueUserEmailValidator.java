@@ -13,7 +13,7 @@ public class UniqueUserEmailValidator implements ConstraintValidator<UniqueUserE
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
         if (userRepository == null) {
-            return true;
+            throw new IllegalStateException("UserRepository is not properly initialized.");
         }
         return !userRepository.existsByEmail(email);
     }

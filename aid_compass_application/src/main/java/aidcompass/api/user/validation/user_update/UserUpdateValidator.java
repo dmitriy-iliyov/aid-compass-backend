@@ -17,7 +17,11 @@ public class UserUpdateValidator implements ConstraintValidator<ValidUserUpdate,
 
     @Override
     public boolean isValid(UserUpdateDto userUpdateDto, ConstraintValidatorContext constraintValidatorContext)
-            throws IllegalArgumentException, EntityNotFoundException{
+            throws IllegalArgumentException, EntityNotFoundException {
+
+        if (userRepository == null) {
+            throw new IllegalStateException("UserRepository is not properly initialized.");
+        }
 
         boolean hasErrors = false;
 
@@ -37,6 +41,7 @@ public class UserUpdateValidator implements ConstraintValidator<ValidUserUpdate,
                     .addConstraintViolation();
             hasErrors = true;
         }
+
         if (userUpdateDto.getNumber() != null) {
             UserEntity phoneUser = userRepository.findByNumber(userUpdateDto.getNumber()).orElse(null);
             if (phoneUser != null && !Objects.equals(phoneUser.getId(), userUpdateDto.getId())){

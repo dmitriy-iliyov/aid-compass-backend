@@ -19,8 +19,9 @@ public class UniqueUserAppointmentDateValidator implements ConstraintValidator<U
     public boolean isValid(AppointmentRegistrationDto appointmentRegistrationDto,
                            ConstraintValidatorContext constraintValidatorContext) throws IllegalArgumentException{
 
-        if (userAppointmentService == null)
-            return true;
+        if (userAppointmentService == null) {
+            throw new IllegalStateException("UserRepository is not properly initialized.");
+        }
 
         constraintValidatorContext.disableDefaultConstraintViolation();
 

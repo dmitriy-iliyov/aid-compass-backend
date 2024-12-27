@@ -18,6 +18,10 @@ public class DoctorUpdateValidator implements ConstraintValidator<ValidDoctorUpd
     @Override
     public boolean isValid(DoctorUpdateDto doctorUpdateDto, ConstraintValidatorContext constraintValidatorContext) {
 
+        if (doctorRepository == null) {
+            throw new IllegalStateException("DoctorRepository is not properly initialized.");
+        }
+
         boolean hasErrors = false;
         constraintValidatorContext.disableDefaultConstraintViolation();
 

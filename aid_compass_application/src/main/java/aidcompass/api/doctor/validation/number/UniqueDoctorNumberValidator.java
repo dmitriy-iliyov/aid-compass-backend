@@ -12,8 +12,9 @@ public class UniqueDoctorNumberValidator implements ConstraintValidator<UniqueDo
 
     @Override
     public boolean isValid(String number, ConstraintValidatorContext constraintValidatorContext) {
-        if(userRepository == null)
-            return true;
+        if(userRepository == null) {
+            throw new IllegalStateException("DoctorRepository is not properly initialized.");
+        }
         return !userRepository.existsByNumber(number);
     }
 }
