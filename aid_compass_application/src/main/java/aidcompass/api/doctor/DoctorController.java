@@ -13,7 +13,6 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.MessageSource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -38,182 +37,86 @@ public class DoctorController {
     @PostMapping("/{userId}")
     public ResponseEntity<?> createDoctor(@RequestBody @Valid DoctorRegistrationDto doctorRegistrationDto,
                                           BindingResult bindingResult,
-                                          @PathVariable @Positive Long userId, Locale locale) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("X-Info", "Create doctor");
+                                          @PathVariable("userId") @Positive Long userId, Locale locale) {
+
         if (bindingResult.hasErrors()){
             ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
                     this.messageSource.getMessage("400", new Object[0], "error.400", locale));
             problemDetail.setProperty("errors", MapUtils.bindingErrors(bindingResult));
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .headers(httpHeaders)
                     .body(problemDetail);
         }
-        try {
-            doctorService.save(doctorRegistrationDto, userId);
-        } catch (Exception e) {
-            log.error("Error occurred while saving the doctor: ", e);
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .headers(httpHeaders)
-                    .build();
-        }
+
+        doctorService.save(doctorRegistrationDto, userId);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .headers(httpHeaders)
                 .build();
     }
 
     @PostMapping("/approve/{id}")
-    public ResponseEntity<?> approveDoctor(@Positive @PathVariable Long id){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("X-Info", "Approving doctor");
-        try{
-            doctorService.approve(id);
-        } catch (Exception e){
-            log.error("Error occurred while approving the doctor: ", e);
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .headers(httpHeaders)
-                    .build();
-        }
+    public ResponseEntity<?> approveDoctor(@PathVariable("id") @Positive Long id){
+        doctorService.approve(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .headers(httpHeaders)
                 .build();
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<?> getDoctor(@PathVariable String username){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("X-Info", "Get doctor by username");
-        DoctorResponseDto doctorResponseDto;
-        try{
-            doctorResponseDto = doctorService.findByUsername(username);
-        } catch (Exception e){
-            log.error("Error occurred while getting the doctor: ", e);
-            if (e instanceof EntityNotFoundException)
-                return ResponseEntity
-                        .status(HttpStatus.BAD_REQUEST)
-                        .headers(httpHeaders)
-                        .build();
-            if (e instanceof IllegalArgumentException)
-                return ResponseEntity
-                        .status(HttpStatus.BAD_REQUEST)
-                        .headers(httpHeaders)
-                        .body(e.getMessage());
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .headers(httpHeaders)
-                    .build();
-        }
-        return doctorResponseDto == null
-                ? ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).build()
-                : ResponseEntity.ok().headers(httpHeaders).body(doctorResponseDto);
+    public ResponseEntity<?> getDoctor(@PathVariable("username") String username){
+        DoctorResponseDto doctorResponseDto = doctorService.findByUsername(username);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(doctorResponseDto);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateDoctor(@RequestBody DoctorRegistrationDto doctorRegistrationDto,
-                                          @Positive @PathVariable Long id, Locale locale){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("X-info", "Updating doctor");
+                                          @PathVariable("id") @Positive Long id, Locale locale){
+
         if (!doctorService.existingById(id))
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .headers(httpHeaders)
-                    .build();
+            throw new EntityNotFoundException();
         DoctorUpdateDto doctorUpdateDto = doctorService.mapToUpdateDto(doctorRegistrationDto);
         doctorUpdateDto.setId(id);
-        try {
-            Set<ConstraintViolation<DoctorUpdateDto>> bindingResult = validator.validate(doctorUpdateDto);
-            if(!bindingResult.isEmpty()){
-                ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
-                        this.messageSource.getMessage("400", null, "error.400", locale));
-                problemDetail.setProperty("error", MapUtils.bindingErrorsFromConstraintValidatorContext(bindingResult));
-                return ResponseEntity
-                        .status(HttpStatus.BAD_REQUEST)
-                        .headers(httpHeaders)
-                        .body(problemDetail);
-            }
-        } catch (Exception e){
-            log.error("Error occurred while validate doctor: ", e);
+
+        Set<ConstraintViolation<DoctorUpdateDto>> bindingResult = validator.validate(doctorUpdateDto);
+        if(!bindingResult.isEmpty()){
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+                    this.messageSource.getMessage("400", null, "error.doctor.400", locale));
+            problemDetail.setProperty("error", MapUtils.bindingErrorsFromConstraintValidatorContext(bindingResult));
             return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .headers(httpHeaders)
-                    .build();
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(problemDetail);
         }
-        try{
-            doctorService.update(doctorUpdateDto);
-        }catch (Exception e){
-            log.error("Error occurred while update the doctor: ", e);
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .headers(httpHeaders)
-                    .build();
-        }
+
+        doctorService.update(doctorUpdateDto);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .headers(httpHeaders)
                 .build();
     }
 
     @GetMapping("/unapproved")
     public ResponseEntity<?> getAllUnapprovedDoctors(){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("X-Info", "Get unapproved doctors");
-        List<DoctorResponseDto> doctorResponseDtoList;
-        try {
-            doctorResponseDtoList = doctorService.findAllUnapproved();
-        } catch (Exception e){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .headers(httpHeaders)
-                    .build();
-        }
+        List<DoctorResponseDto> doctorResponseDtoList = doctorService.findAllUnapproved();
         return ResponseEntity
-                .ok()
-                .headers(httpHeaders)
+                .status(HttpStatus.OK)
                 .body(doctorResponseDtoList);
     }
 
     @GetMapping("/approved/{specialization}")
-    public ResponseEntity<?> getDoctorsBySpecialization(@PathVariable @Pattern(regexp = "^[a-zA-z]+$]") String specialization){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("X-Info", "Get doctors by specialization");
-        List<DoctorResponseDto> doctorResponseDtoList;
-        try{
-            doctorResponseDtoList = doctorService.findAllApprovedBySpecialization(specialization);
-        }catch (Exception e){
-            log.error("Error occurred while getting doctors by specialization: ", e);
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .headers(httpHeaders)
-                    .build();
-        }
+    public ResponseEntity<?> getDoctorsBySpecialization(
+            @PathVariable("specialization") @Pattern(regexp = "^[a-zA-z]+$]") String specialization){
+        List<DoctorResponseDto> doctorResponseDtoList = doctorService.findAllApprovedBySpecialization(specialization);
         return ResponseEntity
-                .ok()
-                .headers(httpHeaders)
+                .status(HttpStatus.OK)
                 .body(doctorResponseDtoList);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteDoctorById(@PathVariable @Positive Long id){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("X-Info", "Deleting doctor by id");
-        try {
-            doctorService.deleteById(id);
-        }catch (Exception e){
-            log.error("Error occurred while deleting doctor: ", e);
-
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .headers(httpHeaders)
-                    .build();
-        }
+    public ResponseEntity<?> deleteDoctorById(@PathVariable("id") @Positive Long id){
+        doctorService.deleteById(id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
-                .headers(httpHeaders)
                 .build();
     }
 
