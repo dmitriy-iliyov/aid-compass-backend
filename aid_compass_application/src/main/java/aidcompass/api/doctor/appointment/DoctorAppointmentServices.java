@@ -1,11 +1,11 @@
 package aidcompass.api.doctor.appointment;
 
 import aidcompass.api.doctor.DoctorRepository;
-import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentUpdateDto;
 import aidcompass.api.doctor.appointment.mapper.DoctorAppointmentMapper;
 import aidcompass.api.doctor.appointment.models.DoctorAppointmentEntity;
 import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentRegistrationDto;
 import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentResponseDto;
+import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentUpdateDto;
 import aidcompass.api.doctor.models.DoctorEntity;
 import aidcompass.api.user.UserRepository;
 import aidcompass.api.user.models.UserEntity;
@@ -35,7 +35,7 @@ public class DoctorAppointmentServices {
         DoctorEntity doctor = doctorRepository.findById(doctorAppointmentRegistrationDto.getDoctorId())
                 .orElseThrow(EntityNotFoundException::new);
         if (!doctor.isApproved())
-            throw new IllegalArgumentException("Doctor is unapproved!");
+            throw new IllegalArgumentException("Doctor is unapproved.");
         doctorAppointmentEntity.setUser(user);
         doctorAppointmentEntity.setVolunteer(doctor);
         doctorAppointmentRepository.save(doctorAppointmentEntity);
@@ -52,7 +52,7 @@ public class DoctorAppointmentServices {
     @Transactional(readOnly = true)
     public boolean existingByDoctorNUserId(Long userId, Long doctorId){
         if (userId == null || doctorId == null)
-            return false;
+            throw new IllegalArgumentException("User and doctor id can't be empty.");
         return userRepository.existsById(userId) && doctorRepository.existsById(doctorId);
     }
 
