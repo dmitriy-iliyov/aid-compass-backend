@@ -19,12 +19,13 @@ public class UniqueDoctorAppointmentDateValidator implements ConstraintValidator
     public boolean isValid(DoctorAppointmentRegistrationDto doctorAppointmentRegistrationDto,
                            ConstraintValidatorContext constraintValidatorContext) throws IllegalArgumentException{
 
-        if (doctorAppointmentServices == null )
-            return true;
+        if (doctorAppointmentServices == null ) {
+            throw new IllegalStateException("DoctorAppointmentServices is not properly initialized.");
+        }
 
         constraintValidatorContext.disableDefaultConstraintViolation();
 
-        if (doctorAppointmentRegistrationDto == null){
+        if (doctorAppointmentRegistrationDto == null) {
             constraintValidatorContext.buildConstraintViolationWithTemplate("Appointment not passed!")
                     .addPropertyNode("appointment")
                     .addConstraintViolation();
