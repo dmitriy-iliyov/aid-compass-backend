@@ -48,6 +48,13 @@ public class UserService {
         userRepository.save(customerEntity);
     }
 
+    @Transactional
+    public void confirmByEmail(String email){
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+        userEntity.setRole(Role.ROLE_USER);
+        userRepository.save(userEntity);
+    }
+
     public UserUpdateDto mapToUpdateDto(UserRegistrationDto userRegistrationDto){
         return userMapper.toUpdateDto(userRegistrationDto);
     }
