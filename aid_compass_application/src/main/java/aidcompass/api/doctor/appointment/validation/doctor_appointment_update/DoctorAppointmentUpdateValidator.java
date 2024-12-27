@@ -5,6 +5,7 @@ import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentUpdateDto;
 import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentResponseDto;
 import aidcompass.api.general.models.appointment.AppointmentResponseDto;
 import aidcompass.api.user.appointment.UserAppointmentService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,10 @@ public class DoctorAppointmentUpdateValidator implements ConstraintValidator<Val
 
         List<DoctorAppointmentResponseDto> doctorAppointments = doctorAppointmentServices.findAllByDoctorId(doctorId);
         List<AppointmentResponseDto> userAppointments = userAppointmentService.getAllUserAppointments(userId);
+
+        if(doctorAppointments.isEmpty() || userAppointments.isEmpty())
+            throw new EntityNotFoundException();
+
         for(DoctorAppointmentResponseDto doctorAppointment : doctorAppointments){
             if (!Objects.equals(doctorAppointment.getId(), existingDoctorAppointmentId) &&
                     doctorAppointment.getAppointmentDate().equals(existingAppointmentDate)){
