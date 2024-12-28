@@ -21,7 +21,7 @@ public class DoctorRegistrationDto{
         @NotBlank(message = "Email shouldn't be empty or blank!")
         @Size(min = 11, max = 50, message = "Should has lengths from 11 to 50 characters!")
         @Email(message = "Email should be valid!")
-        @UniqueDoctorEmail
+        @UniqueDoctorEmail(message = "Email is in use!")
         private String email;
 
         @NotBlank(message = "Password can't be empty or blank!")
@@ -31,14 +31,14 @@ public class DoctorRegistrationDto{
         @NotBlank(message = "Number can't be empty or blank!")
         @Size(min = 13, max = 17, message = "Number should has lengths from 13 to 17!")
         @PhoneNumber
-        @UniqueDoctorNumber
+        @UniqueDoctorNumber(message = "Number should be unique.")
         private String number;
 
         @NotBlank(message = "License number can't be empty or blank!")
-        @UniqueDoctorLicenseNumber
+        @UniqueDoctorLicenseNumber(message = "License is in use!")
         private String licenseNumber;
 
-        @NotBlank(message = "Specialization can't be empty or blank")
+        @NotBlank(message = "Specialization can't be empty or blank.")
         private String specialization;
 
         @Min(value = 2, message = "Years of experience must be positive!")

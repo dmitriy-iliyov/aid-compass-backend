@@ -25,7 +25,7 @@ public class UserRegistrationDto {
     @NotBlank(message = "Email shouldn't be empty or blank!")
     @Size(min = 11, max = 50, message = "Email length must be greater than 11 and less than 50!")
     @Email(message = "Email should be valid!")
-    @UniqueUserEmail
+    @UniqueUserEmail(message = "Email is in use!")
     private String email;
 
     @NotBlank(message = "Password can't be empty or blank!")

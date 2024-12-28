@@ -26,7 +26,7 @@ public class DoctorUpdateValidator implements ConstraintValidator<ValidDoctorUpd
         constraintValidatorContext.disableDefaultConstraintViolation();
 
         if(doctorUpdateDto == null){
-            constraintValidatorContext.buildConstraintViolationWithTemplate("Doctor not passed!")
+            constraintValidatorContext.buildConstraintViolationWithTemplate("Doctor not passed.")
                     .addPropertyNode("doctor")
                     .addConstraintViolation();
             return false;
@@ -34,21 +34,21 @@ public class DoctorUpdateValidator implements ConstraintValidator<ValidDoctorUpd
 
         DoctorEntity emailDoctor = doctorRepository.findByEmail(doctorUpdateDto.getEmail()).orElse(null);
         if (emailDoctor != null && !Objects.equals(emailDoctor.getId(), doctorUpdateDto.getId())){
-            constraintValidatorContext.buildConstraintViolationWithTemplate("Email is in use!")
+            constraintValidatorContext.buildConstraintViolationWithTemplate("Email is in use.")
                     .addPropertyNode("email")
                     .addConstraintViolation();
             hasErrors = true;
         }
         DoctorEntity phoneDoctor = doctorRepository.findByNumber(doctorUpdateDto.getNumber()).orElse(null);
         if (phoneDoctor != null && !Objects.equals(phoneDoctor.getId(), doctorUpdateDto.getId())){
-            constraintValidatorContext.buildConstraintViolationWithTemplate("Number is in use!")
+            constraintValidatorContext.buildConstraintViolationWithTemplate("Number is in use.")
                     .addPropertyNode("number")
                     .addConstraintViolation();
             hasErrors = true;
         }
         DoctorEntity licenseDoctor = doctorRepository.findByLicenseNumber(doctorUpdateDto.getLicenseNumber()).orElse(null);
         if (licenseDoctor != null && !Objects.equals(licenseDoctor.getId(), doctorUpdateDto.getId())){
-            constraintValidatorContext.buildConstraintViolationWithTemplate("Number is in use!")
+            constraintValidatorContext.buildConstraintViolationWithTemplate("Number is in use.")
                     .addPropertyNode("number")
                     .addConstraintViolation();
             hasErrors = true;

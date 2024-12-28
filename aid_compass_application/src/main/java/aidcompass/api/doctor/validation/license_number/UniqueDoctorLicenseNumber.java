@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = UniqueDoctorLicenseNumberValidator.class)
 @Documented
 public @interface UniqueDoctorLicenseNumber {
-    String message() default "License number isn't unique!";
+    String message() default "License should be unique!";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

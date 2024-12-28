@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = DoctorUpdateValidator.class)
 @Documented
 public @interface ValidDoctorUpdate {
-    String message() default "";
+    String message() default "Invalid doctor update.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
