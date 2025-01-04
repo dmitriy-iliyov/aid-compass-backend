@@ -31,7 +31,7 @@ public class DoctorController {
 
     private final DoctorService doctorService;
     private final Validator validator;
-    private MessageSource messageSource;
+    private final MessageSource messageSource;
 
 
     @PostMapping("/{userId}")
@@ -39,9 +39,9 @@ public class DoctorController {
                                           BindingResult bindingResult,
                                           @PathVariable("userId") @Positive Long userId, Locale locale) {
 
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
-                    this.messageSource.getMessage("400", new Object[0], "error.400", locale));
+                    messageSource.getMessage("400", new Object[0], "error.400", locale));
             problemDetail.setProperty("errors", MapUtils.bindingErrors(bindingResult));
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -55,7 +55,7 @@ public class DoctorController {
     }
 
     @PostMapping("/approve/{id}")
-    public ResponseEntity<?> approveDoctor(@PathVariable("id") @Positive Long id){
+    public ResponseEntity<?> approveDoctor(@PathVariable("id") @Positive Long id) {
         doctorService.approve(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -63,7 +63,7 @@ public class DoctorController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<?> getDoctor(@PathVariable("username") String username){
+    public ResponseEntity<?> getDoctor(@PathVariable("username") String username) {
         DoctorResponseDto doctorResponseDto = doctorService.findByUsername(username);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -72,17 +72,19 @@ public class DoctorController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateDoctor(@RequestBody DoctorRegistrationDto doctorRegistrationDto,
-                                          @PathVariable("id") @Positive Long id, Locale locale){
+                                          @PathVariable("id") @Positive Long id, Locale locale) {
 
-        if (!doctorService.existingById(id))
+        if (!doctorService.existingById(id)) {
             throw new EntityNotFoundException();
+        }
+
         DoctorUpdateDto doctorUpdateDto = doctorService.mapToUpdateDto(doctorRegistrationDto);
         doctorUpdateDto.setId(id);
 
         Set<ConstraintViolation<DoctorUpdateDto>> bindingResult = validator.validate(doctorUpdateDto);
-        if(!bindingResult.isEmpty()){
+        if(!bindingResult.isEmpty()) {
             ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
-                    this.messageSource.getMessage("400", null, "error.doctor.400", locale));
+                    messageSource.getMessage("400", null, "error.doctor.400", locale));
             problemDetail.setProperty("error", MapUtils.bindingErrorsFromConstraintValidatorContext(bindingResult));
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -96,7 +98,7 @@ public class DoctorController {
     }
 
     @GetMapping("/unapproved")
-    public ResponseEntity<?> getAllUnapprovedDoctors(){
+    public ResponseEntity<?> getAllUnapprovedDoctors() {
         List<DoctorResponseDto> doctorResponseDtoList = doctorService.findAllUnapproved();
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -105,7 +107,7 @@ public class DoctorController {
 
     @GetMapping("/approved/{specialization}")
     public ResponseEntity<?> getDoctorsBySpecialization(
-            @PathVariable("specialization") @Pattern(regexp = "^[a-zA-z]+$]") String specialization){
+            @PathVariable("specialization") @Pattern(regexp = "^[a-zA-z]+$]") String specialization) {
         List<DoctorResponseDto> doctorResponseDtoList = doctorService.findAllApprovedBySpecialization(specialization);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -113,11 +115,10 @@ public class DoctorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteDoctorById(@PathVariable("id") @Positive Long id){
+    public ResponseEntity<?> deleteDoctorById(@PathVariable("id") @Positive Long id) {
         doctorService.deleteById(id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
     }
-
 }
