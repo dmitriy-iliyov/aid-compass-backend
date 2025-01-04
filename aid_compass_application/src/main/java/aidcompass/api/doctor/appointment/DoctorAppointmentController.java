@@ -38,7 +38,7 @@ public class DoctorAppointmentController {
         Set<ConstraintViolation<DoctorAppointmentRegistrationDto>> bindingResult = validator.validate(doctorAppointmentRegistrationDto);
         if(!bindingResult.isEmpty()){
             ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
-                    this.messageSource.getMessage("400", new Object[0], "error.400",locale));
+                    messageSource.getMessage("400", new Object[0], "error.400",locale));
             problemDetail.setProperty("errors", MapUtils.bindingErrorsFromConstraintValidatorContext(bindingResult));
 
             return ResponseEntity
@@ -64,12 +64,12 @@ public class DoctorAppointmentController {
 
         if(!doctorAppointmentServices.existingByDoctorNUserId(doctorAppointmentUpdateDto.getUserId(),
                 doctorAppointmentUpdateDto.getVolunteerId()))
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("User or doctor not found.");
 
         Set<ConstraintViolation<DoctorAppointmentUpdateDto>> bindingResult = validator.validate(doctorAppointmentUpdateDto);
         if(!bindingResult.isEmpty()){
             ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
-                    this.messageSource.getMessage("400", null, "error.appointment.400", locale));
+                    messageSource.getMessage("400", null, "error.appointment.400", locale));
             problemDetail.setProperty("error", MapUtils.bindingErrorsFromConstraintValidatorContext(bindingResult));
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -84,7 +84,9 @@ public class DoctorAppointmentController {
     public ResponseEntity<?> getAllDoctorAppointmentsByDoctorId(@PathVariable("id") @Positive Long id){
         List<DoctorAppointmentResponseDto> doctorAppointmentResponseDtoList;
         doctorAppointmentResponseDtoList = doctorAppointmentServices.findAllByDoctorId(id);
-        return ResponseEntity.ok(doctorAppointmentResponseDtoList);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(doctorAppointmentResponseDtoList);
     }
 
     @DeleteMapping("/{id}")
