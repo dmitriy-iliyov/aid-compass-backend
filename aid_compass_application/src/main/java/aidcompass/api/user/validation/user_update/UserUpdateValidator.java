@@ -27,7 +27,7 @@ public class UserUpdateValidator implements ConstraintValidator<ValidUserUpdate,
 
         constraintValidatorContext.disableDefaultConstraintViolation();
 
-        if(userUpdateDto == null){
+        if(userUpdateDto == null) {
             constraintValidatorContext.buildConstraintViolationWithTemplate("User not passed!")
                     .addPropertyNode("user")
                     .addConstraintViolation();
@@ -35,7 +35,7 @@ public class UserUpdateValidator implements ConstraintValidator<ValidUserUpdate,
         }
 
         UserEntity emailUser = userRepository.findByEmail(userUpdateDto.getEmail()).orElse(null);
-        if (emailUser != null && !Objects.equals(emailUser.getId(), userUpdateDto.getId())){
+        if (emailUser != null && !Objects.equals(emailUser.getId(), userUpdateDto.getId())) {
             constraintValidatorContext.buildConstraintViolationWithTemplate("Email is in use!")
                     .addPropertyNode("email")
                     .addConstraintViolation();
