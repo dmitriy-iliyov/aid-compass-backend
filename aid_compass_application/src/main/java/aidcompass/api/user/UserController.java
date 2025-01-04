@@ -1,9 +1,9 @@
 package aidcompass.api.user;
 
 
+import aidcompass.api.general.utils.MapUtils;
 import aidcompass.api.user.models.dto.UserRegistrationDto;
 import aidcompass.api.user.models.dto.UserResponseDto;
-import aidcompass.api.general.utils.MapUtils;
 import aidcompass.api.user.models.dto.UserUpdateDto;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
@@ -13,11 +13,9 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.MessageSource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,11 +36,11 @@ public class UserController {
 
     @PostMapping("")
     public ResponseEntity<?> createUser(@RequestBody @Valid UserRegistrationDto userRegistrationDto,
-                                        BindingResult bindingResult, Locale locale){
+                                        BindingResult bindingResult, Locale locale) {
 
-        if(bindingResult.hasErrors()){
+        if(bindingResult.hasErrors()) {
             ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
-                    this.messageSource.getMessage("400", null, "error.400", locale));
+                    messageSource.getMessage("400", null, "error.400", locale));
             problemDetail.setProperty("errors", MapUtils.bindingErrors(bindingResult));
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -57,17 +55,19 @@ public class UserController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateUser(@RequestBody UserRegistrationDto userRegistrationDto,
-                                        @PathVariable("id") @Positive Long id, Locale locale){
+                                        @PathVariable("id") @Positive Long id, Locale locale) {
 
-        if (!userService.existingById(id))
+        if (!userService.existingById(id)) {
             throw new EntityNotFoundException();
+        }
+
         UserUpdateDto userUpdateDto = userService.mapToUpdateDto(userRegistrationDto);
         userUpdateDto.setId(id);
 
         Set<ConstraintViolation<UserUpdateDto>> bindingResult = validator.validate(userUpdateDto);
-        if(!bindingResult.isEmpty()){
+        if(!bindingResult.isEmpty()) {
             ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
-                    this.messageSource.getMessage("400", null, "error.400", locale));
+                    messageSource.getMessage("400", null, "error.400", locale));
             problemDetail.setProperty("error", MapUtils.bindingErrorsFromConstraintValidatorContext(bindingResult));
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -81,7 +81,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUser(@PathVariable("id") @Positive Long id){
+    public ResponseEntity<?> getUser(@PathVariable("id") @Positive Long id) {
         UserResponseDto userResponseDto = userService.findById(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -97,7 +97,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{email}")
-    public ResponseEntity<?> deleteUser(@PathVariable("email") String email){
+    public ResponseEntity<?> deleteUser(@PathVariable("email") String email) {
         userService.deleteByEmail(email);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
