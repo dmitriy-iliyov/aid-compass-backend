@@ -31,11 +31,7 @@ public class UserService {
     //    @Override
 //    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 //        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(
-//                () -> {
-//                    logger.error("User with email {} not found.", email);
-//                    return new UsernameNotFoundException("User with %s not found." + email);
-//                });
-//        logger.info("UserEntity: {}", userEntity);
+//                () -> new UsernameNotFoundException("User with " + email + " not found."));
 //        return new SecurityUserDetails(
 //                userEntity.getEmail(),
 //                userEntity.getPassword(),
@@ -49,8 +45,9 @@ public class UserService {
     }
 
     @Transactional
-    public void confirmByEmail(String email){
-        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+    public void confirmByEmail(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(
+                () -> new EntityNotFoundException("User not found."));
         userEntity.setRole(Role.ROLE_USER);
         userRepository.save(userEntity);
     }
@@ -60,46 +57,49 @@ public class UserService {
     }
 
     @Transactional
-    public void update(UserUpdateDto userUpdateDto){
-        UserEntity existingUserEntity = userRepository.getReferenceById(userUpdateDto.getId());
-        userMapper.updateEntityFromUpdateDto(userUpdateDto, existingUserEntity);
-        userRepository.save(existingUserEntity);
+    public void update(UserUpdateDto userUpdateDto) {
+        UserEntity userEntity = userRepository.findById(userUpdateDto.getId()).orElseThrow(
+                () -> new EntityNotFoundException("User not found."));
+        userMapper.updateEntityFromUpdateDto(userUpdateDto, userEntity);
+        userRepository.save(userEntity);
     }
 
     @Transactional
-    public UserEntity systemUpdate(Long id, Role role){
-        UserEntity userEntity = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public UserEntity systemUpdate(Long id, Role role) {
+        UserEntity userEntity = userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("User not found."));
         userEntity.setRole(role);
         userRepository.save(userEntity);
         return userEntity;
     }
 
     @Transactional(readOnly = true)
-    public boolean existingById(Long id){
+    public boolean existingById(Long id) {
         return userRepository.existsById(id);
     }
 
     @Transactional(readOnly = true)
     public UserResponseDto findById(Long id) {
-        UserEntity customerEntity = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        UserEntity customerEntity = userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("User not found."));
         return userMapper.toResponseDto(customerEntity);
     }
 
     @Transactional(readOnly = true)
-    public List<UserResponseDto> findAll(){
+    public List<UserResponseDto> findAll() {
         return userMapper.toResponseDtoList(userRepository.findAll());
     }
 
     @Transactional
-    public void deleteByEmail(String email){
+    public void deleteByEmail(String email) {
         userRepository.deleteByEmail(email);
     }
 
-    //    @Transactional
+//    @Transactional
 //    public void deleteByPassword(String password) throws BadCredentialsException {
 //        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-//        SecurityUserEntity securityUserEntity = securityUserRepository.findByEmail(email)
-//                .orElseThrow(EntityNotFoundException::new);
+//        SecurityUserEntity securityUserEntity = securityUserRepository.findByEmail(email).orElseThrow(
+//                () -> new EntityNotFoundException("User not found."));
 //        if (passwordEncoder.matches(password, securityUserEntity.getPassword())) {
 //            securityUserRepository.deleteByEmail(email);
 //            logger.info("User successfully deleted.");
