@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-13T23:52:54+0100",
+    date = "2025-01-07T19:22:11+0100",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.11 (JetBrains s.r.o.)"
 )
 @Component
@@ -30,8 +30,6 @@ public class DoctorAppointmentMapperImpl implements DoctorAppointmentMapper {
         doctorAppointmentEntity.setAppointmentDate( doctorAppointmentRegistrationDto.getAppointmentDate() );
         doctorAppointmentEntity.setTopic( doctorAppointmentRegistrationDto.getTopic() );
         doctorAppointmentEntity.setDescription( doctorAppointmentRegistrationDto.getDescription() );
-
-        doctorAppointmentEntity.setCreatedAt( java.time.Instant.now() );
 
         return doctorAppointmentEntity;
     }
@@ -77,8 +75,6 @@ public class DoctorAppointmentMapperImpl implements DoctorAppointmentMapper {
         doctorAppointmentEntity.setAppointmentDate( doctorAppointmentRegistrationDto.getAppointmentDate() );
         doctorAppointmentEntity.setTopic( doctorAppointmentRegistrationDto.getTopic() );
         doctorAppointmentEntity.setDescription( doctorAppointmentRegistrationDto.getDescription() );
-
-        doctorAppointmentEntity.setUpdatedAt( java.time.Instant.now() );
     }
 
     private Long doctorAppointmentEntityUserId(DoctorAppointmentEntity doctorAppointmentEntity) {

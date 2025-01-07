@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-13T23:52:54+0100",
+    date = "2025-01-07T19:22:11+0100",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.11 (JetBrains s.r.o.)"
 )
 @Component
@@ -33,9 +33,6 @@ public class DoctorMapperImpl implements DoctorMapper {
         doctorEntity.setYearsOfExperience( doctorRegistrationDto.getYearsOfExperience() );
         doctorEntity.setAddress( doctorRegistrationDto.getAddress() );
         doctorEntity.setAchievements( doctorRegistrationDto.getAchievements() );
-
-        doctorEntity.setCreatedAt( java.time.Instant.now() );
-        doctorEntity.setApproved( false );
 
         return doctorEntity;
     }
@@ -107,15 +104,29 @@ public class DoctorMapperImpl implements DoctorMapper {
             return;
         }
 
-        entity.setEmail( doctorUpdateDto.getEmail() );
-        entity.setUsername( doctorUpdateDto.getUsername() );
-        entity.setNumber( doctorUpdateDto.getNumber() );
-        entity.setLicenseNumber( doctorUpdateDto.getLicenseNumber() );
-        entity.setSpecialization( doctorUpdateDto.getSpecialization() );
-        entity.setYearsOfExperience( doctorUpdateDto.getYearsOfExperience() );
-        entity.setAddress( doctorUpdateDto.getAddress() );
-        entity.setAchievements( doctorUpdateDto.getAchievements() );
-
-        entity.setUpdatedAt( java.time.Instant.now() );
+        if ( doctorUpdateDto.getEmail() != null ) {
+            entity.setEmail( doctorUpdateDto.getEmail() );
+        }
+        if ( doctorUpdateDto.getUsername() != null ) {
+            entity.setUsername( doctorUpdateDto.getUsername() );
+        }
+        if ( doctorUpdateDto.getNumber() != null ) {
+            entity.setNumber( doctorUpdateDto.getNumber() );
+        }
+        if ( doctorUpdateDto.getLicenseNumber() != null ) {
+            entity.setLicenseNumber( doctorUpdateDto.getLicenseNumber() );
+        }
+        if ( doctorUpdateDto.getSpecialization() != null ) {
+            entity.setSpecialization( doctorUpdateDto.getSpecialization() );
+        }
+        if ( doctorUpdateDto.getYearsOfExperience() != null ) {
+            entity.setYearsOfExperience( doctorUpdateDto.getYearsOfExperience() );
+        }
+        if ( doctorUpdateDto.getAddress() != null ) {
+            entity.setAddress( doctorUpdateDto.getAddress() );
+        }
+        if ( doctorUpdateDto.getAchievements() != null ) {
+            entity.setAchievements( doctorUpdateDto.getAchievements() );
+        }
     }
 }

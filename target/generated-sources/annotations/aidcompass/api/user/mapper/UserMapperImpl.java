@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-13T23:52:54+0100",
+    date = "2025-01-07T19:22:11+0100",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.11 (JetBrains s.r.o.)"
 )
 @Component
@@ -37,7 +37,6 @@ public class UserMapperImpl implements UserMapper {
         userEntity.setNumber( customerRegistrationDto.getNumber() );
 
         userEntity.setRole( Role.ROLE_USER );
-        userEntity.setCreatedAt( java.time.Instant.now() );
 
         return userEntity;
     }
@@ -96,11 +95,17 @@ public class UserMapperImpl implements UserMapper {
             return;
         }
 
-        userEntity.setEmail( userUpdateDto.getEmail() );
-        userEntity.setPassword( userUpdateDto.getPassword() );
-        userEntity.setUsername( userUpdateDto.getUsername() );
-        userEntity.setNumber( userUpdateDto.getNumber() );
-
-        userEntity.setUpdatedAt( java.time.Instant.now() );
+        if ( userUpdateDto.getEmail() != null ) {
+            userEntity.setEmail( userUpdateDto.getEmail() );
+        }
+        if ( userUpdateDto.getPassword() != null ) {
+            userEntity.setPassword( userUpdateDto.getPassword() );
+        }
+        if ( userUpdateDto.getUsername() != null ) {
+            userEntity.setUsername( userUpdateDto.getUsername() );
+        }
+        if ( userUpdateDto.getNumber() != null ) {
+            userEntity.setNumber( userUpdateDto.getNumber() );
+        }
     }
 }
