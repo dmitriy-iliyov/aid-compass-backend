@@ -5,6 +5,7 @@ import aidcompass.api.general.models.VolunteerBaseEntity;
 import aidcompass.api.security.models.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

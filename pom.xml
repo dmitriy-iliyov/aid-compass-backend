@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>aidcompass.api</groupId>
-    <artifactId>aid_compass_application</artifactId>
+    <artifactId>aid-compass-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>aid_compass_application</name>
     <description>aid_compass_application</description>
