@@ -31,11 +31,9 @@ public abstract class AppointmentBaseEntity {
     private String description;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Instant createdAt;
 
     @Column(name = "updated_at", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Instant updatedAt;
 
     @ManyToOne(fetch = FetchType.EAGER)

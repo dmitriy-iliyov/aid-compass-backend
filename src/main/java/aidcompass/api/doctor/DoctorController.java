@@ -98,8 +98,16 @@ public class DoctorController {
     }
 
     @GetMapping("/unapproved")
-    public ResponseEntity<?> getAllUnapprovedDoctors() {
+    public ResponseEntity<?> getUnapprovedDoctors() {
         List<DoctorResponseDto> doctorResponseDtoList = doctorService.findAllUnapproved();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(doctorResponseDtoList);
+    }
+
+    @GetMapping("/approved")
+    public ResponseEntity<?> getApprovedDoctors() {
+        List<DoctorResponseDto> doctorResponseDtoList = doctorService.findAllApproved();
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(doctorResponseDtoList);

@@ -36,7 +36,7 @@ public class DoctorAppointmentController {
                                                                  doctorAppointmentRegistrationDto, Locale locale){
 
         Set<ConstraintViolation<DoctorAppointmentRegistrationDto>> bindingResult = validator.validate(doctorAppointmentRegistrationDto);
-        if(!bindingResult.isEmpty()){
+        if(!bindingResult.isEmpty()) {
             ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
                     messageSource.getMessage("400", new Object[0], "error.400",locale));
             problemDetail.setProperty("errors", MapUtils.bindingErrorsFromConstraintValidatorContext(bindingResult));

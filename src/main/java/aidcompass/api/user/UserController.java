@@ -34,7 +34,7 @@ public class UserController {
     private final MessageSource messageSource;
 
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<?> createUser(@RequestBody @Valid UserRegistrationDto userRegistrationDto,
                                         BindingResult bindingResult, Locale locale) {
 
@@ -88,7 +88,7 @@ public class UserController {
                 .body(userResponseDto);
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<?> getAllUsers() {
         List<UserResponseDto> users = userService.findAll();
         return users.isEmpty()

@@ -1,11 +1,11 @@
 package aidcompass.api.doctor.appointment.validation.doctor_appointment_update;
 
 import aidcompass.api.doctor.appointment.DoctorAppointmentServices;
-import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentUpdateDto;
 import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentResponseDto;
+import aidcompass.api.doctor.appointment.models.dto.DoctorAppointmentUpdateDto;
 import aidcompass.api.general.models.appointment.AppointmentResponseDto;
+import aidcompass.api.user.appointment.UserAppointmentServiceImpl;
 import aidcompass.api.user.appointment.UserAppointmentService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +16,20 @@ import java.util.Objects;
 
 public class DoctorAppointmentUpdateValidator implements ConstraintValidator<ValidDoctorAppointmentUpdate, DoctorAppointmentUpdateDto> {
 
-    @Autowired
-    private DoctorAppointmentServices doctorAppointmentServices;
+    private final DoctorAppointmentServices doctorAppointmentServices;
+    private final UserAppointmentService userAppointmentService;
+
 
     @Autowired
-    private UserAppointmentService userAppointmentService;
+    public DoctorAppointmentUpdateValidator(DoctorAppointmentServices doctorAppointmentServices,
+                                            UserAppointmentServiceImpl userAppointmentService) {
+        this.doctorAppointmentServices = doctorAppointmentServices;
+        this.userAppointmentService = userAppointmentService;
+    }
 
     @Override
-    public boolean isValid(DoctorAppointmentUpdateDto doctorAppointmentUpdateDto, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(DoctorAppointmentUpdateDto doctorAppointmentUpdateDto,
+                           ConstraintValidatorContext constraintValidatorContext) {
 
         if (doctorAppointmentServices == null) {
             throw new IllegalStateException("DoctorAppointmentServices is not properly initialized.");

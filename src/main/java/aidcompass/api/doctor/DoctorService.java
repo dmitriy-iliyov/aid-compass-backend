@@ -1,110 +1,32 @@
 package aidcompass.api.doctor;
 
-
-import aidcompass.api.doctor.mapper.DoctorMapper;
-import aidcompass.api.doctor.models.DoctorEntity;
 import aidcompass.api.doctor.models.dto.DoctorRegistrationDto;
 import aidcompass.api.doctor.models.dto.DoctorResponseDto;
 import aidcompass.api.doctor.models.dto.DoctorUpdateDto;
-import aidcompass.api.general.utils.comparators.UsernameComparator;
-import aidcompass.api.security.models.Role;
-import aidcompass.api.user.UserService;
-import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+public interface DoctorService {
 
-@Service
-@RequiredArgsConstructor
-public class DoctorService {
+    void save(DoctorRegistrationDto doctorRegistrationDTO, Long userId);
 
-    private final DoctorRepository doctorRepository;
-    private final UserService userService;
-    private final DoctorMapper doctorMapper;
-    private final UsernameComparator usernameComparator;
+    DoctorUpdateDto mapToUpdateDto(DoctorRegistrationDto doctorRegistrationDto);
 
+    void update(DoctorUpdateDto doctorUpdateDto);
 
-    @Transactional
-    public void save(DoctorRegistrationDto doctorRegistrationDTO, Long userId) {
-        DoctorEntity doctorEntity = doctorMapper.toEntity(doctorRegistrationDTO);
-        doctorEntity.setUser(userService.systemUpdate(userId, Role.ROLE_DOCTOR));
-        doctorRepository.save(doctorEntity);
-    }
+    void approve(Long id);
 
-    public DoctorUpdateDto mapToUpdateDto(DoctorRegistrationDto doctorRegistrationDto) {
-        return doctorMapper.toUpdateDto(doctorRegistrationDto);
-    }
+    boolean existingById(Long id);
 
-    @Transactional
-    public void update(DoctorUpdateDto doctorUpdateDto) {
-        DoctorEntity doctorEntity = doctorRepository.findById(doctorUpdateDto.getId()).orElseThrow(
-                () -> new EntityNotFoundException("Doctor not found."));
-        doctorMapper.updateEntityFromUpdateDto(doctorUpdateDto, doctorEntity);
-        doctorRepository.save(doctorEntity);
-    }
+    DoctorResponseDto findById(Long id);
 
-    @Transactional
-    public void approve(Long id) {
-        DoctorEntity doctorEntity = doctorRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Doctor not found."));
-        doctorEntity.setApproved(true);
-        doctorRepository.save(doctorEntity);
-    }
+    DoctorResponseDto findByUsername(String username);
 
-    @Transactional(readOnly = true)
-    public boolean existingById(Long id) {
-        return doctorRepository.existsById(id);
-    }
+    List<DoctorResponseDto> findAllUnapproved();
 
-    @Transactional(readOnly = true)
-    public DoctorResponseDto findById(Long id) {
-        DoctorEntity doctorEntity = doctorRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Doctor not found."));
-        if (!doctorEntity.isApproved())
-            throw new IllegalArgumentException("Doctor is unapproved.");
-        return doctorMapper.toResponseDto(doctorEntity);
-    }
+    List<DoctorResponseDto> findAllApproved();
 
-    @Transactional(readOnly = true)
-    public DoctorResponseDto findByUsername(String username) {
-        DoctorEntity doctorEntity = doctorRepository.findByUsername(username).orElseThrow(
-                () -> new EntityNotFoundException("Doctor not found."));
-        if (!doctorEntity.isApproved())
-            throw new IllegalArgumentException("Doctor is unapproved.");
-        return doctorMapper.toResponseDto(doctorEntity);
-    }
+    List<DoctorResponseDto> findAllApprovedBySpecialization(String specialization);
 
-    @Transactional(readOnly = true)
-    public List<DoctorResponseDto> findAllUnapproved() {
-        List<DoctorResponseDto> doctorResponseDtoList = doctorMapper.toResponseDtoList(doctorRepository.findAllByApproved(false));
-        doctorResponseDtoList.sort(usernameComparator);
-        return doctorResponseDtoList;
-    }
-
-    @Transactional(readOnly = true)
-    public List<DoctorResponseDto> findAllApproved() {
-        List<DoctorResponseDto> doctorResponseDtoList = doctorMapper.toResponseDtoList(
-                doctorRepository.findAllByApproved(true));
-        doctorResponseDtoList.sort(usernameComparator);
-        return doctorResponseDtoList;
-    }
-
-    @Transactional(readOnly = true)
-    public List<DoctorResponseDto> findAllApprovedBySpecialization(String specialization) {
-        List<DoctorResponseDto> doctorResponseDtoList = doctorMapper.toResponseDtoList(
-                doctorRepository.findAllByApprovedAndSpecialization(true, specialization));
-        doctorResponseDtoList.sort(usernameComparator);
-        return doctorResponseDtoList;
-    }
-
-    @Transactional
-    public void deleteById(Long id) {
-        DoctorEntity doctorEntity = doctorRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Doctor not found."));
-        userService.systemUpdate(doctorEntity.getUser().getId(), Role.ROLE_USER);
-        doctorRepository.deleteById(id);
-    }
+    void deleteById(Long id);
 }
