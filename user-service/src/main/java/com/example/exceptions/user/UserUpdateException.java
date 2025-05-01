@@ -1,6 +1,6 @@
 package com.example.exceptions.user;
 
-import com.example.global_exceptions.Exception;
+import com.aidcompass.common.global_exceptions.Exception;
 
 public class UserUpdateException extends Exception {
 

@@ -10,8 +10,8 @@ import com.example.contact.validation.ContactPermissionValidator;
 import com.example.contact.validation.count.ContactCountValidator;
 import com.example.exceptions.invalid_input.InvalidAttemptMarkAsLinkedException;
 import com.example.exceptions.invalid_input.InvalidContactDeleteException;
-import com.example.global_exceptions.UserNotFoundException;
-import com.example.global_exceptions.dto.ErrorDto;
+import com.aidcompass.common.global_exceptions.UserNotFoundException;
+import com.aidcompass.common.global_exceptions.dto.ErrorDto;
 import com.example.exceptions.invalid_input.InvalidContactUpdateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,13 +36,15 @@ public class ContactFacadeImpl implements ContactFacade {
     @Override
     public PrivateContactResponseDto save(UUID ownerId, ContactCreateDto contact) {
         boolean isUserExists = authService.existsById(ownerId);
-        if (isUserExists && countValidator.hasSpaceForContact(ownerId, contact)) {
-            PrivateContactResponseDto privateContactResponseDto = contactService.save(ownerId, contact);
-//            confirmationService.sendConfirmationMessage(contact.contact());
-            return privateContactResponseDto;
-        } else {
-            throw new UserNotFoundException();
+        if (isUserExists) {
+            if (countValidator.hasSpaceForContact(ownerId, contact)) {
+                PrivateContactResponseDto privateContactResponseDto = contactService.save(ownerId, contact);
+                //send confirmation message to confirm resource
+                return privateContactResponseDto;
+            }
+//            throw new
         }
+        throw new UserNotFoundException();
     }
 
     @Override
@@ -50,6 +52,7 @@ public class ContactFacadeImpl implements ContactFacade {
         boolean isUserExists = authService.existsById(ownerId);
         if (isUserExists && countValidator.hasSpaceForContacts(ownerId, contacts)) {
             return contactService.saveAll(ownerId, contacts);
+            //send confirmation message to confirm resource
         } else {
             throw new UserNotFoundException();
         }
@@ -90,6 +93,7 @@ public class ContactFacadeImpl implements ContactFacade {
         if (!errors.isEmpty()) {
             throw new InvalidContactUpdateException(errors);
         }
+        //send confirmation message to confirm resource if resource is changed
         return contactService.updateById(contact);
     }
 
@@ -99,6 +103,7 @@ public class ContactFacadeImpl implements ContactFacade {
         if (!errors.isEmpty()) {
             throw new InvalidContactUpdateException(errors);
         }
+        //send confirmation message to confirm resource if resource is changed
         return contactService.updateAll(ownerId, contacts);
     }
 

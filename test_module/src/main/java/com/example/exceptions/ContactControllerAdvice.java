@@ -1,10 +1,9 @@
 package com.example.exceptions;
 
-import com.example.advice.BaseControllerAdvice;
+import com.aidcompass.common.advice.BaseControllerAdvice;
 import com.example.exceptions.invalid_input.InvalidContactUpdateException;
 import com.example.exceptions.invalid_input.InvalidInputExceptionList;
-import com.example.mapper.ExceptionMapper;
-import org.springframework.cglib.core.Local;
+import com.aidcompass.common.mapper.ExceptionMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 

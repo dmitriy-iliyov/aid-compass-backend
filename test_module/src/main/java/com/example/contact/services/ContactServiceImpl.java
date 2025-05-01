@@ -7,8 +7,8 @@ import com.example.contact.models.dto.*;
 import com.example.contact_type.models.ContactType;
 import com.example.contact_type.models.ContactTypeEntity;
 import com.example.contact_type.ContactTypeService;
-import com.example.exceptions.not_found.ContactBaseNotFoundByContactException;
-import com.example.exceptions.not_found.ContactBaseNotFoundByIdException;
+import com.example.exceptions.not_found.ContactNotFoundByContactException;
+import com.example.exceptions.not_found.ContactNotFoundByIdException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +59,7 @@ public class ContactServiceImpl implements ContactService, SystemContactService 
             contactRepository.save(linkedContactEntity);
         }
 
-        ContactEntity contactEntity = contactRepository.findById(id).orElseThrow(ContactBaseNotFoundByIdException::new);
+        ContactEntity contactEntity = contactRepository.findById(id).orElseThrow(ContactNotFoundByIdException::new);
         contactEntity.setLinkedToAccount(true);
 
         contactRepository.save(contactEntity);
@@ -117,7 +117,7 @@ public class ContactServiceImpl implements ContactService, SystemContactService 
     @Override
     public SystemContactDto findByContact(String contact) {
         ContactEntity contactEntity = contactRepository.findByContact(contact)
-                .orElseThrow(ContactBaseNotFoundByContactException::new);
+                .orElseThrow(ContactNotFoundByContactException::new);
         return contactMapper.toSystemDto(contactEntity);
     }
 
@@ -131,7 +131,7 @@ public class ContactServiceImpl implements ContactService, SystemContactService 
     @Override
     public PrivateContactResponseDto updateById(ContactUpdateDto contactUpdateDto) {
         ContactEntity contactEntity = contactRepository.findById(contactUpdateDto.id()).orElseThrow(
-                ContactBaseNotFoundByIdException::new
+                ContactNotFoundByIdException::new
         );
         contactMapper.updateEntityFromDto(contactUpdateDto, contactEntity);
         return contactMapper.toPrivateResponseDto(contactRepository.save(contactEntity));

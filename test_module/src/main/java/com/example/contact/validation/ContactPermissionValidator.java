@@ -1,7 +1,7 @@
 package com.example.contact.validation;
 
 import com.example.contact.models.dto.ContactUpdateDto;
-import com.example.global_exceptions.dto.ErrorDto;
+import com.aidcompass.common.global_exceptions.dto.ErrorDto;
 
 import java.util.List;
 import java.util.UUID;

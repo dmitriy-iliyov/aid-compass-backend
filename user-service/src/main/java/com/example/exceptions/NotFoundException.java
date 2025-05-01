@@ -1,6 +1,6 @@
 package com.example.exceptions;
 
-import com.example.global_exceptions.Exception;
+import com.aidcompass.common.global_exceptions.Exception;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

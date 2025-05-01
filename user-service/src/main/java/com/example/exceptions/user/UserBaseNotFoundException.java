@@ -1,6 +1,6 @@
 package com.example.exceptions.user;
 
-import com.example.global_exceptions.BaseNotFoundException;
+import com.aidcompass.common.global_exceptions.BaseNotFoundException;
 
 public class UserBaseNotFoundException extends BaseNotFoundException {
 

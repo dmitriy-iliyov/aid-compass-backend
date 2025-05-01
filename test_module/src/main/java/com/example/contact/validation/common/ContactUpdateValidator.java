@@ -37,7 +37,7 @@ public class ContactUpdateValidator implements ConstraintValidator<Contact, Cont
             }
 
             if (!validator.isLengthValid(type, contact)) {
-                context.buildConstraintViolationWithTemplate("Email length must be greater than 11 and less than 50!")
+                context.buildConstraintViolationWithTemplate("Email length must be greater than 7 and less than 50!")
                         .addPropertyNode("contact")
                         .addConstraintViolation();
                 hasErrors = true;

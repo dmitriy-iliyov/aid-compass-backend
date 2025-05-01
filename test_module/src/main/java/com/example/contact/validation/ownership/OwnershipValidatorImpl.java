@@ -1,8 +1,8 @@
 package com.example.contact.validation.ownership;
 
 import com.example.contact.models.dto.SystemContactDto;
-import com.example.exceptions.invalid_input.OwnerShipExceptionBase;
-import com.example.global_exceptions.dto.ErrorDto;
+import com.example.exceptions.invalid_input.OwnerShipException;
+import com.aidcompass.common.global_exceptions.dto.ErrorDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +22,7 @@ public class OwnershipValidatorImpl implements OwnershipValidator {
                 .collect(Collectors.toSet());
 
         if (!currentContactIds.contains(id)) {
-            throw new OwnerShipExceptionBase(new ErrorDto(id.toString(), "Contact isn't yours!"));
+            throw new OwnerShipException(new ErrorDto(id.toString(), "Contact isn't yours!"));
         }
     }
 
@@ -35,7 +35,7 @@ public class OwnershipValidatorImpl implements OwnershipValidator {
 
         for (Long contactId : contactIds) {
             if (!currentContactIds.contains(contactId)) {
-                throw new OwnerShipExceptionBase(new ErrorDto(contactId.toString(), "Contact isn't yours!"));
+                throw new OwnerShipException(new ErrorDto(contactId.toString(), "Contact isn't yours!"));
             }
         }
     }

@@ -4,7 +4,7 @@ import com.example.contact_type.mapper.ContactTypeMapper;
 import com.example.contact_type.models.ContactType;
 import com.example.contact_type.models.ContactTypeDto;
 import com.example.contact_type.models.ContactTypeEntity;
-import com.example.exceptions.not_found.ContentTypeBaseNotFoundByTypeException;
+import com.example.exceptions.not_found.ContentTypeNotFoundByTypeException;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
@@ -30,6 +30,6 @@ public class ContactTypeServiceImpl implements ContactTypeService {
     @Transactional(readOnly = true)
     @Override
     public ContactTypeEntity findByType(ContactType type) {
-        return repository.findByType(type).orElseThrow(ContentTypeBaseNotFoundByTypeException::new);
+        return repository.findByType(type).orElseThrow(ContentTypeNotFoundByTypeException::new);
     }
 }

@@ -6,6 +6,7 @@ import com.example.contact.models.dto.PrivateContactResponseDto;
 import com.example.contact.models.dto.PublicContactResponseDto;
 import com.example.contact.services.ContactFacade;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,14 +33,16 @@ public class ContactController {
 
     @PostMapping("/batch/{uuid}")
     public ResponseEntity<List<PrivateContactResponseDto>> createContacts(@PathVariable("uuid") UUID ownerId,
-                                                                          @RequestBody @Valid List<ContactCreateDto> contacts) {
+                                                                          @RequestBody
+                                                                          @NotEmpty(message = "List of contacts can't be empty!")
+                                                                          @Valid List<ContactCreateDto> contacts) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(contactFacade.saveAll(ownerId, contacts));
     }
 
-    @PatchMapping("/link-contact/{id}/{uuid}")
-    public ResponseEntity<?> linkEmailTOAccount(@PathVariable("uuid") UUID ownerId,
+    @PatchMapping("/link-email/{id}/{uuid}")
+    public ResponseEntity<?> linkEmailToAccount(@PathVariable("uuid") UUID ownerId,
                                                 @PathVariable("id") Long id) {
         contactFacade.markEmailAsLinkedToAccount(ownerId, id);
         return ResponseEntity
@@ -85,7 +88,9 @@ public class ContactController {
 
     @PutMapping("/{uuid}")
     public ResponseEntity<List<PrivateContactResponseDto>> updateAllContacts(@PathVariable("uuid") UUID ownerId,
-                                                                             @RequestBody @Valid List<ContactUpdateDto> contacts) {
+                                                                             @RequestBody
+                                                                             @NotEmpty(message = "List of contacts can't be empty!")
+                                                                             @Valid List<ContactUpdateDto> contacts) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(contactFacade.updateAll(ownerId, contacts));

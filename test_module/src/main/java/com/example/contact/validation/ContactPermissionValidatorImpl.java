@@ -5,11 +5,11 @@ import com.example.contact.models.dto.SystemContactDto;
 import com.example.contact.services.SystemContactService;
 import com.example.contact.validation.contact.ContactValidator;
 import com.example.contact.validation.ownership.OwnershipValidator;
-import com.example.exceptions.invalid_input.DoubleContactIdExceptionBase;
-import com.example.exceptions.invalid_input.BaseInvalidAttemptChangeToPrimaryException;
-import com.example.exceptions.invalid_input.OwnerShipExceptionBase;
-import com.example.exceptions.not_found.ContactBaseNotFoundByIdException;
-import com.example.global_exceptions.dto.ErrorDto;
+import com.example.exceptions.invalid_input.DoubleContactIdException;
+import com.example.exceptions.invalid_input.InvalidAttemptChangeToPrimaryException;
+import com.example.exceptions.invalid_input.OwnerShipException;
+import com.example.exceptions.not_found.ContactNotFoundByIdException;
+import com.aidcompass.common.global_exceptions.dto.ErrorDto;
 import lombok.RequiredArgsConstructor;
 
 import java.util.*;
@@ -32,9 +32,9 @@ public class ContactPermissionValidatorImpl implements ContactPermissionValidato
      * @param ownerId ID of the contact owner
      * @param contactUpdateDtoList List of contact update DTOs
      * @return List of errors found during validation
-     * @throws DoubleContactIdExceptionBase if duplicate contact IDs are found in the list
-     * @throws OwnerShipExceptionBase if one of passed contacts isn't owners
-     * @throws BaseInvalidAttemptChangeToPrimaryException if an attempt is made to set an unconfirmed contact as primary
+     * @throws DoubleContactIdException if duplicate contact IDs are found in the list
+     * @throws OwnerShipException if one of passed contacts isn't owners
+     * @throws InvalidAttemptChangeToPrimaryException if an attempt is made to set an unconfirmed contact as primary
      */
     @Override
     public List<ErrorDto> isUpdatePermit(UUID ownerId, List<ContactUpdateDto> contactUpdateDtoList) {
@@ -45,7 +45,7 @@ public class ContactPermissionValidatorImpl implements ContactPermissionValidato
 
         // check for duplicate contacts id
         if (contactIds.size() != contactUpdateDtoList.size()) {
-            throw new DoubleContactIdExceptionBase();
+            throw new DoubleContactIdException();
         }
 
         List<SystemContactDto> systemContactDtoList = service.findAllByOwnerId(ownerId);
@@ -63,7 +63,7 @@ public class ContactPermissionValidatorImpl implements ContactPermissionValidato
             SystemContactDto systemContactDto = mapOfIdDto.get(contactDto.id());
             // check if a confirmed contact is being set as primary
             if (!systemContactDto.isConfirmed() && contactDto.isPrimary()) {
-                throw new BaseInvalidAttemptChangeToPrimaryException();
+                throw new InvalidAttemptChangeToPrimaryException();
             }
             // check uniqueness of the contact
             contactValidator.checkUniquesForType(ownerId, contactDto, errors);
@@ -78,8 +78,8 @@ public class ContactPermissionValidatorImpl implements ContactPermissionValidato
      * @param ownerId ID of the contact owner
      * @param contactUpdateDto contact update DTO
      * @return List of errors found during validation
-     * @throws OwnerShipExceptionBase if passed contact isn't owners
-     * @throws BaseInvalidAttemptChangeToPrimaryException if an attempt is made to set an unconfirmed contact as primary
+     * @throws OwnerShipException if passed contact isn't owners
+     * @throws InvalidAttemptChangeToPrimaryException if an attempt is made to set an unconfirmed contact as primary
      */
     @Override
     public List<ErrorDto> isUpdatePermit(UUID ownerId, ContactUpdateDto contactUpdateDto) {
@@ -91,7 +91,7 @@ public class ContactPermissionValidatorImpl implements ContactPermissionValidato
         Map<Long, SystemContactDto> mapOfIdDto = systemContactDtoList.stream()
                 .collect(Collectors.toMap(SystemContactDto::id, Function.identity()));
         if (!mapOfIdDto.get(contactUpdateDto.id()).isConfirmed() && contactUpdateDto.isPrimary()) {
-            throw new BaseInvalidAttemptChangeToPrimaryException();
+            throw new InvalidAttemptChangeToPrimaryException();
         }
 
         contactValidator.checkUniquesForType(ownerId, contactUpdateDto, errors);
@@ -110,7 +110,7 @@ public class ContactPermissionValidatorImpl implements ContactPermissionValidato
         SystemContactDto contact = systemContactDtoList.stream()
                 .filter(systemContactDto -> systemContactDto.id().equals(id))
                 .findFirst()
-                .orElseThrow(ContactBaseNotFoundByIdException::new);
+                .orElseThrow(ContactNotFoundByIdException::new);
 
         if (contact.isLinkedToAccount()) {
             errors.add(new ErrorDto("contact", "This contact is linked to account, that's why it can't be deleted!"));
@@ -129,10 +129,10 @@ public class ContactPermissionValidatorImpl implements ContactPermissionValidato
         SystemContactDto systemContactDto = systemContactDtoList.stream()
                 .filter(dto -> dto.id().equals(id))
                 .findFirst()
-                .orElseThrow(ContactBaseNotFoundByIdException::new);
+                .orElseThrow(ContactNotFoundByIdException::new);
 
         if (!contactValidator.isEmailValid(systemContactDto.contact())) {
-            errors.add(new ErrorDto("contact", "Unconfirmed email can't be linked to account!"));
+            errors.add(new ErrorDto("contact", "Only email can be linked to account!"));
         }
 
         if (!systemContactDto.isConfirmed()) {

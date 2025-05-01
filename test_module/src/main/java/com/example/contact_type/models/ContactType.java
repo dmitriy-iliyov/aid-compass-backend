@@ -1,12 +1,13 @@
 package com.example.contact_type.models;
 
-import com.example.exceptions.invalid_input.BaseInvalidContactTypeException;
+import com.example.exceptions.invalid_input.InvalidContactTypeException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Arrays;
 
 public enum ContactType {
     EMAIL, PHONE_NUMBER;
+
 
     @Override
     public String toString() {
@@ -19,6 +20,6 @@ public enum ContactType {
         return Arrays.stream(ContactType.values())
                 .filter(type -> type.name().equalsIgnoreCase(stringType))
                 .findFirst()
-                .orElseThrow(BaseInvalidContactTypeException::new);
+                .orElseThrow(InvalidContactTypeException::new);
     }
 }

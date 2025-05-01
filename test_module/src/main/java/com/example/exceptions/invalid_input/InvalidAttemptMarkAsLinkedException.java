@@ -1,6 +1,6 @@
 package com.example.exceptions.invalid_input;
 
-import com.example.global_exceptions.dto.ErrorDto;
+import com.aidcompass.common.global_exceptions.dto.ErrorDto;
 
 import java.util.List;
 

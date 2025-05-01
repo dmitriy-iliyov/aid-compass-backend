@@ -2,8 +2,8 @@ package com.example.client;
 
 import com.example.client.dto.UserResponseDto;
 import com.example.client.dto.UserUpdateDto;
-import com.example.global_exceptions.UserNotFoundException;
-import com.example.global_exceptions.dto.ExceptionResponseDto;
+import com.aidcompass.common.global_exceptions.UserNotFoundException;
+import com.aidcompass.common.global_exceptions.dto.ExceptionResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ProblemDetail;

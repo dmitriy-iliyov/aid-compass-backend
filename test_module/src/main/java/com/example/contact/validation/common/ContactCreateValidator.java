@@ -27,13 +27,13 @@ public class ContactCreateValidator implements ConstraintValidator<Contact, Cont
             }
 
             if (!validator.isLengthValid(ContactType.EMAIL, contact.contact())) {
-                context.buildConstraintViolationWithTemplate("Email length must be greater than 11 and less than 50!")
+                context.buildConstraintViolationWithTemplate("Email length must be greater than 7 and less than 50!")
                         .addPropertyNode("contact")
                         .addConstraintViolation();
                 hasErrors = true;
             }
 
-            if (validator.isEmailUnique(contact.contact())) {
+            if (!validator.isEmailUnique(contact.contact())) {
                 context.buildConstraintViolationWithTemplate("Email is in use!")
                         .addPropertyNode("contact")
                         .addConstraintViolation();
@@ -48,7 +48,7 @@ public class ContactCreateValidator implements ConstraintValidator<Contact, Cont
                 hasErrors = true;
             }
 
-            if (validator.isPhoneNumberUnique(contact.contact())) {
+            if (!validator.isPhoneNumberUnique(contact.contact())) {
                 context.buildConstraintViolationWithTemplate("Phone number is in use!")
                         .addPropertyNode("contact")
                         .addConstraintViolation();

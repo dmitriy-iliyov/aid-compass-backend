@@ -1,11 +1,11 @@
 package com.example.exceptions;
 
 
-import com.example.global_exceptions.BaseNotFoundException;
-import com.example.global_exceptions.dto.ErrorDto;
-import com.example.global_exceptions.dto.ExceptionResponseDto;
+import com.aidcompass.common.global_exceptions.BaseNotFoundException;
+import com.aidcompass.common.global_exceptions.dto.ErrorDto;
+import com.aidcompass.common.global_exceptions.dto.ExceptionResponseDto;
 import com.example.exceptions.mapper.ExceptionMapper;
-import com.example.utils.ErrorUtils;
+import com.aidcompass.common.utils.ErrorUtils;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.example.utils;
 
-import com.example.global_exceptions.dto.ErrorDto;
+import com.aidcompass.common.global_exceptions.dto.ErrorDto;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.constraints.NotNull;
 import lombok.experimental.UtilityClass;

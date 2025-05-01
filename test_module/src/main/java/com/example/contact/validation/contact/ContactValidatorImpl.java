@@ -3,8 +3,8 @@ package com.example.contact.validation.contact;
 import com.example.contact.models.dto.ContactUpdateDto;
 import com.example.contact.services.SystemContactService;
 import com.example.contact_type.models.ContactType;
-import com.example.global_exceptions.BaseNotFoundException;
-import com.example.global_exceptions.dto.ErrorDto;
+import com.aidcompass.common.global_exceptions.BaseNotFoundException;
+import com.aidcompass.common.global_exceptions.dto.ErrorDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +17,8 @@ import java.util.regex.Pattern;
 public class ContactValidatorImpl implements ContactValidator {
 
     private final SystemContactService service;
+    private final static short MIN_EMAIL_LENGTH = 7;
+    private final static short MAX_EMAIL_LENGTH = 50;
     private final Pattern emailRegx = Pattern.compile("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
 //    private final Pattern phoneNumberRegx = Pattern.compile("^[+]\\d{3}-?\\d{2}-?\\d{3}-?\\d{2}-?\\d{2}$");
     private final Pattern phoneNumberRegx = Pattern.compile("^[+]\\d{12}$");
@@ -29,13 +31,13 @@ public class ContactValidatorImpl implements ContactValidator {
 
     @Override
     public boolean isEmailUnique(String email) {
-        return service.existsByContactTypeAndContact(ContactType.EMAIL, email);
+        return !service.existsByContactTypeAndContact(ContactType.EMAIL, email);
     }
 
     @Override
     public boolean isLengthValid(ContactType type, String contact) {
         if (type == ContactType.EMAIL) {
-            return 11 <= contact.length() && contact.length() <= 50;
+            return MIN_EMAIL_LENGTH <= contact.length() && contact.length() <= MAX_EMAIL_LENGTH;
         }
         return false;
     }
@@ -65,7 +67,7 @@ public class ContactValidatorImpl implements ContactValidator {
 
     @Override
     public boolean isPhoneNumberUnique(String phoneNumber) {
-        return service.existsByContactTypeAndContact(ContactType.PHONE_NUMBER, phoneNumber);
+        return !service.existsByContactTypeAndContact(ContactType.PHONE_NUMBER, phoneNumber);
     }
 
     /**
