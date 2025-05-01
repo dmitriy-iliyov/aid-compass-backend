@@ -1,2 +1,4 @@
-package com.example.client;public interface AvatarService {
+package com.example.client;
+
+public interface AvatarService {
 }

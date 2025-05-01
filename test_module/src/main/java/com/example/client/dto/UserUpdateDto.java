@@ -1,4 +1,4 @@
-package com.example.clients.user.dto;
+package com.example.client.dto;
 
 
 public record UserUpdateDto(

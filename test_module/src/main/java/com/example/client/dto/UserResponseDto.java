@@ -1,4 +1,4 @@
-package com.example.clients.user.dto;
+package com.example.client.dto;
 
 import java.time.Instant;
 import java.util.UUID;

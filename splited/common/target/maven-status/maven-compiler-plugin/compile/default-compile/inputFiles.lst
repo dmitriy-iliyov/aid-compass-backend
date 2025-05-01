@@ -1,8 +1,0 @@
-/Users/sayner/github_repos/aid-compass-backend/splited/common/src/main/java/com/example/utils/ErrorUtils.java
-/Users/sayner/github_repos/aid-compass-backend/splited/common/src/main/java/com/example/exceptions/NotFoundException.java
-/Users/sayner/github_repos/aid-compass-backend/splited/common/src/main/java/com/example/advice/BaseControllerAdvice.java
-/Users/sayner/github_repos/aid-compass-backend/splited/common/src/main/java/com/example/exceptions/dto/ExceptionResponseDto.java
-/Users/sayner/github_repos/aid-compass-backend/splited/common/src/main/java/com/example/mapper/ExceptionMapper.java
-/Users/sayner/github_repos/aid-compass-backend/splited/common/src/main/java/com/example/exceptions/IllegalInputException.java
-/Users/sayner/github_repos/aid-compass-backend/splited/common/src/main/java/com/example/exceptions/dto/ErrorDto.java
-/Users/sayner/github_repos/aid-compass-backend/splited/common/src/main/java/com/example/exceptions/Exception.java
