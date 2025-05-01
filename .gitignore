@@ -27,3 +27,5 @@ replay_pid*
 .idea/
 mvnw.cmd
 mvnw
+.target/
+.target/*
