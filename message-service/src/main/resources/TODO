@@ -3,3 +3,5 @@
 
 Для Telegram используйте библиотеку TelegramBots.
 Для SMS используйте сервисы Twilio или Nexmo (Vonage).
+
+kafka

@@ -8,7 +8,7 @@
 		<version>3.4.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
+	<groupId>com.aidcompass</groupId>
 	<artifactId>aid-compass-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -28,7 +28,7 @@
 		<module>avatar-service</module>
         <module>appointment-service</module>
 		<module>user-service</module>
-        <module>test_module</module>
+        <module>contact-service</module>
     </modules>
 	<scm>
 		<connection/>
@@ -57,6 +57,12 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>42.7.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 		<!--uuid-->
@@ -88,7 +94,6 @@
 		</dependency>
 
 		<!-- tests -->
-
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>junit-jupiter</artifactId>
