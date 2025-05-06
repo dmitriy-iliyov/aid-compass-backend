@@ -1,6 +1,8 @@
 package com.aidcompass.confirmation;
 
 import com.aidcompass.clients.AuthService;
+import com.aidcompass.confirmation.repositories.RedisConfirmationRepository;
+import com.aidcompass.confirmation.services.EmailConfirmationService;
 import com.aidcompass.exceptions.models.InvalidConfirmationTokenException;
 import com.aidcompass.message.MessageService;
 import com.aidcompass.message.models.MessageDto;
@@ -55,7 +57,7 @@ public class EmailConfirmationServiceIntegrationTests {
 
     @Test
     @DisplayName("IT: sendConfirmationMessage() should persist token in Redis")
-    void sendConfirmationMessage_shouldSaveTokenToRedis() throws MessagingException {
+    void sendConfirmationMessage_shouldSaveTokenToRedis() throws Exception {
         String testEmail = "test@gmail.com";
         emailConfirmationService.sendConfirmationMessage(testEmail);
 
@@ -75,7 +77,7 @@ public class EmailConfirmationServiceIntegrationTests {
 
     @Test
     @DisplayName("IT: sendConfirmationMessage() shouldn't persist token in Redis if MessagingException occurs")
-    void sendConfirmationMessage_whenMessageExceptionInvolved_shouldNotSaveTokenToRedis() throws MessagingException {
+    void sendConfirmationMessage_whenMessageExceptionInvolved_shouldNotSaveTokenToRedis() throws Exception {
         String testEmail = "test@gmail.com";
         doThrow(new MessagingException()).when(messageService).sendMessage(any(MessageDto.class));
 
@@ -96,7 +98,7 @@ public class EmailConfirmationServiceIntegrationTests {
 
     @Test
     @DisplayName("IT: validateConfirmationToken() should confirm user if token is valid")
-    void validateConfirmationToken_shouldConfirmUser_whenTokenIsValid() throws MessagingException {
+    void validateConfirmationToken_shouldConfirmUser_whenTokenIsValid() throws Exception {
         String email = "test@email.com";
         emailConfirmationService.sendConfirmationMessage(email);
 

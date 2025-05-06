@@ -8,14 +8,24 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class RestClientsConfig {
 
-    @Value("${aid.compass.api.auth.url}")
+    @Value("${api.auth.uri}")
     private String AUTH_SERVICE_URL;
+
+    @Value("${api.contacts.uri}")
+    private String CONTACTS_SERVICE_URL;
 
 
     @Bean
-    public RestClientAuthService restClientUserService() {
+    public RestClientAuthService restClientAuthService() {
         return new RestClientAuthService(RestClient.builder()
                 .baseUrl(AUTH_SERVICE_URL)
+                .build());
+    }
+
+    @Bean
+    public RestClientContactService restClientContactsService() {
+        return new RestClientContactService(RestClient.builder()
+                .baseUrl(CONTACTS_SERVICE_URL)
                 .build());
     }
 }

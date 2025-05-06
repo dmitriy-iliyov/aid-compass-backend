@@ -3,7 +3,6 @@ package com.aidcompass.contact.controllers;
 import com.aidcompass.contact.models.dto.*;
 import com.aidcompass.contact.services.ContactFacade;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +19,17 @@ public class ContactController {
     private final ContactFacade contactFacade;
 
 
-    @PostMapping("/{uuid}")
-    public ResponseEntity<PrivateContactResponseDto> createContact(@PathVariable("uuid") UUID ownerId,
+    @PostMapping("/{owner_id}")
+    public ResponseEntity<PrivateContactResponseDto> createContact(@PathVariable("owner_id") UUID ownerId,
                                                                    @RequestBody @Valid ContactCreateDto contact) {
+        System.out.println();
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(contactFacade.save(ownerId, contact));
     }
 
-    @PostMapping("/batch/{uuid}")
-    public ResponseEntity<List<PrivateContactResponseDto>> createContacts(@PathVariable("uuid") UUID ownerId,
+    @PostMapping("/batch/{owner_id}")
+    public ResponseEntity<List<PrivateContactResponseDto>> createContacts(@PathVariable("owner_id") UUID ownerId,
                                                                           @RequestBody
                                                                           @Valid ContactCreateDtoList wrappedContacts) {
         return ResponseEntity
@@ -37,53 +37,62 @@ public class ContactController {
                 .body(contactFacade.saveAll(ownerId, wrappedContacts.contacts()));
     }
 
-    @PatchMapping("/link-email/{id}/{uuid}")
-    public ResponseEntity<?> linkEmailToAccount(@PathVariable("uuid") UUID ownerId,
-                                                @PathVariable("id") Long id) {
+    @PostMapping("/{contact_id}/confirmation-request/{owner_id}")
+    public ResponseEntity<?> requestConfirmation(@PathVariable("contact_id") Long contactId,
+                                                 @PathVariable("owner_id")UUID ownerId) {
+        contactFacade.requestConfirmation(ownerId, contactId);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
+    }
+
+    @PatchMapping("/{owner_id}/{contact_id}/link-email")
+    public ResponseEntity<?> linkEmailToAccount(@PathVariable("owner_id") UUID ownerId,
+                                                @PathVariable("contact_id") Long id) {
         contactFacade.markEmailAsLinkedToAccount(ownerId, id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
     }
 
-    @GetMapping("/primary/{uuid}")
-    public ResponseEntity<List<PublicContactResponseDto>> getPrimaryContacts(@PathVariable("uuid") UUID ownerId) {
+    @GetMapping("/primary/{owner_id}")
+    public ResponseEntity<List<PublicContactResponseDto>> getPrimaryContacts(@PathVariable("owner_id") UUID ownerId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(contactFacade.findPrimaryByOwnerId(ownerId));
     }
 
-    @GetMapping("/secondary/{uuid}")
-    public ResponseEntity<List<PublicContactResponseDto>> getSecondaryContacts(@PathVariable("uuid") UUID ownerId) {
+    @GetMapping("/secondary/{owner_id}")
+    public ResponseEntity<List<PublicContactResponseDto>> getSecondaryContacts(@PathVariable("owner_id") UUID ownerId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(contactFacade.findSecondaryByOwnerId(ownerId));
     }
 
-    @GetMapping("/private/{uuid}")
-    public ResponseEntity<List<PrivateContactResponseDto>> getPrivateContacts(@PathVariable("uuid") UUID ownerId) {
+    @GetMapping("/private/{owner_id}")
+    public ResponseEntity<List<PrivateContactResponseDto>> getPrivateContacts(@PathVariable("owner_id") UUID ownerId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(contactFacade.findAllPrivateByOwnerId(ownerId));
     }
 
-    @GetMapping("/public/{uuid}")
-    public ResponseEntity<List<PublicContactResponseDto>> getPublicContacts(@PathVariable("uuid") UUID ownerId) {
+    @GetMapping("/public/{owner_id}")
+    public ResponseEntity<List<PublicContactResponseDto>> getPublicContacts(@PathVariable("owner_id") UUID ownerId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(contactFacade.findAllPublicByOwnerId(ownerId));
     }
 
-    @PatchMapping("/{uuid}")
-    public ResponseEntity<PrivateContactResponseDto> updateContact(@PathVariable("uuid") UUID ownerId,
+    @PatchMapping("/{owner_id}")
+    public ResponseEntity<PrivateContactResponseDto> updateContact(@PathVariable("owner_id") UUID ownerId,
                                                                    @RequestBody @Valid ContactUpdateDto contact) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(contactFacade.update(ownerId, contact));
     }
 
-    @PutMapping("/{uuid}")
-    public ResponseEntity<List<PrivateContactResponseDto>> updateAllContacts(@PathVariable("uuid") UUID ownerId,
+    @PutMapping("/{owner_id}")
+    public ResponseEntity<List<PrivateContactResponseDto>> updateAllContacts(@PathVariable("owner_id") UUID ownerId,
                                                                              @RequestBody
                                                                              @Valid ContactUpdateDtoList wrappedContacts) {
         return ResponseEntity
@@ -91,17 +100,17 @@ public class ContactController {
                 .body(contactFacade.updateAll(ownerId, wrappedContacts.contacts()));
     }
 
-    @DeleteMapping("/{uuid}/{id}")
-    public ResponseEntity<?> deleteContact(@PathVariable("uuid") UUID ownerId,
-                                           @PathVariable("id") Long id) {
+    @DeleteMapping("/{owner_id}/{contact_id}")
+    public ResponseEntity<?> deleteContact(@PathVariable("owner_id") UUID ownerId,
+                                           @PathVariable("contact_id") Long id) {
         contactFacade.delete(ownerId, id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
     }
 
-    @DeleteMapping("/{uuid}")
-    public ResponseEntity<?> deleteAll(@PathVariable("uuid") UUID ownerId) {
+    @DeleteMapping("/{owner_id}")
+    public ResponseEntity<?> deleteAll(@PathVariable("owner_id") UUID ownerId) {
         contactFacade.deleteAll(ownerId);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)

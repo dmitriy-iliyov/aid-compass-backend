@@ -28,7 +28,7 @@ public class PasswordRecoveryControllerUnitTests {
 
     @Test
     @DisplayName("UT: passwordRecoveryRequest() should return status CREATED when recovery message is sent")
-    void passwordRecovery_Request_shouldReturnCreated() throws MessagingException {
+    void passwordRecovery_Request_shouldReturnCreated() throws Exception {
         String resource = "test@example.com";
 
         doNothing().when(passwordRecoveryService).sendRecoveryMessage(resource);

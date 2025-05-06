@@ -7,6 +7,7 @@ import com.aidcompass.global_exceptions.dto.ErrorDto;
 import com.aidcompass.global_exceptions.dto.ExceptionResponseDto;
 import com.aidcompass.mapper.ExceptionMapper;
 import com.aidcompass.utils.ErrorUtils;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import io.lettuce.core.RedisConnectionException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -32,6 +33,8 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 import java.io.ObjectInput;
 import java.util.*;
 
+import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
+
 @Slf4j
 @RequiredArgsConstructor
 @Getter
@@ -48,12 +51,15 @@ public abstract class BaseControllerAdvice {
     })
     public ResponseEntity<?> handleNoHandlerOrNoResourceFoundException(java.lang.Exception e) {
         String url = null;
+
         if (e instanceof NoHandlerFoundException) {
             url = ((NoHandlerFoundException) e).getRequestURL();
         }
+
         if (e instanceof NoResourceFoundException) {
             url = ((NoResourceFoundException) e).getResourcePath();
         }
+
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(new ExceptionResponseDto(
@@ -145,7 +151,6 @@ public abstract class BaseControllerAdvice {
 //                .body(exceptionDto);
 //    }
 
-
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<?> handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
         String pN = e.getParameterName();
@@ -199,15 +204,39 @@ public abstract class BaseControllerAdvice {
                 .body(problemDetail);
     }
 
+//    @ExceptionHandler(HttpMessageNotReadableException.class)
+//    public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException e, Locale locale) {
+//        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+//                messageSource.getMessage("400", null, "error.400", locale));
+//        String[] errorMessage = e.getMessage().split(":");
+//        problemDetail.setProperty("properties", Map.of("errors", new ErrorDto(errorMessage[0], errorMessage[2])));
+//        return ResponseEntity
+//                .status(HttpStatus.BAD_REQUEST)
+//                .body(problemDetail);
+//    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException e, Locale locale) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
-                messageSource.getMessage("400", null, "error.400", locale));
-        String[] errorMessage = e.getMessage().split(":");
-        problemDetail.setProperty("properties", Map.of("errors", new ErrorDto(errorMessage[0], errorMessage[2])));
+
+        Throwable root = getRootCause(e);
+
+        if (root instanceof Exception exception) {
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR,
+                    getMessageSource().getMessage("400", null, "error.400", locale));
+            problemDetail.setProperty("properties", Map.of("errors", List.of(exception.getErrorDto())));
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(problemDetail);
+        }
+
+        ProblemDetail generic = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                "Invalid request!"
+        );
+
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(problemDetail);
+                .body(generic);
     }
 
     // заполнить ошибку
@@ -219,6 +248,17 @@ public abstract class BaseControllerAdvice {
         problemDetail.setProperty("properties", Map.of("errors", List.of(new ErrorDto("", ""))));
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(problemDetail);
+    }
+
+    @ExceptionHandler(JsonMappingException.class)
+    public ResponseEntity<?> handelJsonMappingException(JsonMappingException e, Locale locale) {
+        Exception exception = (Exception) e.getCause();
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR,
+                messageSource.getMessage("400", null, "error.400", locale));
+        problemDetail.setProperty("properties", Map.of("errors", List.of(exception.getErrorDto())));
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
                 .body(problemDetail);
     }
 }

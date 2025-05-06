@@ -2,7 +2,6 @@ package com.aidcompass.doctor.mapper;
 
 import com.aidcompass.doctor.models.DoctorEntity;
 import com.aidcompass.doctor.models.dto.DoctorRegistrationDto;
-import com.aidcompass.doctor.models.dto.DoctorResponseDto;
 import com.aidcompass.doctor.models.dto.DoctorUpdateDto;
 import org.mapstruct.*;
 

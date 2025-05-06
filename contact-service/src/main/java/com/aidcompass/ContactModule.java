@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableJpaRepositories
 @EnableTransactionManagement
-public class TestModule {
+public class ContactModule {
     public static void main(String[] args) {
-        SpringApplication.run(TestModule.class, args);
+        SpringApplication.run(ContactModule.class, args);
     }
 }

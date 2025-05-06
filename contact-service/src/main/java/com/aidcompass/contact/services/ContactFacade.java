@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ContactFacade {
+
     List<PrivateContactResponseDto> saveAll(UUID ownerId, List<ContactCreateDto> contacts);
 
     void markEmailAsLinkedToAccount(UUID ownerId, Long id);
@@ -30,4 +31,6 @@ public interface ContactFacade {
     void deleteAll(UUID ownerId);
 
     PrivateContactResponseDto save(UUID ownerId, ContactCreateDto contact);
+
+    void requestConfirmation(UUID ownerId, Long contactId);
 }

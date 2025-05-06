@@ -28,8 +28,8 @@
 		<module>avatar-service</module>
         <module>appointment-service</module>
 		<module>user-service</module>
-        <module>contact-service</module>
-    </modules>
+		<module>contact-service</module>
+	</modules>
 	<scm>
 		<connection/>
 		<developerConnection/>

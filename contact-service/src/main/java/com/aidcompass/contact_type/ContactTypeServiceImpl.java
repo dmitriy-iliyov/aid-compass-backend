@@ -7,6 +7,7 @@ import com.aidcompass.contact_type.models.ContactTypeEntity;
 import com.aidcompass.exceptions.not_found.ContentTypeNotFoundByTypeException;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ public class ContactTypeServiceImpl implements ContactTypeService {
     }
 
     @Named("toTypeEntity")
+    @Cacheable(value = "contact_types", key = "#type.toString()")
     @Transactional(readOnly = true)
     @Override
     public ContactTypeEntity findByType(ContactType type) {

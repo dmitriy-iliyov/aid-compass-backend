@@ -5,6 +5,7 @@ import com.aidcompass.contact_type.models.ContactType;
 import com.aidcompass.contact_type.models.ContactTypeEntity;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -42,5 +43,11 @@ public interface ContactRepository extends JpaRepository<ContactEntity, Long> {
     boolean isContactConfirmed(@Param("id") Long id);
 
     @Query("SELECT c FROM ContactEntity c WHERE c.ownerId = :ownerId AND c.isLinkedToAccount = : isLinkedToAccount")
-    Optional<ContactEntity> findByOwnerIdAndLinkedToAccount(@Param("ownerId") UUID ownerId, @Param("isLinkedToAccount") boolean isLinkedToAccount);
+    Optional<ContactEntity> findByOwnerIdAndLinkedToAccount(@Param("ownerId") UUID ownerId,
+                                                            @Param("isLinkedToAccount") boolean isLinkedToAccount);
+
+    @Modifying
+    @Query(value = "UPDATE contacts SET is_confirmed = true WHERE id = :contactId", nativeQuery = true)
+    int confirmContactById(@Param("contactId") Long contactId);
+
 }

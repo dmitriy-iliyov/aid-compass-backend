@@ -1,9 +1,9 @@
 package com.aidcompass.client;
 
+import com.aidcompass.client.models.ConfirmationRequestDto;
+
 public interface ConfirmationService {
 
-    void sendConfirmationMessage(String recipientResource);
-
-    void validateConfirmationToken(String inputToken);
+    void sendConfirmationRequest(ConfirmationRequestDto request);
 
 }

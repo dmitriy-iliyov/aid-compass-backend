@@ -55,7 +55,7 @@ public class EmailPasswordRecoveryServiceIntegrationTests {
 
     @Test
     @DisplayName("IT: sendRecoveryMessage() should persist token in Redis")
-    void sendRecoveryMessage_shouldStoreTokenInRedis() throws MessagingException {
+    void sendRecoveryMessage_shouldStoreTokenInRedis() throws Exception {
         String testEmail = "test@domain.com";
         recoveryService.sendRecoveryMessage(testEmail);
 
@@ -77,7 +77,7 @@ public class EmailPasswordRecoveryServiceIntegrationTests {
 
     @Test
     @DisplayName("IT: sendRecoveryMessage() shouldn't persist token if MessagingException is thrown")
-    void sendRecoveryMessage_shouldNotStoreTokenIfException() throws MessagingException {
+    void sendRecoveryMessage_shouldNotStoreTokenIfException() throws Exception {
         String testEmail = "fail@domain.com";
         doThrow(new MessagingException()).when(messageService).sendMessage(any());
 
@@ -95,7 +95,7 @@ public class EmailPasswordRecoveryServiceIntegrationTests {
 
     @Test
     @DisplayName("IT: recoverPassword() should succeed with valid token")
-    void recoverPassword_shouldRecover_whenValidTokenProvided() throws MessagingException {
+    void recoverPassword_shouldRecover_whenValidTokenProvided() throws Exception {
         String email = "user@domain.com";
         String newPassword = "new_secure_pass";
 

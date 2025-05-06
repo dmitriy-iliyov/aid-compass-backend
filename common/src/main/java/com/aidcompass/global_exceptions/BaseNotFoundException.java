@@ -1,6 +1,5 @@
 package com.aidcompass.global_exceptions;
 
-import com.aidcompass.global_exceptions.dto.ErrorDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,8 +18,4 @@ public abstract class BaseNotFoundException extends Exception {
     public BaseNotFoundException(String message) {
         super(MESSAGE + ": " + message);
     }
-
-
-    abstract public ErrorDto getErrorDto();
-
 }

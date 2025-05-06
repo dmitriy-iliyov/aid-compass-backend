@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class DoctorUpdateValidator implements ConstraintValidator<ValidDoctorUpdate, DoctorUpdateDto> {
+public class DoctorUpdateValidator implements ConstraintValidator<DoctorUpdate, DoctorUpdateDto> {
 
     private final DoctorRepository doctorRepository;
 

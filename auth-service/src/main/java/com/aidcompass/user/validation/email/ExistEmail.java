@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ExistEmailValidator.class)
 public @interface ExistEmail {
-    String message() default "";
+    String message() default "Email isn't exist!";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

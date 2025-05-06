@@ -5,6 +5,6 @@ import jakarta.mail.MessagingException;
 
 public interface MessageService {
 
-    void sendMessage(MessageDto messageDto) throws MessagingException;
+    void sendMessage(MessageDto messageDto) throws Exception;
 
 }

@@ -1,6 +1,8 @@
 package com.aidcompass.global_exceptions;
 
-public class Exception extends RuntimeException {
+import com.aidcompass.global_exceptions.dto.ErrorDto;
+
+public abstract class Exception extends RuntimeException {
 
 
     public Exception() {
@@ -10,4 +12,6 @@ public class Exception extends RuntimeException {
     public Exception(String message) {
         super(message);
     }
+
+    abstract public ErrorDto getErrorDto();
 }

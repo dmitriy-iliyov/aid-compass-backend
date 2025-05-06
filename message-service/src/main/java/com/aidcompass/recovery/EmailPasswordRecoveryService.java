@@ -5,7 +5,6 @@ import com.aidcompass.message.models.MessageDto;
 import com.aidcompass.message.MessageService;
 import com.aidcompass.clients.AuthService;
 import io.jsonwebtoken.lang.Strings;
-import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,8 +16,8 @@ import java.util.UUID;
 @Service
 public class EmailPasswordRecoveryService implements PasswordRecoveryService {
 
-    @Value("${aid.compass.api.password.recovery.email.url}")
-    private String URL;
+    @Value("${api.pass.recovery.email.uri}")
+    private String URI;
 
     private final MessageService messageService;
     private final PasswordRecoveryRepository passwordRecoveryRepository;
@@ -34,12 +33,12 @@ public class EmailPasswordRecoveryService implements PasswordRecoveryService {
     }
 
     @Override
-    public void sendRecoveryMessage(String recipientResource) throws MessagingException {
+    public void sendRecoveryMessage(String recipientResource) throws Exception {
         UUID token = UUID.randomUUID();
         String encodeToken = Base64.getUrlEncoder().encodeToString(token.toString().getBytes());
 
         messageService.sendMessage(new MessageDto(recipientResource, "Password recovering.",
-                URL + encodeToken));
+                URI + encodeToken));
 
         passwordRecoveryRepository.save(token, recipientResource);
     }

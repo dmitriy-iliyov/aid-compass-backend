@@ -1,5 +1,6 @@
 package com.aidcompass.contact.config;
 
+import com.aidcompass.contact.services.SystemContactFacade;
 import com.aidcompass.contact.services.SystemContactService;
 import com.aidcompass.contact.validation.ContactPermissionValidator;
 import com.aidcompass.contact.validation.ContactPermissionValidatorImpl;

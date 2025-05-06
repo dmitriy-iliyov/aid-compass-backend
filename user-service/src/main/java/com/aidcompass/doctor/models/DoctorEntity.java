@@ -31,17 +31,11 @@ public class DoctorEntity {
     @Column(name = "specialization", nullable = false)
     private String specialization;
 
-    @Column(name = "years_of_experience", length = 2)
-    private Integer yearsOfExperience;
-
     @Column(name = "address")
     private String address;
 
-    @Column(name = "achievements")
-    private String achievements;
-
-    @Column(name = "approved", nullable = false)
-    private boolean approved;
+    @Column(name = "is_approved", nullable = false)
+    private boolean isApproved;
 
     @Column(name = "created_at", updatable = false, nullable = false)
     private Instant createdAt;
@@ -54,7 +48,7 @@ public class DoctorEntity {
     public void prePersist(){
         createdAt = Instant.now();
         updatedAt = createdAt;
-        approved = false;
+        isApproved = false;
     }
 
     @PreUpdate

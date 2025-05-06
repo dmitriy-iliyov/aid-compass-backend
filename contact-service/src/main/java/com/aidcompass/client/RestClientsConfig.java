@@ -10,26 +10,26 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class RestClientsConfig {
 
-    @Value("${aid.compass.api.auth.url}")
-    private String AUTH_SERVICE_URL;
+    @Value("${aid.compass.api.auth.uri}")
+    private String AUTH_SERVICE_URI;
 
-    @Value("${aid.compass.api.message.url}")
-    private String MESSAGE_SERVICE_URL;
+    @Value("${aid.compass.api.confirm.uri}")
+    private String MESSAGE_SERVICE_URI;
 
 
     @Bean
     public RestClientAuthService authRestClient() {
         return new RestClientAuthService(
                 RestClient.builder()
-                        .baseUrl(AUTH_SERVICE_URL)
+                        .baseUrl(AUTH_SERVICE_URI)
                         .build());
     }
 
     @Bean
-    public RestClientConfirmationService messageRestClient() {
+    public RestClientConfirmationService confirmationRestClient() {
         return new RestClientConfirmationService(
                 RestClient.builder()
-                        .baseUrl(MESSAGE_SERVICE_URL)
+                        .baseUrl(MESSAGE_SERVICE_URI)
                         .build());
     }
 }

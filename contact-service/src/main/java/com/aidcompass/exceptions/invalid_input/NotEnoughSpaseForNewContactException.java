@@ -17,4 +17,9 @@ public class NotEnoughSpaseForNewContactException extends InvalidInputExceptionL
     List<ErrorDto> getErrorDtoList() {
         return this.errorDtoList;
     }
+
+    @Override
+    public ErrorDto getErrorDto() {
+        return null;
+    }
 }

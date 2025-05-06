@@ -1,6 +1,7 @@
 package com.aidcompass.contact.validation.count;
 
 import com.aidcompass.contact.models.dto.ContactCreateDto;
+import com.aidcompass.contact.services.SystemContactFacade;
 import com.aidcompass.contact.services.SystemContactService;
 import com.aidcompass.contact_type.models.ContactType;
 import com.aidcompass.exceptions.invalid_input.InvalidContactTypeException;

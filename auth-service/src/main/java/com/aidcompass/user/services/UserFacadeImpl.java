@@ -1,6 +1,7 @@
 package com.aidcompass.user.services;
 
 import com.aidcompass.clients.RecoveryRequestDto;
+import com.aidcompass.clients.contacts.ContactsService;
 import com.aidcompass.exceptions.not_found.EmailNotFoundException;
 import com.aidcompass.global_exceptions.BaseNotFoundException;
 import com.aidcompass.user.models.dto.*;
@@ -22,11 +23,13 @@ public class UserFacadeImpl implements UserFacade {
 
     private final UserService userService;
     private final UnconfirmedUserService unconfirmedUserService;
+    private final ContactsService contactsService;
     private final Validator validator;
 
 
     @Override
     public void save(UserRegistrationDto userRegistrationDto) {
+
         unconfirmedUserService.save(userRegistrationDto);
     }
 

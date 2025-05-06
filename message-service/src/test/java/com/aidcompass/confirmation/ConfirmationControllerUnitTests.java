@@ -1,6 +1,6 @@
 package com.aidcompass.confirmation;
 
-import jakarta.mail.MessagingException;
+import com.aidcompass.confirmation.services.ResourceConfirmationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 public class ConfirmationControllerUnitTests {
 
     @Mock
-    ConfirmationService confirmationService;
+    ResourceConfirmationService resourceConfirmationService;
 
     @InjectMocks
     ConfirmationController confirmationController;
@@ -32,9 +32,9 @@ public class ConfirmationControllerUnitTests {
     void confirmEmail_shouldValidateTokenAndRedirect() {
         String token = "test-token";
 
-        ResponseEntity<?> response = confirmationController.confirmEmail(token);
+        ResponseEntity<?> response = confirmationController.confirmLinkedEmail(token);
 
-        verify(confirmationService, times(1)).validateConfirmationToken(token);
+        verify(resourceConfirmationService, times(1)).validateConfirmationToken(token);
         assertEquals(HttpStatus.SEE_OTHER, response.getStatusCode());
         assertEquals(URI.create("/api/users/login"), response.getHeaders().getLocation());
         assertNull(response.getBody());
@@ -42,10 +42,10 @@ public class ConfirmationControllerUnitTests {
 
     @Test
     @DisplayName("UT: getToken() should send conf message")
-    void getToken() throws MessagingException {
+    void getToken() throws Exception {
         String email = "test@gmail.com";
 
-        ResponseEntity<?> response = confirmationController.getToken(email);
+        ResponseEntity<?> response = confirmationController.getTokenForLinkedEmail(email);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }

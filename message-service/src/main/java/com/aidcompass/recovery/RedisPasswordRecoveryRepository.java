@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class RedisPasswordRecoveryRepository implements PasswordRecoveryRepository {
 
-    @Value("${aid.compass.api.password.recovery.ttl.secs}")
+    @Value("${api.pass.recovery.token.ttl.secs}")
     private Long TOKEN_TTL;
 
     private final String RECOVERY_TOKEN_KEY_TEMPLATE = "tkn:pass:recov:%s";

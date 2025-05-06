@@ -3,14 +3,18 @@ package com.aidcompass.exceptions;
 import com.aidcompass.advice.BaseControllerAdvice;
 import com.aidcompass.exceptions.invalid_input.InvalidContactUpdateException;
 import com.aidcompass.exceptions.invalid_input.InvalidInputExceptionList;
+import com.aidcompass.global_exceptions.Exception;
 import com.aidcompass.mapper.ExceptionMapper;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 

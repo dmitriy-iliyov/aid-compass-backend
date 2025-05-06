@@ -2,10 +2,7 @@ package com.aidcompass.contact.services;
 
 import com.aidcompass.client.AuthService;
 import com.aidcompass.client.ConfirmationService;
-import com.aidcompass.contact.models.dto.ContactCreateDto;
-import com.aidcompass.contact.models.dto.ContactUpdateDto;
-import com.aidcompass.contact.models.dto.PrivateContactResponseDto;
-import com.aidcompass.contact.models.dto.PublicContactResponseDto;
+import com.aidcompass.contact.models.dto.*;
 import com.aidcompass.contact.validation.ContactPermissionValidator;
 import com.aidcompass.contact.validation.count.ContactCountValidator;
 import com.aidcompass.exceptions.invalid_input.InvalidAttemptMarkAsLinkedException;
@@ -14,6 +11,7 @@ import com.aidcompass.global_exceptions.UserNotFoundException;
 import com.aidcompass.global_exceptions.dto.ErrorDto;
 import com.aidcompass.exceptions.invalid_input.InvalidContactUpdateException;
 import com.aidcompass.exceptions.invalid_input.NotEnoughSpaseForNewContactException;
+import com.aidcompass.client.models.ConfirmationRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -30,6 +28,7 @@ public class ContactFacadeImpl implements ContactFacade {
     private final ContactService contactService;
     private final ContactPermissionValidator permissionValidator;
     private final ContactCountValidator countValidator;
+
     private final ConfirmationService confirmationService;
     private final AuthService authService;
 
@@ -40,11 +39,13 @@ public class ContactFacadeImpl implements ContactFacade {
         System.out.println(isUserExists);
         if (isUserExists) {
             if (countValidator.hasSpaceForContact(ownerId, contact)) {
-                PrivateContactResponseDto privateContactResponseDto = contactService.save(ownerId, contact);
+                PrivateContactResponseDto dto = contactService.save(ownerId, contact);
                 //send confirmation message to confirm resource
-                return privateContactResponseDto;
+                return dto;
             }
-            throw new NotEnoughSpaseForNewContactException(List.of(new ErrorDto("contact", "Impossible to add new " + contact.type().toString() + " ")));
+            throw new NotEnoughSpaseForNewContactException(
+                    List.of(new ErrorDto("contact", "Impossible to add new " + contact.type().toString() + "!"))
+            );
         }
         throw new UserNotFoundException();
     }
@@ -61,13 +62,22 @@ public class ContactFacadeImpl implements ContactFacade {
     }
 
     @Override
-    public void markEmailAsLinkedToAccount(UUID ownerId, Long id) {
-        List<ErrorDto> errors = permissionValidator.isLinkingPermit(ownerId, id);
+    public void requestConfirmation(UUID ownerId, Long contactId) {
+        SystemContactDto systemDto = permissionValidator.isConfirmPermit(ownerId, contactId);
+        confirmationService.sendConfirmationRequest(
+                new ConfirmationRequestDto(systemDto.id(), systemDto.contact(), systemDto.type())
+        );
+    }
+
+    @Override
+    public void markEmailAsLinkedToAccount(UUID ownerId, Long contactId) {
+        List<ErrorDto> errors = permissionValidator.isLinkingPermit(ownerId, contactId);
         if (!errors.isEmpty()) {
             throw new InvalidAttemptMarkAsLinkedException(errors);
         }
-        contactService.markContactAsLinked(ownerId, id);
+        contactService.markContactAsLinked(ownerId, contactId);
         //обновить линкованый имейл в auth service
+        //authService.
     }
 
     @Override
@@ -97,7 +107,7 @@ public class ContactFacadeImpl implements ContactFacade {
             throw new InvalidContactUpdateException(errors);
         }
         //send confirmation message to confirm resource if resource is changed
-        return contactService.updateById(contact);
+        return contactService.updateById(ownerId, contact);
     }
 
     @Override
@@ -111,12 +121,12 @@ public class ContactFacadeImpl implements ContactFacade {
     }
 
     @Override
-    public void delete(UUID ownerId, Long id) {
-        List<ErrorDto> errors = permissionValidator.isDeletePermit(ownerId, id);
+    public void delete(UUID ownerId, Long contactId) {
+        List<ErrorDto> errors = permissionValidator.isDeletePermit(ownerId, contactId);
         if (!errors.isEmpty()) {
             throw new InvalidContactDeleteException(errors);
         }
-        contactService.deleteById(id);
+        contactService.deleteById(ownerId, contactId);
     }
 
     @Override

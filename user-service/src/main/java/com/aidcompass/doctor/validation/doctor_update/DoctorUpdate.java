@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = DoctorUpdateValidator.class)
 @Documented
-public @interface ValidDoctorUpdate {
+public @interface DoctorUpdate {
     String message() default "Invalid doctor update.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

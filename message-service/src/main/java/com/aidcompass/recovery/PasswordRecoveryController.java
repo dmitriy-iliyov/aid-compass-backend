@@ -23,10 +23,11 @@ public class PasswordRecoveryController {
 
     private final PasswordRecoveryService passwordRecoveryService;
 
+
     @Operation(summary = "Send recovery link to user resource")
     @PostMapping("/request")
     public ResponseEntity<?> passwordRecoveryRequest(@Parameter(description = "user resource")
-                                                         @RequestParam("resource") String recourse) throws MessagingException {
+                                                         @RequestParam("resource") String recourse) throws Exception {
         passwordRecoveryService.sendRecoveryMessage(recourse);
         return ResponseEntity
                 .status(HttpStatus.CREATED)

@@ -1,5 +1,6 @@
 package com.aidcompass.contact.validation.count;
 
+import com.aidcompass.contact.services.SystemContactFacade;
 import com.aidcompass.contact.services.SystemContactService;
 import com.aidcompass.contact_type.models.ContactType;
 import org.junit.jupiter.api.DisplayName;

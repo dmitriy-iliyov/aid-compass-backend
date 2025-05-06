@@ -1,6 +1,7 @@
 package com.aidcompass.contact.validation;
 
 import com.aidcompass.contact.models.dto.ContactUpdateDto;
+import com.aidcompass.contact.models.dto.SystemContactDto;
 import com.aidcompass.global_exceptions.dto.ErrorDto;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface ContactPermissionValidator {
     List<ErrorDto> isDeletePermit(UUID ownerId, Long id);
 
     List<ErrorDto> isLinkingPermit(UUID ownerId, Long id);
+
+    SystemContactDto isConfirmPermit(UUID ownerId, Long contactId);
 }

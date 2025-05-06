@@ -1,5 +1,6 @@
 package com.aidcompass.client;
 
+import com.aidcompass.client.models.ConfirmationRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
@@ -10,12 +11,7 @@ public class RestClientConfirmationService implements ConfirmationService {
 
 
     @Override
-    public void sendConfirmationMessage(String recipientResource) {
-
-    }
-
-    @Override
-    public void validateConfirmationToken(String inputToken) {
+    public void sendConfirmationRequest(ConfirmationRequestDto request) {
 
     }
 }

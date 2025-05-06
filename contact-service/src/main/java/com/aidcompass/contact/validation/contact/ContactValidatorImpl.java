@@ -1,6 +1,7 @@
 package com.aidcompass.contact.validation.contact;
 
 import com.aidcompass.contact.models.dto.ContactUpdateDto;
+import com.aidcompass.contact.services.SystemContactFacade;
 import com.aidcompass.contact.services.SystemContactService;
 import com.aidcompass.contact_type.models.ContactType;
 import com.aidcompass.global_exceptions.BaseNotFoundException;
@@ -16,6 +17,7 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class ContactValidatorImpl implements ContactValidator {
 
+    private final SystemContactFacade facade;
     private final SystemContactService service;
     private final static short MIN_EMAIL_LENGTH = 7;
     private final static short MAX_EMAIL_LENGTH = 50;
@@ -30,7 +32,8 @@ public class ContactValidatorImpl implements ContactValidator {
 
     @Override
     public boolean isEmailUnique(String email) {
-        return !service.existsByContactTypeAndContact(ContactType.EMAIL, email);
+        // check in userUnconfirmedRepo
+        return !facade.existsByContactTypeAndContact(ContactType.EMAIL, email);
     }
 
     @Override
@@ -49,6 +52,7 @@ public class ContactValidatorImpl implements ContactValidator {
     @Override
     public boolean isEmailUnique(String email, UUID ownerId) {
         try {
+            // check in userUnconfirmedRepo
             return service.findByContact(email).ownerId() == ownerId;
         } catch (BaseNotFoundException e) {
             return true;
@@ -66,7 +70,7 @@ public class ContactValidatorImpl implements ContactValidator {
 
     @Override
     public boolean isPhoneNumberUnique(String phoneNumber) {
-        return !service.existsByContactTypeAndContact(ContactType.PHONE_NUMBER, phoneNumber);
+        return !facade.existsByContactTypeAndContact(ContactType.PHONE_NUMBER, phoneNumber);
     }
 
     /**

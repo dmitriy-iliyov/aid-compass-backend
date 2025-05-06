@@ -17,4 +17,9 @@ public class InvalidContactDeleteException extends InvalidInputExceptionList {
     List<ErrorDto> getErrorDtoList() {
         return List.of();
     }
+
+    @Override
+    public ErrorDto getErrorDto() {
+        return null;
+    }
 }

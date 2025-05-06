@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class HealthCheckControllerIntegrationTests {
 
     @Autowired
-    HealthCheckController healthCheckController;
+    InfoController healthCheckController;
 
     @Test
     @DisplayName("Health check test")

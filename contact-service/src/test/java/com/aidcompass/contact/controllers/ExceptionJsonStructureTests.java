@@ -4,7 +4,7 @@ package com.aidcompass.contact.controllers;
 import com.aidcompass.contact.models.dto.ContactCreateDto;
 import com.aidcompass.contact.models.dto.PrivateContactResponseDto;
 import com.aidcompass.contact.services.ContactFacade;
-import com.aidcompass.contact.services.SystemContactService;
+import com.aidcompass.contact.services.SystemContactFacade;
 import com.aidcompass.contact.validation.contact.ContactValidatorImpl;
 import com.aidcompass.exceptions.ContactControllerAdvice;
 import com.aidcompass.mapper.ExceptionMapperImpl;
@@ -47,7 +47,7 @@ public class ExceptionJsonStructureTests {
     ContactFacade contactFacade;
 
     @MockitoBean
-    SystemContactService systemContactService;
+    SystemContactFacade systemContactFacade;
 
     final static String BASE_URL = "/api/v1/contacts";
     final static String CREATE_CONTACT_URL = BASE_URL + "/%s";
@@ -81,8 +81,8 @@ public class ExceptionJsonStructureTests {
                 .andExpect(jsonPath("$.properties.errors[0].field").value("contact"))
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Contact shouldn't be empty or blank!"));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -103,8 +103,8 @@ public class ExceptionJsonStructureTests {
                 .andExpect(jsonPath("$.properties.errors[0].field").value("contact"))
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Contact shouldn't be empty or blank!"));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -125,8 +125,8 @@ public class ExceptionJsonStructureTests {
                 .andExpect(jsonPath("$.properties.errors[0].field").value("contact"))
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Contact shouldn't be empty or blank!"));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -147,8 +147,8 @@ public class ExceptionJsonStructureTests {
                 .andExpect(jsonPath("$.properties.errors[0].field").value("contact"))
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Contact shouldn't be empty or blank!"));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -169,8 +169,8 @@ public class ExceptionJsonStructureTests {
                 .andExpect(jsonPath("$.properties.errors[0].field").value("contact"))
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Contact shouldn't be empty or blank!"));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -191,8 +191,8 @@ public class ExceptionJsonStructureTests {
                 .andExpect(jsonPath("$.properties.errors[0].field").value("contact"))
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Contact shouldn't be empty or blank!"));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -213,8 +213,8 @@ public class ExceptionJsonStructureTests {
                 .andExpect(jsonPath("$.properties.errors[0].field").value("contact"))
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Contact shouldn't be empty or blank!"));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -235,7 +235,7 @@ public class ExceptionJsonStructureTests {
                 .andExpect(jsonPath("$.properties.errors[0].field").value("contact"))
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Contact shouldn't be empty or blank!"));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 }

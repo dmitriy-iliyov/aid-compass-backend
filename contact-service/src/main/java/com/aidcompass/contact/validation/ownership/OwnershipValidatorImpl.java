@@ -15,25 +15,13 @@ import java.util.stream.Collectors;
 public class OwnershipValidatorImpl implements OwnershipValidator {
 
     @Override
-    public void assertOwnership(Long id, List<SystemContactDto> systemContactDtoList) {
+    public void assertOwnership(List<Long> contactIdList, List<SystemContactDto> systemContactDtoList) {
         Set<Long> currentContactIds = systemContactDtoList
                 .stream()
                 .map(SystemContactDto::id)
                 .collect(Collectors.toSet());
 
-        if (!currentContactIds.contains(id)) {
-            throw new OwnerShipException(new ErrorDto(id.toString(), "Contact isn't yours!"));
-        }
-    }
-
-    @Override
-    public void assertOwnership(List<Long> contactIds, List<SystemContactDto> systemContactDtoList) {
-        Set<Long> currentContactIds = systemContactDtoList
-                .stream()
-                .map(SystemContactDto::id)
-                .collect(Collectors.toSet());
-
-        for (Long contactId : contactIds) {
+        for (Long contactId : contactIdList) {
             if (!currentContactIds.contains(contactId)) {
                 throw new OwnerShipException(new ErrorDto(contactId.toString(), "Contact isn't yours!"));
             }

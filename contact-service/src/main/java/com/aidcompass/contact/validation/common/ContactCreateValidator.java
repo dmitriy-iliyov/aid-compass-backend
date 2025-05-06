@@ -18,7 +18,6 @@ public class ContactCreateValidator implements ConstraintValidator<Contact, Cont
     public boolean isValid(ContactCreateDto contact, ConstraintValidatorContext context) {
         boolean hasErrors = false;
 
-        System.out.println("involved ContactCreateValidator");
         if (contact.type() == ContactType.EMAIL) {
             if (!validator.isEmailValid(contact.contact())) {
                 context.buildConstraintViolationWithTemplate("Email should be valid!")

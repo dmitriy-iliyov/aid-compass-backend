@@ -1,5 +1,6 @@
 package com.aidcompass.clients;
 
+import com.aidcompass.clients.models.RecoveryRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 

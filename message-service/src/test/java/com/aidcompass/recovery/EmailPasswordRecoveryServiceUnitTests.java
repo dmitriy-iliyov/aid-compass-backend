@@ -41,7 +41,7 @@ class EmailPasswordRecoveryServiceUnitTests {
 
     @Test
     @DisplayName("UT: sendRecoveryMessage() should send message with encoded token and save it")
-    void sendRecoveryMessage_shouldSendMessage() throws MessagingException {
+    void sendRecoveryMessage_shouldSendMessage() throws Exception {
         ReflectionTestUtils.setField(recoveryService, "URL", URL);
         String email = "test@gmail.com";
 

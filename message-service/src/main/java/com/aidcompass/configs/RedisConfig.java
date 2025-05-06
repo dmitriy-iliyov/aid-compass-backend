@@ -18,6 +18,8 @@ public class RedisConfig {
     @Value("${spring.data.redis.port}")
     private Integer port;
 
+    public final static String CONF_TOKEN_KEY_TEMPLATE = "tkn:conf:";
+
 
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {

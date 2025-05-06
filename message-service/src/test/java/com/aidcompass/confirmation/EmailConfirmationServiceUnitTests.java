@@ -1,10 +1,11 @@
 package com.aidcompass.confirmation;
 
 import com.aidcompass.clients.AuthService;
+import com.aidcompass.confirmation.repositories.ConfirmationRepository;
+import com.aidcompass.confirmation.services.EmailConfirmationService;
 import com.aidcompass.exceptions.models.InvalidConfirmationTokenException;
 import com.aidcompass.message.MessageService;
 import com.aidcompass.message.models.MessageDto;
-import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,7 +45,7 @@ public class EmailConfirmationServiceUnitTests {
 
     @Test
     @DisplayName("UT: sendConfirmationMessage() should send message with URL and token")
-    void sendConfirmationMessage_shouldSendMessage() throws MessagingException {
+    void sendConfirmationMessage_shouldSendMessage() throws Exception {
         ReflectionTestUtils.setField(emailConfirmationService, "URL", URL);
         String resource = "test@gmail.com";
 

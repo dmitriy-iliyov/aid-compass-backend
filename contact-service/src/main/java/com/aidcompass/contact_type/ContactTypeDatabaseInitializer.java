@@ -17,7 +17,8 @@ import java.util.List;
 public class ContactTypeDatabaseInitializer {
 
     private final ContactTypeService contactTypeService;
-    private final static List<ContactType> contactTypeList = new ArrayList<>(List.of(ContactType.EMAIL, ContactType.PHONE_NUMBER));
+    private final static List<ContactType> contactTypeList =
+            new ArrayList<>(List.of(ContactType.EMAIL, ContactType.PHONE_NUMBER));
 
 
     @PostConstruct

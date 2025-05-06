@@ -1,9 +1,10 @@
 package com.aidcompass.contact.validation.contact;
 
+import com.aidcompass.contact.services.SystemContactService;
+import com.aidcompass.contact_type.models.ContactTypeEntity;
 import com.aidcompass.global_exceptions.dto.ErrorDto;
 import com.aidcompass.contact.models.dto.ContactUpdateDto;
 import com.aidcompass.contact.models.dto.SystemContactDto;
-import com.aidcompass.contact.services.SystemContactService;
 import com.aidcompass.contact_type.models.ContactType;
 import com.aidcompass.exceptions.not_found.ContactNotFoundByContactException;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.*;
 class ContactValidatorImplUnitTests {
 
     @Mock
-    SystemContactService systemContactService;
+    SystemContactService systemContactFacade;
 
     @InjectMocks
     ContactValidatorImpl contactValidator;
@@ -61,26 +62,28 @@ class ContactValidatorImplUnitTests {
     @DisplayName("UT isEmailUnique() should return true when email doesn't exist")
     void isEmailUnique_whenEmailDoesntExist_shouldReturnTrue() {
         String email = "unique@example.com";
+        ContactTypeEntity typeEntity = new ContactTypeEntity(1, ContactType.EMAIL);
 
-        when(systemContactService.existsByContactTypeAndContact(ContactType.EMAIL, email)).thenReturn(false);
+        when(systemContactFacade.existsByTypeEntityAndContact(typeEntity, email)).thenReturn(false);
 
         boolean result = contactValidator.isEmailUnique(email);
 
         assertTrue(result);
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(ContactType.EMAIL, email);
+        verify(systemContactFacade, times(1)).existsByTypeEntityAndContact(typeEntity, email);
     }
 
     @Test
     @DisplayName("UT isEmailUnique() should return false when email exists")
     void isEmailUnique_whenEmailExists_shouldReturnFalse() {
         String email = "existing@example.com";
+        ContactTypeEntity typeEntity = new ContactTypeEntity(1, ContactType.EMAIL);
 
-        when(systemContactService.existsByContactTypeAndContact(ContactType.EMAIL, email)).thenReturn(true);
+        when(systemContactFacade.existsByTypeEntityAndContact(typeEntity, email)).thenReturn(true);
 
         boolean result = contactValidator.isEmailUnique(email);
 
         assertFalse(result);
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(ContactType.EMAIL, email);
+        verify(systemContactFacade, times(1)).existsByTypeEntityAndContact(typeEntity, email);
     }
 
     @Test
@@ -156,7 +159,7 @@ class ContactValidatorImplUnitTests {
         String email = "owner@example.com";
         UUID ownerId = UUID.randomUUID();
 
-        when(systemContactService.findByContact(email))
+        when(systemContactFacade.findByContact(email))
                 .thenReturn(
                         new SystemContactDto(1L, ownerId, ContactType.EMAIL, email,
                                 false, false, false)
@@ -165,7 +168,7 @@ class ContactValidatorImplUnitTests {
         boolean result = contactValidator.isEmailUnique(email, ownerId);
 
         assertTrue(result);
-        verify(systemContactService, times(1)).findByContact(email);
+        verify(systemContactFacade, times(1)).findByContact(email);
     }
 
     @Test
@@ -175,7 +178,7 @@ class ContactValidatorImplUnitTests {
         UUID ownerId = UUID.randomUUID();
         UUID differentOwnerId = UUID.randomUUID();
 
-        when(systemContactService.findByContact(email))
+        when(systemContactFacade.findByContact(email))
                 .thenReturn(
                         new SystemContactDto(1L, differentOwnerId, ContactType.EMAIL, email,
                                 false, false, false)
@@ -184,7 +187,7 @@ class ContactValidatorImplUnitTests {
         boolean result = contactValidator.isEmailUnique(email, ownerId);
 
         assertFalse(result);
-        verify(systemContactService, times(1)).findByContact(email);
+        verify(systemContactFacade, times(1)).findByContact(email);
     }
 
     @Test
@@ -193,40 +196,42 @@ class ContactValidatorImplUnitTests {
         String email = "notfound@example.com";
         UUID ownerId = UUID.randomUUID();
 
-        when(systemContactService.findByContact(email)).thenThrow(new ContactNotFoundByContactException());
+        when(systemContactFacade.findByContact(email)).thenThrow(new ContactNotFoundByContactException());
 
         boolean result = contactValidator.isEmailUnique(email, ownerId);
 
         assertTrue(result);
-        verify(systemContactService, times(1)).findByContact(email);
+        verify(systemContactFacade, times(1)).findByContact(email);
     }
 
     @Test
     @DisplayName("UT isPhoneNumberUnique() should return true when phone number doesn't exist")
     void isPhoneNumberUnique_whenPhoneNumberDoesntExist_shouldReturnTrue() {
         String phoneNumber = "+123456789012";
+        ContactTypeEntity typeEntity = new ContactTypeEntity(1, ContactType.EMAIL);
 
-        when(systemContactService.existsByContactTypeAndContact(ContactType.PHONE_NUMBER, phoneNumber)).thenReturn(false);
+        when(systemContactFacade.existsByTypeEntityAndContact(typeEntity, phoneNumber)).thenReturn(false);
 
         boolean result = contactValidator.isPhoneNumberUnique(phoneNumber);
 
         assertTrue(result);
-        verify(systemContactService, times(1))
-                .existsByContactTypeAndContact(ContactType.PHONE_NUMBER, phoneNumber);
+        verify(systemContactFacade, times(1))
+                .existsByTypeEntityAndContact(typeEntity, phoneNumber);
     }
 
     @Test
     @DisplayName("UT isPhoneNumberUnique() should return false when phone number exists")
     void isPhoneNumberUnique_whenPhoneNumberExists_shouldReturnFalse() {
         String phoneNumber = "+123456789012";
+        ContactTypeEntity typeEntity = new ContactTypeEntity(1, ContactType.EMAIL);
 
-        when(systemContactService.existsByContactTypeAndContact(ContactType.PHONE_NUMBER, phoneNumber)).thenReturn(true);
+        when(systemContactFacade.existsByTypeEntityAndContact(typeEntity, phoneNumber)).thenReturn(true);
 
         boolean result = contactValidator.isPhoneNumberUnique(phoneNumber);
 
         assertFalse(result);
-        verify(systemContactService, times(1))
-                .existsByContactTypeAndContact(ContactType.PHONE_NUMBER, phoneNumber);
+        verify(systemContactFacade, times(1))
+                .existsByTypeEntityAndContact(typeEntity, phoneNumber);
     }
 
     @Test
@@ -235,7 +240,7 @@ class ContactValidatorImplUnitTests {
         String phoneNumber = "+123456789012";
         UUID ownerId = UUID.randomUUID();
 
-        when(systemContactService.findByContact(phoneNumber))
+        when(systemContactFacade.findByContact(phoneNumber))
                 .thenReturn(
                         new SystemContactDto(1L, ownerId, ContactType.PHONE_NUMBER, phoneNumber,
                                 false, false, false)
@@ -244,7 +249,7 @@ class ContactValidatorImplUnitTests {
         boolean result = contactValidator.isPhoneNumberUnique(phoneNumber, ownerId);
 
         assertTrue(result);
-        verify(systemContactService, times(1)).findByContact(phoneNumber);
+        verify(systemContactFacade, times(1)).findByContact(phoneNumber);
     }
 
     @Test
@@ -254,7 +259,7 @@ class ContactValidatorImplUnitTests {
         UUID ownerId = UUID.randomUUID();
         UUID differentOwnerId = UUID.randomUUID();
 
-        when(systemContactService.findByContact(phoneNumber))
+        when(systemContactFacade.findByContact(phoneNumber))
                 .thenReturn(
                         new SystemContactDto(1L, differentOwnerId, ContactType.PHONE_NUMBER, phoneNumber,
                                 false, false, false)
@@ -263,7 +268,7 @@ class ContactValidatorImplUnitTests {
         boolean result = contactValidator.isPhoneNumberUnique(phoneNumber, ownerId);
 
         assertFalse(result);
-        verify(systemContactService, times(1)).findByContact(phoneNumber);
+        verify(systemContactFacade, times(1)).findByContact(phoneNumber);
     }
 
     @Test
@@ -272,12 +277,12 @@ class ContactValidatorImplUnitTests {
         String phoneNumber = "+123456789012";
         UUID ownerId = UUID.randomUUID();
 
-        when(systemContactService.findByContact(phoneNumber)).thenThrow(new ContactNotFoundByContactException());
+        when(systemContactFacade.findByContact(phoneNumber)).thenThrow(new ContactNotFoundByContactException());
 
         boolean result = contactValidator.isPhoneNumberUnique(phoneNumber, ownerId);
 
         assertTrue(result);
-        verify(systemContactService, times(1)).findByContact(phoneNumber);
+        verify(systemContactFacade, times(1)).findByContact(phoneNumber);
     }
 
     @Test
@@ -287,7 +292,7 @@ class ContactValidatorImplUnitTests {
         ContactUpdateDto updateDto = new ContactUpdateDto(1L, ContactType.EMAIL, "test@example.com", true);
         List<ErrorDto> errors = new ArrayList<>();
 
-        when(systemContactService.findByContact(updateDto.contact()))
+        when(systemContactFacade.findByContact(updateDto.contact()))
                 .thenReturn(
                         new SystemContactDto(1L, UUID.randomUUID(), ContactType.EMAIL, updateDto.contact(),
                                 false, false, false)
@@ -307,7 +312,7 @@ class ContactValidatorImplUnitTests {
         ContactUpdateDto updateDto = new ContactUpdateDto(1L, ContactType.EMAIL, "test@example.com", true);
         List<ErrorDto> errors = new ArrayList<>();
 
-        when(systemContactService.findByContact(updateDto.contact()))
+        when(systemContactFacade.findByContact(updateDto.contact()))
                 .thenReturn(
                         new SystemContactDto(1L,ownerId, ContactType.EMAIL, updateDto.contact(),
                                 false, false, false)
@@ -325,7 +330,7 @@ class ContactValidatorImplUnitTests {
         ContactUpdateDto updateDto = new ContactUpdateDto(1L, ContactType.PHONE_NUMBER, "+123456789012", true);
         List<ErrorDto> errors = new ArrayList<>();
 
-        when(systemContactService.findByContact(updateDto.contact()))
+        when(systemContactFacade.findByContact(updateDto.contact()))
                 .thenReturn(
                         new SystemContactDto(1L, UUID.randomUUID(), ContactType.PHONE_NUMBER, updateDto.contact(),
                                 false, false, false)
@@ -345,7 +350,7 @@ class ContactValidatorImplUnitTests {
         ContactUpdateDto updateDto = new ContactUpdateDto(1L, ContactType.PHONE_NUMBER, "+123456789012", true);
         List<ErrorDto> errors = new ArrayList<>();
 
-        when(systemContactService.findByContact(updateDto.contact()))
+        when(systemContactFacade.findByContact(updateDto.contact()))
                 .thenReturn(
                         new SystemContactDto(
                                 1L,

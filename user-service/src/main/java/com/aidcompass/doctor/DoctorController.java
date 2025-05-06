@@ -2,7 +2,6 @@ package com.aidcompass.doctor;
 
 
 import com.aidcompass.doctor.models.dto.DoctorRegistrationDto;
-import com.aidcompass.doctor.models.dto.DoctorResponseDto;
 import com.aidcompass.doctor.models.dto.DoctorUpdateDto;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
@@ -16,7 +15,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,19 +33,8 @@ public class DoctorController {
 
 
     @PostMapping("/{userId}")
-    public ResponseEntity<?> createDoctor(@RequestBody @Valid DoctorRegistrationDto doctorRegistrationDto,
-                                          BindingResult bindingResult,
-                                          @PathVariable("userId") @Positive Long userId, Locale locale) {
-
-        if (bindingResult.hasErrors()) {
-            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
-                    messageSource.getMessage("400", new Object[0], "error.400", locale));
-            problemDetail.setProperty("errors", MapUtils.bindingErrors(bindingResult));
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(problemDetail);
-        }
-
+    public ResponseEntity<?> createDoctor(@PathVariable("userId") @Positive Long userId,
+                                          @RequestBody @Valid DoctorRegistrationDto doctorRegistrationDto) {
         doctorService.save(doctorRegistrationDto, userId);
         return ResponseEntity
                 .status(HttpStatus.CREATED)

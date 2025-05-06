@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Arrays;
 
 public enum ContactType {
-    EMAIL, PHONE_NUMBER;
+    EMAIL, PHONE_NUMBER, TELEGRAM;
 
 
     @Override
@@ -17,7 +17,7 @@ public enum ContactType {
     @JsonCreator
     static ContactType toContactType(String stringType) {
         return Arrays.stream(ContactType.values())
-                .filter(type -> type.name().equalsIgnoreCase(stringType))
+                .filter(type -> type.toString().equalsIgnoreCase(stringType))
                 .findFirst()
                 .orElseThrow(InvalidContactTypeException::new);
     }

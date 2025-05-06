@@ -24,8 +24,6 @@ public interface ContactMapper {
     @Mapping(source = "type", target = "typeEntity", qualifiedByName = "toTypeEntity")
     ContactEntity toEntity(SystemContactDto systemContactDto);
 
-    List<ContactEntity> formSystemDtoListToEntityList(List<SystemContactDto> systemContactDtoList);
-
     @Mapping(source = "primary", target = "isPrimary")
     @Mapping(source = "confirmed", target = "isConfirmed")
     @Mapping(target = "type", expression = "java(contactEntity.getTypeEntity().getType().toString())")

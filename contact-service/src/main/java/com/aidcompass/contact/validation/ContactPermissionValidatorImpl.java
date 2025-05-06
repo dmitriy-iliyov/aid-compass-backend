@@ -2,13 +2,13 @@ package com.aidcompass.contact.validation;
 
 import com.aidcompass.contact.models.dto.ContactUpdateDto;
 import com.aidcompass.contact.models.dto.SystemContactDto;
+import com.aidcompass.contact.services.SystemContactFacade;
 import com.aidcompass.contact.services.SystemContactService;
 import com.aidcompass.contact.validation.contact.ContactValidator;
 import com.aidcompass.contact.validation.ownership.OwnershipValidator;
 import com.aidcompass.exceptions.invalid_input.DoubleContactIdException;
 import com.aidcompass.exceptions.invalid_input.InvalidAttemptChangeToPrimaryException;
 import com.aidcompass.exceptions.invalid_input.OwnerShipException;
-import com.aidcompass.exceptions.not_found.ContactNotFoundByIdException;
 import com.aidcompass.global_exceptions.dto.ErrorDto;
 import lombok.RequiredArgsConstructor;
 
@@ -30,21 +30,21 @@ public class ContactPermissionValidatorImpl implements ContactPermissionValidato
      * Validates a list of contact updates to ensure no permitted changes are made.
      *
      * @param ownerId ID of the contact owner
-     * @param contactUpdateDtoList List of contact update DTOs
+     * @param dtoList List of contact update DTOs
      * @return List of errors found during validation
      * @throws DoubleContactIdException if duplicate contact IDs are found in the list
      * @throws OwnerShipException if one of passed contacts isn't owners
      * @throws InvalidAttemptChangeToPrimaryException if an attempt is made to set an unconfirmed contact as primary
      */
     @Override
-    public List<ErrorDto> isUpdatePermit(UUID ownerId, List<ContactUpdateDto> contactUpdateDtoList) {
+    public List<ErrorDto> isUpdatePermit(UUID ownerId, List<ContactUpdateDto> dtoList) {
         List<ErrorDto> errors = new ArrayList<>();
-        Set<Long> contactIds = contactUpdateDtoList.stream()
+        Set<Long> contactIds = dtoList.stream()
                 .map(ContactUpdateDto::id)
                 .collect(Collectors.toSet());
 
         // check for duplicate contacts id
-        if (contactIds.size() != contactUpdateDtoList.size()) {
+        if (contactIds.size() != dtoList.size()) {
             throw new DoubleContactIdException();
         }
 
@@ -59,10 +59,10 @@ public class ContactPermissionValidatorImpl implements ContactPermissionValidato
                         Function.identity())
                 );
 
-        for (ContactUpdateDto contactDto: contactUpdateDtoList) {
-            SystemContactDto systemContactDto = mapOfIdDto.get(contactDto.id());
-            // check if a confirmed contact is being set as primary
-            if (!systemContactDto.isConfirmed() && contactDto.isPrimary()) {
+        for (ContactUpdateDto contactDto: dtoList) {
+            SystemContactDto systemDto = mapOfIdDto.get(contactDto.id());
+            // check if an unconfirmed contact is being set as primary
+            if (!systemDto.isConfirmed() && contactDto.isPrimary()) {
                 throw new InvalidAttemptChangeToPrimaryException();
             }
             // check uniqueness of the contact
@@ -76,43 +76,39 @@ public class ContactPermissionValidatorImpl implements ContactPermissionValidato
      * Validates a  contact update to ensure no permitted changes are made.
      *
      * @param ownerId ID of the contact owner
-     * @param contactUpdateDto contact update DTO
+     * @param updateDto contact update DTO
      * @return List of errors found during validation
      * @throws OwnerShipException if passed contact isn't owners
      * @throws InvalidAttemptChangeToPrimaryException if an attempt is made to set an unconfirmed contact as primary
      */
     @Override
-    public List<ErrorDto> isUpdatePermit(UUID ownerId, ContactUpdateDto contactUpdateDto) {
+    public List<ErrorDto> isUpdatePermit(UUID ownerId, ContactUpdateDto updateDto) {
         List<ErrorDto> errors = new ArrayList<>();
-        List<SystemContactDto> systemContactDtoList = service.findAllByOwnerId(ownerId);
 
-        ownershipValidator.assertOwnership(contactUpdateDto.id(), systemContactDtoList);
+        SystemContactDto systemContactDto = service.findById(updateDto.id());
+        if (systemContactDto.ownerId() != ownerId) {
+            throw new OwnerShipException(new ErrorDto("contact_id", "Contact isn't yours!"));
+        }
 
-        Map<Long, SystemContactDto> mapOfIdDto = systemContactDtoList.stream()
-                .collect(Collectors.toMap(SystemContactDto::id, Function.identity()));
-        if (!mapOfIdDto.get(contactUpdateDto.id()).isConfirmed() && contactUpdateDto.isPrimary()) {
+        if (!systemContactDto.isConfirmed() && updateDto.isPrimary()) {
             throw new InvalidAttemptChangeToPrimaryException();
         }
 
-        contactValidator.checkUniquesForType(ownerId, contactUpdateDto, errors);
+        contactValidator.checkUniquesForType(ownerId, updateDto, errors);
 
         return errors;
     }
 
     @Override
-    public List<ErrorDto> isDeletePermit(UUID ownerId, Long id) {
+    public List<ErrorDto> isDeletePermit(UUID ownerId, Long contactId) {
         List<ErrorDto> errors = new ArrayList<>();
 
-        // вот тут запрос на получаение списка сущностей из бд тольок для чека на права
-        List<SystemContactDto> systemContactDtoList = service.findAllByOwnerId(ownerId);
-        ownershipValidator.assertOwnership(id, systemContactDtoList);
+        SystemContactDto systemContactDto = service.findById(contactId);
+        if (systemContactDto.ownerId() != ownerId) {
+            throw new OwnerShipException(new ErrorDto("contact_id", "Contact isn't yours!"));
+        }
 
-        SystemContactDto contact = systemContactDtoList.stream()
-                .filter(systemContactDto -> systemContactDto.id().equals(id))
-                .findFirst()
-                .orElseThrow(ContactNotFoundByIdException::new);
-
-        if (contact.isLinkedToAccount()) {
+        if (systemContactDto.isLinkedToAccount()) {
             errors.add(new ErrorDto("contact", "This contact is linked to account, that's why it can't be deleted!"));
         }
 
@@ -120,16 +116,13 @@ public class ContactPermissionValidatorImpl implements ContactPermissionValidato
     }
 
     @Override
-    public List<ErrorDto> isLinkingPermit(UUID ownerId, Long id) {
+    public List<ErrorDto> isLinkingPermit(UUID ownerId, Long contactId) {
         List<ErrorDto> errors = new ArrayList<>();
 
-        List<SystemContactDto> systemContactDtoList = service.findAllByOwnerId(ownerId);
-        ownershipValidator.assertOwnership(id, systemContactDtoList);
-
-        SystemContactDto systemContactDto = systemContactDtoList.stream()
-                .filter(dto -> dto.id().equals(id))
-                .findFirst()
-                .orElseThrow(ContactNotFoundByIdException::new);
+        SystemContactDto systemContactDto = service.findById(contactId);
+        if (systemContactDto.ownerId() != ownerId) {
+            throw new OwnerShipException(new ErrorDto("contact_id", "Contact isn't yours!"));
+        }
 
         if (!contactValidator.isEmailValid(systemContactDto.contact())) {
             errors.add(new ErrorDto("contact", "Only email can be linked to account!"));
@@ -140,5 +133,14 @@ public class ContactPermissionValidatorImpl implements ContactPermissionValidato
         }
 
         return errors;
+    }
+
+    @Override
+    public SystemContactDto isConfirmPermit(UUID ownerId, Long contactId) {
+        SystemContactDto systemContactDto = service.findById(contactId);
+        if (systemContactDto.ownerId() != ownerId) {
+            throw new OwnerShipException(new ErrorDto("contact_id", "Contact isn't yours!"));
+        }
+        return systemContactDto;
     }
 }

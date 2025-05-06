@@ -1,5 +1,6 @@
 package com.aidcompass.confirmation;
 
+import com.aidcompass.confirmation.services.AccountResourceConfirmationService;
 import com.aidcompass.exceptions.MessageModuleControllerAdvice;
 import com.aidcompass.exceptions.models.InvalidConfirmationTokenException;
 import com.aidcompass.mapper.ExceptionMapperImpl;
@@ -27,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ConfirmationControllerIntegrationTests {
 
     @MockitoBean
-    ConfirmationService confirmationService;
+    AccountResourceConfirmationService accountResourceConfirmationService;
 
     @Autowired
     MockMvc mockMvc;
@@ -38,7 +39,7 @@ public class ConfirmationControllerIntegrationTests {
     void confirmEmail_whenTokenValid_shouldReturnSeeOther() throws Exception {
         String token = "token-example";
 
-        doNothing().when(confirmationService).validateConfirmationToken(token);
+        doNothing().when(accountResourceConfirmationService).validateConfirmationToken(token);
 
         mockMvc.perform(post("/api/confirm/email")
                         .param("token", token)
@@ -46,8 +47,8 @@ public class ConfirmationControllerIntegrationTests {
                 .andExpect(status().isSeeOther())
                 .andExpect(header().string("Location", "/api/users/login"));
 
-        verify(confirmationService, times(1)).validateConfirmationToken(token);
-        verifyNoMoreInteractions(confirmationService);
+        verify(accountResourceConfirmationService, times(1)).validateConfirmationToken(token);
+        verifyNoMoreInteractions(accountResourceConfirmationService);
     }
 
     @Test
@@ -55,7 +56,7 @@ public class ConfirmationControllerIntegrationTests {
     void confirmEmail_whenTokenValid_shouldReturnNotFound() throws Exception {
         String token = "token-example";
 
-        Mockito.doThrow(new InvalidConfirmationTokenException()).when(confirmationService).validateConfirmationToken(token);
+        Mockito.doThrow(new InvalidConfirmationTokenException()).when(accountResourceConfirmationService).validateConfirmationToken(token);
 
         mockMvc.perform(post("/api/confirm/email")
                         .param("token", token)
@@ -64,8 +65,8 @@ public class ConfirmationControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors[0].message")
                         .value("Confirmation token is invalid!"));
 
-        verify(confirmationService, times(1)).validateConfirmationToken(token);
-        verifyNoMoreInteractions(confirmationService);
+        verify(accountResourceConfirmationService, times(1)).validateConfirmationToken(token);
+        verifyNoMoreInteractions(accountResourceConfirmationService);
     }
 
     @Test
@@ -73,15 +74,15 @@ public class ConfirmationControllerIntegrationTests {
     void getToken_shouldReturnCreated() throws Exception {
         String resource = "resource-example";
 
-        doNothing().when(confirmationService).sendConfirmationMessage(resource);
+        doNothing().when(accountResourceConfirmationService).sendConfirmationMessage(resource);
 
         mockMvc.perform(post("/api/confirm/request")
                         .param("resource", resource)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
 
-        verify(confirmationService, times(1)).sendConfirmationMessage(resource);
-        verifyNoMoreInteractions(confirmationService);
+        verify(accountResourceConfirmationService, times(1)).sendConfirmationMessage(resource);
+        verifyNoMoreInteractions(accountResourceConfirmationService);
     }
 
     @Test
@@ -89,7 +90,7 @@ public class ConfirmationControllerIntegrationTests {
     void getToken_whenRedisDisconnected_shouldReturn500() throws Exception {
         String resource = "resource-example";
 
-        doThrow(new RedisConnectionException("test redis disconnected message")).when(confirmationService)
+        doThrow(new RedisConnectionException("test redis disconnected message")).when(accountResourceConfirmationService)
                 .sendConfirmationMessage(resource);
 
         mockMvc.perform(post("/api/confirm/request")
@@ -97,8 +98,8 @@ public class ConfirmationControllerIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError());
 
-        verify(confirmationService, times(1)).sendConfirmationMessage(resource);
-        verifyNoMoreInteractions(confirmationService);
+        verify(accountResourceConfirmationService, times(1)).sendConfirmationMessage(resource);
+        verifyNoMoreInteractions(accountResourceConfirmationService);
     }
 
     @Test
@@ -106,15 +107,15 @@ public class ConfirmationControllerIntegrationTests {
     void confirmEmail_whenRedisDisconnected_shouldReturn500() throws Exception {
         String token = "token-example";
 
-        doThrow(new RedisConnectionException("test message")).when(confirmationService).validateConfirmationToken(token);
+        doThrow(new RedisConnectionException("test message")).when(accountResourceConfirmationService).validateConfirmationToken(token);
 
         mockMvc.perform(post("/api/confirm/email")
                         .param("token", token)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError());
 
-        verify(confirmationService, times(1)).validateConfirmationToken(token);
-        verifyNoMoreInteractions(confirmationService);
+        verify(accountResourceConfirmationService, times(1)).validateConfirmationToken(token);
+        verifyNoMoreInteractions(accountResourceConfirmationService);
     }
 
     @Test
@@ -122,7 +123,7 @@ public class ConfirmationControllerIntegrationTests {
     void getToken_whenMailException_shouldReturn500() throws Exception {
         String resource = "resource-example";
 
-        doThrow(new MailAuthenticationException("test mail exception message")).when(confirmationService)
+        doThrow(new MailAuthenticationException("test mail exception message")).when(accountResourceConfirmationService)
                 .sendConfirmationMessage(resource);
 
         mockMvc.perform(post("/api/confirm/request")
@@ -132,8 +133,8 @@ public class ConfirmationControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors[0].message")
                         .value("Sorry, problems with our email!"));
 
-        verify(confirmationService, times(1)).sendConfirmationMessage(resource);
-        verifyNoMoreInteractions(confirmationService);
+        verify(accountResourceConfirmationService, times(1)).sendConfirmationMessage(resource);
+        verifyNoMoreInteractions(accountResourceConfirmationService);
     }
 
     @Test
@@ -141,7 +142,7 @@ public class ConfirmationControllerIntegrationTests {
     void getToken_whenMessageException_shouldReturn500() throws Exception {
         String resource = "resource-example";
 
-        doThrow(new MessagingException("test message exception")).when(confirmationService)
+        doThrow(new MessagingException("test message exception")).when(accountResourceConfirmationService)
                 .sendConfirmationMessage(resource);
 
         mockMvc.perform(post("/api/confirm/request")
@@ -151,7 +152,7 @@ public class ConfirmationControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors[0].message")
                         .value("Error when sending email, please try again!"));
 
-        verify(confirmationService, times(1)).sendConfirmationMessage(resource);
-        verifyNoMoreInteractions(confirmationService);
+        verify(accountResourceConfirmationService, times(1)).sendConfirmationMessage(resource);
+        verifyNoMoreInteractions(accountResourceConfirmationService);
     }
 }

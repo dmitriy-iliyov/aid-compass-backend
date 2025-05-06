@@ -130,28 +130,26 @@ class ContactServiceImplUnitTests {
 
     @Test
     @DisplayName("UT existsByContactTypeAndContact() should return true when contact exists")
-    void existsByContactTypeAndContact_shouldReturnTrueWhenContactExists() {
+    void existsByContactTypeAndContact_shouldReturnTrueWhenContactExistsEntity() {
         ContactType type = ContactType.PHONE_NUMBER;
+        ContactTypeEntity typeEntity = new ContactTypeEntity(1, type);
         String contact = "123456789";
-        ContactTypeEntity typeEntity = new ContactTypeEntity();
 
-        when(contactTypeService.findByType(type)).thenReturn(typeEntity);
         when(contactRepository.existsByTypeEntityAndContact(typeEntity, contact)).thenReturn(true);
 
-        assertTrue(contactService.existsByContactTypeAndContact(type, contact));
+        assertTrue(contactService.existsByTypeEntityAndContact(typeEntity, contact));
     }
 
     @Test
     @DisplayName("UT existsByContactTypeAndContact() should return false when contact does not exist")
-    void existsByContactTypeAndContact_shouldReturnFalseWhenContactDoesNotExist() {
+    void existsByContactTypeAnd_shouldReturnFalseWhenContactDoesNotExistEntity() {
         ContactType type = ContactType.EMAIL;
         String contact = "none@example.com";
-        ContactTypeEntity typeEntity = new ContactTypeEntity();
+        ContactTypeEntity typeEntity = new ContactTypeEntity(1, type);
 
-        when(contactTypeService.findByType(type)).thenReturn(typeEntity);
         when(contactRepository.existsByTypeEntityAndContact(typeEntity, contact)).thenReturn(false);
 
-        assertFalse(contactService.existsByContactTypeAndContact(type, contact));
+        assertFalse(contactService.existsByTypeEntityAndContact(typeEntity, contact));
     }
 
     @Test
@@ -376,7 +374,7 @@ class ContactServiceImplUnitTests {
         when(contactRepository.save(entity)).thenReturn(entity);
         when(contactMapper.toPrivateResponseDto(entity)).thenReturn(response);
 
-        assertEquals(response, contactService.updateById(dto));
+        assertEquals(response, contactService.updateById(UUID.randomUUID(), dto));
     }
 
     @Test
@@ -447,11 +445,11 @@ class ContactServiceImplUnitTests {
     void updateAll_shouldSkipUnmatchedContactIds() {
         UUID ownerId = UUID.randomUUID();
 
-        ContactUpdateDto dto1 = new ContactUpdateDto(99L, ContactType.EMAIL, "ghost@example.com", true); // ID не существует
+        ContactUpdateDto dto1 = new ContactUpdateDto(99L, ContactType.EMAIL, "ghost@example.com", true);
         List<ContactUpdateDto> dtoList = List.of(dto1);
 
         ContactEntity entity1 = new ContactEntity();
-        entity1.setId(1L); // в базе есть только этот
+        entity1.setId(1L);
         List<ContactEntity> entities = List.of(entity1);
 
         List<PrivateContactResponseDto> expectedResponse = List.of(); // ничего не обновлено
@@ -466,14 +464,14 @@ class ContactServiceImplUnitTests {
         verify(contactRepository).findByOwnerId(ownerId);
         verify(contactRepository).saveAll(entities);
         verify(contactMapper).toPrivateResponseDtoList(entities);
-        verify(contactMapper, never()).updateEntityFromDto(any(), any());
+        verify(contactMapper, never()).updateEntityFromDto(any(ContactUpdateDto.class), any(ContactEntity.class));
     }
 
     @Test
     @DisplayName("UT updateAll() should return unchanged entities when update list is empty")
     void updateAll_shouldReturnUnchangedWhenUpdateListIsEmpty() {
         UUID ownerId = UUID.randomUUID();
-        List<ContactUpdateDto> dtoList = List.of(); // пустой список
+        List<ContactUpdateDto> dtoList = List.of();
 
         List<ContactEntity> entities = List.of(new ContactEntity());
         List<PrivateContactResponseDto> expectedResponse = List.of(
@@ -518,13 +516,13 @@ class ContactServiceImplUnitTests {
         ContactUpdateDto dto = new ContactUpdateDto(1L, ContactType.EMAIL, "updated@example.com", false);
         when(contactRepository.findById(dto.id())).thenReturn(Optional.empty());
 
-        assertThrows(ContactNotFoundByIdException.class, () -> contactService.updateById(dto));
+        assertThrows(ContactNotFoundByIdException.class, () -> contactService.updateById(UUID.randomUUID(), dto));
     }
 
     @Test
     @DisplayName("UT deleteById() should delete contact by id")
     void deleteById_shouldDeleteContactById() {
-        contactService.deleteById(1L);
+        contactService.deleteById(UUID.randomUUID(), 1L);
         verify(contactRepository).deleteById(1L);
     }
 

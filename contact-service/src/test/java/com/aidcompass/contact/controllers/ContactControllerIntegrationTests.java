@@ -1,12 +1,11 @@
 package com.aidcompass.contact.controllers;
 
-import com.aidcompass.contact.controllers.ContactController;
 import com.aidcompass.contact.models.dto.ContactCreateDtoList;
 import com.aidcompass.mapper.ExceptionMapperImpl;
 import com.aidcompass.contact.models.dto.ContactCreateDto;
 import com.aidcompass.contact.models.dto.PrivateContactResponseDto;
 import com.aidcompass.contact.services.ContactFacade;
-import com.aidcompass.contact.services.SystemContactService;
+import com.aidcompass.contact.services.SystemContactFacade;
 import com.aidcompass.contact.validation.contact.ContactValidatorImpl;
 import com.aidcompass.exceptions.ContactControllerAdvice;
 import org.junit.jupiter.api.DisplayName;
@@ -46,7 +45,7 @@ public class ContactControllerIntegrationTests {
     ContactFacade contactFacade;
 
     @MockitoBean
-    SystemContactService systemContactService;
+    SystemContactFacade systemContactFacade;
 
 
     final static String BASE_URL = "/api/v1/contacts";
@@ -72,7 +71,7 @@ public class ContactControllerIntegrationTests {
         String json = objectMapper.writeValueAsString(dto);
 
         doReturn(responseDto).when(contactFacade).save(ownerId, dto);
-        doReturn(false).when(systemContactService).existsByContactTypeAndContact(dto.type(), dto.contact());
+        doReturn(false).when(systemContactFacade).existsByContactTypeAndContact(dto.type(), dto.contact());
 
         mockMvc.perform(post(CREATE_CONTACT_URL.formatted(ownerId))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -81,8 +80,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(content().json(objectMapper.writeValueAsString(responseDto)));
 
         verify(contactFacade, times(1)).save(ownerId, dto);
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -94,7 +93,7 @@ public class ContactControllerIntegrationTests {
         String json = objectMapper.writeValueAsString(dto);
 
         doReturn(responseDto).when(contactFacade).save(ownerId, dto);
-        doReturn(true).when(systemContactService).existsByContactTypeAndContact(dto.type(), dto.contact());
+        doReturn(true).when(systemContactFacade).existsByContactTypeAndContact(dto.type(), dto.contact());
 
         mockMvc.perform(post(CREATE_CONTACT_URL.formatted(ownerId))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -105,8 +104,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Email is in use!"));
 
         verify(contactFacade, times(0)).save(ownerId, dto);
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -127,8 +126,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors[0].field").value("contact"))
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Email should be valid!"));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -149,8 +148,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors[0].field").value("contact"))
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Email length must be greater than 7 and less than 50!"));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -171,8 +170,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors[0].field").value("contact"))
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Email length must be greater than 7 and less than 50!"));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -192,8 +191,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors", hasSize(3)))
                 .andExpect(jsonPath("$.properties.errors[*].message", hasItem(containsString("Contact shouldn't be empty or blank!"))));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -213,8 +212,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors", hasSize(3)))
                 .andExpect(jsonPath("$.properties.errors[*].message", hasItem(containsString("Contact shouldn't be empty or blank!"))));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -234,8 +233,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors", hasSize(3)))
                 .andExpect(jsonPath("$.properties.errors[*].message", hasItem(containsString("Contact shouldn't be empty or blank!"))));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -255,8 +254,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors", hasSize(3)))
                 .andExpect(jsonPath("$.properties.errors[*].message", hasItem(containsString("Contact shouldn't be empty or blank!"))));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
 //    @Test
@@ -312,7 +311,7 @@ public class ContactControllerIntegrationTests {
         String json = objectMapper.writeValueAsString(dto);
 
         doReturn(responseDto).when(contactFacade).save(ownerId, dto);
-        doReturn(false).when(systemContactService).existsByContactTypeAndContact(dto.type(), dto.contact());
+        doReturn(false).when(systemContactFacade).existsByContactTypeAndContact(dto.type(), dto.contact());
 
         mockMvc.perform(post(CREATE_CONTACT_URL.formatted(ownerId))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -321,8 +320,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(content().json(objectMapper.writeValueAsString(responseDto)));
 
         verify(contactFacade, times(1)).save(ownerId, dto);
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -334,7 +333,7 @@ public class ContactControllerIntegrationTests {
         String json = objectMapper.writeValueAsString(dto);
 
         doReturn(responseDto).when(contactFacade).save(ownerId, dto);
-        doReturn(true).when(systemContactService).existsByContactTypeAndContact(dto.type(), dto.contact());
+        doReturn(true).when(systemContactFacade).existsByContactTypeAndContact(dto.type(), dto.contact());
 
         mockMvc.perform(post(CREATE_CONTACT_URL.formatted(ownerId))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -345,8 +344,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Phone number is in use!"));
 
         verify(contactFacade, times(0)).save(ownerId, dto);
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -367,8 +366,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors[0].field").value("contact"))
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Phone number should be valid!"));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -389,8 +388,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors[0].field").value("contact"))
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Phone number should be valid!"));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -411,8 +410,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors[0].field").value("contact"))
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Phone number should be valid!"));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -432,8 +431,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors", hasSize(2)))
                 .andExpect(jsonPath("$.properties.errors[*].message", hasItem(containsString("Contact shouldn't be empty or blank!"))));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -453,8 +452,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors", hasSize(2)))
                 .andExpect(jsonPath("$.properties.errors[*].message", hasItem(containsString("Contact shouldn't be empty or blank!"))));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -474,8 +473,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors", hasSize(2)))
                 .andExpect(jsonPath("$.properties.errors[*].message", hasItem(containsString("Contact shouldn't be empty or blank!"))));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -495,8 +494,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors", hasSize(2)))
                 .andExpect(jsonPath("$.properties.errors[*].message", hasItem(containsString("Contact shouldn't be empty or blank!"))));
 
-        verify(systemContactService, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(1)).existsByContactTypeAndContact(dto.type(), dto.contact());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -516,7 +515,7 @@ public class ContactControllerIntegrationTests {
         String json = objectMapper.writeValueAsString(wrappedDtoList);
         System.out.println(json);
         doReturn(responseDtos).when(contactFacade).saveAll(ownerId, dtos);
-        doReturn(false).when(systemContactService).existsByContactTypeAndContact(any(), any());
+        doReturn(false).when(systemContactFacade).existsByContactTypeAndContact(any(), any());
 
         mockMvc.perform(post(CREATE_CONTACTS_URL.formatted(ownerId))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -525,7 +524,7 @@ public class ContactControllerIntegrationTests {
                 .andExpect(content().json(objectMapper.writeValueAsString(responseDtos)));
 
         verify(contactFacade, times(1)).saveAll(ownerId, dtos);
-        verify(systemContactService, times(dtos.size())).existsByContactTypeAndContact(any(), any());
+        verify(systemContactFacade, times(dtos.size())).existsByContactTypeAndContact(any(), any());
         verifyNoMoreInteractions(contactFacade);
     }
 
@@ -544,7 +543,7 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors[0].field").value("contacts"))
                 .andExpect(jsonPath("$.properties.errors[0].message").value("List of contacts can't be empty!"));
 
-        verifyNoInteractions(contactFacade, systemContactService);
+        verifyNoInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -569,8 +568,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors[0].field").value("contacts[1].contact"))
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Email should be valid!"));
 
-        verify(systemContactService, times(dtos.size())).existsByContactTypeAndContact(any(), any());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(dtos.size())).existsByContactTypeAndContact(any(), any());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -586,8 +585,8 @@ public class ContactControllerIntegrationTests {
 
         String json = objectMapper.writeValueAsString(wrappedDtoList);
 
-        doReturn(false).when(systemContactService).existsByContactTypeAndContact(eq(dtos.get(0).type()), eq(dtos.get(0).contact()));
-        doReturn(true).when(systemContactService).existsByContactTypeAndContact(eq(dtos.get(1).type()), eq(dtos.get(1).contact()));
+        doReturn(false).when(systemContactFacade).existsByContactTypeAndContact(eq(dtos.get(0).type()), eq(dtos.get(0).contact()));
+        doReturn(true).when(systemContactFacade).existsByContactTypeAndContact(eq(dtos.get(1).type()), eq(dtos.get(1).contact()));
 
         mockMvc.perform(post(CREATE_CONTACTS_URL.formatted(ownerId))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -597,8 +596,8 @@ public class ContactControllerIntegrationTests {
                 .andExpect(jsonPath("$.properties.errors[0].field").value("contacts[1].contact"))
                 .andExpect(jsonPath("$.properties.errors[0].message").value("Email is in use!"));
 
-        verify(systemContactService, times(dtos.size())).existsByContactTypeAndContact(any(), any());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(dtos.size())).existsByContactTypeAndContact(any(), any());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -618,7 +617,7 @@ public class ContactControllerIntegrationTests {
         String json = objectMapper.writeValueAsString(wrappedDtoList);
 
         doReturn(responseDtos).when(contactFacade).saveAll(ownerId, dtos);
-        doReturn(false).when(systemContactService).existsByContactTypeAndContact(any(), any());
+        doReturn(false).when(systemContactFacade).existsByContactTypeAndContact(any(), any());
 
         mockMvc.perform(post(CREATE_CONTACTS_URL.formatted(ownerId))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -627,7 +626,7 @@ public class ContactControllerIntegrationTests {
                 .andExpect(content().json(objectMapper.writeValueAsString(responseDtos)));
 
         verify(contactFacade, times(1)).saveAll(ownerId, dtos);
-        verify(systemContactService, times(dtos.size())).existsByContactTypeAndContact(any(), any());
+        verify(systemContactFacade, times(dtos.size())).existsByContactTypeAndContact(any(), any());
         verifyNoMoreInteractions(contactFacade);
     }
 
@@ -659,8 +658,8 @@ public class ContactControllerIntegrationTests {
                         "Phone number should be valid!"
                 )));
 
-        verify(systemContactService, times(dtos.size())).existsByContactTypeAndContact(any(), any());
-        verifyNoMoreInteractions(contactFacade, systemContactService);
+        verify(systemContactFacade, times(dtos.size())).existsByContactTypeAndContact(any(), any());
+        verifyNoMoreInteractions(contactFacade, systemContactFacade);
     }
 
     @Test
@@ -674,6 +673,6 @@ public class ContactControllerIntegrationTests {
                         .content(json))
                 .andExpect(status().isBadRequest());
 
-        verifyNoInteractions(contactFacade, systemContactService);
+        verifyNoInteractions(contactFacade, systemContactFacade);
     }
 }
