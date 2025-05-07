@@ -1,12 +1,12 @@
 package com.aidcompass.contact.controllers;
 
 import com.aidcompass.contact.models.dto.ContactCreateDtoList;
+import com.aidcompass.contact.validation.validators.impl.UniquenessValidatorImpl;
 import com.aidcompass.mapper.ExceptionMapperImpl;
 import com.aidcompass.contact.models.dto.ContactCreateDto;
 import com.aidcompass.contact.models.dto.PrivateContactResponseDto;
-import com.aidcompass.contact.services.ContactFacade;
-import com.aidcompass.contact.services.SystemContactFacade;
-import com.aidcompass.contact.validation.contact.ContactValidatorImpl;
+import com.aidcompass.contact.facades.ContactFacade;
+import com.aidcompass.contact.facades.SystemContactFacade;
 import com.aidcompass.exceptions.ContactControllerAdvice;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ContactController.class)
-@Import({ContactControllerAdvice.class, ExceptionMapperImpl.class, ObjectMapper.class, ContactValidatorImpl.class})
+@Import({ContactControllerAdvice.class, ExceptionMapperImpl.class, ObjectMapper.class, UniquenessValidatorImpl.class})
 @ContextConfiguration(classes = {ContactController.class})
 public class ContactControllerIntegrationTests {
 

@@ -1,7 +1,7 @@
 package com.aidcompass.contact.controllers;
 
 import com.aidcompass.contact.models.dto.*;
-import com.aidcompass.contact.services.ContactFacade;
+import com.aidcompass.contact.facades.ContactFacade;
 import com.aidcompass.contact_type.models.ContactType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;

@@ -1,6 +1,7 @@
 package com.aidcompass.contact.services;
 
-import com.aidcompass.contact.models.dto.SystemContactDto;
+import com.aidcompass.contact.models.dto.system.SystemContactDto;
+import com.aidcompass.contact.models.dto.system.SystemContactUpdateDto;
 import com.aidcompass.contact_type.models.ContactType;
 import com.aidcompass.contact_type.models.ContactTypeEntity;
 
@@ -9,17 +10,21 @@ import java.util.UUID;
 
 public interface SystemContactService {
 
+    SystemContactDto save(SystemContactDto systemDto);
+
+    void confirmContactById(Long contactId);
+
     boolean existsByTypeEntityAndContact(ContactTypeEntity typeEntity, String contact);
-
-    long countByOwnerIdAndContactType(UUID ownerId, ContactType type);
-
-    List<SystemContactDto> findAllByOwnerId(UUID ownerId);
-
-    SystemContactDto findByContact(String contact);
-
-    SystemContactDto findById(Long contactId);
 
     boolean isContactConfirmed(Long contactId);
 
-    void confirmContactById(Long contactId);
+    SystemContactDto findById(Long contactId);
+
+    SystemContactDto findByContact(String contact);
+
+    List<SystemContactDto> findAllByOwnerId(UUID ownerId);
+
+    long countByOwnerIdAndContactType(UUID ownerId, ContactType type);
+
+    SystemContactDto update(SystemContactUpdateDto dto);
 }

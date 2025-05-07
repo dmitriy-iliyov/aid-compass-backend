@@ -3,9 +3,9 @@ package com.aidcompass.contact.controllers;
 
 import com.aidcompass.contact.models.dto.ContactCreateDto;
 import com.aidcompass.contact.models.dto.PrivateContactResponseDto;
-import com.aidcompass.contact.services.ContactFacade;
-import com.aidcompass.contact.services.SystemContactFacade;
-import com.aidcompass.contact.validation.contact.ContactValidatorImpl;
+import com.aidcompass.contact.facades.ContactFacade;
+import com.aidcompass.contact.facades.SystemContactFacade;
+import com.aidcompass.contact.validation.validators.impl.UniquenessValidatorImpl;
 import com.aidcompass.exceptions.ContactControllerAdvice;
 import com.aidcompass.mapper.ExceptionMapperImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Disabled("временно до фикса непостоянной сортировки списка ErrorDto в ErrorUtils")
 @WebMvcTest(ContactController.class)
 @ContextConfiguration(classes = {ContactController.class})
-@Import({ContactControllerAdvice.class, ObjectMapper.class, ExceptionMapperImpl.class, ContactValidatorImpl.class})
+@Import({ContactControllerAdvice.class, ObjectMapper.class, ExceptionMapperImpl.class, UniquenessValidatorImpl.class})
 public class ExceptionJsonStructureTests {
 
 

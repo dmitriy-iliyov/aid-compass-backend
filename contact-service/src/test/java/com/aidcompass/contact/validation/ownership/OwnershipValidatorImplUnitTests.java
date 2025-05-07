@@ -1,7 +1,8 @@
 package com.aidcompass.contact.validation.ownership;
 
 
-import com.aidcompass.contact.models.dto.SystemContactDto;
+import com.aidcompass.contact.models.dto.system.SystemContactDto;
+import com.aidcompass.contact.validation.validators.impl.OwnershipValidatorImpl;
 import com.aidcompass.contact_type.models.ContactType;
 import com.aidcompass.exceptions.invalid_input.OwnerShipException;
 import org.junit.jupiter.api.DisplayName;

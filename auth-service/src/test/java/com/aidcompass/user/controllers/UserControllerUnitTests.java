@@ -142,28 +142,28 @@ class UserControllerUnitTests {
         verifyNoMoreInteractions(userFacade);
     }
 
-    @Test
-    @DisplayName("UT Should return 204 NO_CONTENT when confirming user by email")
-    void confirmEmail_whenValidRequest_shouldReturn204() {
-        doNothing().when(userFacade).confirmByEmail(any(String.class));
-
-        ResponseEntity<?> response = userController.confirmEmail("");
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-
-        verify(userFacade, times(1)).confirmByEmail(any(String.class));
-        verifyNoMoreInteractions(userFacade);
-    }
-
-    @Test
-    @DisplayName("UT Should return 204 NO_CONTENT when recovering password via email")
-    void recoverPasswordByEmail_whenValidRequest_shouldReturn204() {
-        RecoveryRequestDto recoveryRequestDto = new RecoveryRequestDto("test@gmail.com", "test_password");
-        doNothing().when(userFacade).recoverPasswordByEmail(any(RecoveryRequestDto.class));
-
-        ResponseEntity<?> response = userController.recoveryPasswordByPassword(recoveryRequestDto);
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-
-        verify(userFacade, times(1)).recoverPasswordByEmail(any(RecoveryRequestDto.class));
-        verifyNoMoreInteractions(userFacade);
-    }
+//    @Test
+//    @DisplayName("UT Should return 204 NO_CONTENT when confirming user by email")
+//    void confirmEmail_whenValidRequest_shouldReturn204() {
+//        doNothing().when(userFacade).confirmByEmail(any(String.class));
+//
+//        ResponseEntity<?> response = userController.confirmEmail("");
+//        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+//
+//        verify(userFacade, times(1)).confirmByEmail(any(String.class));
+//        verifyNoMoreInteractions(userFacade);
+//    }
+//
+//    @Test
+//    @DisplayName("UT Should return 204 NO_CONTENT when recovering password via email")
+//    void recoverPasswordByEmail_whenValidRequest_shouldReturn204() {
+//        RecoveryRequestDto recoveryRequestDto = new RecoveryRequestDto("test@gmail.com", "test_password");
+//        doNothing().when(userFacade).recoverPasswordByEmail(any(RecoveryRequestDto.class));
+//
+//        ResponseEntity<?> response = userController.recoveryPasswordByPassword(recoveryRequestDto);
+//        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+//
+//        verify(userFacade, times(1)).recoverPasswordByEmail(any(RecoveryRequestDto.class));
+//        verifyNoMoreInteractions(userFacade);
+//    }
 }

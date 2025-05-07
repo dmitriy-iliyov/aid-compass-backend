@@ -3,6 +3,7 @@ package com.aidcompass.user.validation.user_update;
 
 import com.aidcompass.authority.models.Authority;
 import com.aidcompass.clients.confirmation.ConfirmationService;
+import com.aidcompass.clients.contacts.ContactService;
 import com.aidcompass.user.services.UserFacade;
 import com.aidcompass.user.models.dto.SystemUserDto;
 import com.aidcompass.user.models.dto.SystemUserUpdateDto;
@@ -14,11 +15,13 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+// move somewhere can't be in annotation validator
 @RequiredArgsConstructor
 public class UserUpdateValidator implements ConstraintValidator<UserUpdate, SystemUserUpdateDto> {
 
     private final UserFacade userFacade;
     private final ConfirmationService confirmationService;
+    private final ContactService contactService;
 
 
     @Override
@@ -38,23 +41,28 @@ public class UserUpdateValidator implements ConstraintValidator<UserUpdate, Syst
             return false;
         }
 
-        SystemUserDto existedUser;
         try {
             // надо проверять в общей базе контактов
-            existedUser = userFacade.systemFindByEmail(systemUserUpdateDto.getEmail());
-            if(!existedUser.id().equals(systemUserUpdateDto.getId())) {
+            boolean isEmailExist = contactService.isEmailExist(systemUserUpdateDto.getEmail());
+            if(isEmailExist) {
                 hasErrors = true;
                 constraintValidatorContext.buildConstraintViolationWithTemplate("Email already in use!")
                         .addPropertyNode("email")
                         .addConstraintViolation();
             } else {
+                SystemUserDto existedUser = userFacade.systemFindByEmail(systemUserUpdateDto.getEmail());
                 systemUserUpdateDto.setAuthorities(existedUser.authorities());
             }
         } catch (BaseNotFoundException e) {
+
             List<Authority> authorities = userFacade.systemFindById(systemUserUpdateDto.getId()).authorities();
             authorities.remove(Authority.ROLE_USER);
             authorities.add(Authority.ROLE_UNCONFIRMED_USER);
+
+            contactService.updateContact();
+
             confirmationService.sendConfirmationMessage(systemUserUpdateDto.getEmail());
+
             systemUserUpdateDto.setAuthorities(authorities);
             return true;
         }

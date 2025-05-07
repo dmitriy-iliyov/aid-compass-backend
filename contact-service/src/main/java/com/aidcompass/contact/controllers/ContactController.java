@@ -1,7 +1,7 @@
 package com.aidcompass.contact.controllers;
 
 import com.aidcompass.contact.models.dto.*;
-import com.aidcompass.contact.services.ContactFacade;
+import com.aidcompass.contact.facades.ContactFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -83,6 +83,7 @@ public class ContactController {
                 .body(contactFacade.findAllPublicByOwnerId(ownerId));
     }
 
+    // проверить что поменяеться флаг confirmed если задать новую почту
     @PatchMapping("/{owner_id}")
     public ResponseEntity<PrivateContactResponseDto> updateContact(@PathVariable("owner_id") UUID ownerId,
                                                                    @RequestBody @Valid ContactUpdateDto contact) {

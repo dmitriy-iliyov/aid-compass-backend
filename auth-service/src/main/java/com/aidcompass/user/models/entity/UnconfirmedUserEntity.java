@@ -19,6 +19,7 @@ public class UnconfirmedUserEntity {
     private String password;
 
 
+    @Deprecated
     public UnconfirmedUserEntity() {
         this.id = UuidFactory.generate();
     }

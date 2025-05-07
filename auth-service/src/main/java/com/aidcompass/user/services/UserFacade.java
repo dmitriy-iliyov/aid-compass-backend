@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface UserFacade {
 
-    void save(UserRegistrationDto userRegistrationDto);
+    void save(UserRegistrationDto dto);
 
     void confirmByEmail(String email);
 
@@ -23,9 +23,9 @@ public interface UserFacade {
 
     UserResponseDto findById(UUID id);
 
-    UserResponseDto update(UUID id, UserUpdateDto userUpdateDto);
+    UserResponseDto update(UUID id, UserUpdateDto updateDto);
 
-    void recoverPasswordByEmail(RecoveryRequestDto recoveryRequestDto);
+    void recoverPasswordByEmail(RecoveryRequestDto recoveryRequest);
 
     void deleteById(UUID id);
 

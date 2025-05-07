@@ -1,10 +1,12 @@
 package com.aidcompass.user.services;
 
 import com.aidcompass.clients.RecoveryRequestDto;
-import com.aidcompass.clients.contacts.ContactsService;
+import com.aidcompass.clients.contacts.ContactService;
+import com.aidcompass.exceptions.illegal_input.EmailAllReadyExistException;
 import com.aidcompass.exceptions.not_found.EmailNotFoundException;
 import com.aidcompass.global_exceptions.BaseNotFoundException;
 import com.aidcompass.user.models.dto.*;
+import com.aidcompass.utils.uuid.UuidFactory;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
@@ -23,14 +25,18 @@ public class UserFacadeImpl implements UserFacade {
 
     private final UserService userService;
     private final UnconfirmedUserService unconfirmedUserService;
-    private final ContactsService contactsService;
+    private final ContactService contactService;
     private final Validator validator;
 
 
     @Override
-    public void save(UserRegistrationDto userRegistrationDto) {
-
-        unconfirmedUserService.save(userRegistrationDto);
+    public void save(UserRegistrationDto dto) {
+        UUID id = UuidFactory.generate();
+        String email = contactService.createContact(id, dto.email());
+        if(email == null) {
+            throw new EmailAllReadyExistException();
+        }
+        unconfirmedUserService.save(id, dto);
     }
 
     @Override
@@ -43,6 +49,7 @@ public class UserFacadeImpl implements UserFacade {
             userService.save(systemUserDto);
             unconfirmedUserService.deleteByEmail(email);
         }
+        contactService.confirmContact(email);
     }
 
     @Override
@@ -75,8 +82,8 @@ public class UserFacadeImpl implements UserFacade {
 //    }
 
     @Override
-    public UserResponseDto update(UUID id, UserUpdateDto userUpdateDto) {
-        SystemUserUpdateDto systemUserUpdateDto = userService.mapToUpdateDto(userUpdateDto);
+    public UserResponseDto update(UUID id, UserUpdateDto updateDto) {
+        SystemUserUpdateDto systemUserUpdateDto = userService.mapToUpdateDto(updateDto);
         systemUserUpdateDto.setId(id);
         Set<ConstraintViolation<SystemUserUpdateDto>> bindingResult = validator.validate(systemUserUpdateDto);
         if(!bindingResult.isEmpty()) {
@@ -86,11 +93,11 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public void recoverPasswordByEmail(RecoveryRequestDto recoveryRequestDto) {
-        if (!userService.existsByEmail(recoveryRequestDto.resource())) {
+    public void recoverPasswordByEmail(RecoveryRequestDto recoveryRequest) {
+        if (!userService.existsByEmail(recoveryRequest.resource())) {
             throw new EmailNotFoundException();
         }
-        userService.updatePasswordByEmail(recoveryRequestDto.resource(), recoveryRequestDto.password());
+        userService.updatePasswordByEmail(recoveryRequest.resource(), recoveryRequest.password());
     }
 
     @Override

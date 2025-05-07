@@ -1,11 +1,8 @@
 package com.aidcompass.contact.config;
 
-import com.aidcompass.contact.services.SystemContactFacade;
 import com.aidcompass.contact.services.SystemContactService;
-import com.aidcompass.contact.validation.ContactPermissionValidator;
-import com.aidcompass.contact.validation.ContactPermissionValidatorImpl;
-import com.aidcompass.contact.validation.contact.ContactValidator;
-import com.aidcompass.contact.validation.ownership.OwnershipValidator;
+import com.aidcompass.contact.validation.validators.*;
+import com.aidcompass.contact.validation.validators.impl.PermissionValidatorImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,9 +10,10 @@ import org.springframework.context.annotation.Configuration;
 public class ContactConfig {
 
     @Bean
-    public ContactPermissionValidator contactValidationFacade(SystemContactService service,
-                                                              ContactValidator contactValidator,
-                                                              OwnershipValidator ownershipValidator) {
-        return new ContactPermissionValidatorImpl(service, contactValidator, ownershipValidator);
+    public PermissionValidator contactValidationFacade(SystemContactService service,
+                                                       OwnershipValidator ownershipValidator,
+                                                       UniquenessValidator uniquenessValidator,
+                                                       FormatValidator formatValidator) {
+        return new PermissionValidatorImpl(service, ownershipValidator, uniquenessValidator, formatValidator);
     }
 }

@@ -1,4 +1,5 @@
 посмотреть ExceptionJsonStructureTests ошибки то сортируються то нет (ErrorUtils.class)
-связанность с auth service
+связанность с auth service +-
 безопасность
-кеширование
+кеширование +-
+добавить флаг паблик для контактов

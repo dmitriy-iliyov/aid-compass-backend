@@ -1,19 +1,15 @@
 package com.aidcompass.user.controllers;
 
 
-import com.aidcompass.clients.RecoveryRequestDto;
 import com.aidcompass.clients.confirmation.ConfirmationService;
-import com.aidcompass.user.services.UserFacade;
 import com.aidcompass.user.models.dto.UserRegistrationDto;
 import com.aidcompass.user.models.dto.UserResponseDto;
 import com.aidcompass.user.models.dto.UserUpdateDto;
-import com.aidcompass.user.validation.email.ExistEmail;
+import com.aidcompass.user.services.UserFacade;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 
-@Log4j2
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -78,26 +73,6 @@ public class UserController {
                                                   @Size(min = 10, max = 22, message = "Password length must be greater than 10 and less than 22!")
                                                   String password) {
         userFacade.deleteByPassword(id, password);
-        return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
-                .build();
-    }
-
-    @PatchMapping("/confirm/email")
-    public ResponseEntity<?> confirmEmail(@RequestParam("email")
-                                          @NotBlank(message = "Email shouldn't be empty or blank!")
-                                          @Size(min = 11, max = 50, message = "Email length must be greater than 11 and less than 50!")
-                                          @Email(message = "Email should be valid!")
-                                          @ExistEmail(message = "Email isn't exist!") String email) {
-        userFacade.confirmByEmail(email);
-        return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
-                .build();
-    }
-
-    @PatchMapping("/recover-password/email")
-    public ResponseEntity<?> recoveryPasswordByPassword(@RequestBody @Valid RecoveryRequestDto recoveryRequestDto) {
-        userFacade.recoverPasswordByEmail(recoveryRequestDto);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();

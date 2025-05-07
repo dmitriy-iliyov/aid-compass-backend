@@ -8,14 +8,21 @@ import com.aidcompass.user.models.entity.UnconfirmedUserEntity;
 import com.aidcompass.utils.MapperUtils;
 import org.mapstruct.*;
 
+import java.util.UUID;
+
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         uses = {MapperUtils.class, AuthorityMapper.class})
 public interface UserMapper {
 
+    @Deprecated
     @Mapping(target = "password", qualifiedByName = "encodePassword", source = "password")
     UnconfirmedUserEntity toUnconfirmedEntity(UserRegistrationDto userRegistrationDto);
+
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "password", qualifiedByName = "encodePassword", source = "password")
+    UnconfirmedUserEntity toUnconfirmedEntity(UUID id, UserRegistrationDto userRegistrationDto);
 
     SystemUserDto toSystemDto(UnconfirmedUserEntity unconfirmedUserEntity);
 

@@ -1,7 +1,7 @@
 package com.aidcompass.contact.controllers;
 
 import com.aidcompass.contact.models.dto.*;
-import com.aidcompass.contact.services.ContactFacade;
+import com.aidcompass.contact.facades.ContactFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,12 +1,10 @@
 package com.aidcompass.contact.services;
 
+import com.aidcompass.contact.facades.ContactChangingListener;
 import com.aidcompass.contact.models.dto.ContactCreateDto;
 import com.aidcompass.contact.models.dto.ContactUpdateDto;
 import com.aidcompass.contact.models.dto.PrivateContactResponseDto;
 import com.aidcompass.contact.models.dto.PublicContactResponseDto;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Caching;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,13 +23,13 @@ public interface ContactService {
 
     List<PublicContactResponseDto> findPrimaryByOwnerId(UUID ownerId);
 
-    PrivateContactResponseDto updateById(UUID ownerId, ContactUpdateDto dto);
+    List<PublicContactResponseDto> findSecondaryByOwnerId(UUID ownerId);
 
-    List<PrivateContactResponseDto> updateAll(UUID ownerId, List<ContactUpdateDto> dtoList);
+    PrivateContactResponseDto update(UUID ownerId, ContactUpdateDto dto, ContactChangingListener callback);
+
+    List<PrivateContactResponseDto> updateAll(UUID ownerId, List<ContactUpdateDto> dtoList, ContactChangingListener callback);
 
     void deleteById(UUID ownerId, Long id);
 
     void deleteAll(UUID ownerId);
-
-    List<PublicContactResponseDto> findSecondaryByOwnerId(UUID ownerId);
 }
