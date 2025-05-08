@@ -1,7 +1,7 @@
 package com.aidcompass.contact.controllers;
 
 import com.aidcompass.contact.models.dto.*;
-import com.aidcompass.contact.facades.ContactFacade;
+import com.aidcompass.contact.facades.GeneralFacade;
 import com.aidcompass.contact_type.models.ContactType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 public class ContactControllerUnitTests {
 
     @Mock
-    ContactFacade contactFacade;
+    GeneralFacade generalFacade;
 
     @InjectMocks
     ContactController contactController;
@@ -48,13 +48,13 @@ public class ContactControllerUnitTests {
         ContactCreateDto dto = objectMapper.readValue(new File("./src/main/resources/requests/save_email.json"), ContactCreateDto.class);
         PrivateContactResponseDto privateDto = new PrivateContactResponseDto(1L, dto.type().toString(), dto.contact(), false, false);
 
-        when(contactFacade.save(ownerId, dto)).thenReturn(privateDto);
+        when(generalFacade.save(ownerId, dto)).thenReturn(privateDto);
 
         ResponseEntity<PrivateContactResponseDto> response = contactController.createContact(ownerId, dto);
 
         assertEquals(privateDto, response.getBody());
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        verify(contactFacade, times(1)).save(ownerId, dto);
+        verify(generalFacade, times(1)).save(ownerId, dto);
     }
 
     @Test
@@ -63,10 +63,10 @@ public class ContactControllerUnitTests {
         UUID ownerId = UUID.randomUUID();
         ContactCreateDto dto = objectMapper.readValue(new File("./src/main/resources/requests/save_email.json"), ContactCreateDto.class);
 
-        when(contactFacade.save(ownerId, dto)).thenThrow(new RuntimeException("Test exception"));
+        when(generalFacade.save(ownerId, dto)).thenThrow(new RuntimeException("Test exception"));
 
         assertThrows(RuntimeException.class, () -> contactController.createContact(ownerId, dto));
-        verify(contactFacade, times(1)).save(ownerId, dto);
+        verify(generalFacade, times(1)).save(ownerId, dto);
     }
 
     @Test
@@ -76,13 +76,13 @@ public class ContactControllerUnitTests {
         ContactCreateDto dto = objectMapper.readValue(new File("./src/main/resources/requests/save_phone.json"), ContactCreateDto.class);
         PrivateContactResponseDto privateDto = new PrivateContactResponseDto(1L, dto.type().toString(), dto.contact(), false, false);
 
-        when(contactFacade.save(ownerId, dto)).thenReturn(privateDto);
+        when(generalFacade.save(ownerId, dto)).thenReturn(privateDto);
 
         ResponseEntity<PrivateContactResponseDto> response = contactController.createContact(ownerId, dto);
 
         assertEquals(privateDto, response.getBody());
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        verify(contactFacade, times(1)).save(ownerId, dto);
+        verify(generalFacade, times(1)).save(ownerId, dto);
     }
 
     @Test
@@ -100,13 +100,13 @@ public class ContactControllerUnitTests {
                 .map(dto -> new PrivateContactResponseDto(1L, dto.type().toString(), dto.contact(), false, false))
                 .collect(Collectors.toList());
 
-        when(contactFacade.saveAll(ownerId, dtoList)).thenReturn(responseDtoList);
+        when(generalFacade.saveAll(ownerId, dtoList)).thenReturn(responseDtoList);
 
         ResponseEntity<List<PrivateContactResponseDto>> response = contactController.createContacts(ownerId, wrappedDtoList);
 
         assertEquals(responseDtoList, response.getBody());
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        verify(contactFacade, times(1)).saveAll(ownerId, dtoList);
+        verify(generalFacade, times(1)).saveAll(ownerId, dtoList);
     }
 
     @Test
@@ -120,10 +120,10 @@ public class ContactControllerUnitTests {
 
         ContactCreateDtoList wrappedDtoList = new ContactCreateDtoList(dtoList);
 
-        when(contactFacade.saveAll(ownerId, dtoList)).thenThrow(new RuntimeException("Test exception"));
+        when(generalFacade.saveAll(ownerId, dtoList)).thenThrow(new RuntimeException("Test exception"));
 
         assertThrows(RuntimeException.class, () -> contactController.createContacts(ownerId, wrappedDtoList));
-        verify(contactFacade, times(1)).saveAll(ownerId, dtoList);
+        verify(generalFacade, times(1)).saveAll(ownerId, dtoList);
     }
 
     @Test
@@ -137,13 +137,13 @@ public class ContactControllerUnitTests {
         PrivateContactResponseDto responseDto = new PrivateContactResponseDto(1L, dto.type().toString(), dto.contact(), false, false);
         List<PrivateContactResponseDto> responseDtoList = List.of(responseDto);
 
-        when(contactFacade.saveAll(ownerId, dtoList)).thenReturn(responseDtoList);
+        when(generalFacade.saveAll(ownerId, dtoList)).thenReturn(responseDtoList);
 
         ResponseEntity<List<PrivateContactResponseDto>> response = contactController.createContacts(ownerId, wrappedDtoList);
 
         assertEquals(responseDtoList, response.getBody());
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        verify(contactFacade, times(1)).saveAll(ownerId, dtoList);
+        verify(generalFacade, times(1)).saveAll(ownerId, dtoList);
     }
 
     @Test
@@ -152,13 +152,13 @@ public class ContactControllerUnitTests {
         UUID ownerId = UUID.randomUUID();
         Long contactId = 1L;
 
-        doNothing().when(contactFacade).markEmailAsLinkedToAccount(ownerId, contactId);
+        doNothing().when(generalFacade).markEmailAsLinkedToAccount(ownerId, contactId);
 
         ResponseEntity<?> response = contactController.linkEmailToAccount(ownerId, contactId);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         assertNull(response.getBody());
-        verify(contactFacade, times(1)).markEmailAsLinkedToAccount(ownerId, contactId);
+        verify(generalFacade, times(1)).markEmailAsLinkedToAccount(ownerId, contactId);
     }
 
     @Test
@@ -167,10 +167,10 @@ public class ContactControllerUnitTests {
         UUID ownerId = UUID.randomUUID();
         Long contactId = 1L;
 
-        doThrow(new RuntimeException("Test exception")).when(contactFacade).markEmailAsLinkedToAccount(ownerId, contactId);
+        doThrow(new RuntimeException("Test exception")).when(generalFacade).markEmailAsLinkedToAccount(ownerId, contactId);
 
         assertThrows(RuntimeException.class, () -> contactController.linkEmailToAccount(ownerId, contactId));
-        verify(contactFacade, times(1)).markEmailAsLinkedToAccount(ownerId, contactId);
+        verify(generalFacade, times(1)).markEmailAsLinkedToAccount(ownerId, contactId);
     }
 
     @Test
@@ -182,13 +182,13 @@ public class ContactControllerUnitTests {
                 new PublicContactResponseDto("PHONE", "+1234567890", false)
         );
 
-        when(contactFacade.findPrimaryByOwnerId(ownerId)).thenReturn(expectedContacts);
+        when(generalFacade.findPrimaryByOwnerId(ownerId)).thenReturn(expectedContacts);
 
         ResponseEntity<List<PublicContactResponseDto>> response = contactController.getPrimaryContacts(ownerId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedContacts, response.getBody());
-        verify(contactFacade, times(1)).findPrimaryByOwnerId(ownerId);
+        verify(generalFacade, times(1)).findPrimaryByOwnerId(ownerId);
     }
 
     @Test
@@ -197,13 +197,13 @@ public class ContactControllerUnitTests {
         UUID ownerId = UUID.randomUUID();
         List<PublicContactResponseDto> emptyList = Collections.emptyList();
 
-        when(contactFacade.findPrimaryByOwnerId(ownerId)).thenReturn(emptyList);
+        when(generalFacade.findPrimaryByOwnerId(ownerId)).thenReturn(emptyList);
 
         ResponseEntity<List<PublicContactResponseDto>> response = contactController.getPrimaryContacts(ownerId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(emptyList, response.getBody());
-        verify(contactFacade, times(1)).findPrimaryByOwnerId(ownerId);
+        verify(generalFacade, times(1)).findPrimaryByOwnerId(ownerId);
     }
 
     @Test
@@ -211,10 +211,10 @@ public class ContactControllerUnitTests {
     void getPrimaryContacts_whenFacadeThrows_shouldThrowException() {
         UUID ownerId = UUID.randomUUID();
 
-        when(contactFacade.findPrimaryByOwnerId(ownerId)).thenThrow(new RuntimeException("Test exception"));
+        when(generalFacade.findPrimaryByOwnerId(ownerId)).thenThrow(new RuntimeException("Test exception"));
 
         assertThrows(RuntimeException.class, () -> contactController.getPrimaryContacts(ownerId));
-        verify(contactFacade, times(1)).findPrimaryByOwnerId(ownerId);
+        verify(generalFacade, times(1)).findPrimaryByOwnerId(ownerId);
     }
 
     @Test
@@ -226,13 +226,13 @@ public class ContactControllerUnitTests {
                 new PublicContactResponseDto("phone_number", "+0987654321", true)
         );
 
-        when(contactFacade.findSecondaryByOwnerId(ownerId)).thenReturn(expectedContacts);
+        when(generalFacade.findSecondaryByOwnerId(ownerId)).thenReturn(expectedContacts);
 
         ResponseEntity<List<PublicContactResponseDto>> response = contactController.getSecondaryContacts(ownerId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedContacts, response.getBody());
-        verify(contactFacade, times(1)).findSecondaryByOwnerId(ownerId);
+        verify(generalFacade, times(1)).findSecondaryByOwnerId(ownerId);
     }
 
     @Test
@@ -241,13 +241,13 @@ public class ContactControllerUnitTests {
         UUID ownerId = UUID.randomUUID();
         List<PublicContactResponseDto> emptyList = Collections.emptyList();
 
-        when(contactFacade.findSecondaryByOwnerId(ownerId)).thenReturn(emptyList);
+        when(generalFacade.findSecondaryByOwnerId(ownerId)).thenReturn(emptyList);
 
         ResponseEntity<List<PublicContactResponseDto>> response = contactController.getSecondaryContacts(ownerId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(emptyList, response.getBody());
-        verify(contactFacade, times(1)).findSecondaryByOwnerId(ownerId);
+        verify(generalFacade, times(1)).findSecondaryByOwnerId(ownerId);
     }
 
     @Test
@@ -255,10 +255,10 @@ public class ContactControllerUnitTests {
     void getSecondaryContacts_whenFacadeThrows_shouldThrowException() {
         UUID ownerId = UUID.randomUUID();
 
-        when(contactFacade.findSecondaryByOwnerId(ownerId)).thenThrow(new RuntimeException("Test exception"));
+        when(generalFacade.findSecondaryByOwnerId(ownerId)).thenThrow(new RuntimeException("Test exception"));
 
         assertThrows(RuntimeException.class, () -> contactController.getSecondaryContacts(ownerId));
-        verify(contactFacade, times(1)).findSecondaryByOwnerId(ownerId);
+        verify(generalFacade, times(1)).findSecondaryByOwnerId(ownerId);
     }
 
     @Test
@@ -270,13 +270,13 @@ public class ContactControllerUnitTests {
                 new PrivateContactResponseDto(2L, "PHONE", "+1234567890", false, true)
         );
 
-        when(contactFacade.findAllPrivateByOwnerId(ownerId)).thenReturn(expectedContacts);
+        when(generalFacade.findAllPrivateByOwnerId(ownerId)).thenReturn(expectedContacts);
 
         ResponseEntity<List<PrivateContactResponseDto>> response = contactController.getPrivateContacts(ownerId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedContacts, response.getBody());
-        verify(contactFacade, times(1)).findAllPrivateByOwnerId(ownerId);
+        verify(generalFacade, times(1)).findAllPrivateByOwnerId(ownerId);
     }
 
     @Test
@@ -285,13 +285,13 @@ public class ContactControllerUnitTests {
         UUID ownerId = UUID.randomUUID();
         List<PrivateContactResponseDto> emptyList = Collections.emptyList();
 
-        when(contactFacade.findAllPrivateByOwnerId(ownerId)).thenReturn(emptyList);
+        when(generalFacade.findAllPrivateByOwnerId(ownerId)).thenReturn(emptyList);
 
         ResponseEntity<List<PrivateContactResponseDto>> response = contactController.getPrivateContacts(ownerId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(emptyList, response.getBody());
-        verify(contactFacade, times(1)).findAllPrivateByOwnerId(ownerId);
+        verify(generalFacade, times(1)).findAllPrivateByOwnerId(ownerId);
     }
 
     @Test
@@ -299,10 +299,10 @@ public class ContactControllerUnitTests {
     void getPrivateContacts_whenFacadeThrows_shouldThrowException() {
         UUID ownerId = UUID.randomUUID();
 
-        when(contactFacade.findAllPrivateByOwnerId(ownerId)).thenThrow(new RuntimeException("Test exception"));
+        when(generalFacade.findAllPrivateByOwnerId(ownerId)).thenThrow(new RuntimeException("Test exception"));
 
         assertThrows(RuntimeException.class, () -> contactController.getPrivateContacts(ownerId));
-        verify(contactFacade, times(1)).findAllPrivateByOwnerId(ownerId);
+        verify(generalFacade, times(1)).findAllPrivateByOwnerId(ownerId);
     }
 
     @Test
@@ -314,13 +314,13 @@ public class ContactControllerUnitTests {
                 new PublicContactResponseDto("phone_number", "+0987654321", true)
         );
 
-        when(contactFacade.findAllPublicByOwnerId(ownerId)).thenReturn(expectedContacts);
+        when(generalFacade.findAllPublicByOwnerId(ownerId)).thenReturn(expectedContacts);
 
         ResponseEntity<List<PublicContactResponseDto>> response = contactController.getPublicContacts(ownerId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedContacts, response.getBody());
-        verify(contactFacade, times(1)).findAllPublicByOwnerId(ownerId);
+        verify(generalFacade, times(1)).findAllPublicByOwnerId(ownerId);
     }
 
     @Test
@@ -329,13 +329,13 @@ public class ContactControllerUnitTests {
         UUID ownerId = UUID.randomUUID();
         List<PublicContactResponseDto> emptyList = Collections.emptyList();
 
-        when(contactFacade.findAllPublicByOwnerId(ownerId)).thenReturn(emptyList);
+        when(generalFacade.findAllPublicByOwnerId(ownerId)).thenReturn(emptyList);
 
         ResponseEntity<List<PublicContactResponseDto>> response = contactController.getPublicContacts(ownerId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(emptyList, response.getBody());
-        verify(contactFacade, times(1)).findAllPublicByOwnerId(ownerId);
+        verify(generalFacade, times(1)).findAllPublicByOwnerId(ownerId);
     }
 
     @Test
@@ -343,10 +343,10 @@ public class ContactControllerUnitTests {
     void getPublicContacts_whenFacadeThrows_shouldThrowException() {
         UUID ownerId = UUID.randomUUID();
 
-        when(contactFacade.findAllPublicByOwnerId(ownerId)).thenThrow(new RuntimeException("Test exception"));
+        when(generalFacade.findAllPublicByOwnerId(ownerId)).thenThrow(new RuntimeException("Test exception"));
 
         assertThrows(RuntimeException.class, () -> contactController.getPublicContacts(ownerId));
-        verify(contactFacade, times(1)).findAllPublicByOwnerId(ownerId);
+        verify(generalFacade, times(1)).findAllPublicByOwnerId(ownerId);
     }
 
     @Test
@@ -357,13 +357,13 @@ public class ContactControllerUnitTests {
         ContactUpdateDto updateDto = new ContactUpdateDto(1L, type,"test@updated.com" , false);
         PrivateContactResponseDto responseDto = new PrivateContactResponseDto(1L, type.toString(), "test@updated.com", true, false);
 
-        when(contactFacade.update(ownerId, updateDto)).thenReturn(responseDto);
+        when(generalFacade.update(ownerId, updateDto)).thenReturn(responseDto);
 
         ResponseEntity<PrivateContactResponseDto> response = contactController.updateContact(ownerId, updateDto);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(responseDto, response.getBody());
-        verify(contactFacade, times(1)).update(ownerId, updateDto);
+        verify(generalFacade, times(1)).update(ownerId, updateDto);
     }
 
     @Test
@@ -372,10 +372,10 @@ public class ContactControllerUnitTests {
         UUID ownerId = UUID.randomUUID();
         ContactUpdateDto updateDto = new ContactUpdateDto(1L, ContactType.EMAIL, "test@updated.com", true);
 
-        when(contactFacade.update(ownerId, updateDto)).thenThrow(new RuntimeException("Test exception"));
+        when(generalFacade.update(ownerId, updateDto)).thenThrow(new RuntimeException("Test exception"));
 
         assertThrows(RuntimeException.class, () -> contactController.updateContact(ownerId, updateDto));
-        verify(contactFacade, times(1)).update(ownerId, updateDto);
+        verify(generalFacade, times(1)).update(ownerId, updateDto);
     }
 
     @Test
@@ -394,13 +394,13 @@ public class ContactControllerUnitTests {
                 new PrivateContactResponseDto(2L, "EMAIL", "test2@updated.com", false, true)
         );
 
-        when(contactFacade.updateAll(ownerId, updateDtoList)).thenReturn(responseDtoList);
+        when(generalFacade.updateAll(ownerId, updateDtoList)).thenReturn(responseDtoList);
 
         ResponseEntity<List<PrivateContactResponseDto>> response = contactController.updateAllContacts(ownerId, dtoList);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(responseDtoList, response.getBody());
-        verify(contactFacade, times(1)).updateAll(ownerId, updateDtoList);
+        verify(generalFacade, times(1)).updateAll(ownerId, updateDtoList);
     }
 
     @Test
@@ -410,13 +410,13 @@ public class ContactControllerUnitTests {
         List<PrivateContactResponseDto> emptyResponseList = Collections.emptyList();
         ContactUpdateDtoList emptyUpdateList = new ContactUpdateDtoList(Collections.emptyList());
 
-        when(contactFacade.updateAll(ownerId, emptyUpdateList.contacts())).thenReturn(emptyResponseList);
+        when(generalFacade.updateAll(ownerId, emptyUpdateList.contacts())).thenReturn(emptyResponseList);
 
         ResponseEntity<List<PrivateContactResponseDto>> response = contactController.updateAllContacts(ownerId, emptyUpdateList);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(emptyResponseList, response.getBody());
-        verify(contactFacade, times(1)).updateAll(ownerId, emptyUpdateList.contacts());
+        verify(generalFacade, times(1)).updateAll(ownerId, emptyUpdateList.contacts());
     }
 
     @Test
@@ -431,10 +431,10 @@ public class ContactControllerUnitTests {
         ContactUpdateDtoList dtoList = new ContactUpdateDtoList(updateDtoList);
 
 
-        when(contactFacade.updateAll(ownerId, updateDtoList)).thenThrow(new RuntimeException("Test exception"));
+        when(generalFacade.updateAll(ownerId, updateDtoList)).thenThrow(new RuntimeException("Test exception"));
 
         assertThrows(RuntimeException.class, () -> contactController.updateAllContacts(ownerId, dtoList));
-        verify(contactFacade, times(1)).updateAll(ownerId, updateDtoList);
+        verify(generalFacade, times(1)).updateAll(ownerId, updateDtoList);
     }
 
     @Test
@@ -443,13 +443,13 @@ public class ContactControllerUnitTests {
         UUID ownerId = UUID.randomUUID();
         Long contactId = 1L;
 
-        doNothing().when(contactFacade).delete(ownerId, contactId);
+        doNothing().when(generalFacade).delete(ownerId, contactId);
 
         ResponseEntity<?> response = contactController.deleteContact(ownerId, contactId);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         assertNull(response.getBody());
-        verify(contactFacade, times(1)).delete(ownerId, contactId);
+        verify(generalFacade, times(1)).delete(ownerId, contactId);
     }
 
     @Test
@@ -458,10 +458,10 @@ public class ContactControllerUnitTests {
         UUID ownerId = UUID.randomUUID();
         Long contactId = 1L;
 
-        doThrow(new RuntimeException("Test exception")).when(contactFacade).delete(ownerId, contactId);
+        doThrow(new RuntimeException("Test exception")).when(generalFacade).delete(ownerId, contactId);
 
         assertThrows(RuntimeException.class, () -> contactController.deleteContact(ownerId, contactId));
-        verify(contactFacade, times(1)).delete(ownerId, contactId);
+        verify(generalFacade, times(1)).delete(ownerId, contactId);
     }
 
     @Test
@@ -469,13 +469,13 @@ public class ContactControllerUnitTests {
     void deleteAll_whenSuccessful_shouldReturn204() {
         UUID ownerId = UUID.randomUUID();
 
-        doNothing().when(contactFacade).deleteAll(ownerId);
+        doNothing().when(generalFacade).deleteAll(ownerId);
 
         ResponseEntity<?> response = contactController.deleteAll(ownerId);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         assertNull(response.getBody());
-        verify(contactFacade, times(1)).deleteAll(ownerId);
+        verify(generalFacade, times(1)).deleteAll(ownerId);
     }
 
     @Test
@@ -483,9 +483,9 @@ public class ContactControllerUnitTests {
     void deleteAll_whenFacadeThrows_shouldThrowException() {
         UUID ownerId = UUID.randomUUID();
 
-        doThrow(new RuntimeException("Test exception")).when(contactFacade).deleteAll(ownerId);
+        doThrow(new RuntimeException("Test exception")).when(generalFacade).deleteAll(ownerId);
 
         assertThrows(RuntimeException.class, () -> contactController.deleteAll(ownerId));
-        verify(contactFacade, times(1)).deleteAll(ownerId);
+        verify(generalFacade, times(1)).deleteAll(ownerId);
     }
 }

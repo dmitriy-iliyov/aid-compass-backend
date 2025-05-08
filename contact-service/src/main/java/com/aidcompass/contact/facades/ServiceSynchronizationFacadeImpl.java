@@ -1,17 +1,15 @@
 package com.aidcompass.contact.facades;
 
+
 import com.aidcompass.contact.models.dto.system.SystemConfirmationRequestDto;
 import com.aidcompass.contact.models.dto.system.SystemContactCreateDto;
 import com.aidcompass.contact.models.dto.system.SystemContactDto;
-import com.aidcompass.contact.models.dto.system.SystemContactUpdateDto;
 import com.aidcompass.contact.services.SystemContactService;
 import com.aidcompass.contact.services.UnconfirmedContactService;
 import com.aidcompass.contact.validation.validators.CountValidator;
-import com.aidcompass.contact.validation.validators.PermissionValidator;
 import com.aidcompass.contact_type.ContactTypeService;
 import com.aidcompass.contact_type.models.ContactType;
 import com.aidcompass.contact_type.models.ContactTypeEntity;
-import com.aidcompass.exceptions.invalid_input.InvalidContactUpdateException;
 import com.aidcompass.exceptions.invalid_input.NotEnoughSpaseForNewContactException;
 import com.aidcompass.global_exceptions.BaseNotFoundException;
 import com.aidcompass.global_exceptions.dto.ErrorDto;
@@ -22,13 +20,11 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class SystemContactFacadeImpl implements SystemContactFacade {
+public class ServiceSynchronizationFacadeImpl implements ServiceSynchronizationFacade {
 
     private final SystemContactService systemContactService;
     private final UnconfirmedContactService unconfirmedContactService;
     private final ContactTypeService typeService;
-
-    private final PermissionValidator permissionValidator;
     private final CountValidator countValidator;
 
 
@@ -44,16 +40,16 @@ public class SystemContactFacadeImpl implements SystemContactFacade {
 
     @Override
     public Long confirmContact(SystemConfirmationRequestDto requestDto) {
-        SystemContactDto systemDto = unconfirmedContactService.find(requestDto.contact());
+        SystemContactDto systemDto = unconfirmedContactService.findById(requestDto.contact());
         systemDto = systemContactService.save(systemDto);
-        unconfirmedContactService.delete(systemDto.contact());
+        unconfirmedContactService.deleteById(systemDto.contact());
         return systemDto.id();
     }
 
     @Override
     public boolean existsByContactTypeAndContact(ContactType type, String contact) {
         ContactTypeEntity typeEntity = typeService.findByType(type);
-        return systemContactService.existsByTypeEntityAndContact(typeEntity, contact);
+        return systemContactService.existsByTypeEntityAndContact(typeEntity, contact) || unconfirmedContactService.existsById(contact);
     }
 
     @Override
@@ -61,21 +57,7 @@ public class SystemContactFacadeImpl implements SystemContactFacade {
         try {
             return systemContactService.findByContact(contact);
         } catch (BaseNotFoundException e) {
-            return unconfirmedContactService.find(contact);
+            return unconfirmedContactService.findById(contact);
         }
-    }
-
-    @Override
-    public void confirmContactById(Long contactId) {
-        systemContactService.confirmContactById(contactId);
-    }
-
-    @Override
-    public SystemContactDto update(SystemContactUpdateDto dto) {
-        List<ErrorDto> errors = permissionValidator.isUpdatePermit(dto.ownerId(), dto);
-        if (!errors.isEmpty()) {
-            throw new InvalidContactUpdateException(errors);
-        }
-        return systemContactService.update(dto);
     }
 }

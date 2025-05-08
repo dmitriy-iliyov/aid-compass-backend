@@ -50,7 +50,6 @@ public class ConfirmationController {
                                       @RequestParam("resource_type")
                                       @ValidEnum(enumClass = ResourceType.class, message = "Resource type should be valid!")
                                       ResourceType type) throws Exception {
-
         contactConfFacade.sendConfirmationMessage(resource, resourceId, type);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -58,7 +57,7 @@ public class ConfirmationController {
     }
 
 
-    // только для пользователя
+    // только для пользователя и не подтвержденного тоже
     @Operation(summary = "Confirm resource by token.")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Token successfully validated."),

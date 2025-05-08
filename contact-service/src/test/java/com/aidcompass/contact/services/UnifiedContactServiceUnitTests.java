@@ -3,7 +3,7 @@ package com.aidcompass.contact.services;
 import com.aidcompass.contact.facades.ContactChangingListener;
 import com.aidcompass.contact.repositories.ContactRepository;
 import com.aidcompass.contact.mappers.ContactMapper;
-import com.aidcompass.contact.models.ContactEntity;
+import com.aidcompass.contact.models.entity.ContactEntity;
 import com.aidcompass.contact.models.dto.*;
 import com.aidcompass.contact.models.dto.system.SystemContactDto;
 import com.aidcompass.contact_type.ContactTypeService;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class DefaultContactServiceUnitTests {
+class UnifiedContactServiceUnitTests {
 
     @Mock
     private ContactRepository contactRepository;
@@ -39,7 +39,7 @@ class DefaultContactServiceUnitTests {
     private ContactChangingListener listener;
 
     @InjectMocks
-    private DefaultContactService contactService;
+    private UnifiedContactService contactService;
 
     @Test
     @DisplayName("UT save() should save contact and return PrivateContactResponseDto")

@@ -1,7 +1,7 @@
 package com.aidcompass.contact.services;
 
 import com.aidcompass.contact.mappers.UnconfirmedContactMapper;
-import com.aidcompass.contact.models.UnconfirmedContactEntity;
+import com.aidcompass.contact.models.entity.UnconfirmedContactEntity;
 import com.aidcompass.contact.models.dto.system.SystemContactCreateDto;
 import com.aidcompass.contact.models.dto.system.SystemContactDto;
 import com.aidcompass.contact.repositories.UnconfirmedContactRepository;
@@ -11,10 +11,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UnconfirmedAccountEmailService implements UnconfirmedContactService {
+public class UnconfirmedContactServiceImpl implements UnconfirmedContactService {
 
     private final UnconfirmedContactRepository repository;
     private final UnconfirmedContactMapper mapper;
+
 
     @Override
     public void save(SystemContactCreateDto dto) {
@@ -22,7 +23,7 @@ public class UnconfirmedAccountEmailService implements UnconfirmedContactService
     }
 
     @Override
-    public SystemContactDto find(String contact) {
+    public SystemContactDto findById(String contact) {
         UnconfirmedContactEntity entity = repository.findById(contact).orElseThrow(
                 UnconfirmedContactNotFoundByIdException::new
         );
@@ -30,7 +31,12 @@ public class UnconfirmedAccountEmailService implements UnconfirmedContactService
     }
 
     @Override
-    public void delete(String contact) {
+    public void deleteById(String contact) {
         repository.deleteById(contact);
+    }
+
+    @Override
+    public boolean existsById(String contact) {
+        return repository.existsById(contact);
     }
 }

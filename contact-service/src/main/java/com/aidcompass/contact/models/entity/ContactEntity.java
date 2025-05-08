@@ -1,4 +1,4 @@
-package com.aidcompass.contact.models;
+package com.aidcompass.contact.models.entity;
 
 import com.aidcompass.contact_type.models.ContactTypeEntity;
 import jakarta.persistence.*;
@@ -24,7 +24,7 @@ public class ContactEntity {
     @Column(name = "owner_id", nullable = false, updatable = false)
     private UUID ownerId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id", nullable = false)
     private ContactTypeEntity typeEntity;
 

@@ -3,7 +3,7 @@ package com.aidcompass.confirmation.services;
 import com.aidcompass.clients.ContactService;
 import com.aidcompass.confirmation.ResourceType;
 import com.aidcompass.confirmation.repositories.ConfirmationRepository;
-import com.aidcompass.confirmation.utils.CodeFactory;
+import com.aidcompass.utils.CodeFactory;
 import com.aidcompass.exceptions.models.InvalidConfirmationTokenException;
 import com.aidcompass.message.MessageService;
 import com.aidcompass.message.models.MessageDto;

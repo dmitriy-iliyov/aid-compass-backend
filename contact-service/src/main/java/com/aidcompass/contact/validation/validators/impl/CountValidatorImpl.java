@@ -1,6 +1,5 @@
 package com.aidcompass.contact.validation.validators.impl;
 
-import com.aidcompass.contact.models.dto.ContactCreateDto;
 import com.aidcompass.contact.models.dto.markers.CreateDto;
 import com.aidcompass.contact.services.SystemContactService;
 import com.aidcompass.contact.validation.validators.CountValidator;
@@ -22,6 +21,7 @@ public class CountValidatorImpl implements CountValidator {
     private static final long MAX_PHONE_NUMBER_COUNT = 2;
 
 
+    // учитывать и кеш
     @Override
     public boolean hasSpaceForEmails(UUID ownerId, long addCount) {
         long currentCount = service.countByOwnerIdAndContactType(ownerId, ContactType.EMAIL);

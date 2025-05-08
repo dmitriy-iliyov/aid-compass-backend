@@ -41,6 +41,7 @@ public class UserUpdateValidator implements ConstraintValidator<UserUpdate, Syst
             return false;
         }
 
+        // может в один запрос обьеденить
         try {
             // надо проверять в общей базе контактов
             boolean isEmailExist = contactService.isEmailExist(systemUserUpdateDto.getEmail());
@@ -59,24 +60,12 @@ public class UserUpdateValidator implements ConstraintValidator<UserUpdate, Syst
             authorities.remove(Authority.ROLE_USER);
             authorities.add(Authority.ROLE_UNCONFIRMED_USER);
 
-            contactService.updateContact();
-
+            contactService.updateContact(systemUserUpdateDto.getEmail());
             confirmationService.sendConfirmationMessage(systemUserUpdateDto.getEmail());
 
             systemUserUpdateDto.setAuthorities(authorities);
             return true;
         }
-
-//        if (systemUserUpdateDto.getNumber() != null) {
-//            SystemUserDto phoneUser = userFacade.systemFindByNumber(systemUserUpdateDto.getNumber());
-//            if (phoneUser != null && !Objects.equals(phoneUser.id(), systemUserUpdateDto.getId())) {
-//                hasErrors = true;
-//                constraintValidatorContext.buildConstraintViolationWithTemplate("Number is in use!")
-//                        .addPropertyNode("number")
-//                        .addConstraintViolation();
-//            }
-//        } else
-//            return false;
         return !hasErrors;
     }
 }

@@ -7,7 +7,9 @@ public interface UnconfirmedContactService {
 
     void save(SystemContactCreateDto dto);
 
-    SystemContactDto find(String contact);
+    SystemContactDto findById(String contact);
 
-    void delete(String contact);
+    void deleteById(String contact);
+
+    boolean existsById(String contact);
 }

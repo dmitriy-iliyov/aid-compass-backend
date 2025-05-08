@@ -1,4 +1,4 @@
-package com.aidcompass.confirmation.utils;
+package com.aidcompass.utils;
 
 import org.springframework.stereotype.Component;
 

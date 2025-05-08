@@ -28,7 +28,7 @@ import java.util.UUID;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class ContactFacadeImpl implements ContactFacade {
+public class GeneralFacadeImpl implements GeneralFacade {
 
     private final ContactService contactService;
     private final PermissionValidator permissionValidator;
@@ -41,7 +41,6 @@ public class ContactFacadeImpl implements ContactFacade {
     @Override
     public PrivateContactResponseDto save(UUID ownerId, ContactCreateDto contact) {
         boolean isUserExists = authService.existsById(ownerId);
-        System.out.println(isUserExists);
         if (isUserExists) {
             if (countValidator.hasSpaceForContact(ownerId, contact)) {
                 PrivateContactResponseDto dto = contactService.save(ownerId, contact);

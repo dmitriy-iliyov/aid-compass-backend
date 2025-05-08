@@ -1,6 +1,5 @@
 package com.aidcompass.contact.validation.validators;
 
-import com.aidcompass.contact.models.dto.ContactCreateDto;
 import com.aidcompass.contact.models.dto.markers.CreateDto;
 
 import java.util.List;

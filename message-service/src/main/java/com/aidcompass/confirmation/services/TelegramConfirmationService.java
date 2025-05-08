@@ -3,7 +3,7 @@ package com.aidcompass.confirmation.services;
 import com.aidcompass.clients.ContactService;
 import com.aidcompass.confirmation.ResourceType;
 import com.aidcompass.confirmation.repositories.ConfirmationRepository;
-import com.aidcompass.confirmation.utils.CodeFactory;
+import com.aidcompass.utils.CodeFactory;
 import com.aidcompass.exceptions.models.InvalidConfirmationTokenException;
 import com.aidcompass.message.MessageService;
 import com.aidcompass.message.models.MessageDto;
@@ -46,7 +46,7 @@ public class TelegramConfirmationService implements ResourceConfirmationService 
     @Override
     public void sendConfirmationMessage(String resource, Long resourceId) throws Exception {
         String code = codeFactory.generate();
-        MessageDto message = new MessageDto(resource, "Confirmation phone number", code);
+        MessageDto message = new MessageDto(resource, "Confirmation telegram", code);
 
         confirmationRepository.save(KEY_TEMPLATE.formatted(code), resourceId.toString(), TOKEN_TTL);
         messageService.sendMessage(message);

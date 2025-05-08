@@ -3,7 +3,7 @@ package com.aidcompass.contact.services;
 import com.aidcompass.contact.facades.ContactChangingListener;
 import com.aidcompass.contact.repositories.ContactRepository;
 import com.aidcompass.contact.mappers.ContactMapper;
-import com.aidcompass.contact.models.ContactEntity;
+import com.aidcompass.contact.models.entity.ContactEntity;
 import com.aidcompass.contact.models.dto.*;
 import com.aidcompass.contact.models.dto.system.SystemContactDto;
 import com.aidcompass.contact.models.dto.system.SystemContactUpdateDto;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 // проверить масштабируемость
 @Service
 @RequiredArgsConstructor
-public class DefaultContactService implements ContactService, SystemContactService {
+public class UnifiedContactService implements ContactService, SystemContactService {
 
     private final ContactRepository contactRepository;
     private final ContactMapper contactMapper;
@@ -153,7 +153,7 @@ public class DefaultContactService implements ContactService, SystemContactServi
     @Transactional(readOnly = true)
     @Override
     public SystemContactDto findById(Long contactId) {
-        ContactEntity entity = contactRepository.findById(contactId).orElseThrow(ContactNotFoundByIdException::new);
+        ContactEntity entity = contactRepository.findWithTypeById(contactId).orElseThrow(ContactNotFoundByIdException::new);
         return contactMapper.toSystemDto(entity);
     }
 
@@ -163,7 +163,7 @@ public class DefaultContactService implements ContactService, SystemContactServi
     })
     @Transactional
     public PrivateContactResponseDto update(UUID ownerId, ContactUpdateDto dto, ContactChangingListener listener) {
-        ContactEntity entity = contactRepository.findById(dto.id()).orElseThrow(
+        ContactEntity entity = contactRepository.findWithTypeById(dto.id()).orElseThrow(
                 ContactNotFoundByIdException::new
         );
 
@@ -185,7 +185,7 @@ public class DefaultContactService implements ContactService, SystemContactServi
     @Transactional
     @Override
     public SystemContactDto update(SystemContactUpdateDto dto) {
-        ContactEntity entity = contactRepository.findById(dto.id()).orElseThrow(ContactNotFoundByIdException::new);
+        ContactEntity entity = contactRepository.findWithTypeById(dto.id()).orElseThrow(ContactNotFoundByIdException::new);
         boolean isConfirmed = entity.getContact().equals(dto.contact()) && entity.isConfirmed();
         contactMapper.updateEntityFromDto(dto, entity, isConfirmed);
         return contactMapper.toSystemDto(contactRepository.save(entity));

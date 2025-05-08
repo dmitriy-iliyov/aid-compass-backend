@@ -25,4 +25,9 @@ public class RestClientContactService implements ContactService {
     public String createContact(UUID id, String email) {
         return "";
     }
+
+    @Override
+    public void updateContact(String email) {
+
+    }
 }

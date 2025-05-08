@@ -9,4 +9,6 @@ public interface ContactService {
     void confirmContact(String email);
 
     String createContact(UUID id, String email);
+
+    void updateContact(String email);
 }

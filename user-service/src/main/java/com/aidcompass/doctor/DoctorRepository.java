@@ -1,7 +1,6 @@
 package com.aidcompass.doctor;
 
 
-import aidcompass.api.doctor.models.DoctorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

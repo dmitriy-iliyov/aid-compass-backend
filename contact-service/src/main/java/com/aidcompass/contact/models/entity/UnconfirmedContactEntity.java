@@ -1,9 +1,9 @@
-package com.aidcompass.contact.models;
+package com.aidcompass.contact.models.entity;
 
 import com.aidcompass.contact_type.models.ContactType;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Id;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.util.UUID;
@@ -12,11 +12,11 @@ import java.util.UUID;
 public class UnconfirmedContactEntity {
 
     @Id
-    private String contact;
-    private ContactType type;
+    private final String contact;
+    private final ContactType type;
 
     @JsonProperty("owner_id")
-    private UUID ownerId;
+    private final UUID ownerId;
 
 
     @JsonCreator

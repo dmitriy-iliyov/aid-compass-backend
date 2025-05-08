@@ -8,7 +8,7 @@ import com.aidcompass.contact.models.dto.PublicContactResponseDto;
 import java.util.List;
 import java.util.UUID;
 
-public interface ContactFacade {
+public interface GeneralFacade {
 
     List<PrivateContactResponseDto> saveAll(UUID ownerId, List<ContactCreateDto> contacts);
 

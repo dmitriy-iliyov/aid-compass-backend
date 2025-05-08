@@ -1,6 +1,6 @@
 package com.aidcompass.contact.validation.validators.impl;
 
-import com.aidcompass.contact.facades.SystemContactFacade;
+import com.aidcompass.contact.facades.ServiceSynchronizationFacade;
 import com.aidcompass.contact.models.dto.markers.UpdateDto;
 import com.aidcompass.contact.validation.validators.UniquenessValidator;
 import com.aidcompass.contact_type.models.ContactType;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UniquenessValidatorImpl implements UniquenessValidator {
 
-    private final SystemContactFacade facade;
+    private final ServiceSynchronizationFacade facade;
 
 
     @Override

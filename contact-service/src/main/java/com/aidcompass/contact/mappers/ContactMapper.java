@@ -4,7 +4,7 @@ import com.aidcompass.contact.models.dto.*;
 import com.aidcompass.contact.models.dto.system.SystemContactDto;
 import com.aidcompass.contact.models.dto.system.SystemContactUpdateDto;
 import com.aidcompass.contact_type.ContactTypeService;
-import com.aidcompass.contact.models.ContactEntity;
+import com.aidcompass.contact.models.entity.ContactEntity;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public interface ContactMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(source = "isConfirmedParam", target = "confirmed")
-    @Mapping(source = "isPrimary", target = "primary")
+    @Mapping(source = "dto.isPrimary", target = "primary")
     void updateEntityFromDto(ContactUpdateDto dto, @MappingTarget ContactEntity entity, boolean isConfirmedParam);
 
     @Mapping(target = "id", ignore = true)

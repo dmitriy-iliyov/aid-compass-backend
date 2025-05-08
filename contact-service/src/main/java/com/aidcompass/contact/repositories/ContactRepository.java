@@ -1,6 +1,6 @@
 package com.aidcompass.contact.repositories;
 
-import com.aidcompass.contact.models.ContactEntity;
+import com.aidcompass.contact.models.entity.ContactEntity;
 import com.aidcompass.contact_type.models.ContactType;
 import com.aidcompass.contact_type.models.ContactTypeEntity;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -50,4 +50,6 @@ public interface ContactRepository extends JpaRepository<ContactEntity, Long> {
     @Query(value = "UPDATE contacts SET is_confirmed = true WHERE id = :contactId", nativeQuery = true)
     int confirmContactById(@Param("contactId") Long contactId);
 
+    @EntityGraph(attributePaths = {"typeEntity"})
+    Optional<ContactEntity> findWithTypeById(Long contactId);
 }
