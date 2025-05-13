@@ -9,12 +9,27 @@ public record CustomerRegistrationDto(
         @JsonProperty("first_name")
         @NotBlank(message = "First name shouldn't be empty or blank!")
         @Size(min = 2, max = 20, message = "Should has lengths from 2 to 20 characters!")
-        @Pattern(regexp = "^[а-яА-ЯєЄїЇіІґҐ]+$", message = "First name should contain only Ukrainian")
+        @Pattern(
+                regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
+                message = "First name should contain only Ukrainian!"
+        )
         String firstName,
 
         @JsonProperty("second_name")
         @NotBlank(message = "Second name shouldn't be empty or blank!")
         @Size(min = 2, max = 20, message = "Should has lengths from 2 to 20 characters!")
-        @Pattern(regexp = "^[а-яА-ЯєЄїЇіІґҐ]+$", message = "Second name should contain only Ukrainian")
-        String secondName
+        @Pattern(
+                regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
+                message = "Second name should contain only Ukrainian!"
+        )
+        String secondName,
+
+        @JsonProperty("last_name")
+        @NotBlank(message = "Last name shouldn't be empty or blank!")
+        @Size(min = 2, max = 20, message = "Should has lengths from 2 to 20 characters!")
+        @Pattern(
+                regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
+                message = "Last name should contain only Ukrainian!"
+        )
+        String lastName
 ) { }

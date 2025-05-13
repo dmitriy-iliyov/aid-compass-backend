@@ -1,27 +1,30 @@
 package com.aidcompass.doctor;
 
 
+import com.aidcompass.doctor.models.DoctorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface DoctorRepository extends JpaRepository<DoctorEntity, Long> {
+public interface DoctorRepository extends JpaRepository<DoctorEntity, UUID> {
 
-    Optional<DoctorEntity> findByUsername(String username);
+    @Modifying
+    @Query("UPDATE DoctorEntity d SET d.address = :address WHERE d.id = :id")
+    void updateAddressById(@Param("id") UUID id, @Param("address") String address);
 
-    boolean existsByLicenseNumber(String licenseNumber);
+    @Modifying
+    @Query("UPDATE DoctorEntity d SET d.approved = :approve_status WHERE d.id = :id")
+    void approveById(@Param("id") UUID id, @Param("approve_status") boolean approveStatus);
 
-    boolean existsByEmail(String email);
+    List<DoctorEntity> findAllByApproved(boolean approved);
 
-    Iterable<DoctorEntity> findAllByApproved(boolean approved);
-
-    Iterable<DoctorEntity> findAllByApprovedAndSpecialization(boolean approved, String specialization);
-
-    Optional<DoctorEntity> findByEmail(String email);
-
-    Optional<DoctorEntity> findByNumber(String number);
-
-    Optional<DoctorEntity> findByLicenseNumber(String number);
+    @Query("SELECT d FROM DoctorEntity d JOIN FETCH d.specializations WHERE d.id = :id")
+    Optional<DoctorEntity> findWithSepcsById(@Param("id") UUID id);
 }

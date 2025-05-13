@@ -3,6 +3,7 @@ package com.aidcompass.customer;
 
 import com.aidcompass.customer.models.dto.CustomerRegistrationDto;
 import com.aidcompass.customer.models.dto.CustomerUpdateDto;
+import com.aidcompass.customer.models.dto.PrivateCustomerResponseDto;
 import com.aidcompass.customer.models.dto.PublicCustomerResponseDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -22,11 +23,27 @@ public class CustomerController {
 
 
     @PostMapping("/{id}")
-    public ResponseEntity<?> createCustomer(@PathVariable("id") UUID id,
-                                            @RequestBody @Valid CustomerRegistrationDto customerRegistrationDto) {
-        customerService.save(id, customerRegistrationDto);
+    public ResponseEntity<?> createEmptyCustomer(@PathVariable("id") UUID id) {
+        customerService.save(id);
+        //перепревязать контпкт аккаунта к польззователю
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .build();
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<?> createCustomer(@PathVariable("id") UUID id,
+                                            @RequestBody @Valid CustomerRegistrationDto customerRegistrationDto,
+                                            @RequestParam(value = "return_body", defaultValue = "false") boolean returnBody) {
+        PrivateCustomerResponseDto response = customerService.save(id, customerRegistrationDto);
+        //перепревязать контпкт аккаунта к польззователю
+        if (returnBody) {
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(response);
+        }
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
                 .build();
     }
 

@@ -39,8 +39,8 @@ public class UserFacadeImpl implements UserFacade {
         unconfirmedUserService.save(id, dto);
     }
 
-    @Override
     @Transactional
+    @Override
     public void confirmByEmail(String email) {
         try {
             userService.confirmByEmail(email);

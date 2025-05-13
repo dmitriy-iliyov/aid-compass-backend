@@ -12,5 +12,8 @@ public record PublicCustomerResponseDto(
         String firstName,
 
         @JsonProperty("second_name")
-        String secondName
+        String secondName,
+
+        @JsonProperty("last_name")
+        String lastName
 ) { }

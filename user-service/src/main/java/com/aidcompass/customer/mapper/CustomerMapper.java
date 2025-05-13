@@ -9,17 +9,18 @@ import org.mapstruct.*;
 
 import java.util.UUID;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(
+        componentModel = MappingConstants.ComponentModel.SPRING,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+)
 public interface CustomerMapper {
 
-    CustomerEntity toEntity(UUID id, CustomerRegistrationDto customerRegistrationDto);
+    CustomerEntity toEntity(UUID id, CustomerRegistrationDto dto);
 
-    PublicCustomerResponseDto toPublicResponseDto(CustomerEntity customerEntity);
+    PublicCustomerResponseDto toPublicResponseDto(CustomerEntity entity);
 
-    @Mapping(source = "customer.id", target = "id")
-    @Mapping(source = "customer", target = "publicData")
-    PrivateCustomerResponseDto toPrivateResponseDto(PublicCustomerResponseDto customer);
+    @Mapping(source = "profileStatus.status", target = "status")
+    PrivateCustomerResponseDto toPrivateResponseDto(CustomerEntity entity);
 
-    void updateEntityFromDto(CustomerUpdateDto customerUpdateDto, @MappingTarget CustomerEntity customerEntity);
+    void updateEntityFromDto(CustomerUpdateDto dto, @MappingTarget CustomerEntity entity);
 }

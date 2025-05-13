@@ -17,7 +17,7 @@ import java.util.UUID;
 public class ContactEntity {
 
     @Id
-    @SequenceGenerator(name = "cont_seq", sequenceName = "cont_seq", allocationSize = 1)
+    @SequenceGenerator(name = "cont_seq", sequenceName = "cont_seq", initialValue = 1, allocationSize = 20)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cont_seq")
     private Long id;
 

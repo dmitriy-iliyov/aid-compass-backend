@@ -8,7 +8,8 @@ import org.springframework.data.redis.core.RedisHash;
 
 import java.util.UUID;
 
-@RedisHash
+// связка происходит с внутрененим auth id пользоввателя а поиск производитьс я по публичному клюючу
+@RedisHash(value = "cont:uncf:", timeToLive = 86400)
 public class UnconfirmedContactEntity {
 
     @Id
@@ -16,15 +17,15 @@ public class UnconfirmedContactEntity {
     private final ContactType type;
 
     @JsonProperty("owner_id")
-    private final UUID ownerId;
+    private final UUID userId;
 
 
     @JsonCreator
     public UnconfirmedContactEntity(@JsonProperty("contact") String contact,
                                     @JsonProperty("type") ContactType type,
-                                    @JsonProperty("owner_id") UUID ownerId) {
+                                    @JsonProperty("owner_id") UUID userId) {
         this.contact = contact;
         this.type = type;
-        this.ownerId = ownerId;
+        this.userId = userId;
     }
 }
