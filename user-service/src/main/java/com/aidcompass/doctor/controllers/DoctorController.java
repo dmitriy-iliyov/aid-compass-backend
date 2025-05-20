@@ -1,15 +1,19 @@
 package com.aidcompass.doctor.controllers;
 
 
-import com.aidcompass.doctor.DoctorFacade;
+import com.aidcompass.detail.DetailService;
+import com.aidcompass.detail.models.ServiceType;
+import com.aidcompass.detail.models.dto.DetailDto;
+import com.aidcompass.detail.models.dto.PrivateDetailResponseDto;
+import com.aidcompass.doctor.PersistFacade;
 import com.aidcompass.doctor.models.dto.doctor.DoctorRegistrationDto;
 import com.aidcompass.doctor.models.dto.doctor.DoctorUpdateDto;
 import com.aidcompass.doctor.models.dto.doctor.PrivateDoctorResponseDto;
+import com.aidcompass.doctor.models.dto.page.PageDto;
 import com.aidcompass.doctor.services.DoctorService;
+import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -24,14 +28,16 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class DoctorController {
 
-    private final DoctorFacade facade;
-    private final DoctorService service;
+    private final PersistFacade facade;
+    private final DoctorService doctorService;
+    private final DetailService detailService;
 
 
     @PostMapping("/{id}")
     public ResponseEntity<?> createDoctor(@PathVariable("id") UUID id,
                                           @RequestBody @Valid DoctorRegistrationDto dto,
-                                          @RequestParam(value = "return_body", defaultValue = "false") boolean  returnBody) {
+                                          @RequestParam(value = "return_body", defaultValue = "false")
+                                          boolean  returnBody) {
         PrivateDoctorResponseDto response = facade.save(id, dto);
         if (returnBody) {
             return ResponseEntity
@@ -41,45 +47,91 @@ public class DoctorController {
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
-
-    }
-
-    @PatchMapping("/{id}/address")
-    public ResponseEntity<?> setAddressByDoctorId(@PathVariable("id") UUID id,
-                                                  @RequestParam("address")
-                                                  @NotBlank(message = "Address can't be empty or blank!")
-                                                  String address) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(service.setAddress(id, address));
     }
 
     @GetMapping("/{id}/private")
     public ResponseEntity<?> getPrivateDoctorById(@PathVariable("id") UUID id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findPrivateById(id));
+                .body(doctorService.findPrivateById(id));
+    }
+
+    @GetMapping("/{id}/private/full")
+    public ResponseEntity<?> getFullPrivateDoctorById(@PathVariable("id") UUID id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(doctorService.findFullPrivateById(id));
     }
 
     @GetMapping("/{id}/public")
     public ResponseEntity<?> getPublicDoctorById(@PathVariable("id") UUID id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findPublicById(id));
+                .body(doctorService.findPublicById(id));
+    }
+
+    @GetMapping("/{id}/public/full")
+    public ResponseEntity<?> getFullPublicDoctorById(@PathVariable("id") UUID id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(doctorService.findFullPublicById(id));
     }
 
     @GetMapping
-    public ResponseEntity<?> getDoctorByFullName() {
+    public ResponseEntity<?> getAllDoctorsByNamesCombination(@RequestParam(value = "first_name", required = false)
+                                                  @NotBlank(message = "First name shouldn't be empty or blank!")
+                                                  @Size(min = 2, max = 20, message = "Should has lengths from 2 to 20 characters!")
+                                                  @Pattern(
+                                                          regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
+                                                          message = "First name should contain only Ukrainian!"
+                                                  )
+                                                  String firstName,
+
+                                                     @RequestParam(value = "second_name", required = false)
+                                                  @NotBlank(message = "Second name shouldn't be empty or blank!")
+                                                  @Size(min = 2, max = 20, message = "Should has lengths from 2 to 20 characters!")
+                                                  @Pattern(
+                                                          regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
+                                                          message = "Second name should contain only Ukrainian!"
+                                                  )
+                                                  String secondName,
+
+                                                     @RequestParam(value = "last_name", required = false)
+                                                  @NotBlank(message = "Last name shouldn't be empty or blank!")
+                                                  @Size(min = 2, max = 20, message = "Should has lengths from 2 to 20 characters!")
+                                                  @Pattern(
+                                                          regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
+                                                          message = "Last name should contain only Ukrainian!"
+                                                  )
+                                                  String lastName,
+                                                  @RequestBody @Valid PageDto page) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(null);
+                .body(doctorService.findAllByNamesCombination(firstName, secondName, lastName, page));
+    }
+
+    @PatchMapping("/{id}/detail")
+    public ResponseEntity<?> updateDetailByDoctorId(@PathVariable("id") UUID id,
+                                                    @RequestParam(value = "return_body", defaultValue = "false")
+                                                    boolean returnBody,
+                                                    @RequestBody @Valid DetailDto dto) {
+        PrivateDetailResponseDto response = detailService.updateWithCache(id, dto, ServiceType.DOCTOR_SERVICE);
+        if (returnBody) {
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(response);
+        }
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateDoctor(@PathVariable("id") UUID id,
                                           @RequestBody @Valid DoctorUpdateDto dto,
-                                          @RequestParam(value = "return_body", defaultValue = "false") boolean  returnBody) {
-        PrivateDoctorResponseDto response = service.update(id, dto);
+                                          @RequestParam(value = "return_body", defaultValue = "false")
+                                          boolean  returnBody) {
+        PrivateDoctorResponseDto response = doctorService.update(id, dto);
         if (returnBody) {
             return ResponseEntity
                     .status(HttpStatus.OK)
@@ -91,31 +143,32 @@ public class DoctorController {
     }
 
     @GetMapping("/unapproved")
-    public ResponseEntity<?> getUnapprovedDoctors() {
+    public ResponseEntity<?> getUnapprovedDoctors(@RequestBody @Valid PageDto page) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findAllUnapproved());
+                .body(doctorService.findAllUnapproved(page));
     }
 
     @GetMapping("/approved")
-    public ResponseEntity<?> getApprovedDoctors() {
+    public ResponseEntity<?> getApprovedDoctors(@RequestBody @Valid PageDto page) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findAllApproved());
+                .body(doctorService.findAllApproved(page));
     }
 
     @GetMapping("/approved/{specialization}")
     public ResponseEntity<?> getDoctorsBySpecialization(@PathVariable("specialization")
                                                         @Pattern(regexp = "^[a-zA-z]+$]")
-                                                        String specialization) {
+                                                        DoctorSpecialization specialization,
+                                                        @RequestBody @Valid PageDto page) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findAllApprovedBySpecialization(specialization));
+                .body(doctorService.findAllApprovedBySpecialization(specialization, page));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteDoctorById(@PathVariable("id") @Positive UUID id) {
-        service.deleteById(id);
+        doctorService.deleteById(id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();

@@ -2,9 +2,13 @@ package com.aidcompass.detail.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record DetailDto(
+        @NotBlank(message = "Address can't be empty or blank!")
+        String address,
+
         @JsonProperty("working_experience")
         @Digits(integer = 2, fraction = 0, message = "Working experience can't contain more than 2 digits!")
         Integer workingExperience,

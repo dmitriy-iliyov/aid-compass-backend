@@ -32,7 +32,7 @@ public class CustomerEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_status_id", nullable = false)
-    private ProfileStatusEntity profileStatus;
+    private ProfileStatusEntity profileStatusEntity;
 
     @Column(name = "created_at", updatable = false, nullable = false)
     private Instant createdAt;
@@ -41,9 +41,9 @@ public class CustomerEntity {
     private Instant updatedAt;
 
 
-    public CustomerEntity(UUID id, ProfileStatusEntity profileStatus) {
+    public CustomerEntity(UUID id, ProfileStatusEntity profileStatusEntity) {
         this.id = id;
-        this.profileStatus = profileStatus;
+        this.profileStatusEntity = profileStatusEntity;
     }
 
     @PrePersist

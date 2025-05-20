@@ -6,6 +6,8 @@ public record PrivateDetailResponseDto(
 
         Long id,
 
+        String address,
+
         @JsonProperty("working_experience")
         Integer workingExperience,
 

@@ -1,0 +1,13 @@
+package com.aidcompass.appointment_duration;
+
+import com.aidcompass.appointment_duration.models.AppointmentDurationEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+import java.util.UUID;
+
+@Repository
+public interface AppointmentDurationRepository extends JpaRepository<AppointmentDurationEntity, Long> {
+    Optional<AppointmentDurationEntity> findByOwnerId(UUID ownerId);
+}

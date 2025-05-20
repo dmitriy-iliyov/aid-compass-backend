@@ -3,6 +3,7 @@ package com.aidcompass.doctor.models.dto.doctor;
 import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -38,5 +39,6 @@ public record DoctorUpdateDto(
         String lastName,
 
         @JsonProperty("specializations")
+        @NotEmpty(message = "Should contain at least one specialization!")
         List<DoctorSpecialization> specializations
 ) { }

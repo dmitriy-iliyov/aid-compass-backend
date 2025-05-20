@@ -5,10 +5,7 @@ import com.aidcompass.detail.models.DetailEntity;
 import com.aidcompass.detail.models.dto.DetailDto;
 import com.aidcompass.detail.models.dto.PrivateDetailResponseDto;
 import com.aidcompass.detail.models.dto.PublicDetailResponseDto;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 import java.util.UUID;
 
@@ -18,11 +15,11 @@ import java.util.UUID;
 )
 public interface DetailMapper {
 
-    DetailEntity toEntity(UUID id, UUID userId, DetailDto dto);
+    @Named("toPrivateDetailDto")
+    PrivateDetailResponseDto toPrivateDetailDto(DetailEntity entity);
 
-    PrivateDetailResponseDto toPrivateResponseDto(DetailEntity entity);
-
-    PublicDetailResponseDto toPublicResponseDto(DetailEntity entity);
+    @Named("toPublicDetailDto")
+    PublicDetailResponseDto toPublicDetailDto(DetailEntity entity);
 
     void updateEntityFromDto(DetailDto dto, @MappingTarget DetailEntity entity);
 }

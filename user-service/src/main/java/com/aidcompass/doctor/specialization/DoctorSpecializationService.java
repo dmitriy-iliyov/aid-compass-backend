@@ -1,5 +1,6 @@
 package com.aidcompass.doctor.specialization;
 
+import com.aidcompass.doctor.specialization.mapper.DoctorSpecializationMapper;
 import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.doctor.specialization.models.DoctorSpecializationEntity;
 import com.aidcompass.exceptions.DoctorSpecializationEntityNotFoundBySpecializationException;
@@ -24,7 +25,7 @@ public class DoctorSpecializationService {
         repository.saveAll(entityList);
     }
 
-    @Cacheable(value = "doct:spec", key = "#specialization.toString()")
+    @Cacheable(value = "doctor:spec", key = "#specialization.toString()")
     @Transactional(readOnly = true)
     public DoctorSpecializationEntity findEntityBySpecialization(DoctorSpecialization specialization) {
         return repository.findBySpecialization(specialization).orElseThrow(

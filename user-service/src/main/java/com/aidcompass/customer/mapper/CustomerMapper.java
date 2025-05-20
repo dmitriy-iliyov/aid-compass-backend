@@ -19,7 +19,7 @@ public interface CustomerMapper {
 
     PublicCustomerResponseDto toPublicResponseDto(CustomerEntity entity);
 
-    @Mapping(source = "profileStatus.status", target = "status")
+    @Mapping(source = "profileStatusEntity.profileStatus", target = "profileStatus")
     PrivateCustomerResponseDto toPrivateResponseDto(CustomerEntity entity);
 
     void updateEntityFromDto(CustomerUpdateDto dto, @MappingTarget CustomerEntity entity);

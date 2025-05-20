@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface ProfileStatusRepository extends JpaRepository<ProfileStatusEntity, Long > {
-    Optional<ProfileStatusEntity> findByStatus(ProfileStatus status);
+    Optional<ProfileStatusEntity> findByProfileStatus(ProfileStatus status);
 }

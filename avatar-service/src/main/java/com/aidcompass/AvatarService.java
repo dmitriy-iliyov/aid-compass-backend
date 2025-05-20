@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface AvatarService {
 
-    void create(UUID userId, MultipartFile image);
+    String create(UUID userId, MultipartFile image);
 
     Resource findBytesByUserId(UUID userId);
 

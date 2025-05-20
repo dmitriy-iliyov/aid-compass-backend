@@ -54,6 +54,7 @@ public class RedisConfig {
 
         return RedisCacheManager.builder(redisConnectionFactory)
                 .withCacheConfiguration("contact_types", config)
+                .withCacheConfiguration("exists", config.entryTtl(Duration.ofSeconds(120)))
                 .withCacheConfiguration("public_contacts", config.entryTtl(contactTtl))
                 .withCacheConfiguration("primary_contacts", config.entryTtl(contactTtl))
                 .build();

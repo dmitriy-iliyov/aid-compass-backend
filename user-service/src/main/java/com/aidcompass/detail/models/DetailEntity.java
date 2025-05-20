@@ -24,6 +24,9 @@ public class DetailEntity {
     @Column(name = "user_id", unique = true, nullable = false, updatable = false)
     private UUID userId;
 
+    @Column(name = "address")
+    private String address;
+
     @Column(name = "working_experience", length = 2)
     private Integer workingExperience;
 

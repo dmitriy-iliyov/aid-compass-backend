@@ -22,7 +22,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
 
-    @PostMapping("/{id}")
+    @PostMapping("/empty/{id}")
     public ResponseEntity<?> createEmptyCustomer(@PathVariable("id") UUID id) {
         customerService.save(id);
         //перепревязать контпкт аккаунта к польззователю
@@ -47,7 +47,7 @@ public class CustomerController {
                 .build();
     }
 
-    @GetMapping("/public/{id}")
+    @GetMapping("/{id}/public")
     public ResponseEntity<?> getPublicCustomer(@PathVariable("id") UUID id) {
         PublicCustomerResponseDto publicCustomerResponseDto = customerService.findPublicById(id);
         return ResponseEntity
@@ -55,7 +55,7 @@ public class CustomerController {
                 .body(publicCustomerResponseDto);
     }
 
-    @GetMapping("/private/{id}")
+    @GetMapping("/{id}/private")
     public ResponseEntity<?> getPrivateCustomer(@PathVariable("id") UUID id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -71,11 +71,9 @@ public class CustomerController {
                 .build();
     }
 
-    @DeleteMapping("/{id}/{password}")
-    public ResponseEntity<?> deleteCustomerByPassword(@PathVariable("id") UUID id,
-                                                      @PathVariable("password")
-                                                      @NotBlank(message = "Password shouldn't be empty!") String password) {
-        customerService.deleteByPassword(id, password);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCustomer(@PathVariable("id") UUID id) {
+        customerService.deleteById(id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();

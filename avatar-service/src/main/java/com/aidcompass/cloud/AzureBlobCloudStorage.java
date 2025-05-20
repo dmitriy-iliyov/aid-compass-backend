@@ -1,5 +1,7 @@
 package com.aidcompass.cloud;
 
+import com.azure.storage.blob.BlobServiceClient;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,7 +16,13 @@ public class AzureBlobCloudStorage implements CloudStorage {
     @Value("${spring.cloud.azure.storage.blob.container-name}")
     private String containerName;
 
-//    private final BlobServiceClient blobServiceClient;
+    private final BlobServiceClient blobServiceClient;
+
+
+    @PostConstruct
+    public void setUpBlobServiceClient() {
+        blobServiceClient = new BlobServiceClientBuilder().connectionString(connectionString).buildClient();
+    }
 
 
     @Override

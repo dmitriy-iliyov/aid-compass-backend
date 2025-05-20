@@ -1,0 +1,29 @@
+1.
+// to refactor
+// mb to mappedsuperclass
+//@MappedSuperclass
+//public abstract class BaseProfileEntity {
+//    @Column(name = "created_at", updatable = false, nullable = false)
+//    protected Instant createdAt;
+//
+//    @Column(name = "updated_at", nullable = false)
+//    protected Instant updatedAt;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "profile_status_id", nullable = false)
+//    protected ProfileStatusEntity profileStatusEntity;
+//
+//    @PrePersist
+//    public void prePersist() {
+//        createdAt = Instant.now();
+//        updatedAt = createdAt;
+//    }
+//
+//    @PreUpdate
+//    public void preUpdate() {
+//        updatedAt = Instant.now();
+//    }
+//}
+
+2.
+цикл заповнювання профілю (можливо розщирити енам)

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -17,7 +18,6 @@ public class ProfileStatusDatabaseInitializer {
 
     @PostConstruct
     public void setUpStatuses() {
-        List<ProfileStatus> statusList = new ArrayList<>(List.of(ProfileStatus.values()));
-        service.saveAll(statusList);
+        service.saveAll(Arrays.stream(ProfileStatus.values()).toList());
     }
 }

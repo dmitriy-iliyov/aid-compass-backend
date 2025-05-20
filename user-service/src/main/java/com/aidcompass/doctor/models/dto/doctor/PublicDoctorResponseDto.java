@@ -1,5 +1,6 @@
 package com.aidcompass.doctor.models.dto.doctor;
 
+import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -17,7 +18,5 @@ public record PublicDoctorResponseDto(
         @JsonProperty("second_name")
         String lastName,
 
-        List<String> specializations,
-
-        String address
+        List<DoctorSpecialization> specializations
 ) { }

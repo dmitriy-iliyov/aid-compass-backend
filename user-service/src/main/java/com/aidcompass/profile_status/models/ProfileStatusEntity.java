@@ -19,5 +19,5 @@ public class ProfileStatusEntity {
 
     @Column(name = "status", nullable = false, unique = true)
     @Enumerated(EnumType.STRING)
-    private ProfileStatus status;
+    private ProfileStatus profileStatus;
 }

@@ -6,6 +6,7 @@ import java.util.UUID;
 public record SystemDetailDto(
         Long id,
         UUID userId,
+        String address,
         Integer workingExperience,
         String aboutMyself,
         Instant createdAt,

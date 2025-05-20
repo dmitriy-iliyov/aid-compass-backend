@@ -7,6 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record FullPublicDoctorResponseDto(
     PublicDoctorResponseDto doctor,
 
-    @JsonProperty("doctor_detail")
-    PublicDetailResponseDto doctorDetail
+    @JsonProperty("detail")
+    PublicDetailResponseDto detail
 ) { }

@@ -4,6 +4,7 @@ import com.aidcompass.profile_status.models.ProfileStatus;
 import com.aidcompass.profile_status.models.ProfileStatusDto;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
@@ -15,6 +16,7 @@ import java.util.List;
 )
 public interface ProfileStatusMapper {
 
+    @Mapping(target = "profileStatus", source = "status")
     ProfileStatusEntity toEntity(ProfileStatus status);
 
     List<ProfileStatusEntity> toEntityList(List<ProfileStatus> statusList);

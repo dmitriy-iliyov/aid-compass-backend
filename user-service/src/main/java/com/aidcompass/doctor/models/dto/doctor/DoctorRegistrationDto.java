@@ -37,5 +37,6 @@ public record DoctorRegistrationDto (
         String lastName,
 
         @JsonProperty("specializations")
+        @NotEmpty(message = "Should contain at least one specialization!")
         List<DoctorSpecialization> specializations
 ) { }

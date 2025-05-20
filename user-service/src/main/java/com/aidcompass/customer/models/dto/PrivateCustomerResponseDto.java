@@ -1,5 +1,6 @@
 package com.aidcompass.customer.models.dto;
 
+import com.aidcompass.profile_status.models.ProfileStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.UUID;
@@ -17,5 +18,5 @@ public record PrivateCustomerResponseDto(
         String lastName,
 
         @JsonProperty("profile_status")
-        String status
+        ProfileStatus profileStatus
 ) { }

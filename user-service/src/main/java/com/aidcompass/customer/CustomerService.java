@@ -9,17 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 public interface CustomerService {
-    void save(UUID userId);
+    void save(UUID id);
 
-    PrivateCustomerResponseDto save(UUID userId, CustomerRegistrationDto customerRegistrationDto);
+    PrivateCustomerResponseDto save(UUID id, CustomerRegistrationDto customerRegistrationDto);
 
     PublicCustomerResponseDto findPublicById(UUID id);
 
-    PrivateCustomerResponseDto findPrivateById(UUID userId);
+    PrivateCustomerResponseDto findPrivateById(UUID id);
 
     void updateById(UUID userId, CustomerUpdateDto customerUpdateDto);
 
-    void deleteById(UUID userId);
-
-    void deleteByPassword(UUID userId, String password);
+    void deleteById(UUID id);
 }

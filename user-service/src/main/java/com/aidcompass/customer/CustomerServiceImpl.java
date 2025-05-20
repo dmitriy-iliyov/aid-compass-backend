@@ -11,7 +11,6 @@ import com.aidcompass.customer.models.dto.PublicCustomerResponseDto;
 import com.aidcompass.exceptions.customer.CustomerNotFoundByIdException;
 import com.aidcompass.exceptions.customer.CustomerNotFoundByUserIdException;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;
-import com.aidcompass.utils.uuid.UuidFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,17 +28,17 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional
     @Override
-    public void save(UUID userId) {
+    public void save(UUID id) {
         ProfileStatusEntity statusEntity = statusService.findByStatus(ProfileStatus.INCOMPLETE);
-        customerRepository.save(new CustomerEntity(userId, statusEntity));
+        customerRepository.save(new CustomerEntity(id, statusEntity));
     }
 
     @Transactional
     @Override
-    public PrivateCustomerResponseDto save(UUID userId, CustomerRegistrationDto customerRegistrationDto) {
-        CustomerEntity customerEntity = customerMapper.toEntity(userId, customerRegistrationDto);
+    public PrivateCustomerResponseDto save(UUID id, CustomerRegistrationDto customerRegistrationDto) {
+        CustomerEntity customerEntity = customerMapper.toEntity(id, customerRegistrationDto);
         ProfileStatusEntity statusEntity = statusService.findByStatus(ProfileStatus.COMPLETE);
-        customerEntity.setProfileStatus(statusEntity);
+        customerEntity.setProfileStatusEntity(statusEntity);
         return customerMapper.toPrivateResponseDto(customerRepository.save(customerEntity));
     }
 
@@ -54,28 +53,22 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional(readOnly = true)
     @Override
-    public PrivateCustomerResponseDto findPrivateById(UUID userId) {
-        CustomerEntity entity = customerRepository.findWithStatusEntityByUserId(userId).orElseThrow(CustomerNotFoundByUserIdException::new);
+    public PrivateCustomerResponseDto findPrivateById(UUID id) {
+        CustomerEntity entity = customerRepository.findById(id).orElseThrow(CustomerNotFoundByUserIdException::new);
         return customerMapper.toPrivateResponseDto(entity);
     }
 
     @Transactional
     @Override
     public void updateById(UUID userId, CustomerUpdateDto customerUpdateDto) {
-        CustomerEntity customerEntity = customerRepository.findWithStatusEntityByUserId(userId).orElseThrow(CustomerNotFoundByIdException::new);
+        CustomerEntity customerEntity = customerRepository.findById(userId).orElseThrow(CustomerNotFoundByIdException::new);
         customerMapper.updateEntityFromDto(customerUpdateDto, customerEntity);
         customerRepository.save(customerEntity);
     }
 
     @Transactional
     @Override
-    public void deleteById(UUID userId) {
-        customerRepository.deleteByUserId(userId);
-    }
-
-    @Transactional
-    @Override
-    public void deleteByPassword(UUID userId, String password) {
-        customerRepository.deleteByUserId(userId);
+    public void deleteById(UUID id) {
+        customerRepository.deleteById(id);
     }
 }
