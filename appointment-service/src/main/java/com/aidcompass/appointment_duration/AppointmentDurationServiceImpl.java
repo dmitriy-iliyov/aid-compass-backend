@@ -1,7 +1,7 @@
 package com.aidcompass.appointment_duration;
 
 import com.aidcompass.appointment_duration.models.AppointmentDurationEntity;
-import com.aidcompass.exceptions.DurationNotFoundByOwnerIdException;
+import com.aidcompass.exceptions.appointment_duration.DurationNotFoundByOwnerIdException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

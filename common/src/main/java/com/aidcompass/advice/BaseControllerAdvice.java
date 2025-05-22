@@ -1,6 +1,7 @@
 package com.aidcompass.advice;
 
 import com.aidcompass.global_exceptions.BaseInvalidInputException;
+import com.aidcompass.global_exceptions.BaseInvalidInputExceptionList;
 import com.aidcompass.global_exceptions.BaseNotFoundException;
 import com.aidcompass.global_exceptions.Exception;
 import com.aidcompass.global_exceptions.dto.ErrorDto;
@@ -140,6 +141,17 @@ public abstract class BaseControllerAdvice {
                 .body(problemDetail);
     }
 
+    @ExceptionHandler(BaseInvalidInputExceptionList.class)
+    public ResponseEntity<?> handleInvalidContactUpdateException(BaseInvalidInputExceptionList e, Locale locale) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                this.getMessageSource().getMessage("400", null, "error.400", locale));
+        problemDetail.setProperty("properties", Map.of("errors", e.getErrorDtoList()));
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(problemDetail);
+    }
+
 //    @ExceptionHandler(BadCredentialsException.class)
 //    public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException e) {
 //        ExceptionResponseDto exceptionDto = new ExceptionResponseDto(
@@ -231,7 +243,7 @@ public abstract class BaseControllerAdvice {
 
         ProblemDetail generic = ProblemDetail.forStatusAndDetail(
                 HttpStatus.BAD_REQUEST,
-                "Invalid request!"
+                "Can't serialize request data!"
         );
 
         return ResponseEntity

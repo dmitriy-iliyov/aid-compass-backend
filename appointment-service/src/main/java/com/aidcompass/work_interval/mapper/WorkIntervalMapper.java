@@ -1,6 +1,7 @@
 package com.aidcompass.work_interval.mapper;
 
 import com.aidcompass.work_interval.models.WorkIntervalEntity;
+import com.aidcompass.work_interval.models.dto.SystemWorkIntervalDto;
 import com.aidcompass.work_interval.models.dto.WorkIntervalCreateDto;
 import com.aidcompass.work_interval.models.dto.WorkIntervalResponseDto;
 import com.aidcompass.work_interval.models.dto.WorkIntervalUpdateDto;
@@ -26,6 +27,10 @@ public interface WorkIntervalMapper {
     WorkIntervalResponseDto toDto(WorkIntervalEntity entity);
 
     List<WorkIntervalResponseDto> toDtoList(List<WorkIntervalEntity> entityList);
+
+    SystemWorkIntervalDto toSystemDto(WorkIntervalEntity entity);
+
+    List<SystemWorkIntervalDto> toSystemDtoList(List<WorkIntervalEntity> entityList);
 
     void updateEntityFromDto(WorkIntervalUpdateDto dto, @MappingTarget WorkIntervalEntity entity);
 }

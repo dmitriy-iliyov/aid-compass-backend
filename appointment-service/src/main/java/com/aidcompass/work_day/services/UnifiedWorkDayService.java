@@ -3,8 +3,6 @@ package com.aidcompass.work_day.services;
 import com.aidcompass.work_day.models.WorkDayCreateDto;
 import com.aidcompass.work_day.models.WorkDayResponseDto;
 import com.aidcompass.work_day.models.WorkDayUpdateDto;
-import com.aidcompass.work_interval.services.DeleteWorkIntervalService;
-import com.aidcompass.work_interval.services.UpdateWorkIntervalService;
 import com.aidcompass.work_interval.services.WorkIntervalService;
 import com.aidcompass.work_interval.models.dto.WorkIntervalResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +15,9 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class UnifiedWorkDayService implements WorkDayService, UpdateWorkDayService, DeleteWorkDayService {
+public class UnifiedWorkDayService implements WorkDayService {
 
     private final WorkIntervalService service;
-    private final UpdateWorkIntervalService updateService;
-    private final DeleteWorkIntervalService deleteService;
 
 
     @Override
@@ -32,19 +28,20 @@ public class UnifiedWorkDayService implements WorkDayService, UpdateWorkDayServi
 
     @Override
     public WorkDayResponseDto update(WorkDayUpdateDto dto) {
-        List<WorkIntervalResponseDto> dtoList = updateService.updateAll(dto.workIntervals());
+        List<WorkIntervalResponseDto> dtoList = service.updateAll(dto.workIntervals());
         return new WorkDayResponseDto(dto.date(), dtoList);
     }
 
     @Override
-    public WorkDayResponseDto findDayByDate(LocalDate date) {
-        return new WorkDayResponseDto(date, service.findAllByDate(date));
+    public WorkDayResponseDto findDayByOwnerIdAndDate(UUID ownerId, LocalDate date) {
+        return new WorkDayResponseDto(date, service.findAllByOwnerIdAndDate(ownerId, date));
     }
 
     @Override
     public List<WorkDayResponseDto> findWeakByDate(UUID ownerId, LocalDate date) {
         LocalDate start = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate end = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+
         List<WorkIntervalResponseDto> dtoList = service.findAllByOwnerIdAndDateInterval(ownerId, start, end);
 
         Map<LocalDate, WorkDayResponseDto> weak = new HashMap<>();
@@ -58,11 +55,36 @@ public class UnifiedWorkDayService implements WorkDayService, UpdateWorkDayServi
                 weak.get(currentDate).workIntervals().add(intervalDto);
             }
         }
-        return weak.values().stream().toList();
+        return weak.values().stream()
+                .sorted(Comparator.comparing(WorkDayResponseDto::date))
+                .toList();
+    }
+
+    @Override
+    public List<WorkDayResponseDto> findMonthByDate(UUID ownerId, LocalDate date) {
+        LocalDate start = date.withDayOfMonth(1);
+        LocalDate end = date.withDayOfMonth(date.lengthOfMonth());
+
+        List<WorkIntervalResponseDto> dtoList = service.findAllByOwnerIdAndDateInterval(ownerId, start, end);
+
+        Map<LocalDate, WorkDayResponseDto> month = new HashMap<>();
+        Set<LocalDate> monthDates = new HashSet<>();
+
+        for (WorkIntervalResponseDto intervalDto: dtoList) {
+            LocalDate currentDate = intervalDto.date();
+            if (monthDates.add(currentDate)) {
+                month.put(currentDate, new WorkDayResponseDto(currentDate, new ArrayList<>(List.of(intervalDto))));
+            } else {
+                month.get(currentDate).workIntervals().add(intervalDto);
+            }
+        }
+        return month.values().stream()
+                .sorted(Comparator.comparing(WorkDayResponseDto::date))
+                .toList();
     }
 
     @Override
     public void delete(UUID ownerId, LocalDate date) {
-        deleteService.deleteAllByOwnerIdAndDate(ownerId, date);
+        service.deleteAllByOwnerIdAndDate(ownerId, date);
     }
 }

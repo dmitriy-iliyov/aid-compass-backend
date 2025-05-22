@@ -1,4 +1,4 @@
-package com.aidcompass.exceptions;
+package com.aidcompass.exceptions.appointment_duration;
 
 import com.aidcompass.global_exceptions.BaseNotFoundException;
 import com.aidcompass.global_exceptions.dto.ErrorDto;

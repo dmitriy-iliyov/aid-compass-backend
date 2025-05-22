@@ -1,4 +1,4 @@
-package com.aidcompass.work_interval.validation;
+package com.aidcompass.exceptions.work_interval;
 
 import com.aidcompass.global_exceptions.BaseInvalidInputException;
 import com.aidcompass.global_exceptions.dto.ErrorDto;

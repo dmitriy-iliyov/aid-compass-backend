@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -15,7 +16,7 @@ public interface WorkIntervalRepository extends JpaRepository<WorkIntervalEntity
 
     void deleteAllByOwnerIdAndDate(UUID ownerId, LocalDate date);
 
-    List<WorkIntervalEntity> findAllByDate(LocalDate date);
+    List<WorkIntervalEntity> findAllByOwnerIdAndDate(UUID ownerId, LocalDate date);
 
     @Query("""
               SELECT i FROM WorkIntervalEntity i
@@ -35,7 +36,17 @@ public interface WorkIntervalRepository extends JpaRepository<WorkIntervalEntity
 
     @Query("""
               SELECT COUNT(e.id) 
-              FROM WorkIntervalEntity e WHERE e.ownerId = :owner_id AND e.id IN :ids
+              FROM WorkIntervalEntity e 
+              WHERE e.ownerId = :owner_id AND e.id IN :ids
     """)
-    long countOwnedByOwnerId(@Param("owner_dd") UUID ownerId, @Param("ids") List<Long> ids);
+    long countOwnedByOwnerId(@Param("owner_id") UUID ownerId, @Param("ids") List<Long> ids);
+
+    @Query("""
+              SELECT COUNT(e.id) 
+              FROM WorkIntervalEntity e 
+              WHERE e.ownerId = :owner_id AND e.id IN :ids
+    """)
+    long countOwnedByOwnerId(@Param("owner_id") UUID ownerId, @Param("ids") Set<Long> ids);
+
+    boolean existsByOwnerIdAndDate(UUID ownerId, LocalDate date);
 }

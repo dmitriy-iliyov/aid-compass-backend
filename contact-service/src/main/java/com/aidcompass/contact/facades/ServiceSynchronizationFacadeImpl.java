@@ -10,7 +10,7 @@ import com.aidcompass.contact.validation.validators.CountValidator;
 import com.aidcompass.contact_type.ContactTypeService;
 import com.aidcompass.contact_type.models.ContactType;
 import com.aidcompass.contact_type.models.ContactTypeEntity;
-import com.aidcompass.exceptions.invalid_input.NotEnoughSpaseForNewContactException;
+import com.aidcompass.exceptions.invalid_input.NotEnoughSpaseForNewContactExceptionBase;
 import com.aidcompass.global_exceptions.BaseNotFoundException;
 import com.aidcompass.global_exceptions.dto.ErrorDto;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class ServiceSynchronizationFacadeImpl implements ServiceSynchronizationF
     @Override
     public void save(SystemContactCreateDto dto) {
         if (!countValidator.hasSpaceForContact(dto.ownerId(), dto)) {
-            throw new NotEnoughSpaseForNewContactException(
+            throw new NotEnoughSpaseForNewContactExceptionBase(
                     List.of(new ErrorDto("contact", "Impossible to add new " + dto.type().toString() + "!"))
             );
         }

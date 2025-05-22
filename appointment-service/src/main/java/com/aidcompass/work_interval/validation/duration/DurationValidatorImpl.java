@@ -1,25 +1,27 @@
-package com.aidcompass.work_interval.validation;
+package com.aidcompass.work_interval.validation.duration;
 
 import com.aidcompass.appointment_duration.AppointmentDurationService;
+import com.aidcompass.exceptions.work_interval.WorkIntervalDurationException;
+import com.aidcompass.exceptions.work_interval.WorkIntervalsDurationException;
 import com.aidcompass.global_exceptions.dto.ErrorDto;
 import com.aidcompass.work_interval.models.WorkIntervalMarker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class TimeValidatorImpl {
+public class DurationValidatorImpl implements DurationValidator {
 
     private final AppointmentDurationService service;
 
 
-    public void validAppointmentDuration() {
+    public void validateAppointmentDuration() {
 
     }
 
@@ -31,6 +33,7 @@ public class TimeValidatorImpl {
         return passedDuration.equals(duration);
     }
 
+    @Override
     public void validateWorkIntervalDuration(UUID ownerId, WorkIntervalMarker dto) {
         Long duration = service.findAppointmentDurationByOwnerId(ownerId);
 
@@ -40,12 +43,13 @@ public class TimeValidatorImpl {
         }
     }
 
-    public void validWorkIntervalDuration(UUID ownerId, List<WorkIntervalMarker> dtoList) {
+    @Override
+    public void validateWorkIntervalDuration(UUID ownerId, Set<WorkIntervalMarker> dtoSet) {
         Long duration = service.findAppointmentDurationByOwnerId(ownerId);
 
         List<ErrorDto> errorDtoList = new ArrayList<>();
 
-        for (WorkIntervalMarker dto: dtoList) {
+        for (WorkIntervalMarker dto: dtoSet) {
             Long passedDuration = Duration.between(dto.start(), dto.end()).toMinutes();
             if (!passedDuration.equals(duration)) {
                 errorDtoList.add(new ErrorDto("work_interval", "Invalid duration!"));
@@ -56,6 +60,4 @@ public class TimeValidatorImpl {
             throw new WorkIntervalsDurationException(errorDtoList);
         }
     }
-
-    public void
 }

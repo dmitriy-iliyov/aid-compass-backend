@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/work-intervals")
+@RequestMapping("/api/v1/intervals")
 @RequiredArgsConstructor
 public class WorkIntervalController {
 
     private final WorkIntervalService service;
-    private final ValidationWorkIntervalFacade facade;
+    private final WorkIntervalOrchestrator orchestrator;
 
 
     @PostMapping("/{owner_id}")
@@ -44,7 +44,7 @@ public class WorkIntervalController {
                                                 @RequestBody @Valid WorkIntervalUpdateDto dto,
                                                 @RequestParam(value = "return_body", defaultValue = "false")
                                                 boolean returnBody) {
-        WorkIntervalResponseDto response = facade.update(ownerId, dto);
+        WorkIntervalResponseDto response = orchestrator.update(ownerId, dto);
         if (returnBody) {
             return ResponseEntity
                     .status(HttpStatus.OK)
@@ -58,7 +58,8 @@ public class WorkIntervalController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getWorkInterval(@PathVariable("id")
                                              @NotNull(message = "Id shouldn't be null!")
-                                             @Positive Long id) {
+                                             @Positive(message = "Id should be positive!")
+                                             Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(service.findById(id));
@@ -68,8 +69,9 @@ public class WorkIntervalController {
     public ResponseEntity<?> deleteWorkInterval(@PathVariable("owner_id") UUID ownerId,
                                                 @PathVariable("id")
                                                 @NotNull(message = "Id shouldn't be null!")
-                                                @Positive Long id) {
-        facade.delete(ownerId, id);
+                                                @Positive(message = "Id should be positive!")
+                                                Long id) {
+        orchestrator.delete(ownerId, id);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .build();

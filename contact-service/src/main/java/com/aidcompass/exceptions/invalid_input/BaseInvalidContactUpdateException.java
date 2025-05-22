@@ -5,21 +5,24 @@ import com.aidcompass.global_exceptions.dto.ErrorDto;
 
 import java.util.List;
 
-public class InvalidAttemptMarkAsLinkedException extends BaseInvalidInputExceptionList {
+public class BaseInvalidContactUpdateException extends BaseInvalidInputExceptionList {
 
-    private List<ErrorDto> errorDtoList;
+    public List<ErrorDto> errorDtoList;
 
-    public InvalidAttemptMarkAsLinkedException(List<ErrorDto> errors) {
+
+    public BaseInvalidContactUpdateException(List<ErrorDto> errors) {
         this.errorDtoList = errors;
     }
 
+
     @Override
     public List<ErrorDto> getErrorDtoList() {
-        return this.errorDtoList;
+        return errorDtoList;
     }
 
     @Override
     public ErrorDto getErrorDto() {
         return null;
     }
+
 }

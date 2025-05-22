@@ -4,7 +4,7 @@ import com.aidcompass.contact.models.dto.system.SystemContactDto;
 import com.aidcompass.contact.models.dto.system.SystemContactUpdateDto;
 import com.aidcompass.contact.services.SystemContactService;
 import com.aidcompass.contact.validation.validators.PermissionValidator;
-import com.aidcompass.exceptions.invalid_input.InvalidContactUpdateException;
+import com.aidcompass.exceptions.invalid_input.BaseInvalidContactUpdateException;
 import com.aidcompass.global_exceptions.dto.ErrorDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ public class SystemFacadeImpl implements SystemFacade {
     public SystemContactDto update(SystemContactUpdateDto dto) {
         List<ErrorDto> errors = permissionValidator.isUpdatePermit(dto.ownerId(), dto);
         if (!errors.isEmpty()) {
-            throw new InvalidContactUpdateException(errors);
+            throw new BaseInvalidContactUpdateException(errors);
         }
         return systemContactService.update(dto);
     }

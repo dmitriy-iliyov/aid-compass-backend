@@ -1,15 +1,33 @@
 package com.aidcompass.work_interval.validation.annotation;
 
 import com.aidcompass.work_interval.models.dto.WorkIntervalCreateDto;
+import com.aidcompass.work_interval.validation.time.TimeValidator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class WorkIntervalCreateValidator implements ConstraintValidator<WorkInterval, WorkIntervalCreateDto> {
 
-    // должен быть больше или равен длинне приема
-    // рамки приема
+    private final TimeValidator timeValidator;
+
+
     @Override
-    public boolean isValid(WorkIntervalCreateDto workIntervalCreateDto, ConstraintValidatorContext constraintValidatorContext) {
-        return false;
+    public boolean isValid(WorkIntervalCreateDto dto, ConstraintValidatorContext context) {
+
+        boolean hasErrors = false;
+
+        if (!timeValidator.isWorkIntervalValid(dto)) {
+            context.buildConstraintViolationWithTemplate("Start of work interval is after end!")
+                    .addPropertyNode("work_interval")
+                    .addConstraintViolation();
+            hasErrors = true;
+        }
+
+        if (!timeValidator.isWorkIntervalTimeValid(dto)) {
+            hasErrors = true;
+        }
+
+        return !hasErrors;
     }
 }

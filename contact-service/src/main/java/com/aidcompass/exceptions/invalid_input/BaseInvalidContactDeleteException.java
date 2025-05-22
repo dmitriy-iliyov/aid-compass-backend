@@ -1,21 +1,22 @@
 package com.aidcompass.exceptions.invalid_input;
 
+import com.aidcompass.global_exceptions.BaseInvalidInputExceptionList;
 import com.aidcompass.global_exceptions.dto.ErrorDto;
 
 import java.util.List;
 
-public class InvalidContactUpdateException extends InvalidInputExceptionList {
+public class BaseInvalidContactDeleteException extends BaseInvalidInputExceptionList {
 
-    public List<ErrorDto> errorDtoList;
+    private List<ErrorDto> errorDtoList;
 
 
-    public InvalidContactUpdateException(List<ErrorDto> errors) {
+    public BaseInvalidContactDeleteException(List<ErrorDto> errors) {
         this.errorDtoList = errors;
     }
 
     @Override
     public List<ErrorDto> getErrorDtoList() {
-        return this.errorDtoList;
+        return errorDtoList;
     }
 
     @Override

@@ -10,11 +10,11 @@ import com.aidcompass.contact.validation.validators.PermissionValidator;
 import com.aidcompass.contact.validation.validators.CountValidator;
 import com.aidcompass.contact_type.models.ContactType;
 import com.aidcompass.exceptions.invalid_input.InvalidAttemptMarkAsLinkedException;
-import com.aidcompass.exceptions.invalid_input.InvalidContactDeleteException;
+import com.aidcompass.exceptions.invalid_input.BaseInvalidContactDeleteException;
 import com.aidcompass.global_exceptions.UserNotFoundException;
 import com.aidcompass.global_exceptions.dto.ErrorDto;
-import com.aidcompass.exceptions.invalid_input.InvalidContactUpdateException;
-import com.aidcompass.exceptions.invalid_input.NotEnoughSpaseForNewContactException;
+import com.aidcompass.exceptions.invalid_input.BaseInvalidContactUpdateException;
+import com.aidcompass.exceptions.invalid_input.NotEnoughSpaseForNewContactExceptionBase;
 import com.aidcompass.client.models.ConfirmationRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +49,7 @@ public class GeneralFacadeImpl implements GeneralFacade {
                         new ConfirmationRequestDto(dto.id(), dto.contact(), ContactType.valueOf(dto.type())));
                 return dto;
             }
-            throw new NotEnoughSpaseForNewContactException(
+            throw new NotEnoughSpaseForNewContactExceptionBase(
                     List.of(new ErrorDto("contact", "Impossible to add new " + contact.type().toString() + "!"))
             );
         }
@@ -115,7 +115,7 @@ public class GeneralFacadeImpl implements GeneralFacade {
     public PrivateContactResponseDto update(UUID ownerId, ContactUpdateDto contact) {
         List<ErrorDto> errors = permissionValidator.isUpdatePermit(ownerId, contact);
         if (!errors.isEmpty()) {
-            throw new InvalidContactUpdateException(errors);
+            throw new BaseInvalidContactUpdateException(errors);
         }
         //send confirmation message to confirm resource if resource is changed
         return contactService.update(ownerId, contact,
@@ -127,7 +127,7 @@ public class GeneralFacadeImpl implements GeneralFacade {
     public List<PrivateContactResponseDto> updateAll(UUID ownerId, List<ContactUpdateDto> contacts) {
         List<ErrorDto> errors = permissionValidator.isUpdatePermit(ownerId, contacts);
         if (!errors.isEmpty()) {
-            throw new InvalidContactUpdateException(errors);
+            throw new BaseInvalidContactUpdateException(errors);
         }
         //send confirmation message to confirm resource if resource is changed
         return contactService.updateAll(ownerId, contacts,
@@ -139,7 +139,7 @@ public class GeneralFacadeImpl implements GeneralFacade {
     public void delete(UUID ownerId, Long contactId) {
         List<ErrorDto> errors = permissionValidator.isDeletePermit(ownerId, contactId);
         if (!errors.isEmpty()) {
-            throw new InvalidContactDeleteException(errors);
+            throw new BaseInvalidContactDeleteException(errors);
         }
         contactService.deleteById(ownerId, contactId);
     }

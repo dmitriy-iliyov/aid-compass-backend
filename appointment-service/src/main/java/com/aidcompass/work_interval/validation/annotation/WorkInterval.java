@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = {WorkIntervalCreateValidator.class, WorkIntervalUpdateValidator.class})
 @Documented
 public @interface WorkInterval {
-    String message() default "Invalid day passed!";
+    String message() default "Work interval is invalid!";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

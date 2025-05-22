@@ -1,0 +1,12 @@
+package com.aidcompass.work_interval.models.overlaps;
+
+public enum ValidationStatus {
+    OK,
+    EXISTING_INTERVAL_IS_INSIDE_PASSED,
+    PASSED_INTERVAL_IS_INSIDE_EXISTING,
+    EXISTING_START_IS_PASSED_END,
+    EXISTING_END_IS_PASSED_START,
+    EXISTING_START_IS_IN_PASSED,
+    EXISTING_END_IS_IN_PASSED,
+    ALREADY_EXISTING
+}

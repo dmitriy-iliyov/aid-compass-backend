@@ -1,4 +1,4 @@
-package com.aidcompass.work_day.validation;
+package com.aidcompass.work_day.validation.annotations;
 
 import com.aidcompass.work_day.models.WorkDayCreateDto;
 import com.aidcompass.work_interval.models.dto.WorkIntervalCreateDto;
@@ -12,16 +12,19 @@ public class WorkDayCreateValidator implements ConstraintValidator<WorkDay, Work
     @Override
     public boolean isValid(WorkDayCreateDto dto, ConstraintValidatorContext context) {
 
+        boolean hasErrors = false;
+
         LocalDate date = dto.date();
 
         for (WorkIntervalCreateDto intervalDto: dto.workIntervals()) {
             if(!date.equals(intervalDto.date())) {
                 context.buildConstraintViolationWithTemplate("All intervals should have the same date!").
-                        addPropertyNode("interval")
+                        addPropertyNode("work_intervals")
                         .addConstraintViolation();
-                return false;
+                hasErrors = true;
             }
         }
-        return true;
+
+        return !hasErrors;
     }
 }

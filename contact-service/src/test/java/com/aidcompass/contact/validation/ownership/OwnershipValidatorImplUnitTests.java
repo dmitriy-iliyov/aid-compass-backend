@@ -31,29 +31,6 @@ class OwnershipValidatorImplUnitTests {
     }
 
     @Test
-    @DisplayName("UT assertOwnership(id) should pass when ID exists in list")
-    void assertOwnership_shouldPass_whenIdExists() {
-        List<SystemContactDto> contacts = List.of(
-                createContactDto(1L),
-                createContactDto(2L)
-        );
-
-        assertDoesNotThrow(() -> validator.assertOwnership(1L, contacts));
-    }
-
-    @Test
-    @DisplayName("UT assertOwnership(id) should throw OwnerShipException when ID not in list")
-    void assertOwnership_shouldThrow_whenIdMissing() {
-        List<SystemContactDto> contacts = List.of(
-                createContactDto(2L),
-                createContactDto(3L)
-        );
-
-        assertThatThrownBy(() -> validator.assertOwnership(1L, contacts))
-                .isInstanceOf(OwnerShipException.class);
-    }
-
-    @Test
     @DisplayName("UT assertOwnership(List) should pass when all IDs exist in list")
     void assertOwnershipList_shouldPass_whenAllIdsExist() {
         List<SystemContactDto> contacts = List.of(

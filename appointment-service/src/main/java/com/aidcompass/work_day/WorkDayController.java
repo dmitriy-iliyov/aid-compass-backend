@@ -21,7 +21,7 @@ import java.util.UUID;
 public class WorkDayController {
 
     private final WorkDayService service;
-    private final ValidationWorkDayFacade validationFacade;
+    private final WorkDayFacade facade;
 
 
     @PostMapping("/{owner_id}")
@@ -29,7 +29,7 @@ public class WorkDayController {
                                            @RequestBody @Valid WorkDayCreateDto dto,
                                            @RequestParam(value = "return_body", defaultValue = "false")
                                            boolean returnBody) {
-        WorkDayResponseDto response = service.save(ownerId, dto);
+        WorkDayResponseDto response = facade.save(ownerId, dto);
         if (returnBody) {
             return ResponseEntity
                     .status(HttpStatus.CREATED)
@@ -40,25 +40,15 @@ public class WorkDayController {
                 .build();
     }
 
-    @GetMapping
-    public ResponseEntity<?> getWorkDay(@RequestParam("date")
+    @GetMapping("/{owner_id}")
+    public ResponseEntity<?> getWorkDay(@PathVariable("owner_id") UUID ownerId,
+                                        @RequestParam("date")
                                         @DateTimeFormat(pattern = "yyyy-MM-dd")
                                         @NotNull(message = "Date shouldn't be null!")
                                         LocalDate date) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findDayByDate(date));
-    }
-
-    @GetMapping("/{owner_id}/weak")
-    public ResponseEntity<?> getWeak(@PathVariable("owner_id") UUID ownerId,
-                                     @RequestParam("current_date")
-                                     @DateTimeFormat(pattern = "yyyy-MM-dd")
-                                     @NotNull(message = "Date shouldn't be null;")
-                                     LocalDate date) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(service.findWeakByDate(ownerId, date));
+                .body(service.findDayByOwnerIdAndDate(ownerId, date));
     }
 
     @PutMapping("/{owner_id}")
@@ -66,7 +56,7 @@ public class WorkDayController {
                                            @RequestBody @Valid WorkDayUpdateDto dto,
                                            @RequestParam(value = "return_body", defaultValue = "false")
                                            boolean returnBody) {
-        WorkDayResponseDto response = validationFacade.update(ownerId, dto);
+        WorkDayResponseDto response = facade.update(ownerId, dto);
         if (returnBody) {
             return ResponseEntity
                     .status(HttpStatus.CREATED)
@@ -83,7 +73,7 @@ public class WorkDayController {
                                            @DateTimeFormat(pattern = "yyyy-MM-dd")
                                            @NotNull(message = "Date shouldn't be null;")
                                            LocalDate date) {
-        validationFacade.delete(ownerId, date);
+        service.delete(ownerId, date);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
