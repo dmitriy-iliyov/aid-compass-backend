@@ -31,5 +31,7 @@ mvnw
 mvnw.cmd
 
 *.env
+*.crt
+*.p12
 
 */ssl
