@@ -1,2 +1,1 @@
-# aid-compass-backend
-spring boot
+# aid-compass-backend-monolit

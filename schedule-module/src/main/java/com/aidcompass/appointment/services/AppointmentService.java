@@ -1,0 +1,129 @@
+package com.aidcompass.appointment.services;
+
+import com.aidcompass.PageResponse;
+import com.aidcompass.appointment.AppointmentRepository;
+import com.aidcompass.appointment.AppointmentSpecifications;
+import com.aidcompass.appointment.mapper.AppointmentMapper;
+import com.aidcompass.appointment.models.dto.StatusFilter;
+import com.aidcompass.appointment.models.enums.AppointmentAgeType;
+import com.aidcompass.appointment.models.AppointmentEntity;
+import com.aidcompass.appointment.models.enums.AppointmentStatus;
+import com.aidcompass.appointment.models.dto.AppointmentCreateDto;
+import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
+import com.aidcompass.appointment.models.dto.AppointmentUpdateDto;
+import com.aidcompass.exceptions.appointment.AppointmentNotFoundByIdException;
+import com.aidcompass.exceptions.appointment.AppointmentOwnershipException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+
+@Service
+@RequiredArgsConstructor
+public class AppointmentService {
+
+    private final AppointmentRepository repository;
+    private final AppointmentMapper mapper;
+
+
+    @Transactional
+    public AppointmentResponseDto save(UUID customerId, LocalTime end, AppointmentCreateDto dto) {
+        AppointmentEntity entity = mapper.toEntity(customerId, end, dto);
+        entity.setStatus(AppointmentStatus.SCHEDULED);
+        return mapper.toDto(repository.save(entity));
+    }
+
+    @Transactional
+    public Map<AppointmentAgeType, AppointmentResponseDto> update(UUID customerId, LocalTime end, AppointmentUpdateDto dto) {
+        Map<AppointmentAgeType, AppointmentResponseDto> responseMap = new HashMap<>();
+        AppointmentEntity entity = repository.findById(dto.getId()).orElseThrow(AppointmentNotFoundByIdException::new);
+        responseMap.put(AppointmentAgeType.OLD, mapper.toDto(entity));
+        if (customerId.equals(entity.getCustomerId())) {
+            mapper.updateEntityFromUpdateDto(dto, end, entity);
+            entity = repository.save(entity);
+            responseMap.put(AppointmentAgeType.NEW, mapper.toDto(entity));
+            return responseMap;
+        }
+        throw new AppointmentOwnershipException();
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existsByCustomerIdAndDateAndTimeAndStatus(UUID customerId, LocalDate date, LocalTime start, AppointmentStatus status) {
+        return repository.existsByCustomerIdAndDateAndStartAndStatus(customerId, date, start, status);
+    }
+
+    @Transactional(readOnly = true)
+    public AppointmentResponseDto findById(Long id) {
+        return mapper.toDto(repository.findById(id).orElseThrow(AppointmentNotFoundByIdException::new));
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<AppointmentResponseDto> findAllByStatusFilter(UUID participantId, StatusFilter filter,
+                                                                      int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("date").and(Sort.by("start")).ascending());
+
+        Specification<AppointmentEntity> specification = Specification
+                .where(AppointmentSpecifications.hasParticipantId(participantId))
+                .and(AppointmentSpecifications.hasStatuses(filter));
+
+        Page<AppointmentEntity> entityPage = repository.findAll(specification, pageable);
+
+        return new PageResponse<>(
+                mapper.toDtoList(entityPage.getContent()),
+                entityPage.getTotalPages()
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public List<AppointmentResponseDto> findAllByVolunteerIdAndDateAndStatus(UUID volunteerId, LocalDate date,
+                                                                             AppointmentStatus status) {
+        return mapper.toDtoList(repository.findAllByVolunteerIdAndDateAndStatus(volunteerId, date, status));
+    }
+
+    @Transactional(readOnly = true)
+    public List<AppointmentResponseDto> findAllByCustomerIdAndDateInterval(UUID customerId, LocalDate start, LocalDate end) {
+        List<AppointmentEntity> entityList = repository.findAllByCustomerIdAndDateInterval(customerId, start, end);
+        return mapper.toDtoList(entityList);
+    }
+
+    @Transactional(readOnly = true)
+    public List<AppointmentResponseDto> findAllByVolunteerIdAndDateInterval(UUID volunteerId, LocalDate start, LocalDate end) {
+        List<AppointmentEntity> entityList = repository.findAllByVolunteerIdAndDateInterval(volunteerId, start, end);
+        return mapper.toDtoList(entityList);
+    }
+
+    @Transactional
+    public void markCompletedById(Long id, String review) {
+        repository.updateStatusAndSetReview(id, review, AppointmentStatus.COMPLETED);
+    }
+
+    @Transactional
+    public AppointmentResponseDto markCanceledById(Long id) {
+        AppointmentEntity entity = repository.findById(id).orElseThrow(AppointmentNotFoundByIdException::new);
+        AppointmentResponseDto dto = mapper.toDto(entity);
+        repository.updateStatus(dto.id(), AppointmentStatus.CANCELED);
+        return dto;
+    }
+
+    @Transactional
+    public void markCanceledAllByDate(UUID participantId, LocalDate date) {
+        repository.updateAllStatus(participantId, date, AppointmentStatus.CANCELED);
+    }
+
+    @Transactional
+    public void deleteAll(UUID participantId) {
+        repository.deleteAllByParticipantId(participantId);
+    }
+}

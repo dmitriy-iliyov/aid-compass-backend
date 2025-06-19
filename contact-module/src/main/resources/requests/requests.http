@@ -1,0 +1,38 @@
+### health check
+GET https://localhost:8443/api/contacts/info/health-check
+
+### get enuns
+GET https://localhost:8443/api/contacts/info/enums
+
+### create email
+POST https://localhost:8443/api/v1/contacts/019677db-8bdc-74c2-a946-af7e9b99d54b
+Content-Type: application/json
+
+< ./save_email.json
+
+### create phone number
+POST https://localhost:8443/api/v1/contacts/019677db-8bdc-74c2-a946-af7e9b99d54b
+Content-Type: application/json
+
+< ./save_phone.json
+
+### attempt invalid type passing
+POST https://localhost:8443/api/v1/contacts/019677db-8bdc-74c2-a946-af7e9b99d54b
+Content-Type: application/json
+
+< ./invalid/invalid_contact_type.json
+
+### get private contacts
+GET https://localhost:8443/api/v1/contacts/private/0197448b-6f87-7b5d-ae44-5c5c43d04bcc
+
+### get public contacts
+GET https://localhost:8443/api/v1/contacts/public/019677db-8bdc-74c2-a946-af7e9b99d54b
+
+### get primary contacts
+GET https://localhost:8443/api/v1/contacts/primary/019677db-8bdc-74c2-a946-af7e9b99d54b
+
+### update email
+PATCH https://localhost:8443/api/v1/contacts/019677db-8bdc-74c2-a946-af7e9b99d54b
+Content-Type: application/json
+
+< ./update_email.json
