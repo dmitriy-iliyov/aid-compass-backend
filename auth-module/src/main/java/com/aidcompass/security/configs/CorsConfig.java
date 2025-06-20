@@ -1,0 +1,35 @@
+package com.aidcompass.security.configs;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
+
+@Configuration
+public class CorsConfig {
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration defaultConfig = new CorsConfiguration();
+        defaultConfig.addAllowedOrigin("http://localhost:4200");
+        defaultConfig.setAllowedMethods(List.of("*"));
+        defaultConfig.setAllowedHeaders(List.of("*"));
+        defaultConfig.setAllowCredentials(true);
+        defaultConfig.setMaxAge(3600L);
+
+        CorsConfiguration csrfConfig = new CorsConfiguration();
+        csrfConfig.setAllowedOrigins(List.of("http://localhost:4200"));
+        csrfConfig.setAllowedMethods(List.of("GET"));
+        csrfConfig.setAllowedHeaders(List.of("*"));
+        csrfConfig.setAllowCredentials(true);
+//        csrfConfiguration.setMaxAge(60L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", defaultConfig);
+        source.registerCorsConfiguration("/csrf", csrfConfig);
+        return source;
+    }
+}

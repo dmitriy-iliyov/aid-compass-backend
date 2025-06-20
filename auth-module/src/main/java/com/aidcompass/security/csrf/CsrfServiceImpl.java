@@ -24,7 +24,7 @@ public class CsrfServiceImpl implements CsrfService {
             maskedCsrfToken = new DefaultCsrfToken(csrfToken.getHeaderName(),
                     csrfToken.getParameterName(), csrfMasker.mask(csrfToken.getToken()));
         } catch (Exception e) {
-            log.error("Error while getting csrf code : ", e);
+            log.error("Error while getting csrf token : ", e);
         }
         return maskedCsrfToken;
     }

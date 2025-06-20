@@ -9,14 +9,12 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 @RequiredArgsConstructor
 public class CookieJwtAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
-    private final String FAILURE_AUTHENTICATION_URL;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) {
-        response.setStatus(HttpServletResponse.SC_SEE_OTHER);
-        response.setHeader("Location", FAILURE_AUTHENTICATION_URL);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentLength(0);
     }
 }

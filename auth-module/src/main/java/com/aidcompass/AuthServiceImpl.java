@@ -45,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
                 .toList();
 
         response.addCookie(cookieFactory.generateInfoCookie(Authority.valueOf(authorityList.get(0))));
-        //csrfAuthenticationStrategy.onAuthentication(authentication, request, response);
+        csrfAuthenticationStrategy.onAuthentication(authentication, request, response);
     }
 
     @Override
