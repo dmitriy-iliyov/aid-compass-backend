@@ -3,7 +3,6 @@ package com.aidcompass.interval.models.dto;
 import com.aidcompass.interval.models.day.Day;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Id;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

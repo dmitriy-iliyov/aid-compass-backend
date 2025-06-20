@@ -1,5 +1,6 @@
 package com.aidcompass.appointment.services;
 
+import com.aidcompass.GlobalRedisConfig;
 import com.aidcompass.PageResponse;
 import com.aidcompass.appointment.AppointmentRepository;
 import com.aidcompass.appointment.AppointmentSpecifications;
@@ -14,11 +15,13 @@ import com.aidcompass.appointment.models.dto.AppointmentUpdateDto;
 import com.aidcompass.exceptions.appointment.AppointmentNotFoundByIdException;
 import com.aidcompass.exceptions.appointment.AppointmentOwnershipException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,6 +72,7 @@ public class AppointmentService {
         return mapper.toDto(repository.findById(id).orElseThrow(AppointmentNotFoundByIdException::new));
     }
 
+    @Cacheable(value = GlobalRedisConfig.APPOINTMENTS_BY_FILTER_CACHE_NAME)
     @Transactional(readOnly = true)
     public PageResponse<AppointmentResponseDto> findAllByStatusFilter(UUID participantId, StatusFilter filter,
                                                                       int page, int size) {

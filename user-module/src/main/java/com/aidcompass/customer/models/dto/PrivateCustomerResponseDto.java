@@ -4,7 +4,6 @@ import com.aidcompass.detail.models.Gender;
 import com.aidcompass.profile_status.models.ProfileStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.UUID;

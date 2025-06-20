@@ -1,6 +1,9 @@
 package com.aidcompass.appointment.services;
 
-import com.aidcompass.appointment.models.dto.*;
+import com.aidcompass.appointment.models.dto.AppointmentCreateDto;
+import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
+import com.aidcompass.appointment.models.dto.AppointmentUpdateDto;
+import com.aidcompass.appointment.models.dto.AppointmentValidationInfoDto;
 import com.aidcompass.appointment.models.enums.AppointmentAgeType;
 import com.aidcompass.appointment.models.enums.AppointmentStatus;
 import com.aidcompass.appointment.validation.AppointmentOwnershipValidator;

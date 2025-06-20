@@ -1,7 +1,7 @@
 package com.aidcompass.interval.models.dto;
 
-import com.aidcompass.interval.models.marker.IntervalMarker;
 import com.aidcompass.interval.models.day.Day;
+import com.aidcompass.interval.models.marker.IntervalMarker;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

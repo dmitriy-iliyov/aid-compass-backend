@@ -2,9 +2,9 @@ package com.aidcompass.jurist.services;
 
 import com.aidcompass.PageResponse;
 import com.aidcompass.detail.models.Gender;
-import com.aidcompass.jurist.models.dto.jurist.JuristDto;
 import com.aidcompass.jurist.models.dto.FullPrivateJuristResponseDto;
 import com.aidcompass.jurist.models.dto.FullPublicJuristResponseDto;
+import com.aidcompass.jurist.models.dto.jurist.JuristDto;
 import com.aidcompass.jurist.models.dto.jurist.PrivateJuristResponseDto;
 import com.aidcompass.jurist.models.dto.jurist.PublicJuristResponseDto;
 

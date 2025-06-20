@@ -1,8 +1,6 @@
 package com.aidcompass.advice;
 
-import com.aidcompass.models.BaseInvalidInputException;
-import com.aidcompass.models.BaseInvalidInputExceptionList;
-import com.aidcompass.models.BaseNotFoundException;
+import com.aidcompass.models.*;
 import com.aidcompass.models.Exception;
 import com.aidcompass.models.dto.ErrorDto;
 import com.aidcompass.models.dto.ExceptionResponseDto;
@@ -81,18 +79,18 @@ public abstract class BaseControllerAdvice {
 //                .body(exceptionDto);
 //    }
 
-//    @ExceptionHandler(Throwable.class)
-//    public ResponseEntity<?> handleThrowable(Throwable throwable) {
-//        ExceptionResponseDto exceptionDto = new ExceptionResponseDto(
-//                "500",
-//                "Unexpected Internal Server Error.",
-//                null);
-//        log.error(throwable.getMessage());
-//        System.out.println(Arrays.toString(throwable.getStackTrace()));
-//        return ResponseEntity
-//                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                .body(exceptionDto);
-//    }
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity<?> handleThrowable(Throwable throwable) {
+        ExceptionResponseDto exceptionDto = new ExceptionResponseDto(
+                "500",
+                "Unexpected server error.",
+                null);
+        log.error(throwable.getMessage());
+        System.out.println(Arrays.toString(throwable.getStackTrace()));
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(exceptionDto);
+    }
 
     @ExceptionHandler({DataIntegrityViolationException.class, IllegalArgumentException.class})
     public ResponseEntity<?> handleDataIntegrityViolationException(Exception e){
@@ -170,7 +168,6 @@ public abstract class BaseControllerAdvice {
                 .body(new ExceptionResponseDto("404", message, null));
     }
 
-
     //validation exception handling
     @ExceptionHandler(HandlerMethodValidationException.class)
     public ResponseEntity<?> handleHandlerMethodValidationException(HandlerMethodValidationException e, Locale locale) {
@@ -221,7 +218,7 @@ public abstract class BaseControllerAdvice {
 
         if (root instanceof Exception exception) {
             ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR,
-                    getMessageSource().getMessage("400", null, "error.400", locale));
+                    getMessageSource().getMessage("500", null, "error.500", locale));
             problemDetail.setProperty("properties", Map.of("errors", List.of(exception.getErrorDto())));
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -255,10 +252,20 @@ public abstract class BaseControllerAdvice {
     public ResponseEntity<?> handelJsonMappingException(JsonMappingException e, Locale locale) {
         Exception exception = (Exception) e.getCause();
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR,
-                messageSource.getMessage("400", null, "error.400", locale));
+                messageSource.getMessage("500", null, "error.500", locale));
         problemDetail.setProperty("properties", Map.of("errors", List.of(exception.getErrorDto())));
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
+                .body(problemDetail);
+    }
+
+    @ExceptionHandler(BaseInternalServiceException.class)
+    public ResponseEntity<?> handleBaseInternalServiceException(BaseInternalServiceException e, Locale locale) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR,
+                messageSource.getMessage("500", null, "error.500", locale));
+        problemDetail.setProperty("properties", Map.of("errors", List.of(e.getErrorDto())));
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(problemDetail);
     }
 }

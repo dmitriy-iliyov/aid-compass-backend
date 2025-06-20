@@ -1,6 +1,5 @@
 package com.aidcompass.interval.services;
 
-import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.models.dto.SystemIntervalDto;
 
 import java.time.LocalDate;

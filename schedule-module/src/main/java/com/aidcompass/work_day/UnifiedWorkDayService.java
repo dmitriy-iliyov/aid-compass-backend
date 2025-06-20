@@ -5,15 +5,11 @@ import com.aidcompass.appointment.models.enums.AppointmentStatus;
 import com.aidcompass.appointment.services.AppointmentService;
 import com.aidcompass.appointment_duration.AppointmentDurationService;
 import com.aidcompass.interval.models.dto.IntervalResponseDto;
-import com.aidcompass.interval.models.dto.SystemIntervalCreatedDto;
 import com.aidcompass.interval.services.IntervalService;
 import com.aidcompass.work_day.models.TimeInfo;
-import com.aidcompass.work_day.models.WorkDayResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;

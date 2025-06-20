@@ -8,7 +8,6 @@ import com.aidcompass.doctor.models.dto.doctor.DoctorDto;
 import com.aidcompass.doctor.models.dto.doctor.PrivateDoctorResponseDto;
 import com.aidcompass.doctor.models.dto.doctor.PublicDoctorResponseDto;
 import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 

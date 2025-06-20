@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 
-// TODO save as interval in psql
-
 @Entity
 @Table(name = "appointment_durations")
 @Data

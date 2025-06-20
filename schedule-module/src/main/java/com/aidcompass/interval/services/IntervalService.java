@@ -1,9 +1,8 @@
 package com.aidcompass.interval.services;
 
 import com.aidcompass.appointment.models.marker.AppointmentMarker;
-import com.aidcompass.interval.models.dto.SystemIntervalCreatedDto;
 import com.aidcompass.interval.models.dto.IntervalResponseDto;
-import com.aidcompass.interval.models.dto.SystemIntervalUpdateDto;
+import com.aidcompass.interval.models.dto.SystemIntervalCreatedDto;
 import com.aidcompass.interval.models.overlaps.ValidationInfoDto;
 
 import java.time.LocalDate;

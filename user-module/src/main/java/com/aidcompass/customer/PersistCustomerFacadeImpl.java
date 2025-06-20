@@ -1,7 +1,6 @@
 package com.aidcompass.customer;
 
 import com.aidcompass.contracts.AuthService;
-import com.aidcompass.contracts.UserOrchestrator;
 import com.aidcompass.customer.models.dto.CustomerDto;
 import com.aidcompass.customer.models.dto.PrivateCustomerResponseDto;
 import com.aidcompass.customer.services.PersistCustomerService;

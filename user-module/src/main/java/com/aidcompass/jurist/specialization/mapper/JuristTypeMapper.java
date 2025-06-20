@@ -21,6 +21,4 @@ public interface JuristTypeMapper {
     default JuristType toEnum(JuristTypeEntity entity) {
         return entity == null ? null : entity.getType();
     }
-
-    List<JuristType> toEnumList(List<JuristTypeEntity> entityList);
 }

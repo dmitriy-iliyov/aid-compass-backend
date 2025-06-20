@@ -7,7 +7,5 @@ import com.aidcompass.enums.ServiceType;
 import java.util.UUID;
 
 public interface DetailService {
-    PrivateDetailResponseDto update(UUID userId, DetailDto dto);
-
-    PrivateDetailResponseDto updateWithCache(UUID userId, DetailDto dto, ServiceType serviceType);
+    PrivateDetailResponseDto update(UUID userId, DetailDto dto, ServiceType serviceType);
 }

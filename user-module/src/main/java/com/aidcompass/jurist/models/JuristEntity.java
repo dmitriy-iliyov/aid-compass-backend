@@ -3,10 +3,8 @@ package com.aidcompass.jurist.models;
 import com.aidcompass.detail.models.DetailEntity;
 import com.aidcompass.detail.models.Gender;
 import com.aidcompass.jurist.specialization.models.JuristSpecializationEntity;
-import com.aidcompass.jurist.specialization.models.JuristType;
 import com.aidcompass.jurist.specialization.models.JuristTypeEntity;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 

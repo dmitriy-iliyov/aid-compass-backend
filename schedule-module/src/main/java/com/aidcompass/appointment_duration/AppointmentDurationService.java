@@ -1,7 +1,6 @@
 package com.aidcompass.appointment_duration;
 
 import com.aidcompass.enums.Authority;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;

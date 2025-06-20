@@ -36,6 +36,7 @@ public class GlobalRedisConfig {
 
     public static final String APPOINTMENT_DURATION_CACHE_NAME = "appointment:duration";
     public static final String APPOINTMENT_DURATION_MAP_CACHE_NAME = "appointment:duration:map";
+    public static final String APPOINTMENTS_BY_FILTER_CACHE_NAME = "appointments:filter";
     public final static String CONF_TOKEN_KEY_TEMPLATE = "tkn:conf:";
 
 
@@ -106,6 +107,7 @@ public class GlobalRedisConfig {
 
                 .withCacheConfiguration(APPOINTMENT_DURATION_CACHE_NAME, config)
                 .withCacheConfiguration(APPOINTMENT_DURATION_MAP_CACHE_NAME, config.entryTtl(Duration.ofSeconds(3600)))
+                .withCacheConfiguration(APPOINTMENTS_BY_FILTER_CACHE_NAME, config.entryTtl(Duration.ofSeconds(500)))
                 .withCacheConfiguration("day", config)
                 .withCacheConfiguration("day:full", config)
                 .withCacheConfiguration("weak", config)

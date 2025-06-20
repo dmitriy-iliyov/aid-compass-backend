@@ -1,7 +1,6 @@
 package com.aidcompass.work_day;
 
 import com.aidcompass.work_day.models.TimeInfo;
-import com.aidcompass.work_day.models.WorkDayResponseDto;
 
 import java.time.LocalDate;
 import java.util.List;

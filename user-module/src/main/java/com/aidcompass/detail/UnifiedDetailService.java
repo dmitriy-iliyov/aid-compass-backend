@@ -23,7 +23,7 @@ public class UnifiedDetailService implements DetailService, PersistEmptyDetailSe
     private final DetailRepository repository;
     private final DetailMapper mapper;
     private final ProfileStatusUpdateFacade profileStatusUpdateFacade;
-    private static final String CACHE_NAME_TEMPLATE = "%s:public:full";
+    private static final String USER_CACHE_NAME_TEMPLATE = "%s:public:full";
     private final CacheManager cache;
 
 
@@ -38,24 +38,14 @@ public class UnifiedDetailService implements DetailService, PersistEmptyDetailSe
         return entity;
     }
 
-    @Deprecated
     @Transactional
     @Override
-    public PrivateDetailResponseDto update(UUID userId, DetailDto dto) {
-        DetailEntity entity = repository.findByUserId(userId).orElseThrow(DetailEntityNotFoundByUserIdException::new);
-        mapper.updateEntityFromDto(dto, entity);
-        entity = repository.save(entity);
-        return mapper.toPrivateDetailDto(entity);
-    }
-
-    @Transactional
-    @Override
-    public PrivateDetailResponseDto updateWithCache(UUID userId, DetailDto dto, ServiceType serviceType) {
+    public PrivateDetailResponseDto update(UUID userId, DetailDto dto, ServiceType serviceType) {
         DetailEntity entity = repository.findByUserId(userId).orElseThrow(DetailEntityNotFoundByUserIdException::new);
         mapper.updateEntityFromDto(dto, entity);
         entity = repository.save(entity);
 
-        String cacheName = CACHE_NAME_TEMPLATE.formatted(serviceType.toString());
+        String cacheName = USER_CACHE_NAME_TEMPLATE.formatted(serviceType.getCacheName());
         Objects.requireNonNull(cache.getCache(cacheName)).evict(userId);
 
         if (entity.getAboutMyself() != null && !entity.getAboutMyself().trim().isEmpty()) {

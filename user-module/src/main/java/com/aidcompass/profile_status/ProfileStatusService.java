@@ -6,7 +6,6 @@ import com.aidcompass.profile_status.models.ProfileStatus;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +26,6 @@ public class ProfileStatusService {
         repository.saveAll(entityList);
     }
 
-    //@Cacheable(value = "profile:status")
     @Transactional(readOnly = true)
     public ProfileStatusEntity findByStatus(ProfileStatus status) {
         return repository.findByProfileStatus(status).orElseThrow(ProfileStatusEntityNotFoundByStatusException::new);

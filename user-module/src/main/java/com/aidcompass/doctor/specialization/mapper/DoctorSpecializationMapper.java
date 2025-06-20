@@ -1,11 +1,11 @@
 package com.aidcompass.doctor.specialization.mapper;
 
-import com.aidcompass.doctor.specialization.DoctorSpecializationService;
 import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.doctor.specialization.models.DoctorSpecializationEntity;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Mapper(

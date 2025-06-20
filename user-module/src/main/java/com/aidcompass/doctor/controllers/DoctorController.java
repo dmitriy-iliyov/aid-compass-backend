@@ -14,7 +14,10 @@ import com.aidcompass.enums.ServiceType;
 import com.aidcompass.validation.ValidEnum;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -124,7 +127,7 @@ public class DoctorController {
                                                     @RequestParam(value = "return_body", defaultValue = "false")
                                                     boolean returnBody,
                                                     @RequestBody @Valid DetailDto dto) {
-        PrivateDetailResponseDto response = detailService.updateWithCache(principal.getUserId(), dto, ServiceType.DOCTOR_SERVICE);
+        PrivateDetailResponseDto response = detailService.update(principal.getUserId(), dto, ServiceType.DOCTOR_SERVICE);
         if (returnBody) {
             return ResponseEntity
                     .status(HttpStatus.CREATED)
