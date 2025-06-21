@@ -33,23 +33,6 @@ public class AppointmentAggregatorController {
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_CUSTOMER', 'ROLE_JURIST', 'ROLE_DOCTOR')")
-    @GetMapping
-    public ResponseEntity<?> getAppointments(@AuthenticationPrincipal PrincipalDetails principal) {
-        List<Authority> authorityList = principal.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .map(Authority::valueOf)
-                .toList();
-        if (authorityList.contains(Authority.ROLE_CUSTOMER)) {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(service.findAllAppointmentByCustomerId(principal.getUserId()));
-        }
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(service.findAllAppointmentByVolunteerId(principal.getUserId()));
-    }
-
-    @PreAuthorize("hasAnyAuthority('ROLE_CUSTOMER', 'ROLE_JURIST', 'ROLE_DOCTOR')")
     @GetMapping("/filter")
     public ResponseEntity<?> getAppointments(@AuthenticationPrincipal PrincipalDetails principal,
                                              @RequestParam(value = "scheduled", defaultValue = "false")

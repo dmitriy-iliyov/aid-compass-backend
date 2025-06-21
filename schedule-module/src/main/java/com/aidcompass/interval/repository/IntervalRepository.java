@@ -42,4 +42,5 @@ public interface IntervalRepository extends JpaRepository<IntervalEntity, Long> 
 
     boolean existsByOwnerIdAndStartAndDate(UUID ownerId, LocalTime start, LocalDate date);
 
+    Optional<IntervalEntity> findByOwnerIdAndStartAndDate(UUID ownerId, LocalTime start, LocalDate date);
 }

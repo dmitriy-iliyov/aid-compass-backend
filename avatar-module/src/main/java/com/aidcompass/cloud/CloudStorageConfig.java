@@ -1,4 +1,4 @@
-package com.aidcompass.configs;
+package com.aidcompass.cloud;
 
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;

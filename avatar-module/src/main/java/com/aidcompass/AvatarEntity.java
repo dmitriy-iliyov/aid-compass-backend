@@ -1,4 +1,4 @@
-package com.aidcompass.model;
+package com.aidcompass;
 
 import com.aidcompass.uuid.UuidFactory;
 import jakarta.persistence.*;
@@ -19,14 +19,11 @@ public class AvatarEntity {
     @Id
     private UUID id;
 
-    @Column(name = "user_id", unique = true)
+    @Column(name = "user_id", unique = true, nullable = false)
     private UUID userId;
 
-    @Column(name = "file_name", nullable = false)
-    private String fileName;
-
-    @Column(name = "sas_link", nullable = false)
-    private String sasLink;
+    @Column(name = "avatar_url", nullable = false)
+    private String avatarUrl;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
@@ -35,11 +32,10 @@ public class AvatarEntity {
     private Instant updatedAt;
 
 
-    public AvatarEntity(UUID userId, String fileName, String sasLink) {
+    public AvatarEntity(UUID userId, String avatarUrl) {
         this.id = UuidFactory.generate();
         this.userId = userId;
-        this.fileName = fileName;
-        this.sasLink = sasLink;
+        this.avatarUrl = avatarUrl;
     }
 
     @PrePersist

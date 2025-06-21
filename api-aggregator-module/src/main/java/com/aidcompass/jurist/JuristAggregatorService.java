@@ -102,8 +102,8 @@ public class JuristAggregatorService {
         for (FullPrivateJuristResponseDto dto : dtoList) {
             uuids.add(dto.jurist().baseDto().id());
         }
-        Map<UUID, String> avatarUrls = utils.findAllAvatarUrlByOwnerId(uuids);
-        Map<UUID, Long> durations = utils.findAllDurationByOwnerId(uuids);
+        Map<UUID, String> avatarUrls = utils.findAllAvatarUrlByOwnerIdIn(uuids);
+        Map<UUID, Long> durations = utils.findAllDurationByOwnerIdIn(uuids);
         for (FullPrivateJuristResponseDto dto : dtoList) {
             UUID id = dto.jurist().baseDto().id();
             response.add(
@@ -124,9 +124,9 @@ public class JuristAggregatorService {
         for (PublicJuristResponseDto dto : dtoList) {
             uuids.add(dto.id());
         }
-        Map<UUID, String> avatarUrls = utils.findAllAvatarUrlByOwnerId(uuids);
-        Map<UUID, NearestIntervalDto> nearestIntervalDtoList = utils.findNearestByOwnerId(uuids);
-        Map<UUID, Long> durations = utils.findAllDurationByOwnerId(uuids);
+        Map<UUID, String> avatarUrls = utils.findAllAvatarUrlByOwnerIdIn(uuids);
+        Map<UUID, NearestIntervalDto> nearestIntervalDtoList = utils.findAllNearestByOwnerIdIn(uuids);
+        Map<UUID, Long> durations = utils.findAllDurationByOwnerIdIn(uuids);
         for (PublicJuristResponseDto dto : dtoList) {
             juristCardDtoList.add(
                     new JuristCardDto(

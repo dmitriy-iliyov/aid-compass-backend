@@ -7,7 +7,7 @@ import com.aidcompass.appointment.models.dto.AppointmentValidationInfoDto;
 import com.aidcompass.appointment.models.enums.AppointmentAgeType;
 import com.aidcompass.appointment.models.enums.AppointmentStatus;
 import com.aidcompass.appointment.validation.AppointmentOwnershipValidator;
-import com.aidcompass.appointment.validation.AppointmentValidator;
+import com.aidcompass.appointment.validation.AppointmentTimeValidator;
 import com.aidcompass.appointment_duration.AppointmentDurationService;
 import com.aidcompass.exceptions.appointment.InvalidAttemptToCompleteException;
 import com.aidcompass.exceptions.appointment.InvalidAttemptToDeleteException;
@@ -33,7 +33,7 @@ public class AppointmentOrchestrator {
     private final AppointmentService service;
     private final AppointmentDurationService durationService;
     private final IntervalOrchestrator intervalOrchestrator;
-    private final AppointmentValidator validator;
+    private final AppointmentTimeValidator timeValidator;
     private final AppointmentOwnershipValidator ownershipValidator;
 
 
@@ -41,8 +41,8 @@ public class AppointmentOrchestrator {
         Long duration = durationService.findAppointmentDurationByOwnerId(dto.volunteerId());
         LocalTime end = dto.start().plusMinutes(duration);
 
-        validator.validateCustomerTime(customerId, dto);
-        AppointmentValidationInfoDto info = validator.validateVolunteerTime(customerId, dto, end);
+        timeValidator.validateCustomerTime(customerId, dto);
+        AppointmentValidationInfoDto info = timeValidator.validateVolunteerTime(customerId, dto, end);
 
         if (info.status() == ValidationStatus.MATCHES_WITH_INTERVAL) {
             intervalOrchestrator.delete(dto.volunteerId(), info.intervalId());
@@ -66,15 +66,15 @@ public class AppointmentOrchestrator {
         Long duration = durationService.findAppointmentDurationByOwnerId(volunteerId);
         LocalTime end = updateDto.start().plusMinutes(duration);
 
-        validator.validateCustomerTime(customerId, updateDto);
-        AppointmentValidationInfoDto info = validator.validateVolunteerTime(customerId, updateDto, end);
+        timeValidator.validateCustomerTime(customerId, updateDto);
+        AppointmentValidationInfoDto info = timeValidator.validateVolunteerTime(customerId, updateDto, end);
 
         Map<AppointmentAgeType, AppointmentResponseDto> responseMap;
         if (info.status() == ValidationStatus.MATCHES_WITH_INTERVAL) {
             intervalOrchestrator.delete(updateDto.volunteerId(), info.intervalId());
             responseMap = service.update(customerId, end, updateDto);
             AppointmentResponseDto old = responseMap.get(AppointmentAgeType.OLD);
-            intervalOrchestrator.save(
+            intervalOrchestrator.systemSave(
                     old.volunteerId(),
                     new SystemIntervalCreatedDto(old.start(), old.end(), old.date())
             );
@@ -83,7 +83,7 @@ public class AppointmentOrchestrator {
             intervalOrchestrator.cut(info.dto(), end, info.intervalId());
             responseMap = service.update(customerId, end, updateDto);
             AppointmentResponseDto old = responseMap.get(AppointmentAgeType.OLD);
-            intervalOrchestrator.save(
+            intervalOrchestrator.systemSave(
                     old.volunteerId(),
                     new SystemIntervalCreatedDto(old.start(), old.end(), old.date())
             );
@@ -101,30 +101,20 @@ public class AppointmentOrchestrator {
         service.markCompletedById(id, review);
     }
 
-    public void delete(UUID participantId, Long id) {
+    public void cancel(UUID participantId, Long id) {
         AppointmentResponseDto dto = ownershipValidator.validateParticipantOwnership(participantId, id);
+        // comment for test
+        //timeValidator.isCompletePermit(id);
         if (dto.status().equals(AppointmentStatus.CANCELED)) {
             throw new InvalidAttemptToDeleteException();
         }
         dto = service.markCanceledById(id);
-        intervalOrchestrator.save(dto.volunteerId(), new SystemIntervalCreatedDto(dto.start(), dto.end(), dto.date()));
+        intervalOrchestrator.systemSave(dto.volunteerId(), new SystemIntervalCreatedDto(dto.start(), dto.end(), dto.date()));
     }
 
     public AppointmentResponseDto findById(UUID volunteerId, Long id) {
         ownershipValidator.validateParticipantOwnership(volunteerId, id);
         return service.findById(id);
-    }
-
-    public List<AppointmentResponseDto> findMonthByCustomerIdAndDate(UUID customerId, LocalDate date) {
-        LocalDate start = date.withDayOfMonth(1);
-        LocalDate end = date.withDayOfMonth(date.lengthOfMonth());
-        return service.findAllByCustomerIdAndDateInterval(customerId, start, end);
-    }
-
-    public List<AppointmentResponseDto> findMonthByVolunteerIdAndDate(UUID volunteerId, LocalDate date) {
-        LocalDate start = date.withDayOfMonth(1);
-        LocalDate end = date.withDayOfMonth(date.lengthOfMonth());
-        return service.findAllByVolunteerIdAndDateInterval(volunteerId, start, end);
     }
 
     public List<LocalDate> findMonthDatesByOwnerIdAndCurrentDate(UUID ownerId) {

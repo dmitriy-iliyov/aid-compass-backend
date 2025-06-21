@@ -1,5 +1,6 @@
 package com.aidcompass.interval.services;
 
+import com.aidcompass.GlobalRedisConfig;
 import com.aidcompass.appointment.models.marker.AppointmentMarker;
 import com.aidcompass.exceptions.interval.IntervalNotFoundByIdException;
 import com.aidcompass.interval.mapper.IntervalMapper;
@@ -12,8 +13,14 @@ import com.aidcompass.interval.models.overlaps.ValidationInfoDto;
 import com.aidcompass.interval.repository.IntervalRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,30 +35,24 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
 
     private final IntervalRepository repository;
     private final IntervalMapper mapper;
+    private final RedisTemplate<String, String> redisTemplate;
 
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = GlobalRedisConfig.LIST_OF_TIMES_CACHE_NAME,
+                                key = "#ownerId + ':' + #result.date()"),
+                    @CacheEvict(value = GlobalRedisConfig.PRIVATE_LIST_OF_TIMES_CACHE_NAME,
+                                key = "#ownerId + ':' + #result.date()"),
+                    @CacheEvict(value = GlobalRedisConfig.MONTH_DATES_CACHE_NAME, key = "#ownerId"),
+                    @CacheEvict(value = GlobalRedisConfig.PRIVATE_MONTH_DATES_CACHE_NAME, key = "#ownerId")
+            }
+    )
     @Transactional
     @Override
     public IntervalResponseDto save(UUID ownerId, SystemIntervalCreatedDto dto) {
         IntervalEntity entity = repository.save(mapper.toEntity(ownerId, dto));
         return mapper.toDto(entity);
-    }
-
-    @Transactional
-    @Override
-    public IntervalResponseDto save(UUID ownerId, ValidationInfoDto info) {
-        IntervalEntity entity = repository.save(mapper.toEntity(ownerId, info.dto()));
-        repository.deleteAllById(info.toDeleteIdList());
-        return mapper.toDto(entity);
-    }
-
-    @Transactional
-    @Override
-    public List<IntervalResponseDto> saveAll(UUID ownerId, Set<SystemIntervalCreatedDto> dtoSet) {
-        List<IntervalEntity> entityList = repository.saveAll(mapper.toEntityList(ownerId, dtoSet));
-        return mapper.toDtoList(entityList).stream()
-                .sorted(Comparator.comparing(IntervalResponseDto::start))
-                .toList();
     }
 
     @Transactional(readOnly = true)
@@ -82,8 +83,10 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
 
     @Transactional(readOnly = true)
     @Override
-    public boolean findByOwnerIdAndStartAndDate(UUID ownerId, LocalTime start, LocalDate date) {
-        return repository.existsByOwnerIdAndStartAndDate(ownerId, start, date);
+    public IntervalResponseDto findByOwnerIdAndStartAndDate(UUID ownerId, LocalTime start, LocalDate date) {
+        return mapper.toDto(repository.findByOwnerIdAndStartAndDate(ownerId, start, date).orElseThrow(
+                IntervalNotFoundByIdException::new)
+        );
     }
 
     @Transactional(readOnly = true)
@@ -109,6 +112,16 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
         return mapper.toDtoList(entityList);
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = GlobalRedisConfig.LIST_OF_TIMES_CACHE_NAME,
+                                key = "#dto.volunteerId() + ':' + #dto.date()"),
+                    @CacheEvict(value = GlobalRedisConfig.PRIVATE_LIST_OF_TIMES_CACHE_NAME,
+                                key = "#dto.volunteerId() + ':' + #dto.date()"),
+                    @CacheEvict(value = GlobalRedisConfig.MONTH_DATES_CACHE_NAME, key = "#dto.volunteerId()"),
+                    @CacheEvict(value = GlobalRedisConfig.PRIVATE_MONTH_DATES_CACHE_NAME, key = "#dto.volunteerId()")
+            }
+    )
     @Transactional
     @Override
     public Set<IntervalResponseDto> cut(AppointmentMarker dto, LocalTime end, Long id) {
@@ -134,10 +147,22 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
         return responseDtoSet;
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = GlobalRedisConfig.LIST_OF_TIMES_CACHE_NAME,
+                                key = "#result.ownerId() + ':' + #result.date()"),
+                    @CacheEvict(value = GlobalRedisConfig.PRIVATE_LIST_OF_TIMES_CACHE_NAME,
+                                key = "#result.ownerId() + ':' + #result.date()"),
+                    @CacheEvict(value = GlobalRedisConfig.MONTH_DATES_CACHE_NAME, key = "#result.ownerId()"),
+                    @CacheEvict(value = GlobalRedisConfig.PRIVATE_MONTH_DATES_CACHE_NAME, key = "#result.ownerId()")
+            }
+    )
     @Transactional
     @Override
-    public void deleteByOwnerIdAndId(UUID ownerId, Long id) {
+    public IntervalResponseDto deleteByOwnerIdAndId(UUID ownerId, Long id) {
+        IntervalResponseDto dto = mapper.toDto(repository.findById(id).orElseThrow(IntervalNotFoundByIdException::new));
         repository.deleteById(id);
+        return dto;
     }
 
     @Transactional
@@ -150,5 +175,24 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
     @Override
     public void deleteAllByOwnerId(UUID ownerId) {
         repository.deleteAllByOwnerId(ownerId);
+
+        // mb scan
+        redisTemplate.delete(
+                Objects.requireNonNull(
+                        redisTemplate.keys(GlobalRedisConfig.LIST_OF_TIMES_CACHE_NAME + ':' + ownerId + ":*"))
+        );
+        redisTemplate.delete(
+                Objects.requireNonNull(
+                        redisTemplate.keys(GlobalRedisConfig.PRIVATE_LIST_OF_TIMES_CACHE_NAME + ':' + ownerId + ":*"))
+        );
+
+        redisTemplate.delete(
+                Objects.requireNonNull(
+                        redisTemplate.keys(GlobalRedisConfig.MONTH_DATES_CACHE_NAME + ':' + ownerId))
+        );
+        redisTemplate.delete(
+                Objects.requireNonNull(
+                        redisTemplate.keys(GlobalRedisConfig.PRIVATE_MONTH_DATES_CACHE_NAME + ':' + ownerId))
+        );
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -24,29 +25,29 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
 
     @Query("""
         SELECT a FROM AppointmentEntity a
-        WHERE a.volunteerId = :volunteerId
+        WHERE a.volunteerId = :volunteer_id
         AND a.date BETWEEN :start AND :end
     """)
-    List<AppointmentEntity> findAllByVolunteerIdAndDateInterval(@Param("volunteerId") UUID volunteerId,
+    List<AppointmentEntity> findAllByVolunteerIdAndDateInterval(@Param("volunteer_id") UUID volunteerId,
                                                                 @Param("start") LocalDate start,
                                                                 @Param("end") LocalDate end);
 
     @Query("""
         SELECT a FROM AppointmentEntity a
-        WHERE a.customerId = :customerId
+        WHERE a.customerId = :customer_id
         AND a.date BETWEEN :start AND :end
     """)
-    List<AppointmentEntity> findAllByCustomerIdAndDateInterval(@Param("customerId") UUID customerId,
+    List<AppointmentEntity> findAllByCustomerIdAndDateInterval(@Param("customer_id") UUID customerId,
                                                                @Param("start") LocalDate start,
                                                                @Param("end") LocalDate end);
 
-    @Modifying
-    @Query("""
+    @Query(value = """
         DELETE FROM AppointmentEntity a
-        WHERE a.customerId = :participantId
-           OR a.volunteerId = :participantId
-    """)
-    void deleteAllByParticipantId(@Param("participantId") UUID participantId);
+        WHERE a.customerId = :participant_id
+           OR a.volunteerId = :participant_id
+        RETURNING id
+    """, nativeQuery = true)
+    List<Long> deleteAllByParticipantId(@Param("participant_id") UUID participantId);
 
     @Modifying
     @Query("""
@@ -63,7 +64,7 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
         SET a.status = :status
         WHERE a.id = :id
     """)
-    void updateStatus(Long id, AppointmentStatus status);
+    void updateStatus(@Param("id") Long id, @Param("status") AppointmentStatus status);
 
     boolean existsByCustomerIdAndDateAndStartAndStatus(UUID customerId, LocalDate date,
                                                        LocalTime start, AppointmentStatus status);
@@ -72,9 +73,10 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     @Query("""
         UPDATE AppointmentEntity a
         SET a.status = :status
-        WHERE a.volunteerId = : participantId
-        OR a.customerId = :participantId
+        WHERE a.volunteerId = : participant_id
+        OR a.customerId = :participant_id
         AND a.date = :date
     """)
-    void updateAllStatus(UUID participantId, LocalDate date, AppointmentStatus status);
+    void updateAllStatus(@Param("participant_id") UUID participantId, @Param("date") LocalDate date,
+                         @Param("status") AppointmentStatus status);
 }

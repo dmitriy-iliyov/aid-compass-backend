@@ -103,9 +103,9 @@ public class DoctorAggregatorService {
         for (PublicDoctorResponseDto dto : dtoList) {
             uuids.add(dto.id());
         }
-        Map<UUID, String> avatarUrls = utils.findAllAvatarUrlByOwnerId(uuids);
-        Map<UUID, NearestIntervalDto> nearestIntervalDtoList = utils.findNearestByOwnerId(uuids);
-        Map<UUID, Long> durations = utils.findAllDurationByOwnerId(uuids);
+        Map<UUID, String> avatarUrls = utils.findAllAvatarUrlByOwnerIdIn(uuids);
+        Map<UUID, NearestIntervalDto> nearestIntervalDtoList = utils.findAllNearestByOwnerIdIn(uuids);
+        Map<UUID, Long> durations = utils.findAllDurationByOwnerIdIn(uuids);
 
         for (PublicDoctorResponseDto dto : dtoList) {
             doctorCardDtoList.add(
@@ -125,8 +125,8 @@ public class DoctorAggregatorService {
         for (FullPrivateDoctorResponseDto dto : dtoList) {
             uuids.add(dto.doctor().baseDto().id());
         }
-        Map<UUID, String> avatarUrls = utils.findAllAvatarUrlByOwnerId(uuids);
-        Map<UUID, Long> durations = utils.findAllDurationByOwnerId(uuids);
+        Map<UUID, String> avatarUrls = utils.findAllAvatarUrlByOwnerIdIn(uuids);
+        Map<UUID, Long> durations = utils.findAllDurationByOwnerIdIn(uuids);
 
         for (FullPrivateDoctorResponseDto dto : dtoList) {
             UUID id = dto.doctor().baseDto().id();

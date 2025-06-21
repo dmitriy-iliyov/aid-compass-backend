@@ -29,8 +29,8 @@ public class AppointmentController {
 
 
     @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
-    @PostMapping("/me")
-    public ResponseEntity<?> create(@AuthenticationPrincipal PrincipalDetails principle,
+    @PostMapping("/me/schedule")
+    public ResponseEntity<?> schedule(@AuthenticationPrincipal PrincipalDetails principle,
                                     @RequestBody @Valid AppointmentCreateDto dto,
                                     @RequestParam(value = "return_body", defaultValue = "false")
                                     boolean returnBody){
@@ -89,12 +89,12 @@ public class AppointmentController {
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_CUSTOMER', 'ROLE_JURIST', 'ROLE_DOCTOR')")
-    @DeleteMapping("/me/{id}")
-    public ResponseEntity<?> delete(@AuthenticationPrincipal PrincipalDetails principle,
+    @PatchMapping("/me/{id}/cancel")
+    public ResponseEntity<?> cancel(@AuthenticationPrincipal PrincipalDetails principle,
                                     @PathVariable("id")
                                     @Positive(message = "Id should be positive!")
                                     Long id) {
-        orchestrator.delete(principle.getUserId(), id);
+        orchestrator.cancel(principle.getUserId(), id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();

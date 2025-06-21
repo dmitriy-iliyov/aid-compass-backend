@@ -2,7 +2,6 @@ package com.aidcompass.interval.services;
 
 import com.aidcompass.appointment.models.marker.AppointmentMarker;
 import com.aidcompass.appointment_duration.AppointmentDurationService;
-import com.aidcompass.exceptions.interval.IntervalAlreadyExistsException;
 import com.aidcompass.exceptions.interval.IntervalIsInvalidException;
 import com.aidcompass.exceptions.interval.IntervalTimeIsInvalidException;
 import com.aidcompass.interval.models.dto.IntervalCreateDto;
@@ -11,6 +10,7 @@ import com.aidcompass.interval.models.dto.SystemIntervalCreatedDto;
 import com.aidcompass.interval.models.marker.IntervalMarker;
 import com.aidcompass.interval.validation.ownership.IntervalOwnershipValidator;
 import com.aidcompass.interval.validation.time.TimeValidator;
+import com.aidcompass.models.BaseNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -36,23 +36,30 @@ public class IntervalOrchestrator {
         Long duration = appointmentDurationService.findAppointmentDurationByOwnerId(ownerId);
         LocalTime end = inputDto.start().plusMinutes(duration);
         SystemIntervalCreatedDto dto = new SystemIntervalCreatedDto(inputDto.start(), end, inputDto.date());
-        baseCheck(dto);
-        if (service.findByOwnerIdAndStartAndDate(ownerId, dto.start(), dto.date())) {
-            throw new IntervalAlreadyExistsException();
+
+        if (!timeValidator.isIntervalValid(dto)) {
+            throw new IntervalIsInvalidException();
         }
+        if (!timeValidator.isIntervalTimeValid(dto)) {
+            throw new IntervalTimeIsInvalidException();
+        }
+
+        try {
+            return service.findByOwnerIdAndStartAndDate(ownerId, dto.start(), dto.date());
+        } catch (BaseNotFoundException ignored) {}
+
         IntervalResponseDto responseDto = service.save(ownerId, dto);
         nearestService.replaceIfEarlier(ownerId, responseDto);
         return responseDto;
     }
 
-    public IntervalResponseDto save(UUID ownerId, SystemIntervalCreatedDto dto) {
-        baseCheck(dto);
-        if (service.findByOwnerIdAndStartAndDate(ownerId, dto.start(), dto.date())) {
-            return null;
-        }
+    public void systemSave(UUID ownerId, SystemIntervalCreatedDto dto) {
+        try {
+            service.findByOwnerIdAndStartAndDate(ownerId, dto.start(), dto.date());
+            return;
+        } catch (BaseNotFoundException ignored) {}
         IntervalResponseDto responseDto = service.save(ownerId, dto);
         nearestService.replaceIfEarlier(ownerId, responseDto);
-        return responseDto;
     }
 
     public void cut(AppointmentMarker dto, LocalTime end, Long id) {
@@ -68,14 +75,5 @@ public class IntervalOrchestrator {
         ownershipValidator.validate(ownerId, id);
         service.deleteByOwnerIdAndId(ownerId, id);
         nearestService.deleteByOwnerId(ownerId, id);
-    }
-
-    private void baseCheck(IntervalMarker dto) {
-        if (!timeValidator.isIntervalValid(dto)) {
-            throw new IntervalIsInvalidException();
-        }
-        if (!timeValidator.isIntervalTimeValid(dto)) {
-            throw new IntervalTimeIsInvalidException();
-        }
     }
 }

@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.transaction.TransactionAwareCacheManagerProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -36,8 +36,12 @@ public class GlobalRedisConfig {
 
     public static final String APPOINTMENT_DURATION_CACHE_NAME = "appointment:duration";
     public static final String APPOINTMENT_DURATION_MAP_CACHE_NAME = "appointment:duration:map";
-    public static final String APPOINTMENTS_BY_FILTER_CACHE_NAME = "appointments:filter";
+    public static final String APPOINTMENTS_CACHE_NAME = "appointments";
     public final static String CONF_TOKEN_KEY_TEMPLATE = "tkn:conf:";
+    public static final String LIST_OF_TIMES_CACHE_NAME = "lost_of_times:public";
+    public static final String PRIVATE_LIST_OF_TIMES_CACHE_NAME = "lost_of_times:private";
+    public static final String MONTH_DATES_CACHE_NAME = "month:dates";
+    public static final String PRIVATE_MONTH_DATES_CACHE_NAME = "month:dates:private";
 
 
     @Bean
@@ -49,7 +53,7 @@ public class GlobalRedisConfig {
     }
 
     @Bean
-    public RedisCacheConfiguration redisCacheConfiguration() {
+    public RedisCacheConfiguration defaultRedisCacheConfiguration() {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -69,6 +73,25 @@ public class GlobalRedisConfig {
     }
 
     @Bean
+    public RedisCacheConfiguration withCacheNullValuesRedisConfiguration() {
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        mapper.activateDefaultTyping(
+                BasicPolymorphicTypeValidator.builder().allowIfBaseType(Object.class).build(),
+                ObjectMapper.DefaultTyping.EVERYTHING, JsonTypeInfo.As.PROPERTY
+        );
+
+        return RedisCacheConfiguration.defaultCacheConfig()
+                .serializeKeysWith(RedisSerializationContext
+                        .SerializationPair.fromSerializer(new StringRedisSerializer()))
+                .serializeValuesWith(RedisSerializationContext.
+                        SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(mapper)));
+    }
+
+    @Bean
     public <K, V> RedisTemplate<K, V> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<K, V> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
@@ -77,46 +100,49 @@ public class GlobalRedisConfig {
     }
 
     @Bean
-    public CacheManager cacheManager(RedisConnectionFactory  redisConnectionFactory, RedisCacheConfiguration config) {
+    public CacheManager cacheManager(RedisConnectionFactory  redisConnectionFactory,
+                                     @Qualifier("defaultRedisCacheConfiguration") RedisCacheConfiguration defaultConfig,
+                                     @Qualifier("withCacheNullValuesRedisConfiguration") RedisCacheConfiguration withCacheNullValuesRedisConfiguration) {
         return RedisCacheManager.builder(redisConnectionFactory)
                 .disableCreateOnMissingCache()
-                .withCacheConfiguration("doctors:public", config)
-                .withCacheConfiguration("doctors:public:full", config)
-                .withCacheConfiguration("doctors:spec", config.entryTtl(Duration.ofSeconds(60)))
-                .withCacheConfiguration("doctors:name", config.entryTtl(Duration.ofSeconds(60)))
-                .withCacheConfiguration("doctors:gender", config.entryTtl(Duration.ofSeconds(60)))
-                .withCacheConfiguration("doctors:approve", config.entryTtl(Duration.ofSeconds(60)))
-                .withCacheConfiguration("doctors:count", config.entryTtl(Duration.ofSeconds(300)))
+                .withCacheConfiguration("doctors:public", defaultConfig)
+                .withCacheConfiguration("doctors:public:full", defaultConfig)
+                .withCacheConfiguration("doctors:spec", defaultConfig.entryTtl(Duration.ofSeconds(60)))
+                .withCacheConfiguration("doctors:name", defaultConfig.entryTtl(Duration.ofSeconds(60)))
+                .withCacheConfiguration("doctors:gender", defaultConfig.entryTtl(Duration.ofSeconds(60)))
+                .withCacheConfiguration("doctors:approve", defaultConfig.entryTtl(Duration.ofSeconds(60)))
+                .withCacheConfiguration("doctors:count", defaultConfig.entryTtl(Duration.ofSeconds(300)))
 
-                .withCacheConfiguration("jurists:public", config)
-                .withCacheConfiguration("jurists:public:full", config)
-                .withCacheConfiguration("jurists:spec", config.entryTtl(Duration.ofSeconds(60)))
-                .withCacheConfiguration("jurists:name", config.entryTtl(Duration.ofSeconds(60)))
-                .withCacheConfiguration("jurists:gender", config.entryTtl(Duration.ofSeconds(60)))
-                .withCacheConfiguration("jurists:approve", config.entryTtl(Duration.ofSeconds(60)))
-                .withCacheConfiguration("jurists:count", config.entryTtl(Duration.ofSeconds(300)))
+                .withCacheConfiguration("jurists:public", defaultConfig)
+                .withCacheConfiguration("jurists:public:full", defaultConfig)
+                .withCacheConfiguration("jurists:spec", defaultConfig.entryTtl(Duration.ofSeconds(60)))
+                .withCacheConfiguration("jurists:name", defaultConfig.entryTtl(Duration.ofSeconds(60)))
+                .withCacheConfiguration("jurists:gender", defaultConfig.entryTtl(Duration.ofSeconds(60)))
+                .withCacheConfiguration("jurists:approve", defaultConfig.entryTtl(Duration.ofSeconds(60)))
+                .withCacheConfiguration("jurists:count", defaultConfig.entryTtl(Duration.ofSeconds(300)))
 
-                .withCacheConfiguration("customers:private", config)
-                .withCacheConfiguration("customers:count", config.entryTtl(Duration.ofSeconds(300)))
+                .withCacheConfiguration("customers:private", defaultConfig)
+                .withCacheConfiguration("customers:count", defaultConfig.entryTtl(Duration.ofSeconds(300)))
 
-                .withCacheConfiguration("contact_types", config)
-                .withCacheConfiguration("exists", config.entryTtl(Duration.ofSeconds(120)))
-                .withCacheConfiguration("public_contacts", config.entryTtl(Duration.ofSeconds(3600)))
-                .withCacheConfiguration("primary_contacts", config.entryTtl(Duration.ofSeconds(3600)))
-                .withCacheConfiguration("contacts:progress", config.entryTtl(Duration.ofSeconds(3600)))
+                .withCacheConfiguration("contact_types", defaultConfig)
+                .withCacheConfiguration("exists", defaultConfig.entryTtl(Duration.ofSeconds(120)))
+                .withCacheConfiguration("public_contacts", defaultConfig.entryTtl(Duration.ofSeconds(3600)))
+                .withCacheConfiguration("primary_contacts", defaultConfig.entryTtl(Duration.ofSeconds(3600)))
+                .withCacheConfiguration("contacts:progress", defaultConfig.entryTtl(Duration.ofSeconds(3600)))
 
-                .withCacheConfiguration(APPOINTMENT_DURATION_CACHE_NAME, config)
-                .withCacheConfiguration(APPOINTMENT_DURATION_MAP_CACHE_NAME, config.entryTtl(Duration.ofSeconds(3600)))
-                .withCacheConfiguration(APPOINTMENTS_BY_FILTER_CACHE_NAME, config.entryTtl(Duration.ofSeconds(500)))
-                .withCacheConfiguration("day", config)
-                .withCacheConfiguration("day:full", config)
-                .withCacheConfiguration("weak", config)
-                .withCacheConfiguration("month", config)
+                .withCacheConfiguration(APPOINTMENT_DURATION_CACHE_NAME, defaultConfig)
+                .withCacheConfiguration(APPOINTMENT_DURATION_MAP_CACHE_NAME, defaultConfig.entryTtl(Duration.ofSeconds(3600)))
+                .withCacheConfiguration(APPOINTMENTS_CACHE_NAME, defaultConfig.entryTtl(Duration.ofSeconds(3600)))
+                .withCacheConfiguration(LIST_OF_TIMES_CACHE_NAME, defaultConfig.entryTtl(Duration.ofSeconds(7200)))
+                .withCacheConfiguration(PRIVATE_LIST_OF_TIMES_CACHE_NAME, defaultConfig.entryTtl(Duration.ofSeconds(7200)))
+                .withCacheConfiguration(MONTH_DATES_CACHE_NAME, defaultConfig.entryTtl(Duration.ofSeconds(7200)))
+                .withCacheConfiguration(PRIVATE_MONTH_DATES_CACHE_NAME, defaultConfig.entryTtl(Duration.ofSeconds(7200)))
+                .withCacheConfiguration("day", defaultConfig)
+                .withCacheConfiguration("day:full", defaultConfig)
+                .withCacheConfiguration("weak", defaultConfig)
+                .withCacheConfiguration("month", defaultConfig)
 
-                .withCacheConfiguration("avatars:url", config)
-                .withCacheConfiguration("avatars:url:map", config.entryTtl(Duration.ofSeconds(60)))
-                .withCacheConfiguration("avatars:sas_link", config)
-                .withCacheConfiguration("avatars:sas_link:map", config.entryTtl(Duration.ofSeconds(60)))
+                .withCacheConfiguration("avatars:url:map", defaultConfig.entryTtl(Duration.ofSeconds(60)))
                 .build();
     }
 }

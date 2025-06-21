@@ -44,21 +44,10 @@ public class AppointmentAggregatorService {
         AppointmentResponseDto appointment = appointmentOrchestrator.findById(volunteerId, id);
         return new VolunteerAppointmentDto(
                 appointment,
+                utils.findAvatarUrlByOwnerId(appointment.customerId()),
                 customerService.findPublicById(appointment.customerId()),
                 utils.findAllContactByOwnerId(appointment.customerId())
         );
-    }
-
-    public List<VolunteerAppointmentDto> findAllAppointmentByVolunteerId(UUID volunteerId) {
-        List<AppointmentResponseDto> appointments =
-                appointmentOrchestrator.findMonthByVolunteerIdAndDate(volunteerId, LocalDate.now());
-        return prepareVolunteerAppointmentDtoList(appointments);
-    }
-
-    public List<CustomerAppointmentDto> findAllAppointmentByCustomerId(UUID customerId) {
-        List<AppointmentResponseDto> appointments =
-                appointmentOrchestrator.findMonthByCustomerIdAndDate(customerId, LocalDate.now());
-        return prepareCustomerAppointmentDtoList(customerId, appointments);
     }
 
     public PageResponse<VolunteerAppointmentDto> findByFilterAndVolunteerId(UUID customerId, StatusFilter filter, int page, int size) {
@@ -99,6 +88,8 @@ public class AppointmentAggregatorService {
             }
         }
 
+        Map<UUID, String> volunteerAvatars = utils.findAllAvatarUrlByOwnerIdIn(volunteerIds.stream().toList());
+
         List<CustomerAppointmentDto> response = customerIdToAppointmentsMap.entrySet().stream()
                 .flatMap(entry -> {
                     UUID volunteerId = entry.getKey();
@@ -110,7 +101,7 @@ public class AppointmentAggregatorService {
                     return entry.getValue().stream()
                             .map(appointment -> new CustomerAppointmentDto(
                                     appointment,
-                                    utils.findAvatarUrlByOwnerId(volunteerId),
+                                    volunteerAvatars.get(volunteerId),
                                     volunteer)
                             );
                 })
@@ -129,6 +120,8 @@ public class AppointmentAggregatorService {
                 .findAllByIds(customerIdToAppointmentsMap.keySet()).stream()
                 .collect(Collectors.toMap(PublicCustomerResponseDto::id, Function.identity()));
 
+        Map<UUID, String> customerAvatars = utils.findAllAvatarUrlByOwnerIdIn(customerDtoMap.keySet().stream().toList());
+
         return customerIdToAppointmentsMap.entrySet().stream()
                 .flatMap(entry -> {
                     UUID customerId = entry.getKey();
@@ -138,7 +131,12 @@ public class AppointmentAggregatorService {
                         return Stream.empty();
                     }
                     return entry.getValue().stream()
-                            .map(appointment -> new VolunteerAppointmentDto(appointment, customer, utils.findAllContactByOwnerId(customerId)));
+                            .map(appointment -> new VolunteerAppointmentDto(
+                                    appointment,
+                                    customerAvatars.get(customerId),
+                                    customer,
+                                    utils.findAllContactByOwnerId(customerId))
+                            );
                 })
                 .sorted(Comparator
                         .comparing((VolunteerAppointmentDto dto) -> dto.appointment().date())

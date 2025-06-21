@@ -15,13 +15,17 @@ import com.aidcompass.appointment.models.dto.AppointmentUpdateDto;
 import com.aidcompass.exceptions.appointment.AppointmentNotFoundByIdException;
 import com.aidcompass.exceptions.appointment.AppointmentOwnershipException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +43,7 @@ public class AppointmentService {
 
     private final AppointmentRepository repository;
     private final AppointmentMapper mapper;
+    private final CacheManager cacheManager;
 
 
     @Transactional
@@ -67,12 +72,12 @@ public class AppointmentService {
         return repository.existsByCustomerIdAndDateAndStartAndStatus(customerId, date, start, status);
     }
 
+    @Cacheable(value = GlobalRedisConfig.APPOINTMENTS_CACHE_NAME, key = "#id")
     @Transactional(readOnly = true)
     public AppointmentResponseDto findById(Long id) {
         return mapper.toDto(repository.findById(id).orElseThrow(AppointmentNotFoundByIdException::new));
     }
 
-    @Cacheable(value = GlobalRedisConfig.APPOINTMENTS_BY_FILTER_CACHE_NAME)
     @Transactional(readOnly = true)
     public PageResponse<AppointmentResponseDto> findAllByStatusFilter(UUID participantId, StatusFilter filter,
                                                                       int page, int size) {
@@ -108,11 +113,23 @@ public class AppointmentService {
         return mapper.toDtoList(entityList);
     }
 
+    @CacheEvict(value = GlobalRedisConfig.APPOINTMENTS_CACHE_NAME, key = "#id")
     @Transactional
     public void markCompletedById(Long id, String review) {
         repository.updateStatusAndSetReview(id, review, AppointmentStatus.COMPLETED);
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = GlobalRedisConfig.LIST_OF_TIMES_CACHE_NAME,
+                                key = "#result.volunteerId() + ':' + #result.date()"),
+                    @CacheEvict(value = GlobalRedisConfig.PRIVATE_LIST_OF_TIMES_CACHE_NAME,
+                                key = "#result.volunteerId() + ':' + #result.date()"),
+                    @CacheEvict(value = GlobalRedisConfig.MONTH_DATES_CACHE_NAME, key = "#result.volunteerId()"),
+                    @CacheEvict(value = GlobalRedisConfig.PRIVATE_MONTH_DATES_CACHE_NAME, key = "#result.volunteerId()")
+            },
+            put = @CachePut(value = GlobalRedisConfig.APPOINTMENTS_CACHE_NAME, key = "#id")
+    )
     @Transactional
     public AppointmentResponseDto markCanceledById(Long id) {
         AppointmentEntity entity = repository.findById(id).orElseThrow(AppointmentNotFoundByIdException::new);
@@ -128,6 +145,12 @@ public class AppointmentService {
 
     @Transactional
     public void deleteAll(UUID participantId) {
-        repository.deleteAllByParticipantId(participantId);
+        List<Long> ids = repository.deleteAllByParticipantId(participantId);
+        Cache cache = cacheManager.getCache(GlobalRedisConfig.APPOINTMENTS_CACHE_NAME);
+        if (cache != null) {
+            for (Long id: ids) {
+                cache.evict(id);
+            }
+        }
     }
 }

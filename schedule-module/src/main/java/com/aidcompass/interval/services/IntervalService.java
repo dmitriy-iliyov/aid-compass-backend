@@ -14,21 +14,17 @@ import java.util.UUID;
 public interface IntervalService {
     IntervalResponseDto save(UUID ownerId, SystemIntervalCreatedDto dto);
 
-    IntervalResponseDto save(UUID ownerId, ValidationInfoDto info);
-
-    List<IntervalResponseDto> saveAll(UUID ownerId, Set<SystemIntervalCreatedDto> dtoSet);
-
     Set<IntervalResponseDto> cut(AppointmentMarker dto, LocalTime end, Long id);
 
     List<IntervalResponseDto> findAllByOwnerIdAndDate(UUID ownerId, LocalDate date);
 
     List<IntervalResponseDto> findAllByOwnerIdAndDateInterval(UUID ownerId, LocalDate start, LocalDate end);
 
-    void deleteByOwnerIdAndId(UUID ownerId, Long id);
+    IntervalResponseDto deleteByOwnerIdAndId(UUID ownerId, Long id);
 
     void deleteAllByOwnerIdAndDate(UUID ownerId, LocalDate date);
 
     void deleteAllByOwnerId(UUID ownerId);
 
-    boolean findByOwnerIdAndStartAndDate(UUID ownerId, LocalTime start, LocalDate date);
+    IntervalResponseDto findByOwnerIdAndStartAndDate(UUID ownerId, LocalTime start, LocalDate date);
 }

@@ -1,9 +1,9 @@
-package com.aidcompass.services;
+package com.aidcompass;
 
-import com.aidcompass.uuid.UuidUtils;
-import com.aidcompass.cloud.PublicCloudStorage;
+import com.aidcompass.cloud.CloudStorage;
 import com.aidcompass.models.PassedListIsToLongException;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.aidcompass.uuid.UuidUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
@@ -22,26 +22,27 @@ import java.util.stream.Collectors;
 import static com.aidcompass.uuid.UuidUtils.hashUuidCollection;
 
 @Service
-public class PublicAvatarService implements AvatarService {
+@RequiredArgsConstructor
+public class AvatarServiceImpl implements AvatarService {
 
-    private final PublicCloudStorage cloudStorage;
+    private final AvatarRepository repository;
+    private final CloudStorage cloudStorage;
     private final CacheManager cacheManager;
 
 
-    public PublicAvatarService(@Qualifier("azureBlobPublicCloudStorage") PublicCloudStorage cloudStorage,
-                               CacheManager cacheManager) {
-        this.cloudStorage = cloudStorage;
-        this.cacheManager = cacheManager;
-    }
-
-    @CachePut(value = "avatars:url", key = "#userId", unless = "#result == null")
     @Transactional
     @Override
     public String saveOrUpdate(UUID userId, MultipartFile image) {
-        return cloudStorage.saveOrUpdate(userId, image);
+        String url = cloudStorage.saveOrUpdate(userId, image);
+        repository.save(new AvatarEntity(userId, url));
+        return url;
     }
 
-    @Transactional
+    @Override
+    public String saveOrUpdateDefault(MultipartFile image) {
+        return cloudStorage.saveOrUpdateDefault(image);
+    }
+
     @Override
     public Map<UUID, String> findAllUrlByOwnerIdIn(List<UUID> userIdList) {
         if (userIdList.size() > 10) {
@@ -62,13 +63,19 @@ public class PublicAvatarService implements AvatarService {
         }
 
         Map<UUID, String> urls = new HashMap<>();
+        List<UUID> entityList = repository.findAllByUserIdIn(userIdList).stream().map(AvatarEntity::getUserId).toList();
         for (UUID id : userIdList) {
-            urls.put(id, cloudStorage.findById(id));
+            if (entityList.contains(id)) {
+                urls.put(id, cloudStorage.generateUrlById(id));
+            } else {
+                urls.put(id, cloudStorage.getDefaultUrl());
+            }
         }
 
-        if (cache != null && !urls.containsValue(null)) {
+        if (cache != null) {
             hash = UuidUtils.hashUuidCollection(userIdList);
             Map<String, String> preparedToCache = urls.entrySet().stream()
+                    .filter(e -> e.getValue() != null)
                     .collect(Collectors.toMap(
                             e -> e.getKey().toString(),
                             Map.Entry::getValue)
@@ -78,17 +85,14 @@ public class PublicAvatarService implements AvatarService {
         return urls;
     }
 
-    @Cacheable(value = "avatars:url", key = "#userId", unless = "#result == null")
-    @Transactional
     @Override
     public String findUrlByUserId(UUID userId) {
-        return cloudStorage.findById(userId);
+        return cloudStorage.generateUrlById(userId);
     }
 
-    @CacheEvict(value = "avatars:url", key = "#userId")
-    @Transactional
     @Override
     public void delete(UUID userId) {
         cloudStorage.delete(userId);
+        repository.deleteByUserId(userId);
     }
 }

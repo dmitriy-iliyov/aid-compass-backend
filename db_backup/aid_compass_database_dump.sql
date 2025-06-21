@@ -113,22 +113,6 @@ CREATE TABLE public.authorities (
 ALTER TABLE public.authorities OWNER TO admin;
 
 --
--- Name: avatars; Type: TABLE; Schema: public; Owner: admin
---
-
-CREATE TABLE public.avatars (
-    created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL,
-    id uuid NOT NULL,
-    user_id uuid,
-    file_name character varying(255) NOT NULL,
-    sas_link character varying(255) NOT NULL
-);
-
-
-ALTER TABLE public.avatars OWNER TO admin;
-
---
 -- Name: cont_seq; Type: SEQUENCE; Schema: public; Owner: admin
 --
 
@@ -2188,16 +2172,6 @@ COPY public.authorities (id, authority) FROM stdin;
 6	ROLE_JURIST
 7	ROLE_ADMIN
 \.
-
-
---
--- Data for Name: avatars; Type: TABLE DATA; Schema: public; Owner: admin
---
-
-COPY public.avatars (created_at, updated_at, id, user_id, file_name, sas_link) FROM stdin;
-2025-06-17 15:24:41.018383+00	2025-06-17 15:24:41.018383+00	01977e7e-12b7-7ee9-a4dd-048a012dbde5	01977e7c-e1ea-7674-a453-c35ee7829b40	01977e7c-e1ea-7674-a453-c35ee7829b40-logo.jpg	https://aidcompass.blob.core.windows.net/avatars/01977e7c-e1ea-7674-a453-c35ee7829b40-logo.jpg?sv=2023-11-03&se=2025-06-18T15%3A24%3A41Z&sr=b&sp=r&sig=Akp2JBMIt64YQ1kLcG9IBw6mcrQlt0mdtelRzn%2FE6PA%3D
-\.
-
 
 --
 -- Data for Name: contact_progreses; Type: TABLE DATA; Schema: public; Owner: admin
@@ -8007,22 +7981,6 @@ ALTER TABLE ONLY public.authorities
 
 ALTER TABLE ONLY public.authorities
     ADD CONSTRAINT authorities_pkey PRIMARY KEY (id);
-
-
---
--- Name: avatars avatars_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
---
-
-ALTER TABLE ONLY public.avatars
-    ADD CONSTRAINT avatars_pkey PRIMARY KEY (id);
-
-
---
--- Name: avatars avatars_user_id_key; Type: CONSTRAINT; Schema: public; Owner: admin
---
-
-ALTER TABLE ONLY public.avatars
-    ADD CONSTRAINT avatars_user_id_key UNIQUE (user_id);
 
 
 --

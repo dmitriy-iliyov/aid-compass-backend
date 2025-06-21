@@ -6,12 +6,10 @@ import com.aidcompass.contact.models.dto.PrivateContactResponseDto;
 import com.aidcompass.contact.models.dto.PublicContactResponseDto;
 import com.aidcompass.contact.services.ContactService;
 import com.aidcompass.models.BaseNotFoundException;
-import com.aidcompass.services.AvatarService;
 import com.aidcompass.user.services.UserService;
 import com.aidcompass.interval.models.dto.NearestIntervalDto;
 import com.aidcompass.interval.services.NearestIntervalService;
 import com.aidcompass.interval.services.IntervalService;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -29,7 +27,8 @@ public class AggregatorUtils {
     private final IntervalService intervalService;
     private final AppointmentService appointmentService;
 
-    public AggregatorUtils(@Qualifier("publicAvatarService") AvatarService avatarService,
+
+    public AggregatorUtils(AvatarService avatarService,
                            NearestIntervalService nearestIntervalService,
                            AppointmentDurationService durationService,
                            ContactService contactService,
@@ -46,7 +45,6 @@ public class AggregatorUtils {
         this.appointmentService = appointmentService;
     }
 
-
     public String findAvatarUrlByOwnerId(UUID id) {
         try {
             return avatarService.findUrlByUserId(id);
@@ -55,11 +53,11 @@ public class AggregatorUtils {
         }
     }
 
-    public Map<UUID, String> findAllAvatarUrlByOwnerId(List<UUID> idList) {
+    public Map<UUID, String> findAllAvatarUrlByOwnerIdIn(List<UUID> idList) {
         return avatarService.findAllUrlByOwnerIdIn(idList);
     }
 
-    public Map<UUID, NearestIntervalDto> findNearestByOwnerId(List<UUID> idList) {
+    public Map<UUID, NearestIntervalDto> findAllNearestByOwnerIdIn(List<UUID> idList) {
         return nearestIntervalService.findAll(idList);
     }
 
@@ -71,7 +69,7 @@ public class AggregatorUtils {
         }
     }
 
-    public Map<UUID, Long> findAllDurationByOwnerId(List<UUID> ownerIds) {
+    public Map<UUID, Long> findAllDurationByOwnerIdIn(List<UUID> ownerIds) {
         return durationService.findAllByOwnerIdIn(ownerIds);
     }
 

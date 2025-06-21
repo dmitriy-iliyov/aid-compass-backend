@@ -1,8 +1,7 @@
 package com.aidcompass;
 
 import com.aidcompass.contracts.PrincipalDetails;
-import com.aidcompass.services.AvatarService;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,22 +16,26 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/avatars")
 @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_CUSTOMER', 'ROLE_DOCTOR', 'ROLE_JURIST')")
+@RequiredArgsConstructor
 public class AvatarController {
 
     private final AvatarService service;
 
 
-    public AvatarController(@Qualifier("publicAvatarService") AvatarService service) {
-        this.service = service;
-    }
-
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> set(@AuthenticationPrincipal PrincipalDetails principal,
                                  @RequestParam("image") MultipartFile image) {
-        System.out.println(principal);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(service.saveOrUpdate(principal.getUserId(), image));
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PutMapping(value = "/default", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> setDefault(@RequestParam("image") MultipartFile image) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(service.saveOrUpdateDefault(image));
     }
 
     @PreAuthorize("permitAll()")
@@ -42,7 +45,6 @@ public class AvatarController {
                 .status(HttpStatus.OK)
                 .body(service.findUrlByUserId(userId));
     }
-
 
     @DeleteMapping
     public ResponseEntity<?> delete(@AuthenticationPrincipal PrincipalDetails principal) {

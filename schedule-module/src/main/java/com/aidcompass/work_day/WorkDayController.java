@@ -26,9 +26,9 @@ public class WorkDayController {
     @GetMapping("/{owner_id}")
     public ResponseEntity<?> getTimes(@PathVariable("owner_id") UUID ownerId,
                                       @RequestParam("date")
-                                             @DateTimeFormat(pattern = "yyyy-MM-dd")
-                                             @NotNull(message = "Date shouldn't be null!")
-                                             LocalDate date) {
+                                      @DateTimeFormat(pattern = "yyyy-MM-dd")
+                                      @NotNull(message = "Date shouldn't be null!")
+                                      LocalDate date) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(service.findListOfTimes(ownerId, date));
@@ -37,20 +37,20 @@ public class WorkDayController {
     @GetMapping("/me")
     public ResponseEntity<?> getPrivateTimes(@AuthenticationPrincipal PrincipalDetails principal,
                                              @RequestParam("date")
-                                                    @DateTimeFormat(pattern = "yyyy-MM-dd")
-                                                    @NotNull(message = "Date shouldn't be null!")
-                                                    LocalDate date) {
+                                             @DateTimeFormat(pattern = "yyyy-MM-dd")
+                                             @NotNull(message = "Date shouldn't be null!")
+                                             LocalDate date) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findListOfPrivateTimes(principal.getUserId(), date));
+                .body(service.findPrivateListOfTimes(principal.getUserId(), date));
     }
 
     @DeleteMapping("/me")
     public ResponseEntity<?> delete(@AuthenticationPrincipal PrincipalDetails principal,
                                     @RequestParam("date")
-                                           @DateTimeFormat(pattern = "yyyy-MM-dd")
-                                           @NotNull(message = "Date shouldn't be null!")
-                                           LocalDate date) {
+                                    @DateTimeFormat(pattern = "yyyy-MM-dd")
+                                    @NotNull(message = "Date shouldn't be null!")
+                                    LocalDate date) {
         service.delete(principal.getUserId(), date);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
