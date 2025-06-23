@@ -1,11 +1,11 @@
 package com.aidcompass.appointment;
 
-import com.aidcompass.appointment.models.dto.AppointmentCreateDto;
-import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
-import com.aidcompass.appointment.models.dto.AppointmentUpdateDto;
 import com.aidcompass.appointment.services.AppointmentOrchestrator;
 import com.aidcompass.appointment.services.AppointmentService;
 import com.aidcompass.contracts.PrincipalDetails;
+import com.aidcompass.appointment.models.dto.AppointmentCreateDto;
+import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
+import com.aidcompass.appointment.models.dto.AppointmentUpdateDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -31,9 +31,9 @@ public class AppointmentController {
     @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     @PostMapping("/me/schedule")
     public ResponseEntity<?> schedule(@AuthenticationPrincipal PrincipalDetails principle,
-                                    @RequestBody @Valid AppointmentCreateDto dto,
-                                    @RequestParam(value = "return_body", defaultValue = "false")
-                                    boolean returnBody){
+                                      @RequestBody @Valid AppointmentCreateDto dto,
+                                      @RequestParam(value = "return_body", defaultValue = "false")
+                                      boolean returnBody){
         AppointmentResponseDto response = orchestrator.save(principle.getUserId(), dto);
         if (returnBody) {
             return ResponseEntity

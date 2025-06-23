@@ -2,6 +2,7 @@ package com.aidcompass.doctor.models;
 
 import com.aidcompass.detail.models.DetailEntity;
 import com.aidcompass.detail.models.Gender;
+import com.aidcompass.detail.models.GenderConverter;
 import com.aidcompass.doctor.specialization.models.DoctorSpecializationEntity;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;
 import jakarta.persistence.*;
@@ -48,7 +49,7 @@ public class DoctorEntity {
     private Integer workingExperience;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.ORDINAL)
+    @Convert(converter = GenderConverter.class)
     private Gender gender;
 
     @Column(name = "is_approved", nullable = false)

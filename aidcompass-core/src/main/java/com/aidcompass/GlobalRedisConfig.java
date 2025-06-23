@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,10 +39,10 @@ public class GlobalRedisConfig {
     public static final String APPOINTMENT_DURATION_MAP_CACHE_NAME = "appointment:duration:map";
     public static final String APPOINTMENTS_CACHE_NAME = "appointments";
     public final static String CONF_TOKEN_KEY_TEMPLATE = "tkn:conf:";
-    public static final String LIST_OF_TIMES_CACHE_NAME = "lost_of_times:public";
-    public static final String PRIVATE_LIST_OF_TIMES_CACHE_NAME = "lost_of_times:private";
-    public static final String MONTH_DATES_CACHE_NAME = "month:dates";
-    public static final String PRIVATE_MONTH_DATES_CACHE_NAME = "month:dates:private";
+    public final static String INTERVALS_BY_DATE_CACHE_NAME = "intervals:date";
+    public final static String INTERVALS_BY_DATE_INTERVAL_CACHE_NAME = "intervals:date_interval";
+    public final static String APPOINTMENTS_BY_DATE_AND_STATUS_CACHE_NAME = "appointments:date";
+    public final static String APPOINTMENTS_BY_DATE_INTERVAL_CACHE_NAME = "appointments:date_interval";
 
 
     @Bean
@@ -133,16 +134,13 @@ public class GlobalRedisConfig {
                 .withCacheConfiguration(APPOINTMENT_DURATION_CACHE_NAME, defaultConfig)
                 .withCacheConfiguration(APPOINTMENT_DURATION_MAP_CACHE_NAME, defaultConfig.entryTtl(Duration.ofSeconds(3600)))
                 .withCacheConfiguration(APPOINTMENTS_CACHE_NAME, defaultConfig.entryTtl(Duration.ofSeconds(3600)))
-                .withCacheConfiguration(LIST_OF_TIMES_CACHE_NAME, defaultConfig.entryTtl(Duration.ofSeconds(7200)))
-                .withCacheConfiguration(PRIVATE_LIST_OF_TIMES_CACHE_NAME, defaultConfig.entryTtl(Duration.ofSeconds(7200)))
-                .withCacheConfiguration(MONTH_DATES_CACHE_NAME, defaultConfig.entryTtl(Duration.ofSeconds(7200)))
-                .withCacheConfiguration(PRIVATE_MONTH_DATES_CACHE_NAME, defaultConfig.entryTtl(Duration.ofSeconds(7200)))
-                .withCacheConfiguration("day", defaultConfig)
-                .withCacheConfiguration("day:full", defaultConfig)
-                .withCacheConfiguration("weak", defaultConfig)
-                .withCacheConfiguration("month", defaultConfig)
+                .withCacheConfiguration(INTERVALS_BY_DATE_CACHE_NAME, defaultConfig.entryTtl(Duration.ofSeconds(7200)))
+                .withCacheConfiguration(INTERVALS_BY_DATE_INTERVAL_CACHE_NAME, defaultConfig.entryTtl(Duration.ofSeconds(7200)))
+                .withCacheConfiguration(APPOINTMENTS_BY_DATE_AND_STATUS_CACHE_NAME, defaultConfig.entryTtl(Duration.ofSeconds(7200)))
+                .withCacheConfiguration(APPOINTMENTS_BY_DATE_INTERVAL_CACHE_NAME, defaultConfig.entryTtl(Duration.ofSeconds(7200)))
 
-                .withCacheConfiguration("avatars:url:map", defaultConfig.entryTtl(Duration.ofSeconds(60)))
+                .withCacheConfiguration("avatars:url", defaultConfig.entryTtl(Duration.ofSeconds(7200)))
+                .withCacheConfiguration("avatars:url:map", defaultConfig.entryTtl(Duration.ofSeconds(120)))
                 .build();
     }
 }

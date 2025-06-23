@@ -79,6 +79,17 @@ public abstract class BaseControllerAdvice {
 //                .body(exceptionDto);
 //    }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException e, Locale locale) {
+        log.error("Exception 500: {}", e.getMessage());
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
+                messageSource.getMessage("500", null, "error.500", locale));
+        problemDetail.setProperty("properties", Map.of("errors", List.of(new ErrorDto("fromCode()", "Illegal argument exception!"))));
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(problemDetail);
+    }
+
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<?> handleThrowable(Throwable throwable) {
         ExceptionResponseDto exceptionDto = new ExceptionResponseDto(
@@ -92,7 +103,7 @@ public abstract class BaseControllerAdvice {
                 .body(exceptionDto);
     }
 
-    @ExceptionHandler({DataIntegrityViolationException.class, IllegalArgumentException.class})
+    @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<?> handleDataIntegrityViolationException(Exception e){
         ExceptionResponseDto exceptionDto = new ExceptionResponseDto(
                 "400",

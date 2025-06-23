@@ -1,6 +1,6 @@
 package com.aidcompass;
 
-import com.aidcompass.appointment.services.AppointmentService;
+import com.aidcompass.appointment.services.UnifiedAppointmentService;
 import com.aidcompass.appointment_duration.AppointmentDurationService;
 import com.aidcompass.contact.models.dto.PrivateContactResponseDto;
 import com.aidcompass.contact.models.dto.PublicContactResponseDto;
@@ -10,6 +10,7 @@ import com.aidcompass.user.services.UserService;
 import com.aidcompass.interval.models.dto.NearestIntervalDto;
 import com.aidcompass.interval.services.NearestIntervalService;
 import com.aidcompass.interval.services.IntervalService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Component
+@RequiredArgsConstructor
 public class AggregatorUtils {
 
     private final AvatarService avatarService;
@@ -25,25 +27,8 @@ public class AggregatorUtils {
     private final ContactService contactService;
     private final UserService userService;
     private final IntervalService intervalService;
-    private final AppointmentService appointmentService;
+    private final UnifiedAppointmentService unifiedAppointmentService;
 
-
-    public AggregatorUtils(AvatarService avatarService,
-                           NearestIntervalService nearestIntervalService,
-                           AppointmentDurationService durationService,
-                           ContactService contactService,
-                           UserService userService,
-                           IntervalService intervalService,
-                           AppointmentService appointmentService
-    ) {
-        this.avatarService = avatarService;
-        this.nearestIntervalService = nearestIntervalService;
-        this.durationService = durationService;
-        this.contactService = contactService;
-        this.userService = userService;
-        this.intervalService = intervalService;
-        this.appointmentService = appointmentService;
-    }
 
     public String findAvatarUrlByOwnerId(UUID id) {
         try {
@@ -86,7 +71,7 @@ public class AggregatorUtils {
             avatarService.delete(id);
         } catch (BaseNotFoundException ignore) { }
         contactService.deleteAll(id);
-        appointmentService.deleteAll(id);
+        unifiedAppointmentService.deleteAll(id);
         userService.deleteById(id);
     }
 

@@ -13,4 +13,6 @@ public interface AvatarRepository extends JpaRepository<AvatarEntity, UUID> {
     List<AvatarEntity> findAllByUserIdIn(List<UUID> userIdList);
 
     void deleteByUserId(UUID userId);
+
+    Optional<AvatarEntity> findByUserId(UUID userId);
 }

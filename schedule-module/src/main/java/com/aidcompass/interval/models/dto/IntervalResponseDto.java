@@ -1,6 +1,6 @@
 package com.aidcompass.interval.models.dto;
 
-import com.aidcompass.interval.models.day.Day;
+import com.aidcompass.interval.models.marker.IntervalMarker;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -21,7 +21,6 @@ public record IntervalResponseDto(
         LocalTime end,
 
         @JsonFormat(pattern = "yyyy-MM-dd")
-        LocalDate date,
+        LocalDate date
+) implements IntervalMarker { }
 
-        Day day
-) { }

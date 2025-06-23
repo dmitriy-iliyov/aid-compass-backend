@@ -1,8 +1,8 @@
 package com.aidcompass.appointment;
 
-import com.aidcompass.appointment.models.dto.StatusFilter;
 import com.aidcompass.contracts.PrincipalDetails;
 import com.aidcompass.enums.Authority;
+import com.aidcompass.appointment.models.dto.StatusFilter;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;

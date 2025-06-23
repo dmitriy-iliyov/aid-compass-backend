@@ -1,20 +1,26 @@
 package com.aidcompass.detail.models;
 
+import com.aidcompass.exceptions.GenderNotFoundByCode;
 import com.aidcompass.exceptions.UnsupportedGenderException;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public enum Gender {
-    MALE("Чоловік"),
-    FEMALE("Жінка");
-
+    MALE("Чоловік", 0),
+    FEMALE("Жінка", 1);
 
     private final String translate;
+    @Getter
+    private final int code;
 
-    Gender(String translate) {
+
+    Gender(String translate, int code) {
         this.translate = translate;
+        this.code = code;
     }
 
     @JsonValue
@@ -33,5 +39,12 @@ public enum Gender {
                 .filter(v -> v.getTranslate().equals(translate))
                 .findFirst()
                 .orElseThrow(UnsupportedGenderException::new);
+    }
+
+    public static Gender fromCode(int code) {
+        return Arrays.stream(Gender.values())
+                .filter(gender -> gender.getCode() == code)
+                .findFirst()
+                .orElseThrow(GenderNotFoundByCode::new);
     }
 }

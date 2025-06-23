@@ -1,4 +1,4 @@
-package com.aidcompass.work_day.models;
+package com.aidcompass.work_day;
 
 public record TimeInfo(
         Long id,

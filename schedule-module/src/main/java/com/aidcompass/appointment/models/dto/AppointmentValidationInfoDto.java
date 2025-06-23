@@ -1,7 +1,7 @@
 package com.aidcompass.appointment.models.dto;
 
+import com.aidcompass.appointment.models.enums.ValidationStatus;
 import com.aidcompass.appointment.models.marker.AppointmentMarker;
-import com.aidcompass.interval.models.overlaps.ValidationStatus;
 
 import java.util.UUID;
 

@@ -1,15 +1,15 @@
 package com.aidcompass.appointment.validation;
 
+import com.aidcompass.appointment.services.AppointmentService;
+import com.aidcompass.exceptions.appointment.AppointmentAlreadyExistException;
+import com.aidcompass.exceptions.appointment.InvalidTimeToCompleteException;
+import com.aidcompass.interval.models.dto.IntervalResponseDto;
+import com.aidcompass.interval.services.IntervalService;
 import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
 import com.aidcompass.appointment.models.dto.AppointmentValidationInfoDto;
 import com.aidcompass.appointment.models.enums.AppointmentStatus;
+import com.aidcompass.appointment.models.enums.ValidationStatus;
 import com.aidcompass.appointment.models.marker.AppointmentMarker;
-import com.aidcompass.appointment.services.AppointmentService;
-import com.aidcompass.exceptions.AppointmentAlreadyExistException;
-import com.aidcompass.exceptions.appointment.InvalidTimeToCompleteException;
-import com.aidcompass.interval.models.dto.SystemIntervalDto;
-import com.aidcompass.interval.models.overlaps.ValidationStatus;
-import com.aidcompass.interval.services.SystemIntervalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -25,14 +25,14 @@ import java.util.UUID;
 @Slf4j
 public class AppointmentTimeValidator {
 
-    private final SystemIntervalService intervalService;
+    private final IntervalService intervalService;
     private final AppointmentService appointmentService;
 
 
     public AppointmentValidationInfoDto validateVolunteerTime(UUID customerId, AppointmentMarker marker, LocalTime end) {
-        List<SystemIntervalDto> existingDtoList = intervalService.systemFindAllByOwnerIdAndDate(marker.volunteerId(), marker.date());
+        List<IntervalResponseDto> existingDtoList = intervalService.findAllByOwnerIdAndDate(marker.volunteerId(), marker.date());
         if (!existingDtoList.isEmpty()) {
-            for (SystemIntervalDto existedInterval: existingDtoList) {
+            for (IntervalResponseDto existedInterval: existingDtoList) {
                 if (existedInterval.start().equals(marker.start()) && existedInterval.end().equals(end)) {
                     return new AppointmentValidationInfoDto(
                             ValidationStatus.MATCHES_WITH_INTERVAL,

@@ -1,19 +1,14 @@
 package com.aidcompass.work_day;
 
-import com.aidcompass.GlobalRedisConfig;
-import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
-import com.aidcompass.appointment.models.enums.AppointmentStatus;
 import com.aidcompass.appointment.services.AppointmentService;
 import com.aidcompass.appointment_duration.AppointmentDurationService;
 import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.services.IntervalService;
-import com.aidcompass.work_day.models.TimeInfo;
+import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
+import com.aidcompass.appointment.models.enums.AppointmentStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -32,7 +27,7 @@ public class UnifiedWorkDayService implements WorkDayService {
     private final AppointmentService appointmentService;
     private final AppointmentDurationService appointmentDurationService;
 
-    @Cacheable(value = GlobalRedisConfig.LIST_OF_TIMES_CACHE_NAME, key = "#ownerId + ':' + #date")
+
     @Override
     public List<String> findListOfTimes(UUID ownerId, LocalDate date) {
         Long duration = appointmentDurationService.findAppointmentDurationByOwnerId(ownerId);
@@ -52,7 +47,6 @@ public class UnifiedWorkDayService implements WorkDayService {
                 .toList();
     }
 
-    @Cacheable(value = GlobalRedisConfig.PRIVATE_LIST_OF_TIMES_CACHE_NAME, key = "#ownerId + ':' + #date")
     @Override
     public Map<String, TimeInfo> findPrivateListOfTimes(UUID ownerId, LocalDate date) {
 
@@ -113,14 +107,6 @@ public class UnifiedWorkDayService implements WorkDayService {
                 ));
     }
 
-    @Caching(
-            evict = {
-                    @CacheEvict(value = GlobalRedisConfig.LIST_OF_TIMES_CACHE_NAME, key = "#ownerId + ':' + #date"),
-                    @CacheEvict(value = GlobalRedisConfig.PRIVATE_LIST_OF_TIMES_CACHE_NAME, key = "#ownerId + ':' + #date"),
-                    @CacheEvict(value = GlobalRedisConfig.MONTH_DATES_CACHE_NAME, key = "#ownerId"),
-                    @CacheEvict(value = GlobalRedisConfig.PRIVATE_MONTH_DATES_CACHE_NAME, key = "#ownerId")
-            }
-    )
     @Override
     public void delete(UUID ownerId, LocalDate date) {
         intervalService.deleteAllByOwnerIdAndDate(ownerId, date);

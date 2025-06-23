@@ -1,4 +1,4 @@
-package com.aidcompass.interval.models.overlaps;
+package com.aidcompass.appointment.models.enums;
 
 public enum ValidationStatus {
     OK,

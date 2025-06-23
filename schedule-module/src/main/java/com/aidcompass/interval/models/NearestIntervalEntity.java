@@ -1,6 +1,5 @@
 package com.aidcompass.interval.models;
 
-import com.aidcompass.interval.models.day.Day;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,8 +28,6 @@ public class NearestIntervalEntity {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
-    private Day day;
-
     @TimeToLive
     private long ttlSeconds;
 
@@ -47,14 +44,10 @@ public class NearestIntervalEntity {
 
                                  @JsonProperty("id")
                                  @JsonFormat(pattern = "yyyy-MM-dd")
-                                 LocalDate date,
-
-                                 @JsonProperty("day")
-                                 Day day) {
+                                 LocalDate date) {
         this.id = id;
         this.ownerId = ownerId;
         this.start = start;
         this.date = date;
-        this.day = day;
     }
 }

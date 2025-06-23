@@ -1,4 +1,4 @@
-package com.aidcompass.exceptions;
+package com.aidcompass.exceptions.appointment;
 
 import com.aidcompass.models.BaseInvalidInputException;
 import com.aidcompass.models.dto.ErrorDto;

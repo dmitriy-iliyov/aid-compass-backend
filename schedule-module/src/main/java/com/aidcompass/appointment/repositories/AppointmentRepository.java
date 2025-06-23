@@ -1,4 +1,4 @@
-package com.aidcompass.appointment;
+package com.aidcompass.appointment.repositories;
 
 
 import com.aidcompass.appointment.models.AppointmentEntity;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -41,6 +40,7 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
                                                                @Param("start") LocalDate start,
                                                                @Param("end") LocalDate end);
 
+    @Modifying
     @Query(value = """
         DELETE FROM AppointmentEntity a
         WHERE a.customerId = :participant_id

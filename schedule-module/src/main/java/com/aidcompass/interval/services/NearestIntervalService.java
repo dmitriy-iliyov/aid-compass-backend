@@ -3,9 +3,8 @@ package com.aidcompass.interval.services;
 import com.aidcompass.exceptions.interval.NearestIntervalNotFoundByOwnerIdException;
 import com.aidcompass.interval.mapper.NearestIntervalMapper;
 import com.aidcompass.interval.models.NearestIntervalEntity;
-import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.models.dto.NearestIntervalDto;
-import com.aidcompass.interval.models.dto.SystemIntervalDto;
+import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.repository.NearestIntervalRepository;
 import com.aidcompass.models.BaseNotFoundException;
 import com.aidcompass.models.PassedListIsToLongException;
@@ -28,7 +27,7 @@ public class NearestIntervalService {
 
     private final NearestIntervalRepository repository;
     private final NearestIntervalMapper mapper;
-    private final SystemIntervalService service;
+    private final IntervalService service;
 
 
     public Map<UUID, NearestIntervalDto> findAll(List<UUID> ownerIds) {
@@ -42,7 +41,7 @@ public class NearestIntervalService {
         if (!localOwnerIds.isEmpty()) {
             for (UUID id: localOwnerIds) {
                 try {
-                    SystemIntervalDto dto = service.systemFindNearestByOwnerId(id);
+                    IntervalResponseDto dto = service.findNearestByOwnerId(id);
                     response.put(id, saveWithTtl(mapper.toEntity(dto)));
                 } catch (BaseNotFoundException ignored) { }
             }
@@ -57,7 +56,7 @@ public class NearestIntervalService {
             );
         } catch (BaseNotFoundException e) {
             try {
-                SystemIntervalDto dto = service.systemFindNearestByOwnerId(ownerId);
+                IntervalResponseDto dto = service.findNearestByOwnerId(ownerId);
                 return saveWithTtl(mapper.toEntity(dto));
             } catch (BaseNotFoundException e2) {
                 return null;
@@ -72,7 +71,7 @@ public class NearestIntervalService {
         if (currentNearest.id().equals(id)) {
             repository.deleteById(ownerId);
             try {
-                SystemIntervalDto dto = service.systemFindNearestByOwnerId(ownerId);
+                IntervalResponseDto dto = service.findNearestByOwnerId(ownerId);
                 NearestIntervalEntity entity = mapper.toEntity(dto);
                 saveWithTtl(entity);
             } catch (BaseNotFoundException ignored) { }

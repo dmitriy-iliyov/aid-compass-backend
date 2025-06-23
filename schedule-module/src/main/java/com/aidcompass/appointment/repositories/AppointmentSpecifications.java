@@ -1,4 +1,4 @@
-package com.aidcompass.appointment;
+package com.aidcompass.appointment.repositories;
 
 import com.aidcompass.appointment.models.AppointmentEntity;
 import com.aidcompass.appointment.models.dto.StatusFilter;

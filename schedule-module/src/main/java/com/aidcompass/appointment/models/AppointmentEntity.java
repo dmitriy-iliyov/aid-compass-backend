@@ -2,6 +2,8 @@ package com.aidcompass.appointment.models;
 
 import com.aidcompass.appointment.models.enums.AppointmentStatus;
 import com.aidcompass.appointment.models.enums.AppointmentType;
+import com.aidcompass.appointment.repositories.AppointmentStatusConverter;
+import com.aidcompass.appointment.repositories.AppointmentTypeConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,7 +40,7 @@ public class AppointmentEntity {
     private LocalDate date;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.ORDINAL)
+    @Convert(converter = AppointmentTypeConverter.class)
     private AppointmentType type;
 
     @Column(name = "description", nullable = false)
@@ -48,7 +50,7 @@ public class AppointmentEntity {
     private String review;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.ORDINAL)
+    @Convert(converter = AppointmentStatusConverter.class)
     private AppointmentStatus status;
 
     @Column(name = "created_at", nullable = false, updatable = false)

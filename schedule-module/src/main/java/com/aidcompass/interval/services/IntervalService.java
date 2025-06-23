@@ -1,9 +1,8 @@
 package com.aidcompass.interval.services;
 
-import com.aidcompass.appointment.models.marker.AppointmentMarker;
 import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.models.dto.SystemIntervalCreatedDto;
-import com.aidcompass.interval.models.overlaps.ValidationInfoDto;
+import com.aidcompass.appointment.models.marker.AppointmentMarker;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -27,4 +26,8 @@ public interface IntervalService {
     void deleteAllByOwnerId(UUID ownerId);
 
     IntervalResponseDto findByOwnerIdAndStartAndDate(UUID ownerId, LocalTime start, LocalDate date);
+
+    IntervalResponseDto findById(Long id);
+
+    IntervalResponseDto findNearestByOwnerId(UUID ownerId);
 }

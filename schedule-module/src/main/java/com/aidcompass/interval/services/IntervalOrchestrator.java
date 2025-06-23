@@ -1,16 +1,15 @@
 package com.aidcompass.interval.services;
 
-import com.aidcompass.appointment.models.marker.AppointmentMarker;
 import com.aidcompass.appointment_duration.AppointmentDurationService;
 import com.aidcompass.exceptions.interval.IntervalIsInvalidException;
 import com.aidcompass.exceptions.interval.IntervalTimeIsInvalidException;
 import com.aidcompass.interval.models.dto.IntervalCreateDto;
 import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.models.dto.SystemIntervalCreatedDto;
-import com.aidcompass.interval.models.marker.IntervalMarker;
 import com.aidcompass.interval.validation.ownership.IntervalOwnershipValidator;
 import com.aidcompass.interval.validation.time.TimeValidator;
 import com.aidcompass.models.BaseNotFoundException;
+import com.aidcompass.appointment.models.marker.AppointmentMarker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +26,6 @@ public class IntervalOrchestrator {
     private final IntervalService service;
     private final NearestIntervalService nearestService;
     private final AppointmentDurationService appointmentDurationService;
-
     private final IntervalOwnershipValidator ownershipValidator;
     private final TimeValidator timeValidator;
 

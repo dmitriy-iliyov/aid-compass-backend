@@ -4,7 +4,6 @@ import com.aidcompass.appointment.services.AppointmentOrchestrator;
 import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.services.IntervalService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -23,7 +22,6 @@ public class TimetableService {
     private final AppointmentOrchestrator appointmentOrchestrator;
 
 
-    @Cacheable(value = GlobalRedisConfig.MONTH_DATES_CACHE_NAME, key = "#ownerId")
     public List<LocalDate> findMonthDates(UUID ownerId) {
         LocalDate currentDate = LocalDate.now();
         LocalDate end = currentDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).plusDays(27);
@@ -36,7 +34,6 @@ public class TimetableService {
         return toDateList(intervalService.findAllByOwnerIdAndDateInterval(ownerId, currentDate, end));
     }
 
-    @Cacheable(value = GlobalRedisConfig.PRIVATE_MONTH_DATES_CACHE_NAME, key = "#ownerId")
     public Map<LocalDate, Integer> findPrivateMonthDates(UUID ownerId) {
         LocalDate start = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate end = start.plusDays(27);

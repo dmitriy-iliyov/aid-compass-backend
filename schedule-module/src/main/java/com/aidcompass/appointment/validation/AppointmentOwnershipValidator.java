@@ -1,8 +1,8 @@
 package com.aidcompass.appointment.validation;
 
-import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
 import com.aidcompass.appointment.services.AppointmentService;
 import com.aidcompass.exceptions.appointment.AppointmentOwnershipException;
+import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

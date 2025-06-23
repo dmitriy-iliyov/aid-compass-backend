@@ -1,7 +1,6 @@
 package com.aidcompass.customer;
 
 import com.aidcompass.AggregatorUtils;
-import com.aidcompass.appointment.services.AppointmentService;
 import com.aidcompass.customer.models.dto.PrivateCustomerResponseDto;
 import com.aidcompass.customer.services.CustomerService;
 import lombok.RequiredArgsConstructor;

@@ -1,11 +1,5 @@
 package com.aidcompass.appointment.services;
 
-import com.aidcompass.appointment.models.dto.AppointmentCreateDto;
-import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
-import com.aidcompass.appointment.models.dto.AppointmentUpdateDto;
-import com.aidcompass.appointment.models.dto.AppointmentValidationInfoDto;
-import com.aidcompass.appointment.models.enums.AppointmentAgeType;
-import com.aidcompass.appointment.models.enums.AppointmentStatus;
 import com.aidcompass.appointment.validation.AppointmentOwnershipValidator;
 import com.aidcompass.appointment.validation.AppointmentTimeValidator;
 import com.aidcompass.appointment_duration.AppointmentDurationService;
@@ -13,7 +7,13 @@ import com.aidcompass.exceptions.appointment.InvalidAttemptToCompleteException;
 import com.aidcompass.exceptions.appointment.InvalidAttemptToDeleteException;
 import com.aidcompass.exceptions.appointment.NotWorkingAtThisTimeException;
 import com.aidcompass.interval.models.dto.SystemIntervalCreatedDto;
-import com.aidcompass.interval.models.overlaps.ValidationStatus;
+import com.aidcompass.appointment.models.dto.AppointmentCreateDto;
+import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
+import com.aidcompass.appointment.models.dto.AppointmentUpdateDto;
+import com.aidcompass.appointment.models.dto.AppointmentValidationInfoDto;
+import com.aidcompass.appointment.models.enums.AppointmentAgeType;
+import com.aidcompass.appointment.models.enums.AppointmentStatus;
+import com.aidcompass.appointment.models.enums.ValidationStatus;
 import com.aidcompass.interval.services.IntervalOrchestrator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -103,7 +103,6 @@ public class AppointmentOrchestrator {
 
     public void cancel(UUID participantId, Long id) {
         AppointmentResponseDto dto = ownershipValidator.validateParticipantOwnership(participantId, id);
-        // comment for test
         //timeValidator.isCompletePermit(id);
         if (dto.status().equals(AppointmentStatus.CANCELED)) {
             throw new InvalidAttemptToDeleteException();

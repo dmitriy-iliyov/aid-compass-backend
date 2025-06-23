@@ -1,6 +1,8 @@
 package com.aidcompass;
 
 import com.aidcompass.cloud.CloudStorage;
+import com.aidcompass.exceptions.AvatarNotFoundByUserIdException;
+import com.aidcompass.models.BaseNotFoundException;
 import com.aidcompass.models.PassedListIsToLongException;
 import com.aidcompass.uuid.UuidUtils;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,12 +33,20 @@ public class AvatarServiceImpl implements AvatarService {
     private final CacheManager cacheManager;
 
 
+    @CachePut(value = "avatars:url", key = "#userId")
     @Transactional
     @Override
     public String saveOrUpdate(UUID userId, MultipartFile image) {
         String url = cloudStorage.saveOrUpdate(userId, image);
-        repository.save(new AvatarEntity(userId, url));
-        return url;
+        AvatarEntity entity;
+        try {
+            entity = repository.findByUserId(userId).orElseThrow(AvatarNotFoundByUserIdException::new);
+            entity.setAvatarUrl(url);
+            entity.setUpdatedAt(Instant.now());
+        } catch (BaseNotFoundException e) {
+            entity = new AvatarEntity(userId, url);
+        }
+        return repository.save(entity).getAvatarUrl();
     }
 
     @Override
@@ -43,6 +54,7 @@ public class AvatarServiceImpl implements AvatarService {
         return cloudStorage.saveOrUpdateDefault(image);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Map<UUID, String> findAllUrlByOwnerIdIn(List<UUID> userIdList) {
         if (userIdList.size() > 10) {
@@ -85,11 +97,28 @@ public class AvatarServiceImpl implements AvatarService {
         return urls;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public String findUrlByUserId(UUID userId) {
-        return cloudStorage.generateUrlById(userId);
+        try {
+            Cache cache = cacheManager.getCache("avatars:url");
+            if (cache != null) {
+                String fromCache = cache.get(userId, String.class);
+                if (fromCache != null) {
+                    return fromCache;
+                }
+            }
+            String url = repository.findByUserId(userId).orElseThrow(AvatarNotFoundByUserIdException::new).getAvatarUrl();
+            if (cache != null) {
+                cache.put(userId, url);
+            }
+            return url;
+        } catch (BaseNotFoundException ignore) {}
+        return cloudStorage.getDefaultUrl();
     }
 
+    @CacheEvict(value = "avatars:url", key = "#userId")
+    @Transactional
     @Override
     public void delete(UUID userId) {
         cloudStorage.delete(userId);

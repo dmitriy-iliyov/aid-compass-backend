@@ -2,6 +2,7 @@ package com.aidcompass.jurist.models;
 
 import com.aidcompass.detail.models.DetailEntity;
 import com.aidcompass.detail.models.Gender;
+import com.aidcompass.detail.models.GenderConverter;
 import com.aidcompass.jurist.specialization.models.JuristSpecializationEntity;
 import com.aidcompass.jurist.specialization.models.JuristTypeEntity;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;
@@ -53,7 +54,7 @@ public class JuristEntity {
     private Integer workingExperience;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.ORDINAL)
+    @Convert(converter = GenderConverter.class)
     private Gender gender;
 
     @Column(name = "is_approved", nullable = false)

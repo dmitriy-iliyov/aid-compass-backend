@@ -1,7 +1,5 @@
 package com.aidcompass.work_day;
 
-import com.aidcompass.work_day.models.TimeInfo;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -14,5 +12,4 @@ public interface WorkDayService {
     Map<String, TimeInfo> findPrivateListOfTimes(UUID ownerId, LocalDate date);
 
     void delete(UUID ownerId, LocalDate date);
-
 }
