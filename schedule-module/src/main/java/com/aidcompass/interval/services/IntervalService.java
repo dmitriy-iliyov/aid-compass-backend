@@ -30,4 +30,6 @@ public interface IntervalService {
     IntervalResponseDto findById(Long id);
 
     IntervalResponseDto findNearestByOwnerId(UUID ownerId);
+
+    List<IntervalResponseDto> findAllNearestByOwnerIdIn(List<UUID> ownerIds);
 }

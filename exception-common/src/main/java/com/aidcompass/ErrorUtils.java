@@ -41,15 +41,6 @@ public class ErrorUtils {
         return errors;
     }
 
-//    public <T extends CustomValidatable> List<ErrorDto> toErrorDtoList(@NotNull Set<ConstraintViolation<T>> bindingResult) {
-//        List<ErrorDto> result = new ArrayList<>();
-//        for (ConstraintViolation<T> item : bindingResult)
-//            if (!Objects.equals(item.getMessage(), "")) {
-//                result.add(new ErrorDto(item.getPropertyPath().toString(), item.getMessage()));
-//            }
-//        return result;
-//    }
-
     public List<ErrorDto> toErrorDtoList(@NotNull Set<ConstraintViolation<?>> bindingResult) {
         List<ErrorDto> errors = new ArrayList<>();
         for (ConstraintViolation<?> item : bindingResult)

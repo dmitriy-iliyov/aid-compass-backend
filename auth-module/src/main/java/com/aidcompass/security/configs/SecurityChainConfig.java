@@ -58,14 +58,20 @@ public class SecurityChainConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/login").permitAll()
-                        .requestMatchers("/api/auth/logout").authenticated()
+                        .requestMatchers("/api/auth/logout", "/api/auth/me").authenticated()
                         .requestMatchers("/api/users").permitAll()
-                        .requestMatchers("/api/v1/contacts/public/**").permitAll()
-                        .requestMatchers("/api/v1/contacts/secondary/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/days/**").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/api/v1/intervals/**").permitAll()
+                        .requestMatchers("/api/confirmations/resource", "/api/confirmations/request").authenticated()
+                        .requestMatchers("/api/info/**").permitAll()
+                        .requestMatchers("/api/aggregator/doctors/me", "/api/aggregator/doctors/me/**",
+                                         "/api/aggregator/jurists/me", "/api/aggregator/jurists/me/**",
+                                         "/api/aggregator/customers/**").authenticated()
+                        .requestMatchers("/api/aggregator/**").permitAll()
+                        .requestMatchers("/api/v1/appointments/**", "/api/v1/appointments/duration/me",
+                                         "/api/v1/days/me", "/api/v1/timetable/me/**").authenticated()
+                        .requestMatchers("/api/v1/appointments/duration/**", "/api/v1/intervals/nearest/**",
+                                         "/api/v1/days/**", "/api/v1/timetable/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/avatars/**").permitAll()
-                        .anyRequest().permitAll())
+                        .anyRequest().authenticated())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )

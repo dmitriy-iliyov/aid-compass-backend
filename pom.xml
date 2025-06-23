@@ -27,7 +27,6 @@
         <module>exception-common</module>
         <module>avatar-module</module>
         <module>schedule-module</module>
-        <module>schedule-tasks-module</module>
         <module>user-module</module>
         <module>contact-module</module>
         <module>user-common</module>

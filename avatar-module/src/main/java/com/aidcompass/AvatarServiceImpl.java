@@ -100,21 +100,23 @@ public class AvatarServiceImpl implements AvatarService {
     @Transactional(readOnly = true)
     @Override
     public String findUrlByUserId(UUID userId) {
+        Cache cache = cacheManager.getCache("avatars:url");
+        String url;
         try {
-            Cache cache = cacheManager.getCache("avatars:url");
             if (cache != null) {
                 String fromCache = cache.get(userId, String.class);
                 if (fromCache != null) {
                     return fromCache;
                 }
             }
-            String url = repository.findByUserId(userId).orElseThrow(AvatarNotFoundByUserIdException::new).getAvatarUrl();
-            if (cache != null) {
-                cache.put(userId, url);
-            }
-            return url;
-        } catch (BaseNotFoundException ignore) {}
-        return cloudStorage.getDefaultUrl();
+            url = repository.findByUserId(userId).orElseThrow(AvatarNotFoundByUserIdException::new).getAvatarUrl();
+        } catch (BaseNotFoundException ignore) {
+            url = cloudStorage.getDefaultUrl();
+        }
+        if (cache != null) {
+            cache.put(userId, url);
+        }
+        return url;
     }
 
     @CacheEvict(value = "avatars:url", key = "#userId")

@@ -29,13 +29,6 @@ public interface IntervalRepository extends JpaRepository<IntervalEntity, Long> 
                                                          @Param("start") LocalDate start,
                                                          @Param("end") LocalDate end);
 
-    @Query("""
-              SELECT COUNT(e.id) 
-              FROM IntervalEntity e 
-              WHERE e.ownerId = :owner_id AND e.id IN :ids
-    """)
-    long countOwnedByOwnerId(@Param("owner_id") UUID ownerId, @Param("ids") List<Long> ids);
-
     void deleteAllByOwnerId(UUID ownerId);
 
     Optional<IntervalEntity> findFirstByOwnerIdAndDateBetweenOrderByDateAscStartAsc(UUID ownerId, LocalDate start, LocalDate end);
@@ -43,4 +36,17 @@ public interface IntervalRepository extends JpaRepository<IntervalEntity, Long> 
     boolean existsByOwnerIdAndStartAndDate(UUID ownerId, LocalTime start, LocalDate date);
 
     Optional<IntervalEntity> findByOwnerIdAndStartAndDate(UUID ownerId, LocalTime start, LocalDate date);
+
+    @Query(value = """
+        SELECT * FROM (
+            SELECT i.*, ROW_NUMBER() OVER (PARTITION BY i.owner_id ORDER BY i.date ASC, i.start_t ASC) as rn
+            FROM work_intervals i
+            WHERE i.owner_id IN :owner_ids
+              AND i.date BETWEEN :start AND :end
+        ) sub
+        WHERE sub.rn = 1
+    """, nativeQuery = true)
+    List<IntervalEntity> findAllNearestByOwnerIdIn(@Param("owner_ids") List<UUID> ownerIds,
+                                                   @Param("start") LocalDate start,
+                                                   @Param("end") LocalDate end);
 }

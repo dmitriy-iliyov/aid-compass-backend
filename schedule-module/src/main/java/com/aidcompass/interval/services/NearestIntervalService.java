@@ -39,11 +39,9 @@ public class NearestIntervalService {
         List<UUID> localOwnerIds = new ArrayList<>(ownerIds);
         localOwnerIds.removeAll(response.keySet());
         if (!localOwnerIds.isEmpty()) {
-            for (UUID id: localOwnerIds) {
-                try {
-                    IntervalResponseDto dto = service.findNearestByOwnerId(id);
-                    response.put(id, saveWithTtl(mapper.toEntity(dto)));
-                } catch (BaseNotFoundException ignored) { }
+            List<IntervalResponseDto> nearestIntervalList = service.findAllNearestByOwnerIdIn(localOwnerIds);
+            for (IntervalResponseDto interval: nearestIntervalList) {
+                response.put(interval.ownerId(), saveWithTtl(mapper.toEntity(interval)));
             }
         }
         return response;

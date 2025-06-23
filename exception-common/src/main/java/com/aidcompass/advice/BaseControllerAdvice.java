@@ -13,12 +13,14 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.core.Local;
 import org.springframework.context.MessageSource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -66,19 +68,6 @@ public abstract class BaseControllerAdvice {
                 );
     }
 
-//    @ExceptionHandler(org.springframework.security.authorization.AuthorizationDeniedException.class)
-//    public ResponseEntity<?> handleAuthorizationDeniedException() {
-//        // когда истекает кука то пользователя нужно перенаправлять на регистраию
-//        // существует перехватчик чтоб скрывать наличие приватных/фдминских маршрутов
-//        ExceptionResponseDto exceptionDto = new ExceptionResponseDto(
-//                "404",
-//                "Not Found",
-//                "The resource was not found.");
-//        return ResponseEntity
-//                .status(HttpStatus.NOT_FOUND)
-//                .body(exceptionDto);
-//    }
-
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException e, Locale locale) {
         log.error("Exception 500: {}", e.getMessage());
@@ -96,8 +85,7 @@ public abstract class BaseControllerAdvice {
                 "500",
                 "Unexpected server error.",
                 null);
-        log.error(throwable.getMessage());
-        System.out.println(Arrays.toString(throwable.getStackTrace()));
+        log.error(Arrays.toString(throwable.getStackTrace()));
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(exceptionDto);

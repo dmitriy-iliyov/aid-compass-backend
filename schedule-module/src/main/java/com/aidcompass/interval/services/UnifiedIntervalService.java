@@ -68,6 +68,17 @@ public class UnifiedIntervalService implements IntervalService {
         );
     }
 
+    @Override
+    public List<IntervalResponseDto> findAllNearestByOwnerIdIn(List<UUID> ownerIds) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDate start = now.toLocalDate().plusDays(1);
+        if (now.toLocalTime().isAfter(LocalTime.of(10, 0))) {
+            start = start.plusDays(1);
+        }
+        LocalDateTime end = now.with(TemporalAdjusters.lastDayOfMonth());
+        return mapper.toDtoList(repository.findAllNearestByOwnerIdIn(ownerIds, start, end.toLocalDate()));
+    }
+
     @Transactional(readOnly = true)
     @Override
     public IntervalResponseDto findByOwnerIdAndStartAndDate(UUID ownerId, LocalTime start, LocalDate date) {
