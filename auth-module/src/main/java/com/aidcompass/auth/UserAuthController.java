@@ -1,7 +1,6 @@
-package com.aidcompass;
+package com.aidcompass.auth;
 
 import com.aidcompass.base_dto.security.AuthRequest;
-import com.aidcompass.base_dto.security.SystemAuthRequest;
 import com.aidcompass.exceptions.not_found.UserNotFoundByIdException;
 import com.aidcompass.security.core.models.token.models.TokenUserDetails;
 import com.aidcompass.user.services.UserService;
@@ -20,10 +19,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class UserAuthController {
 
-    private final UserAuthService userAuthService;
-    private final SystemAuthService systemAuthService;
+    private final UserAuthService authService;
     private final UserService userService;
 
 
@@ -31,17 +29,10 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody @Valid AuthRequest requestDto,
                                    HttpServletRequest request,
                                    HttpServletResponse response) {
-        userAuthService.login(requestDto, request, response);
+        authService.login(requestDto, request, response);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
-    }
-
-    @PostMapping("/system-login")
-    public ResponseEntity<?> systemLogin(@RequestBody @Valid SystemAuthRequest requestDto) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(systemAuthService.login(requestDto));
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_CUSTOMER', 'ROLE_DOCTOR', 'ROLE_JURIST', 'ROLE_ADMIN')")

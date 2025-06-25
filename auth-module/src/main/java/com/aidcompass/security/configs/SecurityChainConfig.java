@@ -6,12 +6,14 @@ import com.aidcompass.security.core.handlers.CsrfAccessDeniedHandler;
 import com.aidcompass.security.core.handlers.DefaultAuthenticationEntryPoint;
 import com.aidcompass.security.core.handlers.logout.DeactivatingJwtLogoutHandler;
 import com.aidcompass.security.core.handlers.logout.LogoutSuccessHandlerImpl;
-import com.aidcompass.security.core.models.token.DeactivateTokenServices;
+import com.aidcompass.security.core.models.token.TokenUserDetailsService;
 import com.aidcompass.security.xss.XssFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,20 +30,53 @@ import org.springframework.web.cors.CorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@RequiredArgsConstructor
 public class SecurityChainConfig {
 
     private final CorsConfigurationSource corsConfigurationSource;
     private final CsrfTokenRepository csrfTokenRepository;
     private final CsrfAccessDeniedHandler csrfAccessDeniedHandler;
+    private final AuthenticationManager userAuthenticationManager;
+    private final AuthenticationManager serviceAuthenticationManager;
     private final CookieJwtAuthenticationFilterConfigurer cookieJwtAuthenticationConfigurer;
-    private final DeactivateTokenServices deactivateTokenServices;
+    private final TokenUserDetailsService tokenUserDetailsService;
     private final DefaultAuthenticationEntryPoint defaultAuthenticationEntryPoint;
 
 
+    public SecurityChainConfig(CorsConfigurationSource corsConfigurationSource,
+                               CsrfTokenRepository csrfTokenRepository,
+                               CsrfAccessDeniedHandler csrfAccessDeniedHandler,
+                               @Qualifier("userAuthenticationManager") AuthenticationManager userAuthenticationManager,
+                               @Qualifier("serviceAuthenticationManager") AuthenticationManager serviceAuthenticationManager,
+                               CookieJwtAuthenticationFilterConfigurer cookieJwtAuthenticationConfigurer,
+                               TokenUserDetailsService tokenUserDetailsService,
+                               DefaultAuthenticationEntryPoint defaultAuthenticationEntryPoint
+    ) {
+        this.corsConfigurationSource = corsConfigurationSource;
+        this.csrfTokenRepository = csrfTokenRepository;
+        this.csrfAccessDeniedHandler = csrfAccessDeniedHandler;
+        this.userAuthenticationManager = userAuthenticationManager;
+        this.serviceAuthenticationManager = serviceAuthenticationManager;
+        this.cookieJwtAuthenticationConfigurer = cookieJwtAuthenticationConfigurer;
+        this.tokenUserDetailsService = tokenUserDetailsService;
+        this.defaultAuthenticationEntryPoint = defaultAuthenticationEntryPoint;
+    }
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain serviceSecurityFilterChain(HttpSecurity http) throws Exception {
         http
+                .securityMatcher("/api/system/**")
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
+                .csrf(AbstractHttpConfigurer::disable)
+                .authenticationManager(serviceAuthenticationManager)
+//                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated());
+                .authorizeHttpRequests(auth -> auth.anyRequest().denyAll());
+        return http.build();
+    }
+
+    @Bean
+    public SecurityFilterChain userSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+                //.securityMatcher("/api/**")
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(csrf -> csrf.csrfTokenRepository(csrfTokenRepository)
                         .ignoringRequestMatchers("/api/auth/login", "/api/v1/contact", "/csrf")
@@ -51,10 +86,12 @@ public class SecurityChainConfig {
                 .addFilterAfter(new XssFilter(), CsrfFilter.class)
                 .logout(logout -> logout
                         .logoutUrl("/api/auth/logout")
-                        .addLogoutHandler(new CookieClearingLogoutHandler("__Host-auth_token", "XSRF-TOKEN", "auth_info"))
-                        .addLogoutHandler(new DeactivatingJwtLogoutHandler(deactivateTokenServices))
+                        .addLogoutHandler(new CookieClearingLogoutHandler(
+                                "__Host-auth_token", "XSRF-TOKEN", "auth_info"))
+                        .addLogoutHandler(new DeactivatingJwtLogoutHandler(tokenUserDetailsService))
                         .logoutSuccessHandler(new LogoutSuccessHandlerImpl())
                 )
+                .authenticationManager(userAuthenticationManager)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/login").permitAll()

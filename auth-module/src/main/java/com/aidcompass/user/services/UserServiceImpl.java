@@ -1,8 +1,8 @@
 package com.aidcompass.user.services;
 
-import com.aidcompass.base_dto.SystemUserDto;
-import com.aidcompass.base_dto.UserResponseDto;
-import com.aidcompass.base_dto.UserUpdateDto;
+import com.aidcompass.base_dto.user.SystemUserDto;
+import com.aidcompass.base_dto.user.UserResponseDto;
+import com.aidcompass.base_dto.user.UserUpdateDto;
 import com.aidcompass.enums.Authority;
 import com.aidcompass.exceptions.illegal_input.IncorrectPasswordException;
 import com.aidcompass.exceptions.not_found.UserNotFoundByEmailException;
@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String email) throws BaseNotFoundException {
+        System.out.println(email);
         UserEntity userEntity = repository.findWithAuthorityByEmail(email).orElseThrow(UserNotFoundByEmailException::new);
         return new DefaultUserDetails(
                 userEntity.getId(),

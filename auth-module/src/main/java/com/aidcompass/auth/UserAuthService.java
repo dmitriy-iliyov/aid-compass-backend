@@ -1,7 +1,6 @@
-package com.aidcompass;
+package com.aidcompass.auth;
 
 import com.aidcompass.base_dto.security.AuthRequest;
-import com.aidcompass.base_dto.security.SystemAuthRequest;
 import com.aidcompass.contracts.AuthService;
 import com.aidcompass.enums.Authority;
 import com.aidcompass.security.core.cookie.CookieFactory;
@@ -11,6 +10,7 @@ import com.aidcompass.user.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class UserAuthService implements AuthService {
 
     private final UserService userService;
@@ -30,6 +29,16 @@ public class UserAuthService implements AuthService {
     private final CookieFactory cookieFactory;
     private final CsrfAuthenticationStrategy csrfAuthenticationStrategy;
 
+
+    public UserAuthService(UserService userService,
+                           @Qualifier("userAuthenticationManager") AuthenticationManager authenticationManager,
+                           CookieFactory cookieFactory,
+                           CsrfAuthenticationStrategy csrfAuthenticationStrategy) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.cookieFactory = cookieFactory;
+        this.csrfAuthenticationStrategy = csrfAuthenticationStrategy;
+    }
 
     @Override
     public void login(AuthRequest requestDto, HttpServletRequest request, HttpServletResponse response) {

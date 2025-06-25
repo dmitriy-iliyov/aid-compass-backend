@@ -1,7 +1,8 @@
 package com.aidcompass.user.controllers;
 
+import com.aidcompass.base_dto.user.UserResponseDto;
+import com.aidcompass.base_dto.user.UserUpdateDto;
 import com.aidcompass.contracts.UserOrchestrator;
-import com.aidcompass.base_dto.*;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;

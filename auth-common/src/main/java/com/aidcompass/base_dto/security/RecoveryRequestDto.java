@@ -1,4 +1,4 @@
-package com.aidcompass.base_dto;
+package com.aidcompass.base_dto.security;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

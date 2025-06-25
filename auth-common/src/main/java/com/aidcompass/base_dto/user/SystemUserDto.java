@@ -1,4 +1,4 @@
-package com.aidcompass.base_dto;
+package com.aidcompass.base_dto.user;
 
 
 import com.aidcompass.enums.Authority;

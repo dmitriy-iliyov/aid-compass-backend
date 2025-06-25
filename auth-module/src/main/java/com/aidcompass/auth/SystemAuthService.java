@@ -1,17 +1,16 @@
-package com.aidcompass;
+package com.aidcompass.auth;
 
-import com.aidcompass.base_dto.security.SystemAuthRequest;
+import com.aidcompass.base_dto.security.ServiceAuthRequest;
 import com.aidcompass.security.core.models.token.factory.TokenFactory;
 import com.aidcompass.security.core.models.token.models.Token;
 import com.aidcompass.security.core.models.token.serializing.TokenSerializer;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class SystemAuthService {
 
     private final AuthenticationManager authenticationManager;
@@ -19,7 +18,16 @@ public class SystemAuthService {
     private final TokenSerializer tokenSerializer;
 
 
-    public String login(SystemAuthRequest requestDto) {
+    public SystemAuthService(@Qualifier("serviceAuthenticationManager") AuthenticationManager authenticationManager,
+                             @Qualifier("serviceTokenFactory") TokenFactory tokenFactory,
+                             TokenSerializer tokenSerializer
+    ) {
+        this.authenticationManager = authenticationManager;
+        this.tokenFactory = tokenFactory;
+        this.tokenSerializer = tokenSerializer;
+    }
+
+    public String login(ServiceAuthRequest requestDto) {
         Authentication authentication = authenticationManager.authenticate(
                 //??
                 new UsernamePasswordAuthenticationToken(requestDto.serviceName(), requestDto.password())

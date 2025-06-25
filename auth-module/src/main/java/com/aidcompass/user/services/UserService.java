@@ -1,6 +1,8 @@
 package com.aidcompass.user.services;
 
-import com.aidcompass.base_dto.*;
+import com.aidcompass.base_dto.user.SystemUserDto;
+import com.aidcompass.base_dto.user.UserResponseDto;
+import com.aidcompass.base_dto.user.UserUpdateDto;
 import com.aidcompass.enums.Authority;
 import com.aidcompass.user.models.DefaultUserDetails;
 import com.aidcompass.user.models.SystemUserUpdateDto;

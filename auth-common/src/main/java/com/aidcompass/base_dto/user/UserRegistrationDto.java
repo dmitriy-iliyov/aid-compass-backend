@@ -1,4 +1,4 @@
-package com.aidcompass.base_dto;
+package com.aidcompass.base_dto.user;
 
 
 import jakarta.validation.constraints.Email;

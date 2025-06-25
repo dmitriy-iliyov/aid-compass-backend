@@ -19,12 +19,14 @@ public class CookieJwtAuthenticationConverter implements AuthenticationConverter
 
     @Override
     public Authentication convert(HttpServletRequest request) {
+        System.out.println("converter involved");
         if(request.getCookies() != null) {
             return Stream.of(request.getCookies())
                     .filter(cookie -> cookie.getName().equals("__Host-auth_token"))
                     .findFirst()
                     .map(cookie -> {
                         Token token = tokenDeserializer.deserialize(cookie.getValue());
+                        System.out.println(token);
                         return new PreAuthenticatedAuthenticationToken(token, cookie.getValue());
                     }).orElse(null);
         }

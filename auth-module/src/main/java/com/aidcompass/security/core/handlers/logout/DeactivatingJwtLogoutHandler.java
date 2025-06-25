@@ -1,6 +1,6 @@
 package com.aidcompass.security.core.handlers.logout;
 
-import com.aidcompass.security.core.models.token.DeactivateTokenServices;
+import com.aidcompass.security.core.models.token.TokenUserDetailsService;
 import com.aidcompass.security.core.models.token.models.TokenEntity;
 import com.aidcompass.security.core.models.token.models.TokenUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,12 +14,12 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class DeactivatingJwtLogoutHandler implements LogoutHandler {
 
-    private final DeactivateTokenServices deactivateTokenServices;
+    private final TokenUserDetailsService tokenUserDetailsService;
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         if(authentication != null && authentication.getPrincipal() instanceof TokenUserDetails tokenUserDetails) {
-            deactivateTokenServices.save(new TokenEntity(tokenUserDetails.getToken().getId(), Instant.now()));
+            tokenUserDetailsService.save(new TokenEntity(tokenUserDetails.getToken().getId(), Instant.now()));
         }
     }
 }

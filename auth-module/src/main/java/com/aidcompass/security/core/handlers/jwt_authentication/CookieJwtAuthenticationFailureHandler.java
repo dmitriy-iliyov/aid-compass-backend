@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
+import java.util.Arrays;
+
 @RequiredArgsConstructor
 public class CookieJwtAuthenticationFailureHandler implements AuthenticationFailureHandler {
 

@@ -10,7 +10,7 @@ import com.aidcompass.confirmation.services.AccountResourceConfirmationService;
 import com.aidcompass.enums.ContactType;
 import com.aidcompass.exceptions.models.SendConfirmationMessageException;
 import com.aidcompass.models.BaseNotFoundException;
-import com.aidcompass.base_dto.SystemUserDto;
+import com.aidcompass.base_dto.user.SystemUserDto;
 import com.aidcompass.user.models.SystemUserUpdateDto;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintValidator;

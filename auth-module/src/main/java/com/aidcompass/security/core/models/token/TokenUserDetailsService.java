@@ -15,15 +15,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class DeactivateTokenServices implements AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> {
+public class TokenUserDetailsService implements AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> {
 
     private final DeactivateTokenRepository deactivateTokenRepository;
 
     @Override
     public UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken preAuthenticatedAuthenticationToken)
             throws UsernameNotFoundException {
+        System.out.println("TokenUserDetailsService");
         if (preAuthenticatedAuthenticationToken.getPrincipal() instanceof Token token) {
             if(!deactivateTokenRepository.existsById(token.getId())){
+                System.out.println("return TokenUserDetails.build(token);");
                 return TokenUserDetails.build(token);
             } else {
                 throw new CookieJwtExpired();

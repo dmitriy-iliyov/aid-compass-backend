@@ -1,6 +1,6 @@
 package com.aidcompass.pass_recovery;
 
-import com.aidcompass.base_dto.RecoveryRequestDto;
+import com.aidcompass.base_dto.security.RecoveryRequestDto;
 import com.aidcompass.contracts.UserOrchestrator;
 import com.aidcompass.exceptions.models.InvalidPasswordRecoveryTokenException;
 import com.aidcompass.message_services.MessageFactory;

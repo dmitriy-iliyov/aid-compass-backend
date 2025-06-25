@@ -1,7 +1,7 @@
 package com.aidcompass.user.services;
 
-import com.aidcompass.base_dto.SystemUserDto;
-import com.aidcompass.base_dto.UserRegistrationDto;
+import com.aidcompass.base_dto.user.SystemUserDto;
+import com.aidcompass.base_dto.user.UserRegistrationDto;
 import com.aidcompass.exceptions.not_found.UnconfirmedUserNotFoundByEmailException;
 import com.aidcompass.user.repositories.UnconfirmedUserRepository;
 import com.aidcompass.user.mapper.UserMapper;

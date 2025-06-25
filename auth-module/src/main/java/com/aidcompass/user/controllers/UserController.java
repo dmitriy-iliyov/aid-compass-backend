@@ -1,9 +1,11 @@
 package com.aidcompass.user.controllers;
 
 
+import com.aidcompass.base_dto.user.UserRegistrationDto;
+import com.aidcompass.base_dto.user.UserResponseDto;
+import com.aidcompass.base_dto.user.UserUpdateDto;
 import com.aidcompass.confirmation.services.AccountResourceConfirmationService;
 import com.aidcompass.contracts.UserOrchestrator;
-import com.aidcompass.base_dto.*;
 import com.aidcompass.security.core.models.token.models.TokenUserDetails;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -16,7 +18,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.UUID;
 
 
 @RestController

@@ -3,7 +3,7 @@ package com.aidcompass.base_dto.security;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 
-public record SystemAuthRequest(
+public record ServiceAuthRequest(
     @JsonProperty("service_name")
     @NotBlank(message = "Service name shouldn't be empty or blank!")
     String serviceName,

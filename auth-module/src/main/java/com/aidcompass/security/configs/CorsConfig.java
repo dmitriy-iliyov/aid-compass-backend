@@ -14,7 +14,7 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration defaultConfig = new CorsConfiguration();
-        defaultConfig.addAllowedOrigin("http://localhost:4200");
+        defaultConfig.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:8080"));
         defaultConfig.setAllowedMethods(List.of("*"));
         defaultConfig.setAllowedHeaders(List.of("*"));
         defaultConfig.setAllowCredentials(true);
@@ -25,7 +25,7 @@ public class CorsConfig {
         csrfConfig.setAllowedMethods(List.of("GET"));
         csrfConfig.setAllowedHeaders(List.of("*"));
         csrfConfig.setAllowCredentials(true);
-//        csrfConfiguration.setMaxAge(60L);
+        csrfConfig.setMaxAge(60L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", defaultConfig);
