@@ -79,4 +79,18 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     """)
     void updateAllStatus(@Param("participant_id") UUID participantId, @Param("date") LocalDate date,
                          @Param("status") AppointmentStatus status);
+
+    @Modifying
+    @Query(value = """
+        WITH to_update AS (
+            SELECT id FROM appointments
+            WHERE date < :date_limit
+            LIMIT :batch_size
+        )
+        UPDATE appointments
+        SET status = 3
+        WHERE id IN (SELECT id FROM to_update)
+        RETURNING id
+    """, nativeQuery = true)
+    List<Long> markBatchAsSkipped(@Param("batch_size") int batchSize, @Param("date_limit") LocalDate dateLimit);
 }

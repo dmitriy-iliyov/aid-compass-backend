@@ -39,7 +39,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class UnifiedAppointmentService implements AppointmentService {
+public class UnifiedAppointmentService implements AppointmentService, SystemAppointmentService {
 
     private final AppointmentRepository repository;
     private final AppointmentMapper mapper;
@@ -195,5 +195,13 @@ public class UnifiedAppointmentService implements AppointmentService {
                 cache.evict(id);
             }
         }
+    }
+
+    // invalidate all caches
+    @Transactional
+    @Override
+    public List<Long> markBatchAsSkipped(int batchSize) {
+        LocalDate dateLimit = LocalDate.now().minusDays(1);
+        return repository.markBatchAsSkipped(batchSize, dateLimit);
     }
 }

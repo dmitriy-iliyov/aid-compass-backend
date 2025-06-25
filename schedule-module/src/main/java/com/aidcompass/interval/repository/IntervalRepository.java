@@ -2,6 +2,7 @@ package com.aidcompass.interval.repository;
 
 import com.aidcompass.interval.models.IntervalEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -49,4 +50,17 @@ public interface IntervalRepository extends JpaRepository<IntervalEntity, Long> 
     List<IntervalEntity> findAllNearestByOwnerIdIn(@Param("owner_ids") List<UUID> ownerIds,
                                                    @Param("start") LocalDate start,
                                                    @Param("end") LocalDate end);
+
+    @Modifying
+    @Query(value = """ 
+            WITH to_delete AS (
+                SELECT id
+                FROM work_intervals
+                WHERE date < :weak_start
+                LIMIT :batch_size)
+            DELETE FROM work_intervals
+            WHERE id IN (SELECT id FROM to_delete)
+            RETURNING id
+    """, nativeQuery = true)
+    List<Long> deleteBatchBeforeDate(@Param("batch_size") int batchSize, @Param("weak_start") LocalDate weakStart);
 }

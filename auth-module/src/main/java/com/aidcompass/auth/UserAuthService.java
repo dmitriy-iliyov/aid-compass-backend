@@ -1,6 +1,7 @@
 package com.aidcompass;
 
-import com.aidcompass.base_dto.AuthRequest;
+import com.aidcompass.base_dto.security.AuthRequest;
+import com.aidcompass.base_dto.security.SystemAuthRequest;
 import com.aidcompass.contracts.AuthService;
 import com.aidcompass.enums.Authority;
 import com.aidcompass.security.core.cookie.CookieFactory;
@@ -22,7 +23,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService {
+public class UserAuthService implements AuthService {
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;

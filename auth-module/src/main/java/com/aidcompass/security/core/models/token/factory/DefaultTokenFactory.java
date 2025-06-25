@@ -36,4 +36,23 @@ public class TokenFactoryImpl implements TokenFactory {
 
         return new Token(tokenId, userId, authorities, issuedAt, expiresAt);
     }
+
+    @Override
+    public Token generateServiceToken(Authentication authentication) {
+        UUID tokenId = UuidCreator.getTimeOrderedEpoch();
+
+        DefaultUserDetails defaultUserDetails = (DefaultUserDetails) authentication.getPrincipal();
+        UUID userId = defaultUserDetails.getId();
+
+        List<String> authorities =
+                defaultUserDetails.getAuthorities()
+                        .stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .toList();
+
+        Instant issuedAt = Instant.now();
+        Instant expiresAt = issuedAt.plus(tokenTtl);
+
+        return new Token(tokenId, userId, authorities, issuedAt, expiresAt);
+    }
 }

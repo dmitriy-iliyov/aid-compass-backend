@@ -18,6 +18,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -27,7 +28,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UnifiedIntervalService implements IntervalService {
+public class UnifiedIntervalService implements IntervalService, SystemIntervalService {
 
     private final IntervalRepository repository;
     private final IntervalMapper mapper;
@@ -180,6 +181,12 @@ public class UnifiedIntervalService implements IntervalService {
                 Objects.requireNonNull(
                         redisTemplate.keys(GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE_NAME + ':' + ownerId))
         );
+    }
 
+    @Transactional
+    @Override
+    public List<Long> deleteBatchBeforeWeakStart(int batchSize) {
+        LocalDate weakStart = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        return repository.deleteBatchBeforeDate(batchSize, weakStart);
     }
 }
