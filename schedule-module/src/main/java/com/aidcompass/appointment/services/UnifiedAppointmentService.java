@@ -182,7 +182,7 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
 
 //    @CacheEvict(
 //            value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_AND_STATUS_CACHE_NAME,
-//            key = "#participantId + ':' + #date + ':CANCELED'"
+//            password = "#participantId + ':' + #date + ':CANCELED'"
 //    ),
     @CacheEvict(value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_INTERVAL_CACHE_NAME, key = "#participantId")
     @Transactional

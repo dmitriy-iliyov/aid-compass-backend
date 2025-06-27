@@ -95,6 +95,7 @@ public class AppointmentOrchestrator {
 
     public void complete(UUID participantId, Long id, String review) {
         AppointmentResponseDto dto = ownershipValidator.validateParticipantOwnership(participantId, id);
+        timeValidator.isCompletePermit(id);
         if (dto.status().equals(AppointmentStatus.CANCELED)) {
             throw new InvalidAttemptToCompleteException();
         }
@@ -103,7 +104,6 @@ public class AppointmentOrchestrator {
 
     public void cancel(UUID participantId, Long id) {
         AppointmentResponseDto dto = ownershipValidator.validateParticipantOwnership(participantId, id);
-        //timeValidator.isCompletePermit(id);
         if (dto.status().equals(AppointmentStatus.CANCELED)) {
             throw new InvalidAttemptToDeleteException();
         }
