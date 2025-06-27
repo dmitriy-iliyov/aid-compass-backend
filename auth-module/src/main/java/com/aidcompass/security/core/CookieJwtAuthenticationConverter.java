@@ -1,7 +1,9 @@
 package com.aidcompass.security.core;
 
 
+import com.aidcompass.exceptions.CookieJwtAuthorizationException;
 import com.aidcompass.security.core.models.token.models.Token;
+import com.aidcompass.security.core.models.token.models.TokenType;
 import com.aidcompass.security.core.models.token.serializing.TokenDeserializer;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -19,16 +21,17 @@ public class CookieJwtAuthenticationConverter implements AuthenticationConverter
 
     @Override
     public Authentication convert(HttpServletRequest request) {
-        System.out.println("converter involved");
         if(request.getCookies() != null) {
             return Stream.of(request.getCookies())
                     .filter(cookie -> cookie.getName().equals("__Host-auth_token"))
                     .findFirst()
                     .map(cookie -> {
                         Token token = tokenDeserializer.deserialize(cookie.getValue());
-                        System.out.println(token);
-                        return new PreAuthenticatedAuthenticationToken(token, cookie.getValue());
-                    }).orElse(null);
+                        if (token.getType() == TokenType.USER) {
+                            return new PreAuthenticatedAuthenticationToken(token, cookie.getValue());
+                        }
+                        throw new CookieJwtAuthorizationException("Token has invalid type!");
+                    }).orElseThrow(CookieJwtAuthorizationException::new);
         }
         return null;
     }

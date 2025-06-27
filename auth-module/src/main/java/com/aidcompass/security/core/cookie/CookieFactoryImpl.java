@@ -21,7 +21,7 @@ public class CookieFactoryImpl implements CookieFactory {
     private final TokenSerializer tokenSerializer;
 
 
-    public CookieFactoryImpl(@Qualifier("defaultTokenFactory") TokenFactory tokenFactory,
+    public CookieFactoryImpl(@Qualifier("userTokenFactory") TokenFactory tokenFactory,
                              TokenSerializer tokenSerializer
     ) {
         this.tokenFactory = tokenFactory;

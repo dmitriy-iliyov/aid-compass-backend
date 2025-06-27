@@ -29,8 +29,7 @@ public class SystemAuthService {
 
     public String login(ServiceAuthRequest requestDto) {
         Authentication authentication = authenticationManager.authenticate(
-                //??
-                new UsernamePasswordAuthenticationToken(requestDto.serviceName(), requestDto.password())
+                new UsernamePasswordAuthenticationToken(requestDto.name(), requestDto.key())
         );
         Token token = tokenFactory.generateToken(authentication);
         return tokenSerializer.serialize(token);

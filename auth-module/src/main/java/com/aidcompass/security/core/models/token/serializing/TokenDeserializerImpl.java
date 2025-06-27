@@ -1,17 +1,15 @@
 package com.aidcompass.security.core.models.token.serializing;
 
-import com.aidcompass.exceptions.illegal_input.CookieJwtExpired;
+import com.aidcompass.exceptions.illegal_input.TokenExpired;
 import com.aidcompass.security.core.models.token.models.Token;
+import com.aidcompass.security.core.models.token.models.TokenType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.crypto.SecretKey;
 import java.time.Instant;
@@ -42,14 +40,15 @@ public class TokenDeserializerImpl implements TokenDeserializer {
                 UUID id = UUID.fromString(claims.getId());
                 UUID subjectId = UUID.fromString(claims.getSubject());
                 List<String> authorities = claims.get("authorities", List.class);
+                TokenType type = TokenType.valueOf(claims.get("type", String.class));
                 Instant issuedAt = claims.getIssuedAt().toInstant();
                 Instant expiresAt = claims.getExpiration().toInstant();
 
                 if (expiresAt != null) {
                     if (Instant.now().isBefore(expiresAt)) {
-                        return new Token(id, subjectId, authorities, issuedAt, expiresAt);
+                        return new Token(id, subjectId, type, authorities, issuedAt, expiresAt);
                     }
-                    throw new CookieJwtExpired();
+                    throw new TokenExpired();
                 }
 
             }catch (Exception e){

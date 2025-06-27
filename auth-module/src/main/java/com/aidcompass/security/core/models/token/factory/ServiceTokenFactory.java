@@ -1,8 +1,9 @@
 package com.aidcompass.security.core.models.token.factory;
 
 import com.aidcompass.security.core.models.token.models.Token;
+import com.aidcompass.security.core.models.token.models.TokenType;
 import com.aidcompass.service.ServiceUserDetails;
-import com.github.f4b6a3.uuid.UuidCreator;
+import com.aidcompass.uuid.UuidFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -18,7 +19,7 @@ public class ServiceTokenFactory implements TokenFactory {
 
     @Override
     public Token generateToken(Authentication authentication) {
-        UUID tokenId = UuidCreator.getTimeOrderedEpoch();
+        UUID tokenId = UuidFactory.generate();
 
         ServiceUserDetails serviceUserDetails = (ServiceUserDetails) authentication.getPrincipal();
         UUID serviceId = serviceUserDetails.getId();
@@ -31,6 +32,6 @@ public class ServiceTokenFactory implements TokenFactory {
         Instant issuedAt = Instant.now();
         Instant expiresAt = issuedAt.plus(tokenTtl);
 
-        return new Token(tokenId, serviceId, authorities, issuedAt, expiresAt);
+        return new Token(tokenId, serviceId, TokenType.SERVICE, authorities, issuedAt, expiresAt);
     }
 }

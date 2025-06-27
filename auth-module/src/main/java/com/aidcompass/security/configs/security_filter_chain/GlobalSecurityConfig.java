@@ -1,4 +1,4 @@
-package com.aidcompass.security.configs;
+package com.aidcompass.security.configs.security_filter_chain;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -7,5 +7,4 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class GlobalSecurityConfig {
-}
+public class GlobalSecurityConfig { }

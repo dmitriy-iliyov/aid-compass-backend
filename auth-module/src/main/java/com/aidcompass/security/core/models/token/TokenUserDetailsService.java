@@ -1,6 +1,6 @@
 package com.aidcompass.security.core.models.token;
 
-import com.aidcompass.exceptions.illegal_input.CookieJwtExpired;
+import com.aidcompass.exceptions.illegal_input.TokenExpired;
 import com.aidcompass.exceptions.illegal_input.InvalidPrincipalPassed;
 import com.aidcompass.security.core.models.token.models.Token;
 import com.aidcompass.security.core.models.token.models.TokenEntity;
@@ -22,13 +22,11 @@ public class TokenUserDetailsService implements AuthenticationUserDetailsService
     @Override
     public UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken preAuthenticatedAuthenticationToken)
             throws UsernameNotFoundException {
-        System.out.println("TokenUserDetailsService");
         if (preAuthenticatedAuthenticationToken.getPrincipal() instanceof Token token) {
             if(!deactivateTokenRepository.existsById(token.getId())){
-                System.out.println("return TokenUserDetails.build(token);");
                 return TokenUserDetails.build(token);
             } else {
-                throw new CookieJwtExpired();
+                throw new TokenExpired();
             }
         }
         throw new InvalidPrincipalPassed();

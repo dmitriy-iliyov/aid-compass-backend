@@ -14,6 +14,7 @@ import java.util.UUID;
 public class Token {
     private UUID id;
     private UUID subjectId;
+    private TokenType type;
     private List<String> authorities;
     private Instant issuedAt;
     private Instant expiresAt;

@@ -1,15 +1,17 @@
 package com.aidcompass.security.core;
 
+import com.aidcompass.exceptions.BearerJwtAuthorizationException;
+import com.aidcompass.security.core.models.token.models.Token;
+import com.aidcompass.security.core.models.token.models.TokenType;
 import com.aidcompass.security.core.models.token.serializing.TokenDeserializer;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 @RequiredArgsConstructor
-public class BearerTokenAuthenticationConverter implements AuthenticationConverter {
+public class BearerJwtAuthenticationConverter implements AuthenticationConverter {
 
     private final TokenDeserializer tokenDeserializer;
 
@@ -20,14 +22,21 @@ public class BearerTokenAuthenticationConverter implements AuthenticationConvert
         if (bearerToken != null) {
             String [] splitBearerToken = bearerToken.split(" ");
             if (splitBearerToken[0].equals("Bearer")) {
-                String jwt = splitBearerToken[1];
-                if (jwt != null) {
-                    return new PreAuthenticatedAuthenticationToken(tokenDeserializer.deserialize(jwt), "Bearer");
+                if (splitBearerToken.length == 2) {
+                    String jwt = splitBearerToken[1];
+                    if (jwt != null) {
+                        Token token = tokenDeserializer.deserialize(jwt);
+                        if (token.getType() == TokenType.SERVICE) {
+                            return new PreAuthenticatedAuthenticationToken(token, "Bearer Token");
+                        }
+                        throw new BearerJwtAuthorizationException("Bearer token has invalid type!");
+                    }
+                    throw new BearerJwtAuthorizationException("Bearer token is null!");
                 }
-                throw new BadCredentialsException("Bearer token is null!");
+                throw new BearerJwtAuthorizationException("Bearer token is empty!");
             }
-            throw new BadCredentialsException("Bearer part is missing!");
+            throw new BearerJwtAuthorizationException("Bearer part is missing!");
         }
-        throw new BadCredentialsException("Authorization header is missing!");
+        throw new BearerJwtAuthorizationException("Authorization header is missing!");
     }
 }

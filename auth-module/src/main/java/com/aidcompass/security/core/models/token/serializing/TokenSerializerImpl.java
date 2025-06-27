@@ -1,6 +1,7 @@
 package com.aidcompass.security.core.models.token.serializing;
 
 import com.aidcompass.security.core.models.token.models.Token;
+import com.aidcompass.security.core.models.token.models.TokenType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
@@ -33,6 +34,7 @@ public class TokenSerializerImpl implements TokenSerializer {
                 .issuedAt(Date.from(token.getIssuedAt()))
                 .expiration(Date.from(token.getExpiresAt()))
                 .add("authorities", token.getAuthorities())
+                .add("type", token.getType())
                 .build();
 
         return Jwts.builder()

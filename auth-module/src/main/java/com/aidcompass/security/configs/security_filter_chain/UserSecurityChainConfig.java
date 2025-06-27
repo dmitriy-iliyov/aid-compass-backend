@@ -1,4 +1,4 @@
-package com.aidcompass.security.configs;
+package com.aidcompass.security.configs.security_filter_chain;
 
 
 import com.aidcompass.security.core.CookieJwtAuthenticationFilterConfigurer;
@@ -11,6 +11,7 @@ import com.aidcompass.security.xss.XssFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,7 +36,7 @@ public class UserSecurityChainConfig {
     private final DefaultAuthenticationEntryPoint authenticationEntryPoint;
 
 
-    public UserSecurityChainConfig(@Qualifier("defaultCorsConfigurationSource") CorsConfigurationSource corsConfigurationSource,
+    public UserSecurityChainConfig(CorsConfigurationSource corsConfigurationSource,
                                    CsrfTokenRepository csrfTokenRepository,
                                    CsrfAccessDeniedHandler csrfAccessDeniedHandler,
                                    @Qualifier("userAuthenticationManager") AuthenticationManager authenticationManager,
@@ -53,6 +54,7 @@ public class UserSecurityChainConfig {
     }
 
     @Bean
+    @Order(2)
     public SecurityFilterChain userSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))

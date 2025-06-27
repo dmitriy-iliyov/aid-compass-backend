@@ -18,7 +18,6 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 @RequiredArgsConstructor
 public class CookieJwtAuthenticationFilterConfigurer implements SecurityConfigurer<DefaultSecurityFilterChain, HttpSecurity>{
 
-    private final TokenUserDetailsService tokenUserDetailsService;
     private final TokenDeserializer tokenDeserializer;
 
 
@@ -27,12 +26,8 @@ public class CookieJwtAuthenticationFilterConfigurer implements SecurityConfigur
 
     @Override
     public void configure(HttpSecurity http) {
-//        PreAuthenticatedAuthenticationProvider preAuthenticatedAuthenticationProvider = new PreAuthenticatedAuthenticationProvider();
-//        preAuthenticatedAuthenticationProvider.setPreAuthenticatedUserDetailsService(tokenUserDetailsService);
-
         AuthenticationFilter cookieAuthenticationFilter = new AuthenticationFilter(
                 http.getSharedObject(AuthenticationManager.class),
-                //new ProviderManager(preAuthenticatedAuthenticationProvider),
                 new CookieJwtAuthenticationConverter(tokenDeserializer)
         );
 
@@ -40,6 +35,5 @@ public class CookieJwtAuthenticationFilterConfigurer implements SecurityConfigur
         cookieAuthenticationFilter.setFailureHandler(new CookieJwtAuthenticationFailureHandler());
 
         http.addFilterAfter(cookieAuthenticationFilter, XssFilter.class);
-                //.authenticationProvider(preAuthenticatedAuthenticationProvider);
     }
 }

@@ -2,7 +2,7 @@ package com.aidcompass.security.configs;
 
 import com.aidcompass.security.core.models.token.factory.ServiceTokenFactory;
 import com.aidcompass.security.core.models.token.factory.TokenFactory;
-import com.aidcompass.security.core.models.token.factory.DefaultTokenFactory;
+import com.aidcompass.security.core.models.token.factory.UserTokenFactory;
 import com.aidcompass.security.core.models.token.serializing.TokenDeserializer;
 import com.aidcompass.security.core.models.token.serializing.TokenDeserializerImpl;
 import com.aidcompass.security.core.models.token.serializing.TokenSerializer;
@@ -30,9 +30,9 @@ public class TokenToolsConfig {
         return new TokenDeserializerImpl(SECRET);
     }
 
-    @Bean(name = "defaultTokenFactory")
-    public TokenFactory defaultTokenFactory() {
-        return new DefaultTokenFactory();
+    @Bean(name = "userTokenFactory")
+    public TokenFactory userTokenFactory() {
+        return new UserTokenFactory();
     }
 
     @Bean(name = "serviceTokenFactory")
