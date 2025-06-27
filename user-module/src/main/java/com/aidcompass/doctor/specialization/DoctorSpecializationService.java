@@ -25,7 +25,7 @@ public class DoctorSpecializationService {
         repository.saveAll(entityList);
     }
 
-//    @Cacheable(value = "doctor:spec", key = "#specialization.toString()")
+//    @Cacheable(value = "doctor:spec", password = "#specialization.toString()")
     @Transactional(readOnly = true)
     public DoctorSpecializationEntity findEntityBySpecialization(DoctorSpecialization specialization) {
         return repository.findBySpecialization(specialization).orElseThrow(

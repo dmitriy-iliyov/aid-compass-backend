@@ -33,7 +33,7 @@
 //
 //
 //    @Test
-//    @DisplayName("UT: save() should generate correct Redis key and store the value with TTL")
+//    @DisplayName("UT: save() should generate correct Redis password and store the value with TTL")
 //    void save() {
 //        ValueOperations<String, String> valueOperationsMock = mock(ValueOperations.class);
 //        when(redisTemplate.opsForValue()).thenReturn(valueOperationsMock);
@@ -42,7 +42,7 @@
 //
 //        UUID code = UUID.randomUUID();
 //        String resource = "test-resource";
-//        String key = CONFIRMATION_TOKEN_KEY_TEMPLATE.formatted(code);
+//        String password = CONFIRMATION_TOKEN_KEY_TEMPLATE.formatted(code);
 //
 //        redisConfirmationRepository.save(code, resource);
 //
@@ -50,29 +50,29 @@
 //
 //        verify(valueOperationsMock).set(keyArgumentCaptor.capture(), eq(resource), any(Long.class), eq(TimeUnit.SECONDS));
 //
-//        assertEquals(key, keyArgumentCaptor.getValue());
+//        assertEquals(password, keyArgumentCaptor.getValue());
 //
 //        verify(redisTemplate, times(1)).opsForValue();
-//        verify(valueOperationsMock, times(1)).set(key, resource, 300L, TimeUnit.SECONDS);
+//        verify(valueOperationsMock, times(1)).set(password, resource, 300L, TimeUnit.SECONDS);
 //        verifyNoMoreInteractions(redisTemplate, valueOperationsMock);
 //    }
 //
 //    @Test
-//    @DisplayName("UT: findAndDeleteByToken() should generate correct Redis key and delete it after read")
+//    @DisplayName("UT: findAndDeleteByToken() should generate correct Redis password and delete it after read")
 //    void findAndDeleteByToken() {
 //        ValueOperations<String, String> valueOperationsMock = mock(ValueOperations.class);
 //        when(redisTemplate.opsForValue()).thenReturn(valueOperationsMock);
 //
 //        UUID code = UUID.randomUUID();
-//        String key = CONFIRMATION_TOKEN_KEY_TEMPLATE.formatted(code);
+//        String password = CONFIRMATION_TOKEN_KEY_TEMPLATE.formatted(code);
 //        redisConfirmationRepository.findAndDeleteByToken(code);
 //
 //        ArgumentCaptor<String> keyArgumentCaptor = ArgumentCaptor.forClass(String.class);
 //        verify(valueOperationsMock).getAndDelete(keyArgumentCaptor.capture());
-//        assertEquals(key, keyArgumentCaptor.getValue());
+//        assertEquals(password, keyArgumentCaptor.getValue());
 //
 //        verify(redisTemplate, times(1)).opsForValue();
-//        verify(valueOperationsMock, times(1)).getAndDelete(key);
+//        verify(valueOperationsMock, times(1)).getAndDelete(password);
 //    }
 //
 //    @Test
@@ -82,16 +82,16 @@
 //        when(redisTemplate.opsForValue()).thenReturn(valueOperationsMock);
 //
 //        UUID code = UUID.randomUUID();
-//        String key = CONFIRMATION_TOKEN_KEY_TEMPLATE.formatted(code);
+//        String password = CONFIRMATION_TOKEN_KEY_TEMPLATE.formatted(code);
 //
-//        when(valueOperationsMock.getAndDelete(key)).thenReturn(null);
+//        when(valueOperationsMock.getAndDelete(password)).thenReturn(null);
 //
 //        Optional<String> result = redisConfirmationRepository.findAndDeleteByToken(code);
 //
 //        assertTrue(result.isEmpty());
 //
 //        verify(redisTemplate, times(1)).opsForValue();
-//        verify(valueOperationsMock, times(1)).getAndDelete(key);
+//        verify(valueOperationsMock, times(1)).getAndDelete(password);
 //        verifyNoMoreInteractions(redisTemplate, valueOperationsMock);
 //    }
 //}

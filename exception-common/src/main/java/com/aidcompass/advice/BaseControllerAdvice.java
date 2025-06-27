@@ -84,6 +84,7 @@ public abstract class BaseControllerAdvice {
                 "Unexpected server error.",
                 null);
         log.error(Arrays.toString(throwable.getStackTrace()));
+        log.error(throwable.getMessage());
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(exceptionDto);
@@ -249,7 +250,7 @@ public abstract class BaseControllerAdvice {
     public ResponseEntity<?> handelJsonMappingException(JsonMappingException e, Locale locale) {
         Exception exception = (Exception) e.getCause();
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR,
-                messageSource.getMessage("500", null, "error.500", locale));
+                messageSource.getMessage("400", null, "error.400", locale));
         problemDetail.setProperty("properties", Map.of("errors", List.of(exception.getErrorDto())));
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)

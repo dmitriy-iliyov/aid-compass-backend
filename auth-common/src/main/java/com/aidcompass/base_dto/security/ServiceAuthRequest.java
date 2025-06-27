@@ -6,8 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 public record ServiceAuthRequest(
     @JsonProperty("service_name")
     @NotBlank(message = "Service name shouldn't be empty or blank!")
-    String serviceName,
+    String name,
 
+    @JsonProperty("service_key")
     @NotBlank(message = "Service password shouldn't be empty or blank!")
-    String password
+    String key
 ) { }
