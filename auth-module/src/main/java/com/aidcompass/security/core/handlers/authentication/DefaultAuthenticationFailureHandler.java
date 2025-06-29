@@ -1,4 +1,4 @@
-package com.aidcompass.security.core.handlers.jwt_authentication;
+package com.aidcompass.security.core.handlers.authentication_handlers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -6,10 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
-import java.util.Arrays;
-
 @RequiredArgsConstructor
-public class CookieJwtAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class DefaultAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
 
     @Override

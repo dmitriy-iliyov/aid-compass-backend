@@ -31,7 +31,7 @@ public class IntervalController {
     public ResponseEntity<?> createInterval(@AuthenticationPrincipal PrincipalDetails principal,
                                             @RequestBody @Valid IntervalCreateDto dto,
                                             @RequestParam(value = "return_body", defaultValue = "false")
-                                                boolean returnBody) {
+                                            boolean returnBody) {
         IntervalResponseDto response = orchestrator.save(principal.getUserId(), dto);
         if (returnBody) {
             return ResponseEntity
@@ -54,9 +54,9 @@ public class IntervalController {
     @DeleteMapping("/me/{id}")
     public ResponseEntity<?> deleteInterval(@AuthenticationPrincipal PrincipalDetails principal,
                                             @PathVariable("id")
-                                                @NotNull(message = "Id shouldn't be null!")
-                                                @Positive(message = "Id should be positive!")
-                                                Long id) {
+                                            @NotNull(message = "Id shouldn't be null!")
+                                            @Positive(message = "Id should be positive!")
+                                            Long id) {
         orchestrator.delete(principal.getUserId(), id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)

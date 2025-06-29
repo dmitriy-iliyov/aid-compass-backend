@@ -31,7 +31,7 @@ public class CookieJwtAuthenticationConverter implements AuthenticationConverter
                             return new PreAuthenticatedAuthenticationToken(token, cookie.getValue());
                         }
                         throw new CookieJwtAuthorizationException("Token has invalid type!");
-                    }).orElseThrow(CookieJwtAuthorizationException::new);
+                    }).orElse(null);
         }
         return null;
     }

@@ -26,10 +26,12 @@ public class BearerJwtAuthenticationConverter implements AuthenticationConverter
                     String jwt = splitBearerToken[1];
                     if (jwt != null) {
                         Token token = tokenDeserializer.deserialize(jwt);
-                        if (token.getType() == TokenType.SERVICE) {
-                            return new PreAuthenticatedAuthenticationToken(token, "Bearer Token");
+                        if (token != null) {
+                            if (token.getType() == TokenType.SERVICE) {
+                                return new PreAuthenticatedAuthenticationToken(token, "Bearer Token");
+                            }
+                            throw new BearerJwtAuthorizationException("Bearer token has invalid type!");
                         }
-                        throw new BearerJwtAuthorizationException("Bearer token has invalid type!");
                     }
                     throw new BearerJwtAuthorizationException("Bearer token is null!");
                 }
@@ -37,6 +39,6 @@ public class BearerJwtAuthenticationConverter implements AuthenticationConverter
             }
             throw new BearerJwtAuthorizationException("Bearer part is missing!");
         }
-        throw new BearerJwtAuthorizationException("Authorization header is missing!");
+        return null;
     }
 }

@@ -63,7 +63,7 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
         if (now.toLocalTime().isAfter(LocalTime.of(10, 0))) {
             start = start.plusDays(1);
         }
-        LocalDateTime end = now.with(TemporalAdjusters.lastDayOfMonth());
+        LocalDateTime end = now.plusDays(27);
         return mapper.toDto(repository.findFirstByOwnerIdAndDateBetweenOrderByDateAscStartAsc(ownerId, start, end.toLocalDate())
                 .orElseThrow(IntervalNotFoundByIdException::new)
         );
@@ -76,7 +76,7 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
         if (now.toLocalTime().isAfter(LocalTime.of(10, 0))) {
             start = start.plusDays(1);
         }
-        LocalDateTime end = now.with(TemporalAdjusters.lastDayOfMonth());
+        LocalDateTime end = now.plusDays(27);
         return mapper.toDtoList(repository.findAllNearestByOwnerIdIn(ownerIds, start, end.toLocalDate()));
     }
 
