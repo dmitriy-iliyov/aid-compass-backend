@@ -34,7 +34,6 @@ public class CsrfAccessDeniedHandler implements org.springframework.security.web
         ProblemDetail problemDetail;
 
         if (accessDeniedException instanceof CsrfException) {
-
             problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN,
                     messageSource.getMessage("403", null, "csrf.error.403", locale));
             problemDetail.setTitle("CSRF protection");

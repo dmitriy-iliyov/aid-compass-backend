@@ -1,15 +1,12 @@
 package com.aidcompass.service;
 
-import com.aidcompass.enums.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -19,13 +16,13 @@ public class ServiceUserDetails implements UserDetails, CredentialsContainer {
     private final UUID id;
     private final String serviceName;
     private String password;
-    private final Authority authority;
+    private Collection<? extends GrantedAuthority> authorities;
     private final boolean isLocked;
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(authority.getAuthority()));
+        return authorities;
     }
 
     @Override

@@ -16,7 +16,7 @@ import java.net.URI;
 
 @Component
 @RequiredArgsConstructor
-public class DefaultAuthenticationEntryPoint implements org.springframework.security.web.AuthenticationEntryPoint {
+public class CookieAuthenticationEntryPoint implements org.springframework.security.web.AuthenticationEntryPoint {
 
     private final ObjectMapper mapper;
 

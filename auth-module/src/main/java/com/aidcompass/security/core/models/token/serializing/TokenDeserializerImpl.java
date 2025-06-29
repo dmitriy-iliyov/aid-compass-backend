@@ -35,28 +35,28 @@ public class TokenDeserializerImpl implements TokenDeserializer {
                      .verifyWith(key)
                      .build()
                      .parseSignedClaims(inputJwt);
-            try{
-                Claims claims = (Claims) jwt.getPayload();
-                UUID id = UUID.fromString(claims.getId());
-                UUID subjectId = UUID.fromString(claims.getSubject());
-                List<String> authorities = claims.get("authorities", List.class);
-                TokenType type = TokenType.valueOf(claims.get("type", String.class));
-                Instant issuedAt = claims.getIssuedAt().toInstant();
-                Instant expiresAt = claims.getExpiration().toInstant();
-
-                if (expiresAt != null) {
-                    if (Instant.now().isBefore(expiresAt)) {
-                        return new Token(id, subjectId, type, authorities, issuedAt, expiresAt);
-                    }
-                    throw new TokenExpired();
-                }
-
-            }catch (Exception e){
-                log.error("Exception when get claims and deserialize to Token: {}", e.getMessage());
-            }
-        }catch (Exception e){
+        } catch (Exception e){
             log.error("Exception when check jwt signature: {}", e.getMessage());
+            return null;
         }
-        return null;
+        try{
+            Claims claims = (Claims) jwt.getPayload();
+            UUID id = UUID.fromString(claims.getId());
+            UUID subjectId = UUID.fromString(claims.getSubject());
+            List<String> authorities = claims.get("authorities", List.class);
+            TokenType type = TokenType.valueOf(claims.get("type", String.class));
+            Instant issuedAt = claims.getIssuedAt().toInstant();
+            Instant expiresAt = claims.getExpiration().toInstant();
+            if (expiresAt != null) {
+                if (Instant.now().isBefore(expiresAt)) {
+                    return new Token(id, subjectId, type, authorities, issuedAt, expiresAt);
+                }
+                throw new TokenExpired();
+            }
+            throw new TokenExpired();
+        } catch (Exception e){
+            log.error("Exception when get claims and deserialize to Token: {}", e.getMessage());
+            return null;
+        }
     }
 }

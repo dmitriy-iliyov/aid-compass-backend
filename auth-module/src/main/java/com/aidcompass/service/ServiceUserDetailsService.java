@@ -2,10 +2,13 @@ package com.aidcompass.service;
 
 import com.aidcompass.exceptions.ServiceNotFoundByServiceNameException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +19,6 @@ public class ServiceUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String serviceName) throws UsernameNotFoundException {
-        System.out.println(serviceName);
         ServiceEntity entity = repository.findByServiceName(serviceName).orElseThrow(
                 ServiceNotFoundByServiceNameException::new
         );
@@ -24,7 +26,7 @@ public class ServiceUserDetailsService implements UserDetailsService {
                 entity.getId(),
                 entity.getServiceName(),
                 entity.getPassword(),
-                entity.getAuthorityEntity().getAuthority(),
+                List.of(new SimpleGrantedAuthority(entity.getAuthorityEntity().getAuthority().toString())),
                 entity.isLocked()
         );
     }

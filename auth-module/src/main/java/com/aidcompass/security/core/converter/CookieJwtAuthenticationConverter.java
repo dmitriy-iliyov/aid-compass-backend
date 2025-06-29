@@ -1,4 +1,4 @@
-package com.aidcompass.security.core;
+package com.aidcompass.security.core.converter;
 
 
 import com.aidcompass.exceptions.CookieJwtAuthorizationException;

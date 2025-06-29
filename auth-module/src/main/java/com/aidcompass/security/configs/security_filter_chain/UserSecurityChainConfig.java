@@ -1,12 +1,15 @@
 package com.aidcompass.security.configs.security_filter_chain;
 
 
-import com.aidcompass.security.core.CookieJwtAuthenticationFilterConfigurer;
+import com.aidcompass.security.core.converter.CookieJwtAuthenticationConverter;
 import com.aidcompass.security.core.handlers.CsrfAccessDeniedHandler;
-import com.aidcompass.security.core.handlers.DefaultAuthenticationEntryPoint;
-import com.aidcompass.security.core.handlers.logout.DeactivatingJwtLogoutHandler;
+import com.aidcompass.security.core.handlers.CookieAuthenticationEntryPoint;
+import com.aidcompass.security.core.handlers.authentication.DefaultAuthenticationFailureHandler;
+import com.aidcompass.security.core.handlers.authentication.DefaultAuthenticationSuccessHandler;
+import com.aidcompass.security.core.handlers.logout.DeactivatingTokenLogoutHandler;
 import com.aidcompass.security.core.handlers.logout.LogoutSuccessHandlerImpl;
 import com.aidcompass.security.core.models.token.TokenUserDetailsService;
+import com.aidcompass.security.core.models.token.serializing.TokenDeserializer;
 import com.aidcompass.security.xss.XssFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
@@ -31,48 +35,55 @@ public class UserSecurityChainConfig {
     private final CsrfTokenRepository csrfTokenRepository;
     private final CsrfAccessDeniedHandler csrfAccessDeniedHandler;
     private final AuthenticationManager authenticationManager;
-    private final CookieJwtAuthenticationFilterConfigurer cookieJwtAuthenticationConfigurer;
+    private final AuthenticationFilter cookieAuthenticationFilter;
     private final TokenUserDetailsService tokenUserDetailsService;
-    private final DefaultAuthenticationEntryPoint authenticationEntryPoint;
+    private final CookieAuthenticationEntryPoint authenticationEntryPoint;
 
 
     public UserSecurityChainConfig(CorsConfigurationSource corsConfigurationSource,
                                    CsrfTokenRepository csrfTokenRepository,
                                    CsrfAccessDeniedHandler csrfAccessDeniedHandler,
                                    @Qualifier("userAuthenticationManager") AuthenticationManager authenticationManager,
-                                   CookieJwtAuthenticationFilterConfigurer cookieJwtAuthenticationConfigurer,
                                    TokenUserDetailsService tokenUserDetailsService,
-                                   DefaultAuthenticationEntryPoint authenticationEntryPoint
+                                   CookieAuthenticationEntryPoint authenticationEntryPoint,
+                                   TokenDeserializer tokenDeserializer
     ) {
         this.corsConfigurationSource = corsConfigurationSource;
         this.csrfTokenRepository = csrfTokenRepository;
         this.csrfAccessDeniedHandler = csrfAccessDeniedHandler;
         this.authenticationManager = authenticationManager;
-        this.cookieJwtAuthenticationConfigurer = cookieJwtAuthenticationConfigurer;
-        this.tokenUserDetailsService = tokenUserDetailsService;
+        this.cookieAuthenticationFilter = new AuthenticationFilter(
+                authenticationManager,
+                new CookieJwtAuthenticationConverter(tokenDeserializer)
+        );
+        this.cookieAuthenticationFilter.setSuccessHandler(new DefaultAuthenticationSuccessHandler());
+        this.cookieAuthenticationFilter.setFailureHandler(new DefaultAuthenticationFailureHandler());
         this.authenticationEntryPoint = authenticationEntryPoint;
+        this.tokenUserDetailsService = tokenUserDetailsService;
     }
 
     @Bean
     @Order(2)
     public SecurityFilterChain userSecurityFilterChain(HttpSecurity http) throws Exception {
         http
+                .securityMatcher("/api/**")
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(csrf -> csrf.csrfTokenRepository(csrfTokenRepository)
-                        .ignoringRequestMatchers("/api/auth/login", "/api/v1/contact", "/csrf")
+                        .ignoringRequestMatchers("/api/auth/login", "/api/v1/contact", "/api/csrf")
                         .csrfTokenRequestHandler(new XorCsrfTokenRequestAttributeHandler())
                         .sessionAuthenticationStrategy(((authentication, request, response) -> {}))
                 )
                 .addFilterAfter(new XssFilter(), CsrfFilter.class)
+                .authenticationManager(authenticationManager)
+                .addFilterAfter(cookieAuthenticationFilter, XssFilter.class)
                 .logout(logout -> logout
                         .logoutUrl("/api/auth/logout")
                         .addLogoutHandler(new CookieClearingLogoutHandler(
                                 "__Host-auth_token", "XSRF-TOKEN", "auth_info")
                         )
-                        .addLogoutHandler(new DeactivatingJwtLogoutHandler(tokenUserDetailsService))
+                        .addLogoutHandler(new DeactivatingTokenLogoutHandler(tokenUserDetailsService))
                         .logoutSuccessHandler(new LogoutSuccessHandlerImpl())
                 )
-                .authenticationManager(authenticationManager)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/login").permitAll()
@@ -104,9 +115,6 @@ public class UserSecurityChainConfig {
                                 cps -> cps.policyDirectives("script-src 'self'")
                         )
                 );
-
-        http.apply(cookieJwtAuthenticationConfigurer);
-
         return http.build();
     }
 }

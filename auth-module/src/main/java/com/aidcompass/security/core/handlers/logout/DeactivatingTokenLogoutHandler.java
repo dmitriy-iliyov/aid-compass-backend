@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 import java.time.Instant;
 
 @RequiredArgsConstructor
-public class DeactivatingJwtLogoutHandler implements LogoutHandler {
+public class DeactivatingTokenLogoutHandler implements LogoutHandler {
 
     private final TokenUserDetailsService tokenUserDetailsService;
 

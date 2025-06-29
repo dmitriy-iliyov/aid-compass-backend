@@ -1,4 +1,4 @@
-package com.aidcompass.security.core.handlers.authentication_handlers;
+package com.aidcompass.security.core.handlers.authentication;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

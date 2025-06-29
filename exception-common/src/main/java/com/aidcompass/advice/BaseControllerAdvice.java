@@ -56,7 +56,8 @@ public abstract class BaseControllerAdvice {
         if (e instanceof NoResourceFoundException) {
             url = ((NoResourceFoundException) e).getResourcePath();
         }
-
+        log.error(e.getMessage());
+        log.error(Arrays.toString(e.getStackTrace()));
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(new ExceptionResponseDto(

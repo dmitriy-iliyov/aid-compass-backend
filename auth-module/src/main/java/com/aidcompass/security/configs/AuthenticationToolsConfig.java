@@ -1,7 +1,6 @@
 package com.aidcompass.security.configs;
 
-import com.aidcompass.security.core.CookieJwtAuthenticationFilterConfigurer;
-import com.aidcompass.security.core.handlers.DefaultAuthenticationEntryPoint;
+import com.aidcompass.security.core.handlers.CookieAuthenticationEntryPoint;
 import com.aidcompass.security.core.models.token.TokenUserDetailsService;
 import com.aidcompass.security.core.models.token.serializing.TokenDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -70,12 +69,7 @@ public class AuthenticationToolsConfig {
     }
 
     @Bean
-    public CookieJwtAuthenticationFilterConfigurer cookieJwtAuthenticationFilterConfigurer(){
-        return new CookieJwtAuthenticationFilterConfigurer(tokenDeserializer);
-    }
-
-    @Bean
-    public DefaultAuthenticationEntryPoint defaultAuthenticationEntryPoint() {
-        return new DefaultAuthenticationEntryPoint(mapper);
+    public CookieAuthenticationEntryPoint cookieAuthenticationEntryPoint() {
+        return new CookieAuthenticationEntryPoint(mapper);
     }
 }

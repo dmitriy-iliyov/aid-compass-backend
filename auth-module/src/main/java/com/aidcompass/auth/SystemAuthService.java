@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class SystemAuthService {
@@ -27,11 +30,12 @@ public class SystemAuthService {
         this.tokenSerializer = tokenSerializer;
     }
 
-    public String login(ServiceAuthRequest requestDto) {
+    public Map<String, String> login(ServiceAuthRequest requestDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(requestDto.name(), requestDto.key())
         );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         Token token = tokenFactory.generateToken(authentication);
-        return tokenSerializer.serialize(token);
+        return Map.of("token", tokenSerializer.serialize(token));
     }
 }

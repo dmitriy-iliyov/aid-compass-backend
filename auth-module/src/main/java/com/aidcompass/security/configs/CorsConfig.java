@@ -22,14 +22,14 @@ public class CorsConfig {
 
         CorsConfiguration csrfConfig = new CorsConfiguration();
         csrfConfig.setAllowedOrigins(List.of("http://localhost:4200"));
-        csrfConfig.setAllowedMethods(List.of("GET"));
+        csrfConfig.setAllowedMethods(List.of("OPTIONS", "GET"));
         csrfConfig.setAllowedHeaders(List.of("*"));
         csrfConfig.setAllowCredentials(true);
         csrfConfig.setMaxAge(60L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", defaultConfig);
         source.registerCorsConfiguration("/csrf", csrfConfig);
+        source.registerCorsConfiguration("/**", defaultConfig);
         return source;
     }
 }

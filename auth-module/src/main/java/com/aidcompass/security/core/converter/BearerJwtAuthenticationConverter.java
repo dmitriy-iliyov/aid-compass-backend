@@ -1,4 +1,4 @@
-package com.aidcompass.security.core;
+package com.aidcompass.security.core.converter;
 
 import com.aidcompass.exceptions.BearerJwtAuthorizationException;
 import com.aidcompass.security.core.models.token.models.Token;
