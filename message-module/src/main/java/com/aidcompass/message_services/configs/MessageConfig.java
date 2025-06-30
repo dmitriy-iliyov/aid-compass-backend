@@ -30,4 +30,6 @@ public class MessageConfig {
     public static final String CUSTOMER_APPOINTMENT_CANCELED_INFORMATION =
             "Вітаємо, %s %s! Вимушені повідомити, що запис на %s консультацію, заплановану на %s, було скасовано волонтером з поважних причин. " +
                     "Якщо бажаєте обрати інший час — скористайтеся нашим сервісом.";
+
+    public static final String CUSTOMER_APPOINTMENT_REMINDER_INFORMATION = "Вітаємо, %s %s! Сьогодні о %s ви записані на %s консультацію.";
 }

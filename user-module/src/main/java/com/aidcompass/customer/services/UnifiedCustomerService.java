@@ -63,15 +63,6 @@ public class UnifiedCustomerService implements CustomerService, ProfileStatusUpd
 
     @Transactional(readOnly = true)
     @Override
-    public boolean isProfileCompleted(UUID id) {
-        if (!repository.existsById(id)) {
-            throw new CustomerNotFoundByIdException();
-        }
-        return repository.isCompleted(id);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
     public PublicCustomerResponseDto findPublicById(UUID id) {
         CustomerEntity customerEntity = repository.findById(id).orElseThrow(
                 CustomerNotFoundByIdException::new

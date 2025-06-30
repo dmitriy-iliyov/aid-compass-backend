@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/system/v1")
 @PreAuthorize("hasAuthority('ROLE_SCHEDULE_TASK_SERVICE')")
@@ -27,14 +25,9 @@ public class ScheduleSystemController {
                                              @Positive(message = "Batch size should be positive!")
                                              @Min(value = 20, message = "Min batch size value is 20!")
                                              int batchSize) {
-        System.out.println(batchSize);
-//        List<Long> result = systemIntervalService.deleteBatchBeforeWeakStart(batchSize);
-//        System.out.println(result);
-        List<Long> result = List.of(1234L, 1234L);
-        System.out.println(result);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(result);
+                .body(systemIntervalService.deleteBatchBeforeWeakStart(batchSize));
     }
 
     @PatchMapping("/appointments/past/batch/skip")

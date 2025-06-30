@@ -11,6 +11,4 @@ public interface AuthService {
     void login(AuthRequest requestDto, HttpServletRequest request, HttpServletResponse response);
 
     void changeAuthorityById(UUID id, Authority authority, HttpServletResponse response);
-
-    //String systemLogin(SystemAuthRequest requestDto);
 }

@@ -1,8 +1,9 @@
 package com.aidcompass.information;
 
-import com.aidcompass.contracts.CanceledAppointmentInfo;
+import com.aidcompass.dto.CanceledAppointmentDto;
 import com.aidcompass.contracts.InformationService;
-import com.aidcompass.contracts.ScheduledAppointmentInfo;
+import com.aidcompass.dto.ReminderAppointmentDto;
+import com.aidcompass.dto.ScheduledAppointmentDto;
 import com.aidcompass.exceptions.models.SendMessageException;
 import com.aidcompass.message_services.MessageFactory;
 import com.aidcompass.message_services.MessageService;
@@ -24,10 +25,19 @@ public class EmailInformationService implements InformationService {
     }
 
     @Override
-    public void onScheduleNotification(ScheduledAppointmentInfo info) {
+    public void reminderNotification(ReminderAppointmentDto dto) {
         try {
-            messageService.sendMessage(MessageFactory.customerAppointmentScheduled(info));
-            messageService.sendMessage(MessageFactory.volunteerAppointmentScheduled(info));
+            messageService.sendMessage(MessageFactory.customerReminder(dto));
+        } catch (Exception e) {
+            throw new SendMessageException();
+        }
+    }
+
+    @Override
+    public void onScheduleNotification(ScheduledAppointmentDto dto) {
+        try {
+            messageService.sendMessage(MessageFactory.customerAppointmentScheduled(dto));
+            messageService.sendMessage(MessageFactory.volunteerAppointmentScheduled(dto));
         } catch (Exception e) {
             log.error(Arrays.toString(e.getStackTrace()));
             throw new SendMessageException();
@@ -35,7 +45,7 @@ public class EmailInformationService implements InformationService {
     }
 
     @Override
-    public void onCancelNotification(CanceledAppointmentInfo info) {
+    public void onCancelNotification(CanceledAppointmentDto dto) {
 
     }
 }
