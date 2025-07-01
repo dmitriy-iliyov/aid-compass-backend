@@ -22,7 +22,7 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, UUID> 
 
     @Query("""
         SELECT 
-            CASE WHEN c.profileStatusEntity.profileStatus = com.aidcompass.profile_status.models.ProfileStatus.COMPLETE 
+            CASE WHEN c.profileStatusEntity.profileStatus = com.aidcompass.enums.ProfileStatus.COMPLETE 
             THEN true ELSE false END
         FROM CustomerEntity c
         WHERE c.id = :id
