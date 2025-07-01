@@ -1,7 +1,6 @@
 package com.aidcompass.doctor.dto;
 
-import com.aidcompass.doctor.models.dto.doctor.PublicDoctorResponseDto;
-import com.aidcompass.interval.models.dto.NearestIntervalDto;
+import com.aidcompass.interval.dto.NearestIntervalDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record DoctorCardDto(

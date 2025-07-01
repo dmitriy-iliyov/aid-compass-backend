@@ -3,29 +3,29 @@ package com.aidcompass.jurist.services;
 
 import com.aidcompass.PageResponse;
 import com.aidcompass.detail.models.DetailEntity;
-import com.aidcompass.detail.models.Gender;
-import com.aidcompass.enums.ServiceType;
-import com.aidcompass.exceptions.jurist.FullJuristNotFoundException;
-import com.aidcompass.exceptions.jurist.JuristNotFoundByIdException;
+import com.aidcompass.enums.gender.Gender;
+import com.aidcompass.system.enums.ServiceType;
+import com.aidcompass.general.exceptions.jurist.FullJuristNotFoundException;
+import com.aidcompass.general.exceptions.jurist.JuristNotFoundByIdException;
 import com.aidcompass.jurist.mapper.FullJuristMapper;
 import com.aidcompass.jurist.mapper.JuristMapper;
 import com.aidcompass.jurist.models.JuristEntity;
-import com.aidcompass.jurist.models.dto.FullPrivateJuristResponseDto;
-import com.aidcompass.jurist.models.dto.FullPublicJuristResponseDto;
-import com.aidcompass.jurist.models.dto.jurist.JuristDto;
-import com.aidcompass.jurist.models.dto.jurist.PrivateJuristResponseDto;
-import com.aidcompass.jurist.models.dto.jurist.PublicJuristResponseDto;
+import com.aidcompass.jurist.dto.FullPrivateJuristResponseDto;
+import com.aidcompass.jurist.dto.FullPublicJuristResponseDto;
+import com.aidcompass.jurist.models.JuristDto;
+import com.aidcompass.jurist.dto.PrivateJuristResponseDto;
+import com.aidcompass.jurist.dto.PublicJuristResponseDto;
 import com.aidcompass.jurist.repository.JuristRepository;
 import com.aidcompass.jurist.specialization.JuristSpecializationService;
 import com.aidcompass.jurist.specialization.JuristTypeService;
-import com.aidcompass.jurist.specialization.models.JuristSpecialization;
+import com.aidcompass.jurist.specialization.JuristSpecialization;
 import com.aidcompass.jurist.specialization.models.JuristSpecializationEntity;
-import com.aidcompass.jurist.specialization.models.JuristType;
+import com.aidcompass.jurist.type.JuristType;
 import com.aidcompass.jurist.specialization.models.JuristTypeEntity;
 import com.aidcompass.profile_status.ProfileConfig;
 import com.aidcompass.profile_status.ProfileStatusService;
 import com.aidcompass.profile_status.ProfileStatusUpdateService;
-import com.aidcompass.profile_status.models.ProfileStatus;
+import com.aidcompass.enums.ProfileStatus;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
@@ -67,7 +67,7 @@ public class UnifiedJuristService implements JuristService, ProfileStatusUpdateS
 
     @Transactional
     @Override
-    public PrivateJuristResponseDto save(UUID id, JuristDto dto, DetailEntity detail) {
+    public PrivateJuristResponseDto save(UUID id, DetailEntity detail, JuristDto dto) {
         JuristTypeEntity typeEntity = typeService.findEntityByType(JuristType.toEnum(dto.getType()));
         List<JuristSpecializationEntity> specializations =
                 specializationService.findEntityListBySpecializationList(dto.getSpecializations());

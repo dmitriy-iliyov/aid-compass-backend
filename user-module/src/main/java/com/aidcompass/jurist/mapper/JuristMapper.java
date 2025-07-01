@@ -1,14 +1,14 @@
 package com.aidcompass.jurist.mapper;
 
-import com.aidcompass.base_dto.BasePrivateVolunteerDto;
 import com.aidcompass.detail.mapper.DetailMapper;
+import com.aidcompass.dto.BasePrivateVolunteerDto;
 import com.aidcompass.jurist.models.JuristEntity;
-import com.aidcompass.jurist.models.dto.jurist.JuristDto;
-import com.aidcompass.jurist.models.dto.jurist.PrivateJuristResponseDto;
-import com.aidcompass.jurist.models.dto.jurist.PublicJuristResponseDto;
+import com.aidcompass.jurist.models.JuristDto;
+import com.aidcompass.jurist.dto.PrivateJuristResponseDto;
+import com.aidcompass.jurist.dto.PublicJuristResponseDto;
 import com.aidcompass.jurist.specialization.mapper.JuristSpecializationMapper;
 import com.aidcompass.jurist.specialization.mapper.JuristTypeMapper;
-import com.aidcompass.jurist.specialization.models.JuristSpecialization;
+import com.aidcompass.jurist.specialization.JuristSpecialization;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.UUID;
 public interface JuristMapper {
 
     @Mapping(target = "id", source = "id")
-    @Mapping(target = "gender", expression = "java(com.aidcompass.detail.models.Gender.toEnum(dto.getGender()))")
+    @Mapping(target = "gender", expression = "java(com.aidcompass.enums.gender.Gender.toEnum(dto.getGender()))")
     @Mapping(target = "typeEntity", ignore = true)
     @Mapping(target = "specializations", ignore = true)
     JuristEntity toEntity(UUID id, JuristDto dto);
@@ -52,7 +52,7 @@ public interface JuristMapper {
     PublicJuristResponseDto toPublicDto(List<JuristSpecialization> paramSpecializations, JuristEntity entity);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "gender", expression = "java(com.aidcompass.detail.models.Gender.toEnum(dto.getGender()))")
+    @Mapping(target = "gender", expression = "java(com.aidcompass.enums.gender.Gender.toEnum(dto.getGender()))")
     @Mapping(target = "typeEntity", ignore = true)
     @Mapping(target = "specializations", ignore = true)
     void updateEntityFromUpdateDto(JuristDto dto, @MappingTarget JuristEntity entity);

@@ -1,7 +1,7 @@
 package com.aidcompass.doctor.dto;
 
-import com.aidcompass.contact.models.dto.PrivateContactResponseDto;
-import com.aidcompass.doctor.models.dto.FullPrivateDoctorResponseDto;
+
+import com.aidcompass.dto.PrivateContactResponseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;

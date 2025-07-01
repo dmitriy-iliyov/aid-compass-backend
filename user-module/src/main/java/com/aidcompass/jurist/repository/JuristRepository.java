@@ -1,7 +1,7 @@
 package com.aidcompass.jurist.repository;
 
 
-import com.aidcompass.detail.models.Gender;
+import com.aidcompass.enums.gender.Gender;
 import com.aidcompass.jurist.models.JuristEntity;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;
 import org.springframework.data.domain.Page;

@@ -1,11 +1,11 @@
 package com.aidcompass.contracts;
 
 
-import com.aidcompass.base_dto.security.RecoveryRequestDto;
-import com.aidcompass.base_dto.user.SystemUserDto;
-import com.aidcompass.base_dto.user.UserRegistrationDto;
-import com.aidcompass.base_dto.user.UserResponseDto;
-import com.aidcompass.base_dto.user.UserUpdateDto;
+import com.aidcompass.dto.security.RecoveryRequestDto;
+import com.aidcompass.dto.user.SystemUserDto;
+import com.aidcompass.dto.user.UserRegistrationDto;
+import com.aidcompass.dto.user.UserResponseDto;
+import com.aidcompass.dto.user.UserUpdateDto;
 
 import java.util.UUID;
 

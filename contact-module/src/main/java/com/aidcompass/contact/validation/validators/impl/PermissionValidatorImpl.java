@@ -2,7 +2,7 @@ package com.aidcompass.contact.validation.validators.impl;
 
 import com.aidcompass.contact.models.dto.ContactUpdateDto;
 import com.aidcompass.markers.UpdateDto;
-import com.aidcompass.base_dto.SystemContactDto;
+import com.aidcompass.dto.system.SystemContactDto;
 import com.aidcompass.contact.services.SystemContactService;
 import com.aidcompass.contact.validation.validators.FormatValidator;
 import com.aidcompass.contact.validation.validators.ContactOwnershipValidator;
@@ -11,7 +11,7 @@ import com.aidcompass.contact.validation.validators.ContactUniquenessValidator;
 import com.aidcompass.exceptions.invalid_input.DoubleContactIdException;
 import com.aidcompass.exceptions.invalid_input.InvalidAttemptChangeToPrimaryException;
 import com.aidcompass.exceptions.invalid_input.OwnerShipException;
-import com.aidcompass.models.dto.ErrorDto;
+import com.aidcompass.dto.ErrorDto;
 import lombok.RequiredArgsConstructor;
 
 import java.util.*;

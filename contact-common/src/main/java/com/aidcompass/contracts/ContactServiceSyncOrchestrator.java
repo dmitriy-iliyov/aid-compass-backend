@@ -1,9 +1,9 @@
 package com.aidcompass.contracts;
 
 
-import com.aidcompass.base_dto.SystemConfirmationRequestDto;
-import com.aidcompass.base_dto.SystemContactCreateDto;
-import com.aidcompass.base_dto.SystemContactDto;
+import com.aidcompass.dto.system.SystemConfirmationRequestDto;
+import com.aidcompass.dto.system.SystemContactCreateDto;
+import com.aidcompass.dto.system.SystemContactDto;
 import com.aidcompass.enums.ContactType;
 
 public interface ContactServiceSyncOrchestrator {

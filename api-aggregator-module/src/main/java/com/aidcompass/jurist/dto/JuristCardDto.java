@@ -1,7 +1,6 @@
 package com.aidcompass.jurist.dto;
 
-import com.aidcompass.jurist.models.dto.jurist.PublicJuristResponseDto;
-import com.aidcompass.interval.models.dto.NearestIntervalDto;
+import com.aidcompass.interval.dto.NearestIntervalDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record JuristCardDto(

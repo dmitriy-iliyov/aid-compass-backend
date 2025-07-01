@@ -1,6 +1,6 @@
 package com.aidcompass.security.core.handlers;
 
-import com.aidcompass.models.dto.ErrorDto;
+import com.aidcompass.dto.ErrorDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

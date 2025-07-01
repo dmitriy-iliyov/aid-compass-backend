@@ -1,6 +1,6 @@
 package com.aidcompass.auth;
 
-import com.aidcompass.base_dto.security.AuthRequest;
+import com.aidcompass.dto.security.AuthRequest;
 import com.aidcompass.contracts.AuthService;
 import com.aidcompass.enums.Authority;
 import com.aidcompass.security.core.cookie.CookieFactory;
@@ -9,7 +9,6 @@ import com.aidcompass.user.models.DefaultUserDetails;
 import com.aidcompass.user.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

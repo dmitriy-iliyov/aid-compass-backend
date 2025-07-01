@@ -1,6 +1,6 @@
 package com.aidcompass.exceptions;
 
-import com.aidcompass.models.dto.ErrorDto;
+import com.aidcompass.dto.ErrorDto;
 
 public class CookieJwtAuthorizationException extends BaseAuthorizationException {
 

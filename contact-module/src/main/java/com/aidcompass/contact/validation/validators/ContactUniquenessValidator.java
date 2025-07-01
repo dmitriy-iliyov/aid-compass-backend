@@ -1,7 +1,7 @@
 package com.aidcompass.contact.validation.validators;
 
 import com.aidcompass.markers.UpdateDto;
-import com.aidcompass.models.dto.ErrorDto;
+import com.aidcompass.dto.ErrorDto;
 
 import java.util.List;
 import java.util.UUID;

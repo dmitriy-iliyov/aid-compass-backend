@@ -1,7 +1,6 @@
 package com.aidcompass.exceptions;
 
-import com.aidcompass.advice.BaseControllerAdvice;
-import com.aidcompass.mapper.ExceptionMapper;
+import com.aidcompass.exceptions.mapper.ExceptionMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;

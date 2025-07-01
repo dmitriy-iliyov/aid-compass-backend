@@ -2,7 +2,7 @@ package com.aidcompass.contact_filling_progress;
 
 import com.aidcompass.enums.Authority;
 import com.aidcompass.exceptions.not_found.ContactProgressEntityNotFoundByUserIdException;
-import com.aidcompass.models.BaseNotFoundException;
+import com.aidcompass.BaseNotFoundException;
 import com.aidcompass.contact_filling_progress.models.ContactFilledEvent;
 import com.aidcompass.contact_filling_progress.models.ContactProgressEntity;
 import lombok.RequiredArgsConstructor;

@@ -1,8 +1,8 @@
 package com.aidcompass.jurist.specialization;
 
-import com.aidcompass.exceptions.jurist.JuristTypeNotFoundByTypeException;
+import com.aidcompass.general.exceptions.jurist.JuristTypeNotFoundByTypeException;
 import com.aidcompass.jurist.specialization.mapper.JuristTypeMapper;
-import com.aidcompass.jurist.specialization.models.JuristType;
+import com.aidcompass.jurist.type.JuristType;
 import com.aidcompass.jurist.specialization.models.JuristTypeEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,17 +1,17 @@
 package com.aidcompass.jurist.controllers;
 
 
+import com.aidcompass.general.interfaces.PersistFacade;
 import com.aidcompass.contracts.PrincipalDetails;
 import com.aidcompass.detail.DetailService;
-import com.aidcompass.detail.models.dto.DetailDto;
-import com.aidcompass.detail.models.dto.PrivateDetailResponseDto;
-import com.aidcompass.enums.ServiceType;
-import com.aidcompass.jurist.PersistJuristFacade;
-import com.aidcompass.jurist.models.dto.jurist.JuristDto;
-import com.aidcompass.jurist.models.dto.jurist.PrivateJuristResponseDto;
+import com.aidcompass.detail.models.DetailDto;
+import com.aidcompass.detail.PrivateDetailResponseDto;
+import com.aidcompass.system.enums.ServiceType;
+import com.aidcompass.jurist.models.JuristDto;
+import com.aidcompass.jurist.dto.PrivateJuristResponseDto;
 import com.aidcompass.jurist.services.JuristService;
-import com.aidcompass.jurist.specialization.models.JuristSpecialization;
-import com.aidcompass.jurist.specialization.models.JuristType;
+import com.aidcompass.jurist.specialization.JuristSpecialization;
+import com.aidcompass.jurist.type.JuristType;
 import com.aidcompass.validation.ValidEnum;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -35,7 +35,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class JuristController {
 
-    private final PersistJuristFacade facade;
+    private final PersistFacade<JuristDto, PrivateJuristResponseDto> facade;
     private final JuristService juristService;
     private final DetailService detailService;
 

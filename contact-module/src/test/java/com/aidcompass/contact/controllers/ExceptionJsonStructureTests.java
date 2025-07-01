@@ -2,7 +2,7 @@
 //
 //
 //import com.aidcompass.contact.models.dto.ContactCreateDto;
-//import com.aidcompass.contact.models.dto.PrivateContactResponseDto;
+//import com.aidcompass.dto.PrivateContactResponseDto;
 //import com.aidcompass.contact.facades.ContactFacade;
 //import com.aidcompass.contracts.SystemContactFacade;
 //import com.aidcompass.contact.validation.validators.impl.UniquenessValidatorImpl;

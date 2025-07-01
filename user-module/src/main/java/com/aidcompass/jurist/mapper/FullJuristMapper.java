@@ -3,9 +3,9 @@ package com.aidcompass.jurist.mapper;
 
 import com.aidcompass.detail.mapper.DetailMapper;
 import com.aidcompass.jurist.models.JuristEntity;
-import com.aidcompass.jurist.models.dto.FullPrivateJuristResponseDto;
-import com.aidcompass.jurist.models.dto.FullPublicJuristResponseDto;
-import com.aidcompass.jurist.specialization.models.JuristSpecialization;
+import com.aidcompass.jurist.dto.FullPrivateJuristResponseDto;
+import com.aidcompass.jurist.dto.FullPublicJuristResponseDto;
+import com.aidcompass.jurist.specialization.JuristSpecialization;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

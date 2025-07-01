@@ -1,9 +1,9 @@
 package com.aidcompass.contact.validation.validators.impl;
 
-import com.aidcompass.base_dto.SystemContactDto;
+import com.aidcompass.dto.system.SystemContactDto;
 import com.aidcompass.contact.validation.validators.ContactOwnershipValidator;
 import com.aidcompass.exceptions.invalid_input.OwnerShipException;
-import com.aidcompass.models.dto.ErrorDto;
+import com.aidcompass.dto.ErrorDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

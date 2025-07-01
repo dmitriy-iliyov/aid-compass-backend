@@ -1,7 +1,7 @@
 //package com.aidcompass.contact.validation.ownership;
 //
 //
-//import com.aidcompass.dto.SystemContactDto;
+//import com.aidcompass.dto.system.SystemContactDto;
 //import com.aidcompass.contact.validation.validators.impl.ContactOwnershipValidatorImpl;
 //import com.aidcompass.enums.ContactType;
 //import com.aidcompass.exceptions.invalid_input.OwnerShipException;

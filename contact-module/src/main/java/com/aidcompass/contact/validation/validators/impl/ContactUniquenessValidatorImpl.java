@@ -4,8 +4,8 @@ import com.aidcompass.contracts.ContactServiceSyncOrchestrator;
 import com.aidcompass.enums.ContactType;
 import com.aidcompass.markers.UpdateDto;
 import com.aidcompass.contact.validation.validators.ContactUniquenessValidator;
-import com.aidcompass.models.BaseNotFoundException;
-import com.aidcompass.models.dto.ErrorDto;
+import com.aidcompass.BaseNotFoundException;
+import com.aidcompass.dto.ErrorDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

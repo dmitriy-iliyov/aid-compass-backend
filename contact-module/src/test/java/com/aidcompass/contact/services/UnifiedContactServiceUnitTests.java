@@ -5,7 +5,7 @@
 //import com.aidcompass.contact.mappers.ContactMapper;
 //import com.aidcompass.contact.models.entity.ContactEntity;
 //import com.aidcompass.contact.models.dto.*;
-//import com.aidcompass.dto.SystemContactDto;
+//import com.aidcompass.dto.system.SystemContactDto;
 //import com.aidcompass.contact_type.ContactTypeService;
 //import com.aidcompass.enums.ContactType;
 //import com.aidcompass.contact_type.models.ContactTypeEntity;

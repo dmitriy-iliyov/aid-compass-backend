@@ -3,6 +3,8 @@ package com.aidcompass.contact.controllers;
 import com.aidcompass.contact.models.dto.*;
 import com.aidcompass.contact.facades.GeneralContactOrchestrator;
 import com.aidcompass.contracts.PrincipalDetails;
+import com.aidcompass.dto.PrivateContactResponseDto;
+import com.aidcompass.dto.PublicContactResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

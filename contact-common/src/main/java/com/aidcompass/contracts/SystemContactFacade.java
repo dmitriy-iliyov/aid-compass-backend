@@ -1,8 +1,8 @@
 package com.aidcompass.contracts;
 
 
-import com.aidcompass.base_dto.SystemContactDto;
-import com.aidcompass.base_dto.SystemContactUpdateDto;
+import com.aidcompass.dto.system.SystemContactDto;
+import com.aidcompass.dto.system.SystemContactUpdateDto;
 
 public interface SystemContactFacade {
 

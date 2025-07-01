@@ -1,7 +1,7 @@
 package com.aidcompass.exceptions.models;
 
-import com.aidcompass.models.BaseSendMessageException;
-import com.aidcompass.models.dto.ErrorDto;
+import com.aidcompass.BaseSendMessageException;
+import com.aidcompass.dto.ErrorDto;
 
 public class SendConfirmationMessageException extends BaseSendMessageException {
 

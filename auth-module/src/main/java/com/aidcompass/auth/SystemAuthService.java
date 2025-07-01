@@ -1,6 +1,6 @@
 package com.aidcompass.auth;
 
-import com.aidcompass.base_dto.security.ServiceAuthRequest;
+import com.aidcompass.dto.security.ServiceAuthRequest;
 import com.aidcompass.security.core.models.token.factory.TokenFactory;
 import com.aidcompass.security.core.models.token.models.Token;
 import com.aidcompass.security.core.models.token.serializing.TokenSerializer;

@@ -2,8 +2,8 @@ package com.aidcompass.contact.facades;
 
 import com.aidcompass.contact.models.dto.ContactCreateDto;
 import com.aidcompass.contact.models.dto.ContactUpdateDto;
-import com.aidcompass.contact.models.dto.PrivateContactResponseDto;
-import com.aidcompass.contact.models.dto.PublicContactResponseDto;
+import com.aidcompass.dto.PrivateContactResponseDto;
+import com.aidcompass.dto.PublicContactResponseDto;
 
 import java.util.List;
 import java.util.UUID;

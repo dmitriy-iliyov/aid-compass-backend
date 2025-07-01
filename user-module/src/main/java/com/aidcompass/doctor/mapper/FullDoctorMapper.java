@@ -3,9 +3,9 @@ package com.aidcompass.doctor.mapper;
 
 import com.aidcompass.detail.mapper.DetailMapper;
 import com.aidcompass.doctor.models.DoctorEntity;
-import com.aidcompass.doctor.models.dto.FullPrivateDoctorResponseDto;
-import com.aidcompass.doctor.models.dto.FullPublicDoctorResponseDto;
-import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
+import com.aidcompass.doctor.dto.FullPrivateDoctorResponseDto;
+import com.aidcompass.doctor.dto.FullPublicDoctorResponseDto;
+import com.aidcompass.doctor.specialization.DoctorSpecialization;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

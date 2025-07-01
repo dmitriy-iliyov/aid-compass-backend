@@ -1,7 +1,7 @@
 package com.aidcompass.user.services;
 
-import com.aidcompass.base_dto.user.SystemUserDto;
-import com.aidcompass.base_dto.user.UserRegistrationDto;
+import com.aidcompass.dto.user.SystemUserDto;
+import com.aidcompass.dto.user.UserRegistrationDto;
 
 import java.util.UUID;
 

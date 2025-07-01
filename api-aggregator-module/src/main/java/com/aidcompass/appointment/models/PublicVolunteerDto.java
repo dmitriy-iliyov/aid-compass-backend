@@ -1,6 +1,6 @@
 package com.aidcompass.appointment.models;
 
-import com.aidcompass.detail.models.Gender;
+import com.aidcompass.enums.gender.Gender;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;

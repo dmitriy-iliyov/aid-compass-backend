@@ -1,11 +1,10 @@
 package com.aidcompass.jurist;
 
 import com.aidcompass.contracts.PrincipalDetails;
-import com.aidcompass.detail.models.Gender;
-import com.aidcompass.jurist.specialization.models.JuristSpecialization;
-import com.aidcompass.jurist.specialization.models.JuristType;
+import com.aidcompass.enums.gender.Gender;
+import com.aidcompass.jurist.specialization.JuristSpecialization;
+import com.aidcompass.jurist.type.JuristType;
 import com.aidcompass.validation.ValidEnum;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.PositiveOrZero;

@@ -2,8 +2,8 @@ package com.aidcompass.contact.validation.validators;
 
 import com.aidcompass.contact.models.dto.ContactUpdateDto;
 import com.aidcompass.markers.UpdateDto;
-import com.aidcompass.base_dto.SystemContactDto;
-import com.aidcompass.models.dto.ErrorDto;
+import com.aidcompass.dto.system.SystemContactDto;
+import com.aidcompass.dto.ErrorDto;
 
 import java.util.List;
 import java.util.UUID;

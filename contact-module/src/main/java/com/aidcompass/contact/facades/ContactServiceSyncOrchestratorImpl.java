@@ -1,9 +1,9 @@
 package com.aidcompass.contact.facades;
 
 
-import com.aidcompass.base_dto.SystemConfirmationRequestDto;
-import com.aidcompass.base_dto.SystemContactCreateDto;
-import com.aidcompass.base_dto.SystemContactDto;
+import com.aidcompass.dto.system.SystemConfirmationRequestDto;
+import com.aidcompass.dto.system.SystemContactCreateDto;
+import com.aidcompass.dto.system.SystemContactDto;
 import com.aidcompass.contact.services.SystemContactService;
 import com.aidcompass.contact.services.UnconfirmedContactService;
 import com.aidcompass.contact.validation.validators.CountValidator;
@@ -13,8 +13,8 @@ import com.aidcompass.enums.ContactType;
 import com.aidcompass.contact_type.models.ContactTypeEntity;
 import com.aidcompass.exceptions.invalid_input.EmailIsInUseException;
 import com.aidcompass.exceptions.invalid_input.NotEnoughSpaseForNewContactExceptionBase;
-import com.aidcompass.models.BaseNotFoundException;
-import com.aidcompass.models.dto.ErrorDto;
+import com.aidcompass.BaseNotFoundException;
+import com.aidcompass.dto.ErrorDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

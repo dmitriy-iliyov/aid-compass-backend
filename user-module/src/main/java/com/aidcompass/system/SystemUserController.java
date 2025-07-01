@@ -1,6 +1,6 @@
 package com.aidcompass.system;
 
-import com.aidcompass.enums.ServiceType;
+import com.aidcompass.system.enums.ServiceType;
 import com.aidcompass.validation.ValidEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

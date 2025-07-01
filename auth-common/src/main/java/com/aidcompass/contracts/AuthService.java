@@ -1,6 +1,6 @@
 package com.aidcompass.contracts;
 
-import com.aidcompass.base_dto.security.AuthRequest;
+import com.aidcompass.dto.security.AuthRequest;
 import com.aidcompass.enums.Authority;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,6 +1,6 @@
 package com.aidcompass.jurist.specialization.mapper;
 
-import com.aidcompass.jurist.specialization.models.JuristType;
+import com.aidcompass.jurist.type.JuristType;
 import com.aidcompass.jurist.specialization.models.JuristTypeEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;

@@ -1,6 +1,5 @@
 package com.aidcompass.exceptions;
 
-import com.aidcompass.models.Exception;
-import com.aidcompass.models.dto.ErrorDto;
+import com.aidcompass.Exception;
 
 public abstract class BaseAuthorizationException extends Exception { }

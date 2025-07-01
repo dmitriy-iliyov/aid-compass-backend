@@ -1,6 +1,6 @@
 package com.aidcompass.interval.validation.time;
 
-import com.aidcompass.interval.models.marker.IntervalMarker;
+import com.aidcompass.interval.marker.IntervalMarker;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;

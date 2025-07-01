@@ -1,8 +1,8 @@
 package com.aidcompass.interval.mapper;
 
 import com.aidcompass.interval.models.NearestIntervalEntity;
-import com.aidcompass.interval.models.dto.IntervalResponseDto;
-import com.aidcompass.interval.models.dto.NearestIntervalDto;
+import com.aidcompass.interval.dto.IntervalResponseDto;
+import com.aidcompass.interval.dto.NearestIntervalDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.NullValuePropertyMappingStrategy;

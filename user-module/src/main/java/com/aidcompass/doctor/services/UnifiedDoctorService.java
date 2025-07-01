@@ -3,27 +3,27 @@ package com.aidcompass.doctor.services;
 
 import com.aidcompass.PageResponse;
 import com.aidcompass.detail.models.DetailEntity;
-import com.aidcompass.detail.models.Gender;
+import com.aidcompass.enums.gender.Gender;
 import com.aidcompass.doctor.mapper.DoctorMapper;
 import com.aidcompass.doctor.mapper.FullDoctorMapper;
 import com.aidcompass.doctor.models.DoctorEntity;
-import com.aidcompass.doctor.models.dto.FullPrivateDoctorResponseDto;
-import com.aidcompass.doctor.models.dto.FullPublicDoctorResponseDto;
-import com.aidcompass.doctor.models.dto.doctor.DoctorDto;
-import com.aidcompass.doctor.models.dto.doctor.PrivateDoctorResponseDto;
-import com.aidcompass.doctor.models.dto.doctor.PublicDoctorResponseDto;
+import com.aidcompass.doctor.dto.FullPrivateDoctorResponseDto;
+import com.aidcompass.doctor.dto.FullPublicDoctorResponseDto;
+import com.aidcompass.doctor.models.DoctorDto;
+import com.aidcompass.doctor.dto.PrivateDoctorResponseDto;
+import com.aidcompass.doctor.dto.PublicDoctorResponseDto;
 import com.aidcompass.doctor.repository.DoctorNamesCombination;
 import com.aidcompass.doctor.repository.DoctorRepository;
 import com.aidcompass.doctor.specialization.DoctorSpecializationService;
-import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
+import com.aidcompass.doctor.specialization.DoctorSpecialization;
 import com.aidcompass.doctor.specialization.models.DoctorSpecializationEntity;
-import com.aidcompass.enums.ServiceType;
-import com.aidcompass.exceptions.doctor.DoctorNotFoundByIdException;
-import com.aidcompass.exceptions.doctor.FullDoctorNotFoundException;
+import com.aidcompass.system.enums.ServiceType;
+import com.aidcompass.general.exceptions.doctor.DoctorNotFoundByIdException;
+import com.aidcompass.general.exceptions.doctor.FullDoctorNotFoundException;
 import com.aidcompass.profile_status.ProfileConfig;
 import com.aidcompass.profile_status.ProfileStatusService;
 import com.aidcompass.profile_status.ProfileStatusUpdateService;
-import com.aidcompass.profile_status.models.ProfileStatus;
+import com.aidcompass.enums.ProfileStatus;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
@@ -61,7 +61,7 @@ public class UnifiedDoctorService implements DoctorService, ProfileStatusUpdateS
 
     @Transactional
     @Override
-    public PrivateDoctorResponseDto save(UUID id, DoctorDto dto, DetailEntity detail) {
+    public PrivateDoctorResponseDto save(UUID id, DetailEntity detail, DoctorDto dto) {
         ProfileStatusEntity profileStatus = profileStatusService.findByStatus(ProfileStatus.INCOMPLETE);
         List<DoctorSpecializationEntity> specializationEntityList =
                 specializationService.findEntityListBySpecializationList(dto.getSpecializations());

@@ -1,7 +1,7 @@
 package com.aidcompass.contact.services;
 
-import com.aidcompass.base_dto.SystemContactCreateDto;
-import com.aidcompass.base_dto.SystemContactDto;
+import com.aidcompass.dto.system.SystemContactCreateDto;
+import com.aidcompass.dto.system.SystemContactDto;
 
 public interface UnconfirmedContactService {
 

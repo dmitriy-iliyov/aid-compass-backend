@@ -2,9 +2,8 @@ package com.aidcompass.doctor.specialization;
 
 import com.aidcompass.doctor.models.DoctorEntity;
 import com.aidcompass.doctor.specialization.mapper.DoctorSpecializationMapper;
-import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.doctor.specialization.models.DoctorSpecializationEntity;
-import com.aidcompass.exceptions.doctor.DoctorSpecializationEntityNotFoundBySpecializationException;
+import com.aidcompass.general.exceptions.doctor.DoctorSpecializationEntityNotFoundBySpecializationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -4,7 +4,7 @@ import com.aidcompass.GlobalRedisConfig;
 import com.aidcompass.appointment_duration.models.AppointmentDurationEntity;
 import com.aidcompass.enums.Authority;
 import com.aidcompass.exceptions.appointment_duration.DurationNotFoundByOwnerIdException;
-import com.aidcompass.models.PassedListIsToLongException;
+import com.aidcompass.PassedListIsToLongException;
 import com.aidcompass.schedule_filling_progress.ScheduleProgressService;
 import com.aidcompass.uuid.UuidUtils;
 import lombok.RequiredArgsConstructor;

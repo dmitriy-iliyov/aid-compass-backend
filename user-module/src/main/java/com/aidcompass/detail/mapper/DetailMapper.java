@@ -2,9 +2,9 @@ package com.aidcompass.detail.mapper;
 
 
 import com.aidcompass.detail.models.DetailEntity;
-import com.aidcompass.detail.models.dto.DetailDto;
-import com.aidcompass.detail.models.dto.PrivateDetailResponseDto;
-import com.aidcompass.detail.models.dto.PublicDetailResponseDto;
+import com.aidcompass.detail.models.DetailDto;
+import com.aidcompass.detail.PrivateDetailResponseDto;
+import com.aidcompass.detail.PublicDetailResponseDto;
 import org.mapstruct.*;
 
 @Mapper(

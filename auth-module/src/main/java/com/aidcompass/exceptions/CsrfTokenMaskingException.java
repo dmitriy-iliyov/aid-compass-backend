@@ -1,7 +1,7 @@
 package com.aidcompass.exceptions;
 
-import com.aidcompass.models.BaseInternalServiceException;
-import com.aidcompass.models.dto.ErrorDto;
+import com.aidcompass.BaseInternalServiceException;
+import com.aidcompass.dto.ErrorDto;
 
 public class CsrfTokenMaskingException extends BaseInternalServiceException {
 

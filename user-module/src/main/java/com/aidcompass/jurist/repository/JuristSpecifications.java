@@ -3,7 +3,7 @@ package com.aidcompass.jurist.repository;
 import com.aidcompass.jurist.models.JuristEntity;
 import com.aidcompass.jurist.specialization.models.JuristSpecializationEntity;
 import com.aidcompass.jurist.specialization.models.JuristTypeEntity;
-import com.aidcompass.profile_status.models.ProfileStatus;
+import com.aidcompass.enums.ProfileStatus;
 import jakarta.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 

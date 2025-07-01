@@ -69,7 +69,9 @@ public class UserSecurityChainConfig {
                 .securityMatcher("/api/**")
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(csrf -> csrf.csrfTokenRepository(csrfTokenRepository)
-                        .ignoringRequestMatchers("/api/auth/login", "/api/v1/contact", "/api/csrf")
+                        .ignoringRequestMatchers("/api/auth/login", "/api/users", "/api/v1/contact",
+                                                           "/api/confirmations/linked-email/request", "/api/confirmations/linked-email",
+                                                           "/api/csrf")
                         .csrfTokenRequestHandler(new XorCsrfTokenRequestAttributeHandler())
                         .sessionAuthenticationStrategy(((authentication, request, response) -> {}))
                 )
@@ -90,6 +92,7 @@ public class UserSecurityChainConfig {
                         .requestMatchers("/api/auth/logout", "/api/auth/me").authenticated()
                         .requestMatchers("/api/users").permitAll()
                         .requestMatchers("/api/confirmations/resource", "/api/confirmations/request").authenticated()
+                        .requestMatchers("/api/confirmations/linked-email/request", "/api/confirmations/linked-email").permitAll()
                         .requestMatchers("/api/info/**").permitAll()
                         .requestMatchers("/api/aggregator/doctors/me", "/api/aggregator/doctors/me/**",
                                          "/api/aggregator/jurists/me", "/api/aggregator/jurists/me/**",

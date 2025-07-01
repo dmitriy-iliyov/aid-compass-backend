@@ -2,11 +2,11 @@ package com.aidcompass.contact.mappers;
 
 import com.aidcompass.contact.models.dto.ContactCreateDto;
 import com.aidcompass.contact.models.dto.ContactUpdateDto;
-import com.aidcompass.contact.models.dto.PrivateContactResponseDto;
-import com.aidcompass.contact.models.dto.PublicContactResponseDto;
+import com.aidcompass.dto.PrivateContactResponseDto;
+import com.aidcompass.dto.PublicContactResponseDto;
 import com.aidcompass.contact.models.entity.ContactEntity;
-import com.aidcompass.base_dto.SystemContactDto;
-import com.aidcompass.base_dto.SystemContactUpdateDto;
+import com.aidcompass.dto.system.SystemContactDto;
+import com.aidcompass.dto.system.SystemContactUpdateDto;
 import org.mapstruct.*;
 
 import java.util.List;

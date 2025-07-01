@@ -1,10 +1,10 @@
 package com.aidcompass.appointment;
 
 import com.aidcompass.appointment.models.PublicVolunteerDto;
-import com.aidcompass.doctor.models.dto.doctor.PublicDoctorResponseDto;
-import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
-import com.aidcompass.jurist.models.dto.jurist.PublicJuristResponseDto;
-import com.aidcompass.jurist.specialization.models.JuristSpecialization;
+import com.aidcompass.doctor.dto.PublicDoctorResponseDto;
+import com.aidcompass.doctor.specialization.DoctorSpecialization;
+import com.aidcompass.jurist.dto.PublicJuristResponseDto;
+import com.aidcompass.jurist.specialization.JuristSpecialization;
 import org.mapstruct.*;
 
 import java.util.ArrayList;

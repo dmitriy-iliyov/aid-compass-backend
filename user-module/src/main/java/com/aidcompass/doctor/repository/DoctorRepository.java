@@ -1,7 +1,7 @@
 package com.aidcompass.doctor.repository;
 
 
-import com.aidcompass.detail.models.Gender;
+import com.aidcompass.enums.gender.Gender;
 import com.aidcompass.doctor.models.DoctorEntity;
 import com.aidcompass.doctor.specialization.models.DoctorSpecializationEntity;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;

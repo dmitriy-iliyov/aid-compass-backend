@@ -1,7 +1,7 @@
 package com.aidcompass.user.controllers;
 
-import com.aidcompass.base_dto.user.UserResponseDto;
-import com.aidcompass.base_dto.user.UserUpdateDto;
+import com.aidcompass.dto.user.UserResponseDto;
+import com.aidcompass.dto.user.UserUpdateDto;
 import com.aidcompass.contracts.UserOrchestrator;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.UUID;

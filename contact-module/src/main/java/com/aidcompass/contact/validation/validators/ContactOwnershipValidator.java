@@ -1,6 +1,6 @@
 package com.aidcompass.contact.validation.validators;
 
-import com.aidcompass.base_dto.SystemContactDto;
+import com.aidcompass.dto.system.SystemContactDto;
 
 import java.util.List;
 

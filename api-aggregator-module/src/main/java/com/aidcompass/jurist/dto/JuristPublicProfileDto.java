@@ -1,7 +1,6 @@
 package com.aidcompass.jurist.dto;
 
-import com.aidcompass.contact.models.dto.PublicContactResponseDto;
-import com.aidcompass.jurist.models.dto.FullPublicJuristResponseDto;
+import com.aidcompass.dto.PublicContactResponseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;

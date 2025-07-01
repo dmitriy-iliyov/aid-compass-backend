@@ -1,8 +1,8 @@
 package com.aidcompass.contact.mappers;
 
 import com.aidcompass.contact.models.entity.UnconfirmedContactEntity;
-import com.aidcompass.base_dto.SystemContactCreateDto;
-import com.aidcompass.base_dto.SystemContactDto;
+import com.aidcompass.dto.system.SystemContactCreateDto;
+import com.aidcompass.dto.system.SystemContactDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

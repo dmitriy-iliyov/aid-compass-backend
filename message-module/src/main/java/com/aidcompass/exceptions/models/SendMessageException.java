@@ -1,7 +1,7 @@
 package com.aidcompass.exceptions.models;
 
-import com.aidcompass.models.BaseNotFoundException;
-import com.aidcompass.models.dto.ErrorDto;
+import com.aidcompass.BaseNotFoundException;
+import com.aidcompass.dto.ErrorDto;
 
 public class SendMessageException extends BaseNotFoundException {
     @Override

@@ -1,6 +1,6 @@
 package com.aidcompass.doctor.specialization.mapper;
 
-import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
+import com.aidcompass.doctor.specialization.DoctorSpecialization;
 import com.aidcompass.doctor.specialization.models.DoctorSpecializationEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;

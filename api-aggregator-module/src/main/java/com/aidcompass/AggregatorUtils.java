@@ -1,15 +1,15 @@
 package com.aidcompass;
 
-import com.aidcompass.appointment.services.UnifiedAppointmentService;
+import com.aidcompass.appointment.contracts.AppointmentService;
 import com.aidcompass.appointment_duration.AppointmentDurationService;
-import com.aidcompass.contact.models.dto.PrivateContactResponseDto;
-import com.aidcompass.contact.models.dto.PublicContactResponseDto;
-import com.aidcompass.contact.services.ContactService;
-import com.aidcompass.models.BaseNotFoundException;
-import com.aidcompass.user.services.UserService;
-import com.aidcompass.interval.models.dto.NearestIntervalDto;
-import com.aidcompass.interval.services.NearestIntervalService;
-import com.aidcompass.interval.services.IntervalService;
+import com.aidcompass.contracts.ContactDeleteService;
+import com.aidcompass.contracts.ContactReadService;
+import com.aidcompass.contracts.UserOrchestrator;
+import com.aidcompass.dto.PrivateContactResponseDto;
+import com.aidcompass.dto.PublicContactResponseDto;
+import com.aidcompass.interval.contracts.IntervalDeleteService;
+import com.aidcompass.interval.dto.NearestIntervalDto;
+import com.aidcompass.interval.contracts.NearestIntervalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,10 +24,11 @@ public class AggregatorUtils {
     private final AvatarService avatarService;
     private final NearestIntervalService nearestIntervalService;
     private final AppointmentDurationService durationService;
-    private final ContactService contactService;
-    private final UserService userService;
-    private final IntervalService intervalService;
-    private final UnifiedAppointmentService unifiedAppointmentService;
+    private final ContactReadService contactReadService;
+    private final ContactDeleteService contactDeleteService;
+    private final UserOrchestrator userOrchestrator;
+    private final IntervalDeleteService intervalService;
+    private final AppointmentService unifiedAppointmentService;
 
 
     public String findAvatarUrlByOwnerId(UUID id) {
@@ -59,20 +60,20 @@ public class AggregatorUtils {
     }
 
     public List<PublicContactResponseDto> findAllContactByOwnerId(UUID id) {
-        return contactService.findAllPublicByOwnerId(id);
+        return contactReadService.findAllPublicByOwnerId(id);
     }
 
     public List<PrivateContactResponseDto> findAllPrivateContactByOwnerId(UUID id) {
-        return contactService.findAllPrivateByOwnerId(id);
+        return contactReadService.findAllPrivateByOwnerId(id);
     }
 
     public void deleteAllAlignments(UUID id) {
         try {
             avatarService.delete(id);
         } catch (BaseNotFoundException ignore) { }
-        contactService.deleteAll(id);
+        contactDeleteService.deleteAll(id);
         unifiedAppointmentService.deleteAll(id);
-        userService.deleteById(id);
+        userOrchestrator.deleteById(id);
     }
 
     public void deleteAllVolunteerAlignments(UUID id) {

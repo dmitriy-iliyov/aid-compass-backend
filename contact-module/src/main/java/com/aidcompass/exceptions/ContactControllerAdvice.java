@@ -1,7 +1,6 @@
 package com.aidcompass.exceptions;
 
-import com.aidcompass.advice.BaseControllerAdvice;
-import com.aidcompass.mapper.ExceptionMapper;
+import com.aidcompass.exceptions.mapper.ExceptionMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 

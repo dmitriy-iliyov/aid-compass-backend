@@ -1,6 +1,5 @@
 package com.aidcompass.jurist.specialization;
 
-import com.aidcompass.jurist.specialization.models.JuristSpecialization;
 import com.aidcompass.jurist.specialization.models.JuristSpecializationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,7 +1,7 @@
 package com.aidcompass.contact.services;
 
-import com.aidcompass.base_dto.SystemContactDto;
-import com.aidcompass.base_dto.SystemContactUpdateDto;
+import com.aidcompass.dto.system.SystemContactDto;
+import com.aidcompass.dto.system.SystemContactUpdateDto;
 import com.aidcompass.enums.ContactType;
 import com.aidcompass.contact_type.models.ContactTypeEntity;
 

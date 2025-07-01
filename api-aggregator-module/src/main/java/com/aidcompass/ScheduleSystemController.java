@@ -1,7 +1,7 @@
 package com.aidcompass;
 
-import com.aidcompass.appointment.services.SystemAppointmentService;
-import com.aidcompass.interval.services.SystemIntervalService;
+import com.aidcompass.appointment.contracts.SystemAppointmentService;
+import com.aidcompass.interval.contracts.SystemIntervalService;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;

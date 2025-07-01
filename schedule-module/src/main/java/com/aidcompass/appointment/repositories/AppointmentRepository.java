@@ -2,7 +2,7 @@ package com.aidcompass.appointment.repositories;
 
 
 import com.aidcompass.appointment.models.AppointmentEntity;
-import com.aidcompass.appointment.models.enums.AppointmentStatus;
+import com.aidcompass.appointment.enums.AppointmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;

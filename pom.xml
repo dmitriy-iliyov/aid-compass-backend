@@ -36,6 +36,8 @@
         <module>api-aggregator-module</module>
         <module>message-common</module>
         <module>system-aggregator-module</module>
+        <module>schedule-common</module>
+        <module>aidcompass-common</module>
     </modules>
 
     <packaging>pom</packaging>

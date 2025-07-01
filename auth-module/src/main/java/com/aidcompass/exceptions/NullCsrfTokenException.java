@@ -1,7 +1,7 @@
 package com.aidcompass.exceptions;
 
-import com.aidcompass.models.BaseInvalidInputException;
-import com.aidcompass.models.dto.ErrorDto;
+import com.aidcompass.BaseInvalidInputException;
+import com.aidcompass.dto.ErrorDto;
 
 public class NullCsrfTokenException extends BaseInvalidInputException {
 

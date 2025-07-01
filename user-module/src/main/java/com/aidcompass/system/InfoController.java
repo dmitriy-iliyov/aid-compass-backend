@@ -1,11 +1,11 @@
 package com.aidcompass.system;
 
 
-import com.aidcompass.detail.models.Gender;
-import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
-import com.aidcompass.jurist.specialization.models.JuristSpecialization;
-import com.aidcompass.jurist.specialization.models.JuristType;
-import com.aidcompass.profile_status.models.ProfileStatus;
+import com.aidcompass.enums.gender.Gender;
+import com.aidcompass.doctor.specialization.DoctorSpecialization;
+import com.aidcompass.jurist.specialization.JuristSpecialization;
+import com.aidcompass.jurist.type.JuristType;
+import com.aidcompass.enums.ProfileStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

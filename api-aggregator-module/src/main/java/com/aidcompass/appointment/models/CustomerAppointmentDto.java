@@ -1,6 +1,6 @@
 package com.aidcompass.appointment.models;
 
-import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
+import com.aidcompass.appointment.dto.AppointmentResponseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record CustomerAppointmentDto(

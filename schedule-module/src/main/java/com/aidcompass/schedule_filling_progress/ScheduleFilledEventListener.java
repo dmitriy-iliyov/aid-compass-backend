@@ -1,8 +1,8 @@
 package com.aidcompass.schedule_filling_progress;
 
-import com.aidcompass.enums.RoleToServiceTypeMapper;
-import com.aidcompass.enums.ServiceType;
-import com.aidcompass.interfaces.ProfileStatusUpdateFacade;
+import com.aidcompass.system.enums.RoleToServiceTypeMapper;
+import com.aidcompass.system.enums.ServiceType;
+import com.aidcompass.system.contracts.ProfileStatusUpdateFacade;
 import com.aidcompass.schedule_filling_progress.models.ScheduleFilledEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

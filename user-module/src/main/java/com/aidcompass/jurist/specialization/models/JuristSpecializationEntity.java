@@ -2,6 +2,7 @@ package com.aidcompass.jurist.specialization.models;
 
 
 import com.aidcompass.jurist.models.JuristEntity;
+import com.aidcompass.jurist.specialization.JuristSpecialization;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

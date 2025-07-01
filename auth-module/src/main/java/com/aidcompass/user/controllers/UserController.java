@@ -1,9 +1,9 @@
 package com.aidcompass.user.controllers;
 
 
-import com.aidcompass.base_dto.user.UserRegistrationDto;
-import com.aidcompass.base_dto.user.UserResponseDto;
-import com.aidcompass.base_dto.user.UserUpdateDto;
+import com.aidcompass.dto.user.UserRegistrationDto;
+import com.aidcompass.dto.user.UserResponseDto;
+import com.aidcompass.dto.user.UserUpdateDto;
 import com.aidcompass.confirmation.services.AccountResourceConfirmationService;
 import com.aidcompass.contracts.UserOrchestrator;
 import com.aidcompass.security.core.models.token.models.TokenUserDetails;

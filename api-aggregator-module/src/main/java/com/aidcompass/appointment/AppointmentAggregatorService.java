@@ -2,20 +2,20 @@ package com.aidcompass.appointment;
 
 import com.aidcompass.AggregatorUtils;
 import com.aidcompass.PageResponse;
+import com.aidcompass.appointment.contracts.AppointmentOrchestrator;
+import com.aidcompass.appointment.contracts.AppointmentService;
 import com.aidcompass.appointment.models.CustomerAppointmentDto;
 import com.aidcompass.appointment.models.PublicVolunteerDto;
 import com.aidcompass.appointment.models.VolunteerAppointmentDto;
-import com.aidcompass.appointment.services.AppointmentOrchestrator;
-import com.aidcompass.appointment.services.UnifiedAppointmentService;
-import com.aidcompass.customer.models.dto.PublicCustomerResponseDto;
+import com.aidcompass.customer.models.PublicCustomerResponseDto;
 import com.aidcompass.customer.services.CustomerService;
-import com.aidcompass.doctor.models.dto.doctor.PublicDoctorResponseDto;
+import com.aidcompass.doctor.dto.PublicDoctorResponseDto;
 import com.aidcompass.doctor.services.DoctorService;
-import com.aidcompass.jurist.models.dto.jurist.PublicJuristResponseDto;
+import com.aidcompass.appointment.dto.AppointmentResponseDto;
+import com.aidcompass.jurist.dto.PublicJuristResponseDto;
 import com.aidcompass.jurist.services.JuristService;
-import com.aidcompass.models.BaseNotFoundException;
-import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
-import com.aidcompass.appointment.models.dto.StatusFilter;
+import com.aidcompass.BaseNotFoundException;
+import com.aidcompass.appointment.dto.StatusFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,17 +30,17 @@ import java.util.stream.Stream;
 @Slf4j
 public class AppointmentAggregatorService {
 
-    private final AppointmentOrchestrator appointmentOrchestrator;
+    private final AppointmentOrchestrator appointmentOrchestratorImpl;
     private final CustomerService customerService;
     private final DoctorService doctorService;
     private final JuristService juristService;
     private final DtoMapper mapper;
     private final AggregatorUtils utils;
-    private final UnifiedAppointmentService unifiedAppointmentService;
+    private final AppointmentService unifiedAppointmentService;
 
 
     public VolunteerAppointmentDto findFullAppointment(UUID volunteerId, Long id) {
-        AppointmentResponseDto appointment = appointmentOrchestrator.findById(volunteerId, id);
+        AppointmentResponseDto appointment = appointmentOrchestratorImpl.findById(volunteerId, id);
         return new VolunteerAppointmentDto(
                 appointment,
                 utils.findAvatarUrlByOwnerId(appointment.customerId()),

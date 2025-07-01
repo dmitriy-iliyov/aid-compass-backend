@@ -1,7 +1,7 @@
 package com.aidcompass;
 
-import com.aidcompass.appointment.services.AppointmentOrchestrator;
-import com.aidcompass.interval.models.dto.IntervalResponseDto;
+import com.aidcompass.appointment.services.AppointmentOrchestratorImpl;
+import com.aidcompass.interval.dto.IntervalResponseDto;
 import com.aidcompass.interval.services.IntervalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class TimetableService {
 
     private final IntervalService intervalService;
-    private final AppointmentOrchestrator appointmentOrchestrator;
+    private final AppointmentOrchestratorImpl appointmentOrchestratorImpl;
 
 
     public List<LocalDate> findMonthDates(UUID ownerId) {
@@ -39,7 +39,7 @@ public class TimetableService {
         LocalDate end = start.plusDays(27);
         Map<LocalDate, Integer> monthInfo = new LinkedHashMap<>();
         List<LocalDate> dates = toDateList(intervalService.findAllByOwnerIdAndDateInterval(ownerId, start, end));
-        List<LocalDate> appointmentDates = appointmentOrchestrator.findMonthDatesByOwnerIdAndCurrentDate(ownerId);
+        List<LocalDate> appointmentDates = appointmentOrchestratorImpl.findMonthDatesByOwnerIdAndCurrentDate(ownerId);
         for (int i = 0; i < 28; i++) {
             LocalDate iDate = start.plusDays(i);
             if (appointmentDates.contains(iDate)) {

@@ -1,8 +1,8 @@
 package com.aidcompass.appointment.repositories;
 
 import com.aidcompass.appointment.models.AppointmentEntity;
-import com.aidcompass.appointment.models.dto.StatusFilter;
-import com.aidcompass.appointment.models.enums.AppointmentStatus;
+import com.aidcompass.appointment.dto.StatusFilter;
+import com.aidcompass.appointment.enums.AppointmentStatus;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;

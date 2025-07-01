@@ -1,6 +1,6 @@
 package com.aidcompass.auth;
 
-import com.aidcompass.base_dto.security.ServiceAuthRequest;
+import com.aidcompass.dto.security.ServiceAuthRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

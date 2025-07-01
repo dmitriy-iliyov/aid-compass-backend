@@ -1,6 +1,7 @@
 package com.aidcompass.security.configs.security_filter_chain;
 
 import com.aidcompass.security.core.converter.BearerJwtAuthenticationConverter;
+import com.aidcompass.security.core.handlers.BearerAccessDeniedHandler;
 import com.aidcompass.security.core.handlers.BearerAuthenticationEntryPoint;
 import com.aidcompass.security.core.handlers.authentication.DefaultAuthenticationFailureHandler;
 import com.aidcompass.security.core.handlers.authentication.DefaultAuthenticationSuccessHandler;

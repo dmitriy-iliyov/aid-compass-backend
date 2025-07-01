@@ -1,13 +1,13 @@
 package com.aidcompass.user.services;
 
-import com.aidcompass.base_dto.user.SystemUserDto;
-import com.aidcompass.base_dto.user.UserResponseDto;
-import com.aidcompass.base_dto.user.UserUpdateDto;
+import com.aidcompass.dto.user.SystemUserDto;
+import com.aidcompass.dto.user.UserResponseDto;
+import com.aidcompass.dto.user.UserUpdateDto;
 import com.aidcompass.enums.Authority;
 import com.aidcompass.exceptions.illegal_input.IncorrectPasswordException;
 import com.aidcompass.exceptions.not_found.UserNotFoundByEmailException;
 import com.aidcompass.exceptions.not_found.UserNotFoundByIdException;
-import com.aidcompass.models.BaseNotFoundException;
+import com.aidcompass.BaseNotFoundException;
 import com.aidcompass.security.core.models.authority.AuthorityService;
 import com.aidcompass.security.core.models.authority.models.AuthorityEntity;
 import com.aidcompass.user.mapper.UserMapper;

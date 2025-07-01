@@ -1,8 +1,8 @@
 package com.aidcompass.doctor;
 
 import com.aidcompass.contracts.PrincipalDetails;
-import com.aidcompass.detail.models.Gender;
-import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
+import com.aidcompass.doctor.specialization.DoctorSpecialization;
+import com.aidcompass.enums.gender.Gender;
 import com.aidcompass.validation.ValidEnum;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;

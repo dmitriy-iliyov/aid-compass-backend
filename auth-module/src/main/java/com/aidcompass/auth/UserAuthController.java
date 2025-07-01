@@ -1,6 +1,6 @@
 package com.aidcompass.auth;
 
-import com.aidcompass.base_dto.security.AuthRequest;
+import com.aidcompass.dto.security.AuthRequest;
 import com.aidcompass.exceptions.not_found.UserNotFoundByIdException;
 import com.aidcompass.security.core.models.token.models.TokenUserDetails;
 import com.aidcompass.user.services.UserService;

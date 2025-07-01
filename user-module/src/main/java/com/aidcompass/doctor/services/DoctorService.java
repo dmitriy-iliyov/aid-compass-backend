@@ -1,45 +1,25 @@
 package com.aidcompass.doctor.services;
 
-import com.aidcompass.PageResponse;
-import com.aidcompass.detail.models.Gender;
-import com.aidcompass.doctor.models.dto.FullPrivateDoctorResponseDto;
-import com.aidcompass.doctor.models.dto.FullPublicDoctorResponseDto;
-import com.aidcompass.doctor.models.dto.doctor.DoctorDto;
-import com.aidcompass.doctor.models.dto.doctor.PrivateDoctorResponseDto;
-import com.aidcompass.doctor.models.dto.doctor.PublicDoctorResponseDto;
-import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
+import com.aidcompass.doctor.contracts.DoctorDeleteService;
+import com.aidcompass.doctor.contracts.DoctorReadService;
+import com.aidcompass.general.interfaces.PersistService;
+import com.aidcompass.doctor.models.DoctorDto;
+import com.aidcompass.doctor.dto.PrivateDoctorResponseDto;
+import com.aidcompass.doctor.dto.PublicDoctorResponseDto;
 
 import java.util.UUID;
 
 
-public interface DoctorService extends PersistDoctorService {
+public interface DoctorService extends PersistService<DoctorDto, PrivateDoctorResponseDto>,
+                                       DoctorReadService, DoctorDeleteService {
 
     PrivateDoctorResponseDto update(UUID id, DoctorDto doctorUpdateDto);
 
     boolean existsById(UUID id);
 
-    PageResponse<PublicDoctorResponseDto> findAllByNamesCombination(String firstName, String secondName, String lastName, int page, int size);
+    long countByIsApproved(boolean approved);
 
     PrivateDoctorResponseDto findPrivateById(UUID id);
 
     PublicDoctorResponseDto findPublicById(UUID id);
-
-    FullPrivateDoctorResponseDto findFullPrivateById(UUID id);
-
-    FullPublicDoctorResponseDto findFullPublicById(UUID id);
-
-    long countByIsApproved(boolean approved);
-
-    PageResponse<FullPrivateDoctorResponseDto> findAllUnapproved(int page, int size);
-
-    PageResponse<FullPrivateDoctorResponseDto> findAllUnapprovedByNamesCombination(String firstName, String secondName,
-                                                                                   String lastName, int page, int size);
-
-    PageResponse<PublicDoctorResponseDto> findAllApproved(int page, int size);
-
-    PageResponse<PublicDoctorResponseDto> findAllBySpecialization(DoctorSpecialization specialization, int page, int size);
-
-    PageResponse<PublicDoctorResponseDto> findAllByGender(Gender gender, int page, int size);
-
-    void deleteById(UUID id);
 }

@@ -1,16 +1,16 @@
 package com.aidcompass.doctor.controllers;
 
 
+import com.aidcompass.general.interfaces.PersistFacade;
 import com.aidcompass.contracts.PrincipalDetails;
 import com.aidcompass.detail.DetailService;
-import com.aidcompass.detail.models.dto.DetailDto;
-import com.aidcompass.detail.models.dto.PrivateDetailResponseDto;
-import com.aidcompass.doctor.PersistDoctorFacade;
-import com.aidcompass.doctor.models.dto.doctor.DoctorDto;
-import com.aidcompass.doctor.models.dto.doctor.PrivateDoctorResponseDto;
+import com.aidcompass.detail.models.DetailDto;
+import com.aidcompass.detail.PrivateDetailResponseDto;
+import com.aidcompass.doctor.models.DoctorDto;
+import com.aidcompass.doctor.dto.PrivateDoctorResponseDto;
 import com.aidcompass.doctor.services.DoctorService;
-import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
-import com.aidcompass.enums.ServiceType;
+import com.aidcompass.doctor.specialization.DoctorSpecialization;
+import com.aidcompass.system.enums.ServiceType;
 import com.aidcompass.validation.ValidEnum;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -34,7 +34,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class DoctorController {
 
-    private final PersistDoctorFacade facade;
+    private final PersistFacade<DoctorDto, PrivateDoctorResponseDto> facade;
     private final DoctorService doctorService;
     private final DetailService detailService;
 

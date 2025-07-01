@@ -1,7 +1,7 @@
 package com.aidcompass.exceptions.not_found;
 
 
-import com.aidcompass.models.UserNotFoundException;
+import com.aidcompass.UserNotFoundException;
 
 public class UnconfirmedUserNotFoundException extends UserNotFoundException {
 

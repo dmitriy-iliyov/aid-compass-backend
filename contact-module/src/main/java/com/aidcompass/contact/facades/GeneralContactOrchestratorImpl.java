@@ -2,8 +2,10 @@ package com.aidcompass.contact.facades;
 
 import com.aidcompass.confirmation.ContactConfirmationFacade;
 import com.aidcompass.contact.models.dto.*;
+import com.aidcompass.dto.PrivateContactResponseDto;
+import com.aidcompass.dto.PublicContactResponseDto;
 import com.aidcompass.markers.CreateDto;
-import com.aidcompass.base_dto.SystemContactDto;
+import com.aidcompass.dto.system.SystemContactDto;
 import com.aidcompass.contact.services.ContactService;
 import com.aidcompass.contact.validation.validators.PermissionValidator;
 import com.aidcompass.contact.validation.validators.CountValidator;
@@ -11,8 +13,8 @@ import com.aidcompass.contracts.UserOrchestrator;
 import com.aidcompass.exceptions.invalid_input.InvalidAttemptMarkAsLinkedException;
 import com.aidcompass.exceptions.invalid_input.BaseInvalidContactDeleteException;
 import com.aidcompass.exceptions.models.SendConfirmationMessageException;
-import com.aidcompass.models.UserNotFoundException;
-import com.aidcompass.models.dto.ErrorDto;
+import com.aidcompass.UserNotFoundException;
+import com.aidcompass.dto.ErrorDto;
 import com.aidcompass.exceptions.invalid_input.BaseInvalidContactUpdateException;
 import com.aidcompass.exceptions.invalid_input.NotEnoughSpaseForNewContactExceptionBase;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +23,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 

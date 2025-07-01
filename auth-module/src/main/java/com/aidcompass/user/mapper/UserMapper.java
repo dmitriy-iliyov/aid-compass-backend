@@ -1,10 +1,10 @@
 package com.aidcompass.user.mapper;
 
 
-import com.aidcompass.base_dto.user.SystemUserDto;
-import com.aidcompass.base_dto.user.UserRegistrationDto;
-import com.aidcompass.base_dto.user.UserResponseDto;
-import com.aidcompass.base_dto.user.UserUpdateDto;
+import com.aidcompass.dto.user.SystemUserDto;
+import com.aidcompass.dto.user.UserRegistrationDto;
+import com.aidcompass.dto.user.UserResponseDto;
+import com.aidcompass.dto.user.UserUpdateDto;
 import com.aidcompass.security.core.models.authority.models.AuthorityMapper;
 import com.aidcompass.user.models.SystemUserUpdateDto;
 import com.aidcompass.user.models.UserEntity;

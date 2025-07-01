@@ -1,7 +1,7 @@
 package com.aidcompass.exceptions.invalid_input;
 
-import com.aidcompass.models.BaseInvalidInputExceptionList;
-import com.aidcompass.models.dto.ErrorDto;
+import com.aidcompass.BaseInvalidInputExceptionList;
+import com.aidcompass.dto.ErrorDto;
 
 import java.util.List;
 

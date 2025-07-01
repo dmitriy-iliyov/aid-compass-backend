@@ -1,12 +1,12 @@
 package com.aidcompass.contact.facades;
 
 import com.aidcompass.contracts.SystemContactFacade;
-import com.aidcompass.base_dto.SystemContactDto;
-import com.aidcompass.base_dto.SystemContactUpdateDto;
+import com.aidcompass.dto.system.SystemContactDto;
+import com.aidcompass.dto.system.SystemContactUpdateDto;
 import com.aidcompass.contact.services.SystemContactService;
 import com.aidcompass.contact.validation.validators.PermissionValidator;
 import com.aidcompass.exceptions.invalid_input.BaseInvalidContactUpdateException;
-import com.aidcompass.models.dto.ErrorDto;
+import com.aidcompass.dto.ErrorDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

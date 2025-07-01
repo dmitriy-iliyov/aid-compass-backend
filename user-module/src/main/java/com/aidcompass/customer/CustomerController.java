@@ -2,9 +2,9 @@ package com.aidcompass.customer;
 
 
 import com.aidcompass.contracts.PrincipalDetails;
-import com.aidcompass.customer.models.dto.CustomerDto;
-import com.aidcompass.customer.models.dto.PrivateCustomerResponseDto;
-import com.aidcompass.customer.models.dto.PublicCustomerResponseDto;
+import com.aidcompass.customer.models.CustomerDto;
+import com.aidcompass.customer.dto.PrivateCustomerResponseDto;
+import com.aidcompass.customer.models.PublicCustomerResponseDto;
 import com.aidcompass.customer.services.CustomerService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -23,7 +23,7 @@ import java.util.UUID;
 public class CustomerController {
 
     private final CustomerService service;
-    private final PersistCustomerFacade facade;
+    private final CustomerPersistFacade facade;
 
 
     @PreAuthorize("hasAuthority('ROLE_USER')")

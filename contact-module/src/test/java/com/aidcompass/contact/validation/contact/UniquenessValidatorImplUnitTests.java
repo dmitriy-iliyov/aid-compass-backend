@@ -4,9 +4,9 @@
 //import com.aidcompass.contact.validation.validators.impl.UniquenessValidatorImpl;
 //import com.aidcompass.contact_type.models.ContactTypeEntity;
 //import com.aidcompass.enums.ContactType;
-//import com.aidcompass.models.dto.ErrorDto;
+//import com.aidcompass.dto.ErrorDto;
 //import com.aidcompass.contact.models.dto.ContactUpdateDto;
-//import com.aidcompass.dto.SystemContactDto;
+//import com.aidcompass.dto.system.SystemContactDto;
 //import com.aidcompass.exceptions.not_found.ContactNotFoundByContactException;
 //import org.junit.jupiter.api.DisplayName;
 //import org.junit.jupiter.api.Test;

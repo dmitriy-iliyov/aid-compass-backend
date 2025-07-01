@@ -1,8 +1,8 @@
 package com.aidcompass.customer;
 
-import com.aidcompass.contact.models.dto.PrivateContactResponseDto;
-import com.aidcompass.contact.models.dto.PublicContactResponseDto;
-import com.aidcompass.customer.models.dto.PrivateCustomerResponseDto;
+
+import com.aidcompass.customer.dto.PrivateCustomerResponseDto;
+import com.aidcompass.dto.PrivateContactResponseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
