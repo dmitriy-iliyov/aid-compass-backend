@@ -60,7 +60,12 @@
             <groupId>com.aidcompass</groupId>
             <artifactId>aidcompass-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
+        <dependency>
+            <groupId>com.aidcompass</groupId>
+            <artifactId>system-aggregator-module</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>

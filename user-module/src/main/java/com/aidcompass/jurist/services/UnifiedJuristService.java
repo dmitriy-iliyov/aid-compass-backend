@@ -3,6 +3,7 @@ package com.aidcompass.jurist.services;
 
 import com.aidcompass.PageResponse;
 import com.aidcompass.detail.models.DetailEntity;
+import com.aidcompass.dto.BaseSystemVolunteerDto;
 import com.aidcompass.enums.gender.Gender;
 import com.aidcompass.system.enums.ServiceType;
 import com.aidcompass.general.exceptions.jurist.FullJuristNotFoundException;
@@ -133,8 +134,9 @@ public class UnifiedJuristService implements JuristService, ProfileStatusUpdateS
 
     @Transactional
     @Override
-    public void approve(UUID id) {
+    public BaseSystemVolunteerDto approve(UUID id) {
         repository.approveById(id);
+        return mapper.toSystemDto(repository.findById(id).orElseThrow(JuristNotFoundByIdException::new));
     }
 
     @Transactional(readOnly = true)

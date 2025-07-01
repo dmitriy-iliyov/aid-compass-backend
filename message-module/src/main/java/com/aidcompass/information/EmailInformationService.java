@@ -1,17 +1,19 @@
 package com.aidcompass.information;
 
-import com.aidcompass.dto.CanceledAppointmentDto;
+import com.aidcompass.dto.AppointmentCanceledDto;
 import com.aidcompass.contracts.InformationService;
-import com.aidcompass.dto.ReminderAppointmentDto;
-import com.aidcompass.dto.ScheduledAppointmentDto;
+import com.aidcompass.dto.AppointmentReminderDto;
+import com.aidcompass.dto.AppointmentScheduledDto;
 import com.aidcompass.exceptions.models.SendMessageException;
 import com.aidcompass.message_services.MessageFactory;
 import com.aidcompass.message_services.MessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -25,16 +27,26 @@ public class EmailInformationService implements InformationService {
     }
 
     @Override
-    public void reminderNotification(ReminderAppointmentDto dto) {
+    public void reminderNotification(List<AppointmentReminderDto> dtoList) {
+        for (AppointmentReminderDto dto: dtoList) {
+            reminderNotification(dto);
+        }
+    }
+
+    @Async
+    public void reminderNotification(AppointmentReminderDto dto) {
         try {
+            log.info("Generate remind message to user with id={}", dto.customer().id());
             messageService.sendMessage(MessageFactory.customerReminder(dto));
         } catch (Exception e) {
+            log.error(e.getMessage());
+            log.error(Arrays.toString(e.getStackTrace()));
             throw new SendMessageException();
         }
     }
 
     @Override
-    public void onScheduleNotification(ScheduledAppointmentDto dto) {
+    public void onScheduleNotification(AppointmentScheduledDto dto) {
         try {
             messageService.sendMessage(MessageFactory.customerAppointmentScheduled(dto));
             messageService.sendMessage(MessageFactory.volunteerAppointmentScheduled(dto));
@@ -45,7 +57,7 @@ public class EmailInformationService implements InformationService {
     }
 
     @Override
-    public void onCancelNotification(CanceledAppointmentDto dto) {
+    public void onCancelNotification(AppointmentCanceledDto dto) {
 
     }
 }

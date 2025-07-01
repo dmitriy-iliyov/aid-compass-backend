@@ -1,7 +1,9 @@
 package com.aidcompass.dto;
 
+import java.time.LocalDate;
+
 public record AppointmentDto(
-        String date,
         String type,
+        LocalDate date,
         String description
 ) { }

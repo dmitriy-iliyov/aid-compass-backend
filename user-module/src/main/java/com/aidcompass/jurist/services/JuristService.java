@@ -1,5 +1,6 @@
 package com.aidcompass.jurist.services;
 
+import com.aidcompass.dto.BaseSystemVolunteerDto;
 import com.aidcompass.general.interfaces.PersistService;
 import com.aidcompass.jurist.contracts.JuristDeleteService;
 import com.aidcompass.jurist.contracts.JuristReadService;
@@ -11,17 +12,13 @@ import java.util.UUID;
 
 
 public interface JuristService extends PersistService<JuristDto, PrivateJuristResponseDto>,
-        JuristReadService, JuristDeleteService {
+                                       JuristReadService, JuristDeleteService {
 
     PrivateJuristResponseDto update(UUID id, JuristDto dto);
 
-    void approve(UUID id);
+    BaseSystemVolunteerDto approve(UUID id);
 
     boolean existsById(UUID id);
 
     long countByIsApproved(boolean approved);
-
-    PrivateJuristResponseDto findPrivateById(UUID id);
-
-    PublicJuristResponseDto findPublicById(UUID id);
 }

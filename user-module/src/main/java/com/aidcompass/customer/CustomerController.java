@@ -4,7 +4,7 @@ package com.aidcompass.customer;
 import com.aidcompass.contracts.PrincipalDetails;
 import com.aidcompass.customer.models.CustomerDto;
 import com.aidcompass.customer.dto.PrivateCustomerResponseDto;
-import com.aidcompass.customer.models.PublicCustomerResponseDto;
+import com.aidcompass.customer.dto.PublicCustomerResponseDto;
 import com.aidcompass.customer.services.CustomerService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

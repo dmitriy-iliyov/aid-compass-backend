@@ -1,6 +1,6 @@
 package com.aidcompass.dto;
 
-public record CanceledAppointmentDto(
+public record AppointmentCanceledDto(
         UserDto customer,
         UserDto volunteer,
         AppointmentDto appointment

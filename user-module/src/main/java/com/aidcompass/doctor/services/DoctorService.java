@@ -18,8 +18,4 @@ public interface DoctorService extends PersistService<DoctorDto, PrivateDoctorRe
     boolean existsById(UUID id);
 
     long countByIsApproved(boolean approved);
-
-    PrivateDoctorResponseDto findPrivateById(UUID id);
-
-    PublicDoctorResponseDto findPublicById(UUID id);
 }

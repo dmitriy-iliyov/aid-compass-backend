@@ -38,6 +38,7 @@
         <module>system-aggregator-module</module>
         <module>schedule-common</module>
         <module>aidcompass-common</module>
+        <module>system-aggregator-common</module>
     </modules>
 
     <packaging>pom</packaging>

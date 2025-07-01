@@ -1,5 +1,6 @@
 package com.aidcompass.appointment.services;
 
+import com.aidcompass.BatchResponse;
 import com.aidcompass.GlobalRedisConfig;
 import com.aidcompass.PageResponse;
 import com.aidcompass.appointment.repositories.AppointmentRepository;
@@ -23,10 +24,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -205,5 +203,19 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
     public List<Long> markBatchAsSkipped(int batchSize) {
         LocalDate dateLimit = LocalDate.now().minusDays(1);
         return repository.markBatchAsSkipped(batchSize, dateLimit);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public BatchResponse<AppointmentResponseDto> findBatchToRemind(int batchSize, int page) {
+        LocalDate runDate = LocalDate.now().plusDays(1);
+        Slice<AppointmentEntity> slice = repository.findBatchToRemind(
+                runDate,
+                Pageable.ofSize(batchSize).withPage(page)
+        );
+        return new BatchResponse<>(
+                mapper.toDtoList(slice.getContent()),
+                slice.hasNext()
+        );
     }
 }

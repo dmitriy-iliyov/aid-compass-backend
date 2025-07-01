@@ -1,9 +1,9 @@
 package com.aidcompass.appointment.models;
 
-import com.aidcompass.appointment.repositories.AppointmentStatusConverter;
-import com.aidcompass.appointment.repositories.AppointmentTypeConverter;
 import com.aidcompass.appointment.enums.AppointmentStatus;
 import com.aidcompass.appointment.enums.AppointmentType;
+import com.aidcompass.appointment.repositories.AppointmentStatusConverter;
+import com.aidcompass.appointment.repositories.AppointmentTypeConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

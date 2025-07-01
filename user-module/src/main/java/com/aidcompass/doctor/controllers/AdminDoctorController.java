@@ -1,7 +1,9 @@
 package com.aidcompass.doctor.controllers;
 
+import com.aidcompass.NotificationOrchestrator;
 import com.aidcompass.doctor.services.DoctorApprovalService;
 import com.aidcompass.doctor.services.DoctorService;
+import com.aidcompass.dto.BaseSystemVolunteerDto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class AdminDoctorController {
 
     private final DoctorApprovalService approvalService;
     private final DoctorService service;
+    private final NotificationOrchestrator notificationOrchestrator;
 
 
     @GetMapping("/unapproved/count")
@@ -43,7 +46,8 @@ public class AdminDoctorController {
 
     @PatchMapping("/approve/{id}")
     public ResponseEntity<?> approveDoctor(@PathVariable("id") UUID id) {
-        approvalService.approve(id);
+        BaseSystemVolunteerDto dto = approvalService.approve(id);
+        notificationOrchestrator.greeting(dto);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();

@@ -2,6 +2,7 @@ package com.aidcompass.jurist.mapper;
 
 import com.aidcompass.detail.mapper.DetailMapper;
 import com.aidcompass.dto.BasePrivateVolunteerDto;
+import com.aidcompass.dto.BaseSystemVolunteerDto;
 import com.aidcompass.jurist.models.JuristEntity;
 import com.aidcompass.jurist.models.JuristDto;
 import com.aidcompass.jurist.dto.PrivateJuristResponseDto;
@@ -56,4 +57,6 @@ public interface JuristMapper {
     @Mapping(target = "typeEntity", ignore = true)
     @Mapping(target = "specializations", ignore = true)
     void updateEntityFromUpdateDto(JuristDto dto, @MappingTarget JuristEntity entity);
+
+    BaseSystemVolunteerDto toSystemDto(JuristEntity entity);
 }

@@ -1,4 +1,4 @@
-package com.aidcompass;
+package com.aidcompass.models;
 
 public enum UserType {
     CUSTOMER, DOCTOR, JURIST;

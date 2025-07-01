@@ -1,6 +1,6 @@
 package com.aidcompass.exceptions;
 
-import com.aidcompass.BaseInternalServiceException;
+import com.aidcompass.BaseInternalServerException;
 import com.aidcompass.BaseInvalidInputException;
 import com.aidcompass.BaseInvalidInputExceptionList;
 import com.aidcompass.BaseNotFoundException;
@@ -260,8 +260,8 @@ public abstract class BaseControllerAdvice {
                 .body(problemDetail);
     }
 
-    @ExceptionHandler(BaseInternalServiceException.class)
-    public ResponseEntity<?> handleBaseInternalServiceException(BaseInternalServiceException e, Locale locale) {
+    @ExceptionHandler(BaseInternalServerException.class)
+    public ResponseEntity<?> handleBaseInternalServiceException(BaseInternalServerException e, Locale locale) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR,
                 messageSource.getMessage("500", null, "error.500", locale));
         problemDetail.setProperty("properties", Map.of("errors", List.of(e.getErrorDto())));

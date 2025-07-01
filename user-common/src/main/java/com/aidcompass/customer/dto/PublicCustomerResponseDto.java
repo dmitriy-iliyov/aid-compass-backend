@@ -1,4 +1,4 @@
-package com.aidcompass.customer.models;
+package com.aidcompass.customer.dto;
 
 
 import com.aidcompass.enums.gender.Gender;

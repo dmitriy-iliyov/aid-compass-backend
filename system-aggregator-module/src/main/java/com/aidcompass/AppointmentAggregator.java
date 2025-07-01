@@ -1,17 +1,10 @@
 package com.aidcompass;
 
-import com.aidcompass.appointment.contracts.AppointmentService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.aidcompass.dto.AppointmentDto;
 
-@Service
-@RequiredArgsConstructor
-public class AppointmentAggregator {
+import java.util.Map;
+import java.util.UUID;
 
-    private final AppointmentService appointmentService;
-
-
-//    public List<ReminderAppointmentDto> toRemindList(int batchSize) {
-//        List<Appo>
-//    }
+public interface AppointmentAggregator {
+    Map<UUID, AppointmentDto> findBatchToRemind(BatchRequest batchRequest);
 }

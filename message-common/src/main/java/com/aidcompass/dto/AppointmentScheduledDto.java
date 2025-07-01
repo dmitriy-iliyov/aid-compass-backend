@@ -1,6 +1,6 @@
 package com.aidcompass.dto;
 
-public record ScheduledAppointmentDto(
+public record AppointmentScheduledDto(
         UserDto customer,
         String volunteerType,
         UserDto volunteer,

@@ -9,6 +9,7 @@ import com.aidcompass.doctor.specialization.mapper.DoctorSpecializationMapper;
 import com.aidcompass.doctor.specialization.DoctorSpecialization;
 import com.aidcompass.doctor.specialization.models.DoctorSpecializationEntity;
 import com.aidcompass.dto.BasePrivateVolunteerDto;
+import com.aidcompass.dto.BaseSystemVolunteerDto;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -52,4 +53,6 @@ public interface DoctorMapper {
     @Mapping(target = "gender", expression = "java(com.aidcompass.enums.gender.Gender.toEnum(dto.getGender()))")
     void updateEntityFromUpdateDto(List<DoctorSpecializationEntity> specializationEntityList, DoctorDto dto,
                                    @MappingTarget DoctorEntity entity);
+
+    BaseSystemVolunteerDto toSystemDto(DoctorEntity doctorEntity);
 }

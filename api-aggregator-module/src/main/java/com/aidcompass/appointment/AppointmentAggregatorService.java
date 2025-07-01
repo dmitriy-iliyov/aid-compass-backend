@@ -7,7 +7,7 @@ import com.aidcompass.appointment.contracts.AppointmentService;
 import com.aidcompass.appointment.models.CustomerAppointmentDto;
 import com.aidcompass.appointment.models.PublicVolunteerDto;
 import com.aidcompass.appointment.models.VolunteerAppointmentDto;
-import com.aidcompass.customer.models.PublicCustomerResponseDto;
+import com.aidcompass.customer.dto.PublicCustomerResponseDto;
 import com.aidcompass.customer.services.CustomerService;
 import com.aidcompass.doctor.dto.PublicDoctorResponseDto;
 import com.aidcompass.doctor.services.DoctorService;

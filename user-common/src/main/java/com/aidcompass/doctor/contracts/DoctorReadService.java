@@ -1,6 +1,7 @@
 package com.aidcompass.doctor.contracts;
 
 import com.aidcompass.PageResponse;
+import com.aidcompass.doctor.dto.PrivateDoctorResponseDto;
 import com.aidcompass.doctor.dto.PublicDoctorResponseDto;
 import com.aidcompass.doctor.dto.FullPrivateDoctorResponseDto;
 import com.aidcompass.doctor.dto.FullPublicDoctorResponseDto;
@@ -10,11 +11,16 @@ import com.aidcompass.enums.gender.Gender;
 import java.util.UUID;
 
 public interface DoctorReadService {
-    PageResponse<PublicDoctorResponseDto> findAllByNamesCombination(String firstName, String secondName, String lastName, int page, int size);
+
+    PrivateDoctorResponseDto findPrivateById(UUID id);
+
+    PublicDoctorResponseDto findPublicById(UUID id);
 
     FullPrivateDoctorResponseDto findFullPrivateById(UUID id);
 
     FullPublicDoctorResponseDto findFullPublicById(UUID id);
+
+    PageResponse<PublicDoctorResponseDto> findAllByNamesCombination(String firstName, String secondName, String lastName, int page, int size);
 
     PageResponse<FullPrivateDoctorResponseDto> findAllUnapproved(int page, int size);
 

@@ -41,7 +41,6 @@ public class ServiceSecurityChainConfig {
     public SecurityFilterChain serviceSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/api/system/v1/**")
-                //.cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authenticationManager(authenticationManager)
                 .addFilterAfter(bearerAuthenticationFilter, CsrfFilter.class)
@@ -50,7 +49,8 @@ public class ServiceSecurityChainConfig {
                         .requestMatchers("/api/system/v1/auth/login").permitAll()
                         .requestMatchers(
                                 "/api/system/v1/intervals/past/batch",
-                                "/api/system/v1/appointments/past/batch/skip"
+                                "/api/system/v1/appointments/past/batch/skip",
+                                "/api/system/v1/appointments/batch/remind"
                         ).authenticated()
                         .anyRequest().denyAll()
                 )

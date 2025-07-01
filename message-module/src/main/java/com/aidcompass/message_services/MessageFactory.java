@@ -1,11 +1,10 @@
 package com.aidcompass.message_services;
 
-import com.aidcompass.dto.ReminderAppointmentDto;
-import com.aidcompass.dto.ScheduledAppointmentDto;
+import com.aidcompass.dto.AppointmentReminderDto;
+import com.aidcompass.dto.AppointmentScheduledDto;
 import com.aidcompass.dto.UserDto;
 import com.aidcompass.message_services.configs.MessageConfig;
 import com.aidcompass.message_services.models.MessageDto;
-import org.springframework.stereotype.Service;
 
 public class MessageFactory {
 
@@ -33,7 +32,7 @@ public class MessageFactory {
         );
     }
 
-    public static MessageDto customerAppointmentScheduled(ScheduledAppointmentDto dto) {
+    public static MessageDto customerAppointmentScheduled(AppointmentScheduledDto dto) {
         return new MessageDto(dto.customer().contact(), "Запис на консультацію створено!",
                 MessageConfig.CUSTOMER_APPOINTMENT_SCHEDULED_INFORMATION.formatted(
                         dto.customer().firstName(), dto.customer().lastName(), dto.appointment().type(),
@@ -43,7 +42,7 @@ public class MessageFactory {
         );
     }
 
-    public static MessageDto volunteerAppointmentScheduled(ScheduledAppointmentDto dto) {
+    public static MessageDto volunteerAppointmentScheduled(AppointmentScheduledDto dto) {
         return new MessageDto(dto.customer().contact(), "У Вас новий запис на консультацію!",
                 MessageConfig.VOLUNTEER_APPOINTMENT_SCHEDULED_INFORMATION.formatted(
                         dto.volunteer().firstName(), dto.volunteer().lastName(),
@@ -53,7 +52,7 @@ public class MessageFactory {
         );
     }
 
-    public static MessageDto customerReminder(ReminderAppointmentDto dto) {
+    public static MessageDto customerReminder(AppointmentReminderDto dto) {
         return new MessageDto(dto.customer().contact(), "Нагадування про консультацію!",
                 MessageConfig.CUSTOMER_APPOINTMENT_REMINDER_INFORMATION.formatted(
                         dto.customer().firstName(), dto.customer().secondName(),

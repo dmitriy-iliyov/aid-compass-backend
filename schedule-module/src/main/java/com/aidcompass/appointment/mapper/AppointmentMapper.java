@@ -1,10 +1,10 @@
 package com.aidcompass.appointment.mapper;
 
 
-import com.aidcompass.appointment.models.AppointmentEntity;
 import com.aidcompass.appointment.dto.AppointmentCreateDto;
-import com.aidcompass.appointment.dto.AppointmentUpdateDto;
 import com.aidcompass.appointment.dto.AppointmentResponseDto;
+import com.aidcompass.appointment.dto.AppointmentUpdateDto;
+import com.aidcompass.appointment.models.AppointmentEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

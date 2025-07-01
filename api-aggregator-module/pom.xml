@@ -60,6 +60,7 @@
             <artifactId>aidcompass-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
         <dependency>
             <groupId>com.aidcompass</groupId>
             <artifactId>user-module</artifactId>
@@ -67,12 +68,12 @@
             <scope>compile</scope>
         </dependency>
 
-        <!--        <dependency>-->
-<!--            <groupId>com.aidcompass</groupId>-->
-<!--            <artifactId>auth-module</artifactId>-->
-<!--            <version>0.0.1-SNAPSHOT</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
+
+        <dependency>
+            <groupId>com.aidcompass</groupId>
+            <artifactId>system-aggregator-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

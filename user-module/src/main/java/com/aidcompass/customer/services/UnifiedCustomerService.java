@@ -5,7 +5,7 @@ import com.aidcompass.customer.mapper.CustomerMapper;
 import com.aidcompass.customer.models.CustomerEntity;
 import com.aidcompass.customer.models.CustomerDto;
 import com.aidcompass.customer.dto.PrivateCustomerResponseDto;
-import com.aidcompass.customer.models.PublicCustomerResponseDto;
+import com.aidcompass.customer.dto.PublicCustomerResponseDto;
 import com.aidcompass.detail.models.DetailEntity;
 import com.aidcompass.system.enums.ServiceType;
 import com.aidcompass.general.exceptions.customer.CustomerNotFoundByIdException;

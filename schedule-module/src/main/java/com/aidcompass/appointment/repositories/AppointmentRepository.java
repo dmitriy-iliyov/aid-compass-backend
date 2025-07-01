@@ -1,8 +1,10 @@
 package com.aidcompass.appointment.repositories;
 
 
-import com.aidcompass.appointment.models.AppointmentEntity;
 import com.aidcompass.appointment.enums.AppointmentStatus;
+import com.aidcompass.appointment.models.AppointmentEntity;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -80,11 +82,12 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     void updateAllStatus(@Param("participant_id") UUID participantId, @Param("date") LocalDate date,
                          @Param("status") AppointmentStatus status);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query(value = """
         WITH to_update AS (
             SELECT id FROM appointments
-            WHERE date < :date_limit
+            WHERE status = 0 
+            AND date < :date_limit
             LIMIT :batch_size
         )
         UPDATE appointments
@@ -93,4 +96,10 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
         RETURNING id
     """, nativeQuery = true)
     List<Long> markBatchAsSkipped(@Param("batch_size") int batchSize, @Param("date_limit") LocalDate dateLimit);
+
+    @Query(value = """
+        SELECT a FROM AppointmentEntity a
+        WHERE a.date = :scheduled_date 
+    """)
+    Slice<AppointmentEntity> findBatchToRemind(@Param("scheduled_date") LocalDate scheduledDate, Pageable pageable);
 }

@@ -1,14 +1,15 @@
 package com.aidcompass.contracts;
 
-import com.aidcompass.dto.CanceledAppointmentDto;
-import com.aidcompass.dto.ReminderAppointmentDto;
-import com.aidcompass.dto.ScheduledAppointmentDto;
+import com.aidcompass.dto.AppointmentCanceledDto;
+import com.aidcompass.dto.AppointmentReminderDto;
+import com.aidcompass.dto.AppointmentScheduledDto;
+
+import java.util.List;
 
 public interface InformationService {
+    void reminderNotification(List<AppointmentReminderDto> dtoList);
 
-    void reminderNotification(ReminderAppointmentDto dto);
+    void onScheduleNotification(AppointmentScheduledDto info);
 
-    void onScheduleNotification(ScheduledAppointmentDto info);
-
-    void onCancelNotification(CanceledAppointmentDto info);
+    void onCancelNotification(AppointmentCanceledDto info);
 }

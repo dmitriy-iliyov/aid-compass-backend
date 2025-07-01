@@ -1,5 +1,7 @@
 package com.aidcompass.jurist.controllers;
 
+import com.aidcompass.NotificationOrchestrator;
+import com.aidcompass.dto.BaseSystemVolunteerDto;
 import com.aidcompass.jurist.services.JuristService;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -18,6 +20,7 @@ import java.util.UUID;
 public class AdminJuristController {
 
     private final JuristService service;
+    private final NotificationOrchestrator notificationOrchestrator;
 
 
     @GetMapping("/unapproved/count")
@@ -41,7 +44,8 @@ public class AdminJuristController {
 
     @PatchMapping("/approve/{id}")
     public ResponseEntity<?> approve(@PathVariable("id") UUID id) {
-        service.approve(id);
+        BaseSystemVolunteerDto dto = service.approve(id);
+        notificationOrchestrator.greeting(dto);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();

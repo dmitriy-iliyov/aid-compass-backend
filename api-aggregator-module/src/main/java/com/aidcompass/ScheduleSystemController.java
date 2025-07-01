@@ -2,6 +2,7 @@ package com.aidcompass;
 
 import com.aidcompass.appointment.contracts.SystemAppointmentService;
 import com.aidcompass.interval.contracts.SystemIntervalService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class ScheduleSystemController {
 
     private final SystemIntervalService systemIntervalService;
     private final SystemAppointmentService systemAppointmentService;
+    private final NotificationOrchestrator notificationOrchestrator;
 
 
     @DeleteMapping("/intervals/past/batch")
@@ -38,5 +40,13 @@ public class ScheduleSystemController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(systemAppointmentService.markBatchAsSkipped(batchSize));
+    }
+
+    @PostMapping("/appointments/batch/remind")
+    public ResponseEntity<?> remindAppointmentBatch(@RequestBody @Valid BatchRequest batchRequest) {
+        System.out.println(batchRequest);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(notificationOrchestrator.remind(batchRequest));
     }
 }

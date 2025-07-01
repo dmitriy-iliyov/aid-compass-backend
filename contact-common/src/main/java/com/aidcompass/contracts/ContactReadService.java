@@ -3,8 +3,10 @@ package com.aidcompass.contracts;
 
 import com.aidcompass.dto.PrivateContactResponseDto;
 import com.aidcompass.dto.PublicContactResponseDto;
+import com.aidcompass.dto.system.SystemContactDto;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface ContactReadService {
@@ -15,4 +17,6 @@ public interface ContactReadService {
     List<PublicContactResponseDto> findPrimaryByOwnerId(UUID ownerId);
 
     List<PublicContactResponseDto> findSecondaryByOwnerId(UUID ownerId);
+
+    List<SystemContactDto> findAllPrimaryByOwnerIdIn(Set<UUID> ids);
 }
