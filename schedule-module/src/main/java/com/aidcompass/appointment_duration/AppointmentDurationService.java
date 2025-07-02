@@ -7,11 +7,11 @@ import java.util.Map;
 import java.util.UUID;
 
 public interface AppointmentDurationService {
-    Long setAppointmentDuration(UUID ownerId, Authority authority, Long duration);
+    Long set(UUID ownerId, Authority authority, Long duration);
 
-    Long findAppointmentDurationByOwnerId(UUID ownerId);
+    Long findByOwnerId(UUID ownerId);
 
     Map<UUID, Long> findAllByOwnerIdIn(List<UUID> ownerId);
 
-    void deleteAppointmentDurationByOwnerId(UUID ownerId);
+    void deleteByOwnerId(UUID ownerId);
 }

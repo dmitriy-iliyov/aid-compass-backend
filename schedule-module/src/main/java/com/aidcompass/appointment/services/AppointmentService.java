@@ -21,8 +21,6 @@ public interface AppointmentService {
 
     AppointmentResponseDto findById(Long id);
 
-    boolean existsByCustomerIdAndDateAndTimeAndStatus(UUID customerId, LocalDate date, LocalTime start, AppointmentStatus status);
-
     PageResponse<AppointmentResponseDto> findAllByStatusFilter(UUID participantId, StatusFilter filter,
                                                                int page, int size);
 
@@ -38,4 +36,6 @@ public interface AppointmentService {
     void markCanceledAllByDate(UUID participantId, LocalDate date);
 
     void deleteAll(UUID participantId);
+
+    List<AppointmentResponseDto> findAllByCustomerIdAndDateAndStatus(UUID customerId, LocalDate date, AppointmentStatus appointmentStatus);
 }

@@ -4,6 +4,7 @@ import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
 import com.aidcompass.appointment.models.enums.AppointmentStatus;
 import com.aidcompass.appointment.models.marker.AppointmentMarker;
 import com.aidcompass.appointment.services.AppointmentService;
+import com.aidcompass.appointment_duration.AppointmentDurationService;
 import com.aidcompass.exceptions.appointment.AppointmentAlreadyExistException;
 import com.aidcompass.exceptions.appointment.InvalidTimeToCompleteException;
 import com.aidcompass.interval.models.dto.IntervalResponseDto;
@@ -27,6 +28,7 @@ public class AppointmentTimeValidator {
 
     private final IntervalService intervalService;
     private final AppointmentService appointmentService;
+    private final AppointmentDurationService appointmentDurationService;
 
 
     public AppointmentValidationInfoDto validateVolunteerTime(UUID customerId, AppointmentMarker marker, LocalTime end) {
@@ -51,11 +53,15 @@ public class AppointmentTimeValidator {
     }
 
     public void validateCustomerTime(UUID customerId, AppointmentMarker marker) {
-        boolean isExist = appointmentService.existsByCustomerIdAndDateAndTimeAndStatus(
-                customerId, marker.date(), marker.start(), AppointmentStatus.SCHEDULED
+        List<AppointmentResponseDto> appointments = appointmentService.findAllByCustomerIdAndDateAndStatus(
+                customerId, marker.date(), AppointmentStatus.SCHEDULED
         );
-        if (isExist) {
-            throw new AppointmentAlreadyExistException();
+        Long duration = appointmentDurationService.findByOwnerId(marker.volunteerId());
+        LocalTime end = marker.start().plusMinutes(duration);
+        for (AppointmentResponseDto dto: appointments) {
+            if (marker.start().isBefore(dto.end()) && dto.start().isBefore(end)) {
+                throw new AppointmentAlreadyExistException();
+            }
         }
     }
 

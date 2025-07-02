@@ -45,7 +45,7 @@ public class AppointmentDurationController {
         } else {
             authority = Authority.ROLE_DOCTOR;
         }
-        Long response = service.setAppointmentDuration(principal.getUserId(), authority, duration);
+        Long response = service.set(principal.getUserId(), authority, duration);
         if (returnBody) {
             return ResponseEntity
                     .status(HttpStatus.OK)
@@ -61,13 +61,13 @@ public class AppointmentDurationController {
     public ResponseEntity<?> getPrivate(@AuthenticationPrincipal PrincipalDetails principal) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findAppointmentDurationByOwnerId(principal.getUserId()));
+                .body(service.findByOwnerId(principal.getUserId()));
     }
 
     @GetMapping("/{owner_id}")
     public ResponseEntity<?> get(@PathVariable("owner_id") UUID ownerId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findAppointmentDurationByOwnerId(ownerId));
+                .body(service.findByOwnerId(ownerId));
     }
 }

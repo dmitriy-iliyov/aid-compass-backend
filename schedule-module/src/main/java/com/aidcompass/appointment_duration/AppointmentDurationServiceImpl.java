@@ -32,7 +32,7 @@ public class  AppointmentDurationServiceImpl implements AppointmentDurationServi
     @CachePut(value = GlobalRedisConfig.APPOINTMENT_DURATION_CACHE_NAME, key = "#ownerId")
     @Transactional
     @Override
-    public Long setAppointmentDuration(UUID ownerId, Authority authority, Long duration) {
+    public Long set(UUID ownerId, Authority authority, Long duration) {
         try {
             AppointmentDurationEntity entity = repository.findByOwnerId(ownerId).orElseThrow(DurationNotFoundByOwnerIdException::new);
             entity.setAppointmentDuration(duration);
@@ -48,7 +48,7 @@ public class  AppointmentDurationServiceImpl implements AppointmentDurationServi
     @Cacheable(value = GlobalRedisConfig.APPOINTMENT_DURATION_CACHE_NAME, key = "#ownerId", unless = "#result == null")
     @Transactional(readOnly = true)
     @Override
-    public Long findAppointmentDurationByOwnerId(UUID ownerId) {
+    public Long findByOwnerId(UUID ownerId) {
         Cache cache = cacheManager.getCache(GlobalRedisConfig.APPOINTMENT_DURATION_CACHE_NAME);
         Number duration = Objects.requireNonNull(cache).get(ownerId, Number.class);
         if (duration != null) {
@@ -97,7 +97,7 @@ public class  AppointmentDurationServiceImpl implements AppointmentDurationServi
     @CacheEvict(value = GlobalRedisConfig.APPOINTMENT_DURATION_CACHE_NAME, key = "#ownerId")
     @Transactional(readOnly = true)
     @Override
-    public void deleteAppointmentDurationByOwnerId(UUID ownerId) {
+    public void deleteByOwnerId(UUID ownerId) {
         repository.deleteByOwnerId(ownerId);
     }
 }

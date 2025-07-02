@@ -31,7 +31,7 @@ public class IntervalOrchestrator {
 
 
     public IntervalResponseDto save(UUID ownerId, IntervalCreateDto inputDto) {
-        Long duration = appointmentDurationService.findAppointmentDurationByOwnerId(ownerId);
+        Long duration = appointmentDurationService.findByOwnerId(ownerId);
         LocalTime end = inputDto.start().plusMinutes(duration);
         SystemIntervalCreatedDto dto = new SystemIntervalCreatedDto(inputDto.start(), end, inputDto.date());
 

@@ -30,7 +30,7 @@ public class UnifiedWorkDayService implements WorkDayService {
 
     @Override
     public List<String> findListOfTimes(UUID ownerId, LocalDate date) {
-        Long duration = appointmentDurationService.findAppointmentDurationByOwnerId(ownerId);
+        Long duration = appointmentDurationService.findByOwnerId(ownerId);
         List<IntervalResponseDto> dtoList = intervalService.findAllByOwnerIdAndDate(ownerId, date);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         List<LocalTime> times = new ArrayList<>();
@@ -65,7 +65,7 @@ public class UnifiedWorkDayService implements WorkDayService {
         );
 
         List<LocalTime> times = existsTimeMap.keySet().stream().sorted().toList();
-        Long duration = appointmentDurationService.findAppointmentDurationByOwnerId(ownerId);
+        Long duration = appointmentDurationService.findByOwnerId(ownerId);
         Map<LocalTime, TimeInfo> resultMap = new LinkedHashMap<>();
         LocalTime start = LocalTime.of(8, 0);
         LocalTime end = start.plusMinutes(duration);

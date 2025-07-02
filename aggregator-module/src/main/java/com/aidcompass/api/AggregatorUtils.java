@@ -49,7 +49,7 @@ public class AggregatorUtils {
 
     public Long findDurationByOwnerId(UUID id) {
         try {
-            return durationService.findAppointmentDurationByOwnerId(id);
+            return durationService.findByOwnerId(id);
         } catch (BaseNotFoundException e) {
             return null;
         }
@@ -77,7 +77,7 @@ public class AggregatorUtils {
     }
 
     public void deleteAllVolunteerAlignments(UUID id) {
-        durationService.deleteAppointmentDurationByOwnerId(id);
+        durationService.deleteByOwnerId(id);
         intervalService.deleteAllByOwnerId(id);
     }
 }

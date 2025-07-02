@@ -86,12 +86,6 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
         throw new AppointmentOwnershipException();
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public boolean existsByCustomerIdAndDateAndTimeAndStatus(UUID customerId, LocalDate date, LocalTime start, AppointmentStatus status) {
-        return repository.existsByCustomerIdAndDateAndStartAndStatus(customerId, date, start, status);
-    }
-
     @Cacheable(value = GlobalRedisConfig.APPOINTMENTS_CACHE_NAME, key = "#id")
     @Transactional(readOnly = true)
     @Override
@@ -193,6 +187,11 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
                 cache.evict(id);
             }
         }
+    }
+
+    @Override
+    public List<AppointmentResponseDto> findAllByCustomerIdAndDateAndStatus(UUID customerId, LocalDate date, AppointmentStatus status) {
+        return mapper.toDtoList(repository.findAllByCustomerIdAndDateAndStatus(customerId, date, status));
     }
 
     // invalidate all caches

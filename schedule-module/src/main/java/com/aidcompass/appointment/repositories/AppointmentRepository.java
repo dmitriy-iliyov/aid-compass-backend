@@ -102,4 +102,6 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
         WHERE a.date = :scheduled_date 
     """)
     Slice<AppointmentEntity> findBatchToRemind(@Param("scheduled_date") LocalDate scheduledDate, Pageable pageable);
+
+    List<AppointmentEntity> findAllByCustomerIdAndDateAndStatus(UUID customerId, LocalDate date, AppointmentStatus status);
 }

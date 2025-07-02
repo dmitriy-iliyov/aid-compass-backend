@@ -39,7 +39,7 @@ public class AppointmentOrchestratorImpl implements AppointmentOrchestrator {
 
     @Override
     public AppointmentResponseDto save(UUID customerId, AppointmentCreateDto dto) {
-        Long duration = durationService.findAppointmentDurationByOwnerId(dto.volunteerId());
+        Long duration = durationService.findByOwnerId(dto.volunteerId());
         LocalTime end = dto.start().plusMinutes(duration);
 
         timeValidator.validateCustomerTime(customerId, dto);
@@ -65,7 +65,7 @@ public class AppointmentOrchestratorImpl implements AppointmentOrchestrator {
         UUID volunteerId = currentDto.volunteerId();
         updateDto.setVolunteerId(volunteerId);
 
-        Long duration = durationService.findAppointmentDurationByOwnerId(volunteerId);
+        Long duration = durationService.findByOwnerId(volunteerId);
         LocalTime end = updateDto.start().plusMinutes(duration);
 
         timeValidator.validateCustomerTime(customerId, updateDto);
