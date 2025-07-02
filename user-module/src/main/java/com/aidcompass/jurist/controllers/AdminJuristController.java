@@ -1,7 +1,7 @@
 package com.aidcompass.jurist.controllers;
 
-import com.aidcompass.NotificationOrchestrator;
-import com.aidcompass.dto.BaseSystemVolunteerDto;
+import com.aidcompass.general.contracts.NotificationOrchestrator;
+import com.aidcompass.general.contracts.dto.BaseSystemVolunteerDto;
 import com.aidcompass.jurist.services.JuristService;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.PositiveOrZero;

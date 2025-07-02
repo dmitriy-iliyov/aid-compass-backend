@@ -1,6 +1,6 @@
 package com.aidcompass.appointment.repositories;
 
-import com.aidcompass.appointment.enums.AppointmentType;
+import com.aidcompass.appointment.models.enums.AppointmentType;
 import com.aidcompass.exceptions.appointment.AppointmentTypeConvertException;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;

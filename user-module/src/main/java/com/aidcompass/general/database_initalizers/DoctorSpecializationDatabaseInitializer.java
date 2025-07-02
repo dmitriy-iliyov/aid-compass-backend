@@ -1,7 +1,7 @@
 package com.aidcompass.general.database_initalizers;
 
 import com.aidcompass.doctor.specialization.DoctorSpecializationService;
-import com.aidcompass.doctor.specialization.DoctorSpecialization;
+import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;

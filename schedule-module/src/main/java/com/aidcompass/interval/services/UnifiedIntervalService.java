@@ -1,15 +1,14 @@
 package com.aidcompass.interval.services;
 
-import com.aidcompass.GlobalRedisConfig;
+import com.aidcompass.general.GlobalRedisConfig;
+import com.aidcompass.appointment.models.marker.AppointmentMarker;
 import com.aidcompass.exceptions.interval.IntervalNotFoundByIdException;
-import com.aidcompass.interval.contracts.SystemIntervalService;
 import com.aidcompass.interval.mapper.IntervalMapper;
 import com.aidcompass.interval.models.IntervalEntity;
-import com.aidcompass.interval.dto.IntervalResponseDto;
+import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.models.dto.SystemIntervalCreatedDto;
 import com.aidcompass.interval.models.dto.SystemIntervalUpdateDto;
 import com.aidcompass.interval.repository.IntervalRepository;
-import com.aidcompass.appointment.marker.AppointmentMarker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;

@@ -1,7 +1,7 @@
 package com.aidcompass.general.database_initalizers;
 
 import com.aidcompass.profile_status.ProfileStatusService;
-import com.aidcompass.enums.ProfileStatus;
+import com.aidcompass.profile_status.models.ProfileStatus;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;

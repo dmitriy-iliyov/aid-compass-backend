@@ -1,7 +1,7 @@
 package com.aidcompass.system;
 
-import com.aidcompass.system.enums.ServiceType;
-import com.aidcompass.system.contracts.ProfileStatusUpdateFacade;
+import com.aidcompass.general.contracts.enums.ServiceType;
+import com.aidcompass.general.contracts.ProfileStatusUpdateFacade;
 import com.aidcompass.profile_status.ProfileStatusUpdateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

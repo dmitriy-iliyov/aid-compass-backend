@@ -1,7 +1,7 @@
 package com.aidcompass;
 
 import com.aidcompass.appointment.services.AppointmentOrchestratorImpl;
-import com.aidcompass.interval.dto.IntervalResponseDto;
+import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.services.IntervalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

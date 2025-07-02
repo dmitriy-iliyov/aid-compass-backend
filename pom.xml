@@ -22,23 +22,13 @@
     </developers>
     <modules>
         <module>app</module>
-        <module>auth-module</module>
+        <module>aidcompass-core</module>
+        <module>aidcompass-contract</module>
         <module>message-module</module>
-        <module>exception-common</module>
         <module>avatar-module</module>
         <module>schedule-module</module>
         <module>user-module</module>
-        <module>contact-module</module>
-        <module>user-common</module>
-        <module>auth-common</module>
-        <module>contact-common</module>
-        <module>aidcompass-core</module>
-        <module>api-aggregator-module</module>
-        <module>message-common</module>
-        <module>system-aggregator-module</module>
-        <module>schedule-common</module>
-        <module>aidcompass-common</module>
-        <module>system-aggregator-common</module>
+        <module>aggregator-module</module>
     </modules>
 
     <packaging>pom</packaging>

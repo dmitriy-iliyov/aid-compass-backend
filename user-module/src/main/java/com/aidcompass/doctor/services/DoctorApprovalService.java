@@ -1,6 +1,6 @@
 package com.aidcompass.doctor.services;
 
-import com.aidcompass.dto.BaseSystemVolunteerDto;
+import com.aidcompass.general.contracts.dto.BaseSystemVolunteerDto;
 
 import java.util.UUID;
 

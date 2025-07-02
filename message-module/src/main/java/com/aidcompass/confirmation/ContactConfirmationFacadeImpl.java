@@ -1,7 +1,8 @@
 package com.aidcompass.confirmation;
 
+import com.aidcompass.ContactConfirmationFacade;
+import com.aidcompass.ContactType;
 import com.aidcompass.confirmation.services.ResourceConfirmationService;
-import com.aidcompass.enums.ContactType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

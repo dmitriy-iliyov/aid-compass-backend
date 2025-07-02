@@ -1,15 +1,15 @@
 package com.aidcompass.appointment.validation;
 
-import com.aidcompass.appointment.contracts.AppointmentService;
-import com.aidcompass.appointment.dto.AppointmentResponseDto;
-import com.aidcompass.appointment.enums.AppointmentStatus;
+import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
+import com.aidcompass.appointment.models.enums.AppointmentStatus;
+import com.aidcompass.appointment.models.marker.AppointmentMarker;
+import com.aidcompass.appointment.services.AppointmentService;
 import com.aidcompass.exceptions.appointment.AppointmentAlreadyExistException;
 import com.aidcompass.exceptions.appointment.InvalidTimeToCompleteException;
-import com.aidcompass.interval.dto.IntervalResponseDto;
+import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.services.IntervalService;
-import com.aidcompass.appointment.models.AppointmentValidationInfoDto;
-import com.aidcompass.appointment.models.ValidationStatus;
-import com.aidcompass.appointment.marker.AppointmentMarker;
+import com.aidcompass.appointment.models.dto.AppointmentValidationInfoDto;
+import com.aidcompass.appointment.models.enums.ValidationStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

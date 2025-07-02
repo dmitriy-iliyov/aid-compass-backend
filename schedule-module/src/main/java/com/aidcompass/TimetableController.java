@@ -1,6 +1,5 @@
 package com.aidcompass;
 
-import com.aidcompass.contracts.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

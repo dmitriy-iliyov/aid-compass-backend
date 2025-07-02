@@ -1,17 +1,17 @@
 package com.aidcompass.doctor.controllers;
 
 
+import com.aidcompass.PrincipalDetails;
+import com.aidcompass.detail.models.PrivateDetailResponseDto;
+import com.aidcompass.doctor.models.dto.PrivateDoctorResponseDto;
+import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.general.interfaces.PersistFacade;
-import com.aidcompass.contracts.PrincipalDetails;
 import com.aidcompass.detail.DetailService;
 import com.aidcompass.detail.models.DetailDto;
-import com.aidcompass.detail.PrivateDetailResponseDto;
-import com.aidcompass.doctor.models.DoctorDto;
-import com.aidcompass.doctor.dto.PrivateDoctorResponseDto;
+import com.aidcompass.doctor.models.dto.DoctorDto;
 import com.aidcompass.doctor.services.DoctorService;
-import com.aidcompass.doctor.specialization.DoctorSpecialization;
-import com.aidcompass.system.enums.ServiceType;
-import com.aidcompass.validation.ValidEnum;
+import com.aidcompass.general.contracts.enums.ServiceType;
+import com.aidcompass.general.utils.validation.ValidEnum;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;

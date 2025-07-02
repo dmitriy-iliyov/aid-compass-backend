@@ -1,6 +1,6 @@
 package com.aidcompass.customer.models;
 
-import com.aidcompass.dto.BaseRegistrationDto;
+import com.aidcompass.general.dto.BaseRegistrationDto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

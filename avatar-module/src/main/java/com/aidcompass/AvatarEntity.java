@@ -1,6 +1,6 @@
 package com.aidcompass;
 
-import com.aidcompass.uuid.UuidFactory;
+import com.aidcompass.general.utils.uuid.UuidFactory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

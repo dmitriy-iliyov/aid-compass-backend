@@ -1,8 +1,8 @@
 package com.aidcompass.exceptions;
 
 
-import com.aidcompass.BaseNotFoundException;
-import com.aidcompass.dto.ErrorDto;
+import com.aidcompass.general.exceptions.models.BaseNotFoundException;
+import com.aidcompass.general.exceptions.models.dto.ErrorDto;
 
 public class AvatarNotFoundExceptions extends BaseNotFoundException {
 

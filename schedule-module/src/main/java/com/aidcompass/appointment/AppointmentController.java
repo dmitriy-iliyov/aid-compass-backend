@@ -1,11 +1,11 @@
 package com.aidcompass.appointment;
 
-import com.aidcompass.appointment.contracts.AppointmentOrchestrator;
-import com.aidcompass.appointment.contracts.AppointmentService;
-import com.aidcompass.contracts.PrincipalDetails;
-import com.aidcompass.appointment.dto.AppointmentCreateDto;
-import com.aidcompass.appointment.dto.AppointmentUpdateDto;
-import com.aidcompass.appointment.dto.AppointmentResponseDto;
+import com.aidcompass.PrincipalDetails;
+import com.aidcompass.appointment.models.dto.AppointmentCreateDto;
+import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
+import com.aidcompass.appointment.models.dto.AppointmentUpdateDto;
+import com.aidcompass.appointment.services.AppointmentOrchestrator;
+import com.aidcompass.appointment.services.AppointmentService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;

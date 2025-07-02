@@ -2,7 +2,7 @@ package com.aidcompass.profile_status;
 
 
 import com.aidcompass.general.exceptions.ProfileStatusEntityNotFoundByStatusException;
-import com.aidcompass.enums.ProfileStatus;
+import com.aidcompass.profile_status.models.ProfileStatus;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

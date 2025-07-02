@@ -1,7 +1,6 @@
 package com.aidcompass.jurist.repository;
 
-
-import com.aidcompass.enums.gender.Gender;
+import com.aidcompass.gender.Gender;
 import com.aidcompass.jurist.models.JuristEntity;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;
 import org.springframework.data.domain.Page;
@@ -42,7 +41,7 @@ public interface JuristRepository extends JpaRepository<JuristEntity, UUID>,
             JOIN FETCH j.specializations 
             WHERE j.id = :id 
             AND j.isApproved = true
-            AND j.profileStatusEntity.profileStatus = com.aidcompass.enums.ProfileStatus.COMPLETE
+            AND j.profileStatusEntity.profileStatus = com.aidcompass.profile_status.models.ProfileStatus.COMPLETE
     """)
     Optional<JuristEntity> findWithTypeAndSpecsById(@Param("id") UUID id);
 
@@ -64,7 +63,7 @@ public interface JuristRepository extends JpaRepository<JuristEntity, UUID>,
             JOIN FETCH j.detailEntity
             WHERE j.id = :id 
             AND j.isApproved = true 
-            AND j.profileStatusEntity.profileStatus = com.aidcompass.enums.ProfileStatus.COMPLETE
+            AND j.profileStatusEntity.profileStatus = com.aidcompass.profile_status.models.ProfileStatus.COMPLETE
     """)
     Optional<JuristEntity> findWithTypeAndSpecsAndDetailById(@Param("id") UUID id);
 
@@ -85,12 +84,12 @@ public interface JuristRepository extends JpaRepository<JuristEntity, UUID>,
                 SELECT j FROM JuristEntity j
                 JOIN FETCH j.typeEntity 
                 WHERE j.isApproved = true 
-                AND j.profileStatusEntity.profileStatus = com.aidcompass.enums.ProfileStatus.COMPLETE
+                AND j.profileStatusEntity.profileStatus = com.aidcompass.profile_status.models.ProfileStatus.COMPLETE
             """,
             countQuery = """
                 SELECT COUNT(j) FROM JuristEntity j
                 WHERE j.isApproved = true
-                AND j.profileStatusEntity.profileStatus = com.aidcompass.enums.ProfileStatus.COMPLETE
+                AND j.profileStatusEntity.profileStatus = com.aidcompass.profile_status.models.ProfileStatus.COMPLETE
             """
     )
     Page<JuristEntity> findAllByApprovedTrue(Pageable pageable);
@@ -117,13 +116,13 @@ public interface JuristRepository extends JpaRepository<JuristEntity, UUID>,
                 JOIN FETCH j.typeEntity
                 WHERE j.gender = :gender
                 AND j.isApproved = true
-                AND j.profileStatusEntity.profileStatus = com.aidcompass.enums.ProfileStatus.COMPLETE
+                AND j.profileStatusEntity.profileStatus = com.aidcompass.profile_status.models.ProfileStatus.COMPLETE
             """,
             countQuery = """
                 SELECT COUNT(j) FROM JuristEntity j
                 WHERE j.gender = :gender
                 AND j.isApproved = true
-                AND j.profileStatusEntity.profileStatus = com.aidcompass.enums.ProfileStatus.COMPLETE
+                AND j.profileStatusEntity.profileStatus = com.aidcompass.profile_status.models.ProfileStatus.COMPLETE
             """
     )
     Page<JuristEntity> findAllByGender(@Param("gender") Gender gender, Pageable pageable);

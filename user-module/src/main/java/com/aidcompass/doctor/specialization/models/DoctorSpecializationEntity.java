@@ -2,7 +2,6 @@ package com.aidcompass.doctor.specialization.models;
 
 
 import com.aidcompass.doctor.models.DoctorEntity;
-import com.aidcompass.doctor.specialization.DoctorSpecialization;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package com.aidcompass.general.database_initalizers;
 
 import com.aidcompass.jurist.specialization.JuristSpecializationService;
-import com.aidcompass.jurist.specialization.JuristSpecialization;
+import com.aidcompass.jurist.specialization.models.JuristSpecialization;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;

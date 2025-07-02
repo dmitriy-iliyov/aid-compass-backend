@@ -1,9 +1,9 @@
 package com.aidcompass.doctor.repository;
 
 
-import com.aidcompass.enums.gender.Gender;
 import com.aidcompass.doctor.models.DoctorEntity;
 import com.aidcompass.doctor.specialization.models.DoctorSpecializationEntity;
+import com.aidcompass.gender.Gender;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +34,7 @@ public interface DoctorRepository extends JpaRepository<DoctorEntity, UUID>,
                 JOIN FETCH d.specializations 
                 WHERE d.id = :id 
                 AND d.isApproved = true
-                AND d.profileStatusEntity.profileStatus = com.aidcompass.enums.ProfileStatus.COMPLETE
+                AND d.profileStatusEntity.profileStatus = com.aidcompass.profile_status.models.ProfileStatus.COMPLETE
     """)
     Optional<DoctorEntity> findWithSpecsById(@Param("id") UUID id);
 
@@ -54,7 +54,7 @@ public interface DoctorRepository extends JpaRepository<DoctorEntity, UUID>,
                 JOIN FETCH d.detailEntity 
                 WHERE d.id = :id 
                 AND d.isApproved = true 
-                AND d.profileStatusEntity.profileStatus = com.aidcompass.enums.ProfileStatus.COMPLETE
+                AND d.profileStatusEntity.profileStatus = com.aidcompass.profile_status.models.ProfileStatus.COMPLETE
     """)
     Optional<DoctorEntity> findWithSpecsAndDetailById(@Param("id") UUID id);
 
@@ -73,12 +73,12 @@ public interface DoctorRepository extends JpaRepository<DoctorEntity, UUID>,
            value = """
                SELECT d FROM DoctorEntity d 
                WHERE d.isApproved = true 
-               AND d.profileStatusEntity.profileStatus = com.aidcompass.enums.ProfileStatus.COMPLETE
+               AND d.profileStatusEntity.profileStatus = com.aidcompass.profile_status.models.ProfileStatus.COMPLETE
            """,
             countQuery = """
                SELECT COUNT(d) FROM DoctorEntity d
                WHERE d.isApproved = true
-               AND d.profileStatusEntity.profileStatus = com.aidcompass.enums.ProfileStatus.COMPLETE
+               AND d.profileStatusEntity.profileStatus = com.aidcompass.profile_status.models.ProfileStatus.COMPLETE
             """
     )
     Page<DoctorEntity> findAllByApprovedTrue(Pageable pageable);
@@ -105,13 +105,13 @@ public interface DoctorRepository extends JpaRepository<DoctorEntity, UUID>,
                 JOIN FETCH d.profileStatusEntity
                 WHERE :specialization MEMBER OF d.specializations 
                 AND d.isApproved = true 
-                AND d.profileStatusEntity.profileStatus = com.aidcompass.enums.ProfileStatus.COMPLETE
+                AND d.profileStatusEntity.profileStatus = com.aidcompass.profile_status.models.ProfileStatus.COMPLETE
             """,
             countQuery = """
                 SELECT COUNT(d) FROM DoctorEntity d
                 WHERE :specialization MEMBER OF d.specializations 
                 AND d.isApproved = true 
-                AND d.profileStatusEntity.profileStatus = com.aidcompass.enums.ProfileStatus.COMPLETE
+                AND d.profileStatusEntity.profileStatus = com.aidcompass.profile_status.models.ProfileStatus.COMPLETE
             """
     )
     Page<DoctorEntity> findAllBySpecialization(@Param("specialization") DoctorSpecializationEntity specialization,
@@ -122,13 +122,13 @@ public interface DoctorRepository extends JpaRepository<DoctorEntity, UUID>,
                 SELECT d FROM DoctorEntity d
                 WHERE d.gender = :gender
                 AND d.isApproved = true
-                AND d.profileStatusEntity.profileStatus = com.aidcompass.enums.ProfileStatus.COMPLETE
+                AND d.profileStatusEntity.profileStatus = com.aidcompass.profile_status.models.ProfileStatus.COMPLETE
             """,
             countQuery = """
                 SELECT COUNT(d) FROM DoctorEntity d
                 WHERE d.gender = :gender
                 AND d.isApproved = true
-                AND d.profileStatusEntity.profileStatus = com.aidcompass.enums.ProfileStatus.COMPLETE
+                AND d.profileStatusEntity.profileStatus = com.aidcompass.profile_status.models.ProfileStatus.COMPLETE
             """
     )
     Page<DoctorEntity> findAllByGender(@Param("gender") Gender gender, Pageable pageable);

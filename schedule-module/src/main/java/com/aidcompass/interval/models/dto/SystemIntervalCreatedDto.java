@@ -1,6 +1,6 @@
 package com.aidcompass.interval.models.dto;
 
-import com.aidcompass.interval.marker.IntervalMarker;
+import com.aidcompass.interval.models.marker.IntervalMarker;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 

@@ -1,8 +1,8 @@
 package com.aidcompass.confirmation.services;
 
+import com.aidcompass.ContactType;
 import com.aidcompass.confirmation.repositories.ConfirmationRepository;
-import com.aidcompass.contracts.SystemContactFacade;
-import com.aidcompass.enums.ContactType;
+import com.aidcompass.contact.core.facades.SystemContactFacade;
 import com.aidcompass.exceptions.models.InvalidConfirmationTokenException;
 import com.aidcompass.message_services.MessageFactory;
 import com.aidcompass.message_services.MessageService;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import static com.aidcompass.GlobalRedisConfig.CONF_TOKEN_KEY_TEMPLATE;
+import static com.aidcompass.general.GlobalRedisConfig.CONF_TOKEN_KEY_TEMPLATE;
 
 
 @Service

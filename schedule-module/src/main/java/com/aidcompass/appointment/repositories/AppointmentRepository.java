@@ -1,8 +1,8 @@
 package com.aidcompass.appointment.repositories;
 
 
-import com.aidcompass.appointment.enums.AppointmentStatus;
 import com.aidcompass.appointment.models.AppointmentEntity;
+import com.aidcompass.appointment.models.enums.AppointmentStatus;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;

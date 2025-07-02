@@ -1,6 +1,7 @@
 package com.aidcompass.interval.validation.time;
 
-import com.aidcompass.interval.marker.IntervalMarker;
+
+import com.aidcompass.interval.models.marker.IntervalMarker;
 
 public interface TimeValidator {
 

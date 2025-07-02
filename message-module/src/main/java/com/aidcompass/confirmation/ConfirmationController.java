@@ -1,9 +1,10 @@
 package com.aidcompass.confirmation;
 
 
-import com.aidcompass.confirmation.services.AccountResourceConfirmationService;
-import com.aidcompass.enums.ContactType;
-import com.aidcompass.validation.ValidEnum;
+import com.aidcompass.AccountResourceConfirmationService;
+import com.aidcompass.ContactConfirmationFacade;
+import com.aidcompass.ContactType;
+import com.aidcompass.general.utils.validation.ValidEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

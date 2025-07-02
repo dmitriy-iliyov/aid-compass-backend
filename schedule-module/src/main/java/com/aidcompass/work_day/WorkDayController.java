@@ -1,6 +1,6 @@
 package com.aidcompass.work_day;
 
-import com.aidcompass.contracts.PrincipalDetails;
+import com.aidcompass.PrincipalDetails;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;

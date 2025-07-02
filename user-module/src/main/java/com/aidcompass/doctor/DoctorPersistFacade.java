@@ -1,13 +1,13 @@
 package com.aidcompass.doctor;
 
+import com.aidcompass.doctor.models.dto.PrivateDoctorResponseDto;
 import com.aidcompass.general.interfaces.PersistFacade;
 import com.aidcompass.general.interfaces.PersistService;
-import com.aidcompass.contracts.AuthService;
 import com.aidcompass.detail.PersistEmptyDetailService;
 import com.aidcompass.detail.models.DetailEntity;
-import com.aidcompass.doctor.models.DoctorDto;
-import com.aidcompass.doctor.dto.PrivateDoctorResponseDto;
-import com.aidcompass.enums.Authority;
+import com.aidcompass.doctor.models.dto.DoctorDto;
+import com.aidcompass.security.auth.services.AuthService;
+import com.aidcompass.security.domain.authority.models.Authority;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

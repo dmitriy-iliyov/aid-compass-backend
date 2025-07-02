@@ -1,7 +1,7 @@
 package com.aidcompass.exceptions.appointment;
 
-import com.aidcompass.BaseNotFoundException;
-import com.aidcompass.dto.ErrorDto;
+import com.aidcompass.general.exceptions.models.BaseNotFoundException;
+import com.aidcompass.general.exceptions.models.dto.ErrorDto;
 
 public class AppointmentNotFoundByIdException extends BaseNotFoundException {
 

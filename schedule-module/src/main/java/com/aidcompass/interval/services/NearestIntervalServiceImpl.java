@@ -1,14 +1,13 @@
 package com.aidcompass.interval.services;
 
 import com.aidcompass.exceptions.interval.NearestIntervalNotFoundByOwnerIdException;
-import com.aidcompass.interval.contracts.NearestIntervalService;
 import com.aidcompass.interval.mapper.NearestIntervalMapper;
 import com.aidcompass.interval.models.NearestIntervalEntity;
-import com.aidcompass.interval.dto.NearestIntervalDto;
-import com.aidcompass.interval.dto.IntervalResponseDto;
+import com.aidcompass.interval.models.dto.IntervalResponseDto;
+import com.aidcompass.interval.models.dto.NearestIntervalDto;
 import com.aidcompass.interval.repository.NearestIntervalRepository;
-import com.aidcompass.BaseNotFoundException;
-import com.aidcompass.PassedListIsToLongException;
+import com.aidcompass.general.exceptions.models.BaseNotFoundException;
+import com.aidcompass.general.exceptions.models.PassedListIsToLongException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

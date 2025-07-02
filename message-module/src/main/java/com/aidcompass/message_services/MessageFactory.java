@@ -1,8 +1,8 @@
 package com.aidcompass.message_services;
 
-import com.aidcompass.dto.AppointmentReminderDto;
-import com.aidcompass.dto.AppointmentScheduledDto;
-import com.aidcompass.dto.UserDto;
+import com.aidcompass.information.dto.AppointmentReminderDto;
+import com.aidcompass.information.dto.AppointmentScheduledDto;
+import com.aidcompass.information.dto.UserDto;
 import com.aidcompass.message_services.configs.MessageConfig;
 import com.aidcompass.message_services.models.MessageDto;
 

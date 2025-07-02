@@ -1,8 +1,8 @@
 package com.aidcompass.jurist.models;
 
 import com.aidcompass.detail.models.DetailEntity;
-import com.aidcompass.enums.gender.Gender;
-import com.aidcompass.enums.gender.GenderConverter;
+import com.aidcompass.gender.Gender;
+import com.aidcompass.gender.GenderConverter;
 import com.aidcompass.jurist.specialization.models.JuristSpecializationEntity;
 import com.aidcompass.jurist.specialization.models.JuristTypeEntity;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;

@@ -1,7 +1,7 @@
 package com.aidcompass.profile_status;
 
 
-import com.aidcompass.system.enums.ServiceType;
+import com.aidcompass.general.contracts.enums.ServiceType;
 
 import java.util.UUID;
 

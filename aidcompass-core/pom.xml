@@ -23,9 +23,10 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>com.aidcompass</groupId>
-            <artifactId>exception-common</artifactId>
+            <artifactId>aidcompass-contract</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

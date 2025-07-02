@@ -1,10 +1,10 @@
 package com.aidcompass.work_day;
 
-import com.aidcompass.appointment.contracts.AppointmentService;
+import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
+import com.aidcompass.appointment.models.enums.AppointmentStatus;
+import com.aidcompass.appointment.services.AppointmentService;
 import com.aidcompass.appointment_duration.AppointmentDurationService;
-import com.aidcompass.appointment.dto.AppointmentResponseDto;
-import com.aidcompass.appointment.enums.AppointmentStatus;
-import com.aidcompass.interval.dto.IntervalResponseDto;
+import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.services.IntervalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

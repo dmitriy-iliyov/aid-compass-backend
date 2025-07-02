@@ -38,20 +38,7 @@
 
         <dependency>
             <groupId>com.aidcompass</groupId>
-            <artifactId>exception-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aidcompass</groupId>
-            <artifactId>contact-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aidcompass</groupId>
-            <artifactId>auth-common</artifactId>
+            <artifactId>aidcompass-contract</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
@@ -59,20 +46,6 @@
             <groupId>com.aidcompass</groupId>
             <artifactId>aidcompass-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aidcompass</groupId>
-            <artifactId>message-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aidcompass</groupId>
-            <artifactId>aidcompass-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

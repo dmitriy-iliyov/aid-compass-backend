@@ -1,8 +1,8 @@
 package com.aidcompass.appointment_duration;
 
 
-import com.aidcompass.contracts.PrincipalDetails;
-import com.aidcompass.enums.Authority;
+import com.aidcompass.PrincipalDetails;
+import com.aidcompass.security.domain.authority.models.Authority;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

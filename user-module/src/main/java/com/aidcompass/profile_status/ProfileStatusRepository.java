@@ -1,6 +1,6 @@
 package com.aidcompass.profile_status;
 
-import com.aidcompass.enums.ProfileStatus;
+import com.aidcompass.profile_status.models.ProfileStatus;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

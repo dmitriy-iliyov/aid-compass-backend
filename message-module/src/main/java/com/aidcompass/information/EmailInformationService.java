@@ -1,10 +1,9 @@
 package com.aidcompass.information;
 
-import com.aidcompass.dto.AppointmentCanceledDto;
-import com.aidcompass.contracts.InformationService;
-import com.aidcompass.dto.AppointmentReminderDto;
-import com.aidcompass.dto.AppointmentScheduledDto;
 import com.aidcompass.exceptions.models.SendMessageException;
+import com.aidcompass.information.dto.AppointmentCanceledDto;
+import com.aidcompass.information.dto.AppointmentReminderDto;
+import com.aidcompass.information.dto.AppointmentScheduledDto;
 import com.aidcompass.message_services.MessageFactory;
 import com.aidcompass.message_services.MessageService;
 import lombok.extern.slf4j.Slf4j;

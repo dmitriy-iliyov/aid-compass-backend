@@ -1,7 +1,8 @@
 package com.aidcompass.detail;
 
 import com.aidcompass.detail.models.DetailDto;
-import com.aidcompass.system.enums.ServiceType;
+import com.aidcompass.detail.models.PrivateDetailResponseDto;
+import com.aidcompass.general.contracts.enums.ServiceType;
 
 import java.util.UUID;
 

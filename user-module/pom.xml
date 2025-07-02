@@ -20,37 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>com.aidcompass</groupId>
-            <artifactId>exception-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aidcompass</groupId>
-            <artifactId>user-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aidcompass</groupId>
-            <artifactId>auth-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aidcompass</groupId>
             <artifactId>aidcompass-core</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aidcompass</groupId>
-            <artifactId>aidcompass-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aidcompass</groupId>
-            <artifactId>system-aggregator-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

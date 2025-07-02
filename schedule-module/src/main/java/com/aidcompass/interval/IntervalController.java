@@ -1,10 +1,10 @@
 package com.aidcompass.interval;
 
-import com.aidcompass.contracts.PrincipalDetails;
+import com.aidcompass.PrincipalDetails;
 import com.aidcompass.interval.models.dto.IntervalCreateDto;
-import com.aidcompass.interval.dto.IntervalResponseDto;
+import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.services.IntervalOrchestrator;
-import com.aidcompass.interval.contracts.NearestIntervalService;
+import com.aidcompass.interval.services.NearestIntervalService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

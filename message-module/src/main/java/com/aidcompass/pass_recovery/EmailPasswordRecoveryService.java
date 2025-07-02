@@ -1,10 +1,11 @@
 package com.aidcompass.pass_recovery;
 
-import com.aidcompass.dto.security.RecoveryRequestDto;
-import com.aidcompass.contracts.UserOrchestrator;
+
 import com.aidcompass.exceptions.models.InvalidPasswordRecoveryTokenException;
 import com.aidcompass.message_services.MessageFactory;
 import com.aidcompass.message_services.MessageService;
+import com.aidcompass.security.auth.dto.RecoveryRequestDto;
+import com.aidcompass.security.domain.user.services.UserOrchestrator;
 import com.aidcompass.utils.CodeFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

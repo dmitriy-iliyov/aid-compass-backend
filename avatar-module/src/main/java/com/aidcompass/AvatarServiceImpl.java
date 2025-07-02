@@ -2,7 +2,9 @@ package com.aidcompass;
 
 import com.aidcompass.cloud.CloudStorage;
 import com.aidcompass.exceptions.AvatarNotFoundByUserIdException;
-import com.aidcompass.uuid.UuidUtils;
+import com.aidcompass.general.exceptions.models.BaseNotFoundException;
+import com.aidcompass.general.exceptions.models.PassedListIsToLongException;
+import com.aidcompass.general.utils.uuid.UuidUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -19,7 +21,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.aidcompass.uuid.UuidUtils.hashUuidCollection;
+import static com.aidcompass.general.utils.uuid.UuidUtils.hashUuidCollection;
 
 @Service
 @RequiredArgsConstructor

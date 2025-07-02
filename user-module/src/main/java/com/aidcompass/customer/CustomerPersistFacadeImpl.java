@@ -1,12 +1,12 @@
 package com.aidcompass.customer;
 
-import com.aidcompass.contracts.AuthService;
 import com.aidcompass.customer.models.CustomerDto;
-import com.aidcompass.customer.dto.PrivateCustomerResponseDto;
+import com.aidcompass.customer.models.PrivateCustomerResponseDto;
 import com.aidcompass.customer.services.CustomerPersistService;
 import com.aidcompass.detail.PersistEmptyDetailService;
 import com.aidcompass.detail.models.DetailEntity;
-import com.aidcompass.enums.Authority;
+import com.aidcompass.security.auth.services.AuthService;
+import com.aidcompass.security.domain.authority.models.Authority;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

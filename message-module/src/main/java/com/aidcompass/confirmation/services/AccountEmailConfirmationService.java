@@ -1,18 +1,19 @@
 package com.aidcompass.confirmation.services;
 
 
+import com.aidcompass.AccountResourceConfirmationService;
 import com.aidcompass.confirmation.repositories.ConfirmationRepository;
-import com.aidcompass.contracts.UserOrchestrator;
 import com.aidcompass.exceptions.models.InvalidConfirmationTokenException;
 import com.aidcompass.exceptions.models.SendConfirmationMessageException;
 import com.aidcompass.message_services.MessageFactory;
 import com.aidcompass.message_services.MessageService;
+import com.aidcompass.security.domain.user.services.UserOrchestrator;
 import com.aidcompass.utils.CodeFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import static com.aidcompass.GlobalRedisConfig.CONF_TOKEN_KEY_TEMPLATE;
+import static com.aidcompass.general.GlobalRedisConfig.CONF_TOKEN_KEY_TEMPLATE;
 
 
 @Service

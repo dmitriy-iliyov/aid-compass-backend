@@ -1,9 +1,8 @@
 package com.aidcompass.interval.services;
 
-import com.aidcompass.interval.contracts.IntervalDeleteService;
-import com.aidcompass.interval.dto.IntervalResponseDto;
+import com.aidcompass.appointment.models.marker.AppointmentMarker;
+import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.models.dto.SystemIntervalCreatedDto;
-import com.aidcompass.appointment.marker.AppointmentMarker;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

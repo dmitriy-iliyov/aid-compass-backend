@@ -1,7 +1,7 @@
 package com.aidcompass.exceptions.models;
 
-import com.aidcompass.BaseInvalidInputException;
-import com.aidcompass.dto.ErrorDto;
+import com.aidcompass.general.exceptions.models.BaseInvalidInputException;
+import com.aidcompass.general.exceptions.models.dto.ErrorDto;
 
 public class InvalidPasswordRecoveryTokenException extends BaseInvalidInputException {
 

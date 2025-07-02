@@ -2,14 +2,14 @@ package com.aidcompass.doctor.mapper;
 
 import com.aidcompass.detail.mapper.DetailMapper;
 import com.aidcompass.doctor.models.DoctorEntity;
-import com.aidcompass.doctor.models.DoctorDto;
-import com.aidcompass.doctor.dto.PrivateDoctorResponseDto;
-import com.aidcompass.doctor.dto.PublicDoctorResponseDto;
+import com.aidcompass.doctor.models.dto.DoctorDto;
+import com.aidcompass.doctor.models.dto.PrivateDoctorResponseDto;
+import com.aidcompass.doctor.models.dto.PublicDoctorResponseDto;
 import com.aidcompass.doctor.specialization.mapper.DoctorSpecializationMapper;
-import com.aidcompass.doctor.specialization.DoctorSpecialization;
+import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.doctor.specialization.models.DoctorSpecializationEntity;
-import com.aidcompass.dto.BasePrivateVolunteerDto;
-import com.aidcompass.dto.BaseSystemVolunteerDto;
+import com.aidcompass.general.contracts.dto.BaseSystemVolunteerDto;
+import com.aidcompass.general.dto.BasePrivateVolunteerDto;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public interface DoctorMapper {
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "specializations", source = "specializationEntityList")
-    @Mapping(target = "gender", expression = "java(com.aidcompass.enums.gender.Gender.toEnum(dto.getGender()))")
+    @Mapping(target = "gender", expression = "java(com.aidcompass.gender.Gender.toEnum(dto.getGender()))")
     DoctorEntity toEntity(UUID id, List<DoctorSpecializationEntity> specializationEntityList, DoctorDto dto);
 
     @Mapping(target = "isApproved",  source = "approved")
@@ -50,7 +50,7 @@ public interface DoctorMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "specializations", source = "specializationEntityList")
-    @Mapping(target = "gender", expression = "java(com.aidcompass.enums.gender.Gender.toEnum(dto.getGender()))")
+    @Mapping(target = "gender", expression = "java(com.aidcompass.gender.Gender.toEnum(dto.getGender()))")
     void updateEntityFromUpdateDto(List<DoctorSpecializationEntity> specializationEntityList, DoctorDto dto,
                                    @MappingTarget DoctorEntity entity);
 

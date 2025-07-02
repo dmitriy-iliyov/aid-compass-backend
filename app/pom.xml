@@ -27,21 +27,9 @@
 
         <dependency>
             <groupId>com.aidcompass</groupId>
-            <artifactId>auth-module</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aidcompass</groupId>
             <artifactId>avatar-module</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aidcompass</groupId>
-            <artifactId>contact-module</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -58,19 +46,19 @@
 
         <dependency>
             <groupId>com.aidcompass</groupId>
+            <artifactId>aidcompass-contract</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aidcompass</groupId>
             <artifactId>aidcompass-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.aidcompass</groupId>
-            <artifactId>system-aggregator-module</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aidcompass</groupId>
-            <artifactId>api-aggregator-module</artifactId>
+            <artifactId>aggregator-module</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 

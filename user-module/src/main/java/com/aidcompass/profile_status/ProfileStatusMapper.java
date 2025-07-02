@@ -1,6 +1,6 @@
 package com.aidcompass.profile_status;
 
-import com.aidcompass.enums.ProfileStatus;
+import com.aidcompass.profile_status.models.ProfileStatus;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

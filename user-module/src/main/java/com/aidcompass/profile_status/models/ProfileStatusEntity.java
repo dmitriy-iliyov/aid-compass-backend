@@ -1,7 +1,6 @@
 package com.aidcompass.profile_status.models;
 
 
-import com.aidcompass.enums.ProfileStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

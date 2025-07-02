@@ -1,7 +1,7 @@
 package com.aidcompass.interval.mapper;
 
 import com.aidcompass.interval.models.IntervalEntity;
-import com.aidcompass.interval.dto.IntervalResponseDto;
+import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.models.dto.SystemIntervalCreatedDto;
 import com.aidcompass.interval.models.dto.SystemIntervalUpdateDto;
 import org.mapstruct.*;
