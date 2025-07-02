@@ -11,7 +11,8 @@ public enum Authority implements GrantedAuthority {
     ROLE_DOCTOR,
     ROLE_JURIST,
     ROLE_ADMIN,
-    ROLE_SCHEDULE_TASK_SERVICE;
+    ROLE_SCHEDULE_TASK_SERVICE,
+    ROLE_MONITORING_SERVICE;
 
     @Override
     public String getAuthority() {

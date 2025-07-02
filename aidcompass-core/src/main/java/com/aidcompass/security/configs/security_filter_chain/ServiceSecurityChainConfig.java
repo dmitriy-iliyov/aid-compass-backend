@@ -36,11 +36,12 @@ public class ServiceSecurityChainConfig {
         this.bearerAuthenticationFilter.setFailureHandler(new DefaultAuthenticationFailureHandler());
     }
 
+
     @Bean
     @Order(1)
     public SecurityFilterChain serviceSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/api/system/v1/**")
+                .securityMatcher("/api/system/**")
                 .csrf(AbstractHttpConfigurer::disable)
                 .authenticationManager(authenticationManager)
                 .addFilterAfter(bearerAuthenticationFilter, CsrfFilter.class)
@@ -51,7 +52,8 @@ public class ServiceSecurityChainConfig {
                                 "/api/system/v1/intervals/past/batch",
                                 "/api/system/v1/appointments/past/batch/skip",
                                 "/api/system/v1/appointments/batch/remind"
-                        ).authenticated()
+                        ).hasAuthority("ROLE_SCHEDULE_TASK_SERVICE")
+                        .requestMatchers("/api/system/actuator/**").hasAuthority("ROLE_MONITORING_SERVICE")
                         .anyRequest().denyAll()
                 )
                 .exceptionHandling(exception -> exception
