@@ -22,13 +22,13 @@
     </developers>
     <modules>
         <module>app</module>
-        <module>aidcompass-core</module>
-        <module>aidcompass-contract</module>
-        <module>message-module</module>
-        <module>avatar-module</module>
-        <module>schedule-module</module>
-        <module>user-module</module>
-        <module>aggregator-module</module>
+        <module>modules/aidcompass-core</module>
+        <module>modules/aidcompass-contract</module>
+        <module>modules/message-module</module>
+        <module>modules/avatar-module</module>
+        <module>modules/schedule-module</module>
+        <module>modules/user-module</module>
+        <module>modules/aggregator-module</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -43,13 +43,6 @@
         <java.version>17</java.version>
     </properties>
     <dependencies>
-        <!-- to del -->
-        <dependency>
-            <groupId>org.mindrot</groupId>
-            <artifactId>jbcrypt</artifactId>
-            <version>0.4</version>
-        </dependency>
-
         <!-- postgresql -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
