@@ -19,7 +19,8 @@ replay_pid*
 
 
 *.idea
-*/target
+idea/
+target/
 *.DS_Store
 *.iml
 mvnw
