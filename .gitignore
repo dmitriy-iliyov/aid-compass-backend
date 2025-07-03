@@ -31,3 +31,5 @@ mvnw.cmd
 *.p12
 
 */ssl
+
+.txt
