@@ -27,3 +27,23 @@ services:
       - default
     ports:
       - "6379:6379"
+
+  prometheus:
+    image: prom/prometheus:latest
+    networks:
+      - default
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus_token.txt:/etc/prometheus/prometheus_token.txt
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:latest
+    networks:
+      - default
+    ports:
+      - "3000:3000"
+
+networks:
+  default:
