@@ -1,5 +1,6 @@
 package com.aidcompass.system;
 
+import com.aidcompass.AggregatorUtils;
 import com.aidcompass.ContactType;
 import com.aidcompass.contact.core.models.dto.PublicContactResponseDto;
 import com.aidcompass.contact.core.models.dto.system.SystemContactDto;
@@ -28,6 +29,7 @@ public class UserAggregatorImpl implements UserAggregator {
     private final DoctorService doctorService;
     private final JuristService juristService;
     private final ContactService contactService;
+    private final AggregatorUtils utils;
 
 
     @Override
@@ -56,7 +58,7 @@ public class UserAggregatorImpl implements UserAggregator {
     @Override
     public Map<UUID, UserDto> findAllCustomerByIdIn(Set<UUID> ids) {
         List<PublicCustomerResponseDto> customerList = customerService.findAllByIds(ids);
-        Map<UUID, SystemContactDto> contactMap = findPrimaryContactByOwnerIdIn(ids);
+        Map<UUID, SystemContactDto> contactMap = utils.findPrimaryContactByOwnerIdIn(ids);
         return customerList.stream()
                 .collect(
                         Collectors.toMap(
@@ -81,10 +83,5 @@ public class UserAggregatorImpl implements UserAggregator {
                 .stream()
                 .filter(dto -> dto.type().equals(ContactType.EMAIL))
                 .findFirst().orElse(null);
-    }
-
-    private Map<UUID, SystemContactDto> findPrimaryContactByOwnerIdIn(Set<UUID> ids) {
-        List<SystemContactDto> dtoList = contactService.findAllPrimaryByOwnerIdIn(ids);
-        return dtoList.stream().collect(Collectors.toMap(SystemContactDto::getOwnerId, Function.identity()));
     }
 }

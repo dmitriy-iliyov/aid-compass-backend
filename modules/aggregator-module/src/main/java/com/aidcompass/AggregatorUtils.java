@@ -13,6 +13,7 @@ import com.aidcompass.interval.services.NearestIntervalService;
 import com.aidcompass.security.domain.user.services.UserOrchestrator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class AggregatorUtils {
     private final ContactService contactService;
     private final UserOrchestrator userOrchestrator;
     private final IntervalDeleteService intervalService;
-    private final AppointmentService unifiedAppointmentService;
+    private final AppointmentService appointmentService;
 
 
     public String findAvatarUrlByOwnerId(UUID id) {
@@ -72,7 +73,7 @@ public class AggregatorUtils {
             avatarService.delete(id);
         } catch (BaseNotFoundException ignore) { }
         contactService.deleteAll(id);
-        unifiedAppointmentService.deleteAll(id);
+        appointmentService.deleteAll(id);
         userOrchestrator.deleteById(id);
     }
 

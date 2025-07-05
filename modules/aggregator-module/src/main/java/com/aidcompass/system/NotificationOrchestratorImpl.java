@@ -12,8 +12,14 @@ import com.aidcompass.information.InformationService;
 import com.aidcompass.information.dto.AppointmentDto;
 import com.aidcompass.information.dto.AppointmentReminderDto;
 import com.aidcompass.information.dto.UserDto;
+import com.aidcompass.system.models.EventType;
+import com.aidcompass.system.models.KafkaMessage;
+import com.aidcompass.system.models.UserType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -24,25 +30,28 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class NotificationOrchestratorImpl implements NotificationOrchestrator {
 
+//    @Value("${}")
+//    private String topic;
+
     private final SystemAppointmentService systemAppointmentService;
     private final UserAggregator userAggregator;
     private final InformationService informationService;
     private final GreetingService greetingService;
+    //private final KafkaTemplate<String, KafkaMessage<UserDto>> kafkaTemplate;
 
 
     @Override
     public void greeting(BaseSystemVolunteerDto dto) {
         PublicContactResponseDto contact = userAggregator.findPrimaryContactByOwnerId(dto.id());
-        greetingService.onApproveNotification(
-                new UserDto(
-                        dto.id(),
-                        dto.firstName(),
-                        dto.secondName(),
-                        dto.lastName(),
-                        contact.type(),
-                        contact.contact()
-                )
+        UserDto userDto = new UserDto(
+                dto.id(),
+                dto.firstName(),
+                dto.secondName(),
+                dto.lastName(),
+                contact.type(),
+                contact.contact()
         );
+        //kafkaTemplate.send(topic, new KafkaMessage<>(EventType.VOLUNTEER_APPROVED, userDto));
     }
 
     @Override
