@@ -62,11 +62,6 @@ public class UserOrchestratorImpl implements UserOrchestrator {
     }
 
     @Override
-    public boolean existsByEmail(String email) {
-        return userService.existsByEmail(email) || unconfirmedUserService.existsByEmail(email);
-    }
-
-    @Override
     public boolean existsById(UUID id) {
         return userService.existsById(id);
     }

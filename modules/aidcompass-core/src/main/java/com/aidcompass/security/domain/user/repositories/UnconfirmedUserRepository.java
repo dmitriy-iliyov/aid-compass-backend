@@ -6,7 +6,4 @@ import org.springframework.data.keyvalue.repository.KeyValueRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UnconfirmedUserRepository extends KeyValueRepository<UnconfirmedUserEntity, String> {
-
-    boolean existsByEmail(String email);
-}
+public interface UnconfirmedUserRepository extends KeyValueRepository<UnconfirmedUserEntity, String> { }

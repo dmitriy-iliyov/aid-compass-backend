@@ -15,8 +15,6 @@ public interface UserOrchestrator {
 
     void confirmByEmail(String email);
 
-    boolean existsByEmail(String email);
-
     SystemUserDto systemFindByEmail(String email);
 
     boolean existsById(UUID id);
