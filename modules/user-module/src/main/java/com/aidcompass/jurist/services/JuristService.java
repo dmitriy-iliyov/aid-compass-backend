@@ -5,12 +5,12 @@ import com.aidcompass.general.contracts.dto.BaseSystemVolunteerDto;
 import com.aidcompass.general.contracts.dto.PageResponse;
 import com.aidcompass.general.interfaces.PersistService;
 import com.aidcompass.jurist.models.dto.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 
 public interface JuristService extends PersistService<JuristDto, PrivateJuristResponseDto> {
-    boolean existsById(UUID id);
 
     long countByIsApproved(boolean approved);
 
@@ -35,6 +35,11 @@ public interface JuristService extends PersistService<JuristDto, PrivateJuristRe
                                                                                    String lastName, int page, int size);
 
     PageResponse<PublicJuristResponseDto> findAllApproved(int page, int size);
+
+    @Deprecated(forRemoval = true)
+    PageResponse<PublicJuristResponseDto> findAllByFilter(String type, String specialization,
+                                                          String firstName, String secondName,
+                                                          String lastName, int page, int size);
 
     PageResponse<PublicJuristResponseDto> findAllByGender(Gender gender, int page, int size);
 

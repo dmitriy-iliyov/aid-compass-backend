@@ -10,6 +10,7 @@ import com.aidcompass.security.domain.authority.models.Authority;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -23,12 +24,14 @@ public class CustomerPersistFacadeImpl implements CustomerPersistFacade {
     private final UserAuthService userAuthService;
 
 
+    @Transactional
     @Override
     public void save(UUID id) {
         DetailEntity detail = detailService.saveEmpty(id);
         customerService.save(id, detail);
     }
 
+    @Transactional
     @Override
     public PrivateCustomerResponseDto save(UUID id, CustomerDto dto, HttpServletResponse response) {
         DetailEntity detail = detailService.saveEmpty(id);

@@ -16,6 +16,9 @@ import com.aidcompass.exceptions.appointment.AppointmentNotFoundByIdException;
 import com.aidcompass.exceptions.appointment.AppointmentOwnershipException;
 import com.aidcompass.appointment.models.AppointmentEntity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
@@ -37,6 +40,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UnifiedAppointmentService implements AppointmentService, SystemAppointmentService {
 
     private final AppointmentRepository repository;
@@ -199,17 +203,22 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
     @Override
     public List<Long> markBatchAsSkipped(int batchSize) {
         LocalDate dateLimit = LocalDate.now().minusDays(1);
-        return repository.markBatchAsSkipped(batchSize, dateLimit);
+        log.info("START marking appointments as skipped with batchSize={}, dateLimit={}", batchSize, dateLimit);
+        List<Long> markedIds = repository.markBatchAsSkipped(batchSize, dateLimit);
+        log.info("END marking appointments, marked id list={}", markedIds);
+        return markedIds;
     }
 
     @Transactional(readOnly = true)
     @Override
     public BatchResponse<AppointmentResponseDto> findBatchToRemind(int batchSize, int page) {
         LocalDate runDate = LocalDate.now().plusDays(1);
+        log.info("START selecting appointments to remind with batchSize={}, page={}, runDate={}", batchSize, page, runDate);
         Slice<AppointmentEntity> slice = repository.findBatchToRemind(
                 runDate,
                 Pageable.ofSize(batchSize).withPage(page)
         );
+        log.info("END selecting, hasNext={}", slice.hasNext());
         return new BatchResponse<>(
                 mapper.toDtoList(slice.getContent()),
                 slice.hasNext()

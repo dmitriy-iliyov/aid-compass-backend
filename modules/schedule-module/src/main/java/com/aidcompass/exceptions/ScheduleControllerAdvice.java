@@ -1,4 +1,4 @@
-package com.aidcompass;
+package com.aidcompass.exceptions;
 
 import com.aidcompass.general.exceptions.BaseControllerAdvice;
 import com.aidcompass.general.exceptions.mapper.ExceptionMapper;

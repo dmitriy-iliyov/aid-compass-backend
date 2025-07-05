@@ -1,16 +1,18 @@
 package com.aidcompass.api.jurist;
 
-import com.aidcompass.api.AggregatorUtils;
+import com.aidcompass.AggregatorUtils;
 import com.aidcompass.api.jurist.dto.JuristCardDto;
 import com.aidcompass.api.jurist.dto.JuristPrivateProfileDto;
 import com.aidcompass.api.jurist.dto.JuristPublicProfileDto;
 import com.aidcompass.gender.Gender;
 import com.aidcompass.general.contracts.dto.PageResponse;
+import com.aidcompass.general.exceptions.models.BaseNotFoundException;
 import com.aidcompass.interval.models.dto.NearestIntervalDto;
 import com.aidcompass.jurist.models.dto.*;
 import com.aidcompass.jurist.services.JuristService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +96,13 @@ public class JuristAggregatorService {
         );
     }
 
+    @Transactional(noRollbackFor = BaseNotFoundException.class)
+    public void delete(UUID id) {
+        utils.deleteAllUserAlignments(id);
+        utils.deleteAllVolunteerAlignments(id);
+        juristService.deleteById(id);
+    }
+
     private List<JuristPrivateProfileDto> aggregateToPrivate(List<FullPrivateJuristResponseDto> dtoList) {
         List<JuristPrivateProfileDto> response = new ArrayList<>();
         List<UUID> uuids = new ArrayList<>();
@@ -136,11 +145,5 @@ public class JuristAggregatorService {
         }
 
         return juristCardDtoList;
-    }
-
-    public void delete(UUID id) {
-        utils.deleteAllAlignments(id);
-        utils.deleteAllVolunteerAlignments(id);
-        juristService.deleteById(id);
     }
 }

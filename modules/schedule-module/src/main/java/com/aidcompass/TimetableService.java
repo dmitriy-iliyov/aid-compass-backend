@@ -1,10 +1,12 @@
 package com.aidcompass;
 
-import com.aidcompass.appointment.services.AppointmentOrchestratorImpl;
+import com.aidcompass.appointment.services.AppointmentOrchestrator;
 import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.services.IntervalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -19,7 +21,7 @@ import java.util.stream.Collectors;
 public class TimetableService {
 
     private final IntervalService intervalService;
-    private final AppointmentOrchestratorImpl appointmentOrchestratorImpl;
+    private final AppointmentOrchestrator appointmentOrchestrator;
 
 
     public List<LocalDate> findMonthDates(UUID ownerId) {
@@ -34,12 +36,13 @@ public class TimetableService {
         return toDateList(intervalService.findAllByOwnerIdAndDateInterval(ownerId, currentDate, end));
     }
 
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
     public Map<LocalDate, Integer> findPrivateMonthDates(UUID ownerId) {
         LocalDate start = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate end = start.plusDays(27);
         Map<LocalDate, Integer> monthInfo = new LinkedHashMap<>();
         List<LocalDate> dates = toDateList(intervalService.findAllByOwnerIdAndDateInterval(ownerId, start, end));
-        List<LocalDate> appointmentDates = appointmentOrchestratorImpl.findMonthDatesByOwnerIdAndCurrentDate(ownerId);
+        List<LocalDate> appointmentDates = appointmentOrchestrator.findMonthDatesByOwnerIdAndCurrentDate(ownerId);
         for (int i = 0; i < 28; i++) {
             LocalDate iDate = start.plusDays(i);
             if (appointmentDates.contains(iDate)) {

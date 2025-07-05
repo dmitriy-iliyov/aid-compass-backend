@@ -138,12 +138,6 @@ public class UnifiedJuristService implements JuristService, ProfileStatusUpdateS
 
     @Transactional(readOnly = true)
     @Override
-    public boolean existsById(UUID id) {
-        return repository.existsById(id);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
     public PrivateJuristResponseDto findPrivateById(UUID id) {
         JuristEntity entity = repository.findWithTypeAndSpecsAndProfileStatusById(id).orElseThrow(
                 JuristNotFoundByIdException::new
@@ -302,13 +296,11 @@ public class UnifiedJuristService implements JuristService, ProfileStatusUpdateS
         );
     }
 
-    //cache
-//    @Transactional(readOnly = true)
-//    @Override
+    @Transactional(readOnly = true)
+    @Override
     public PageResponse<PublicJuristResponseDto> findAllByFilter(String type, String specialization,
                                                                  String firstName, String secondName,
                                                                  String lastName, int page, int size) {
-
         JuristTypeEntity typeEntity = null;
         JuristSpecializationEntity specializationEntity = null;
 

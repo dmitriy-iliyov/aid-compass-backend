@@ -1,8 +1,11 @@
 backend
 
 kafka
+aggreagator contacts & prepare aapointment to user
+UserUpdateValidator
 аппоинтменты
 рефрещ токен
+oauht
 twilo
 повидомлення про запис
 повідомлення корустувача про запис за день до нього

@@ -1,6 +1,6 @@
 package com.aidcompass.api.doctor;
 
-import com.aidcompass.api.AggregatorUtils;
+import com.aidcompass.AggregatorUtils;
 import com.aidcompass.api.doctor.dto.DoctorCardDto;
 import com.aidcompass.api.doctor.dto.DoctorPrivateProfileDto;
 import com.aidcompass.api.doctor.dto.DoctorPublicProfileDto;
@@ -9,9 +9,11 @@ import com.aidcompass.doctor.services.DoctorService;
 import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.gender.Gender;
 import com.aidcompass.general.contracts.dto.PageResponse;
+import com.aidcompass.general.exceptions.models.BaseNotFoundException;
 import com.aidcompass.interval.models.dto.NearestIntervalDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,8 +91,9 @@ public class DoctorAggregatorService {
         );
     }
 
+    @Transactional(noRollbackFor = BaseNotFoundException.class)
     public void delete(UUID id) {
-        utils.deleteAllAlignments(id);
+        utils.deleteAllUserAlignments(id);
         utils.deleteAllVolunteerAlignments(id);
         doctorService.deleteById(id);
     }

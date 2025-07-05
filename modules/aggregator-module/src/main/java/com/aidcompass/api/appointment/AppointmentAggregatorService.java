@@ -1,6 +1,6 @@
 package com.aidcompass.api.appointment;
 
-import com.aidcompass.api.AggregatorUtils;
+import com.aidcompass.AggregatorUtils;
 import com.aidcompass.api.appointment.dto.CustomerAppointmentDto;
 import com.aidcompass.api.appointment.dto.DtoMapper;
 import com.aidcompass.api.appointment.dto.PublicVolunteerDto;
@@ -31,7 +31,7 @@ import java.util.stream.Stream;
 @Slf4j
 public class AppointmentAggregatorService {
 
-    private final AppointmentOrchestrator appointmentOrchestratorImpl;
+    private final AppointmentOrchestrator appointmentOrchestrator;
     private final CustomerService customerService;
     private final DoctorService doctorService;
     private final JuristService juristService;
@@ -41,7 +41,7 @@ public class AppointmentAggregatorService {
 
 
     public VolunteerAppointmentDto findFullAppointment(UUID volunteerId, Long id) {
-        AppointmentResponseDto appointment = appointmentOrchestratorImpl.findById(volunteerId, id);
+        AppointmentResponseDto appointment = appointmentOrchestrator.findById(volunteerId, id);
         return new VolunteerAppointmentDto(
                 appointment,
                 utils.findAvatarUrlByOwnerId(appointment.customerId()),
@@ -57,6 +57,38 @@ public class AppointmentAggregatorService {
                 prepareVolunteerAppointmentDtoList(appointments.data()),
                 appointments.totalPage()
         );
+    }
+
+    private List<VolunteerAppointmentDto> prepareVolunteerAppointmentDtoList(List<AppointmentResponseDto> appointments) {
+        Map<UUID, List<AppointmentResponseDto>> customerIdToAppointmentsMap = appointments.stream()
+                .collect(Collectors.groupingBy(AppointmentResponseDto::customerId));
+
+        Map<UUID, PublicCustomerResponseDto> customerDtoMap = customerService
+                .findAllByIds(customerIdToAppointmentsMap.keySet()).stream()
+                .collect(Collectors.toMap(PublicCustomerResponseDto::id, Function.identity()));
+
+        Map<UUID, String> customerAvatars = utils.findAllAvatarUrlByOwnerIdIn(customerDtoMap.keySet().stream().toList());
+
+        return customerIdToAppointmentsMap.entrySet().stream()
+                .flatMap(entry -> {
+                    UUID customerId = entry.getKey();
+                    PublicCustomerResponseDto customer = customerDtoMap.get(customerId);
+                    if (customer == null) {
+                        log.error("Customer not found for id: {}", customerId);
+                        return Stream.empty();
+                    }
+                    return entry.getValue().stream()
+                            .map(appointment -> new VolunteerAppointmentDto(
+                                    appointment,
+                                    customerAvatars.get(customerId),
+                                    customer,
+                                    utils.findAllContactByOwnerId(customerId))
+                            );
+                })
+                .sorted(Comparator
+                        .comparing((VolunteerAppointmentDto dto) -> dto.appointment().date())
+                        .thenComparing(dto -> dto.appointment().start()))
+                .toList();
     }
 
     public PageResponse<CustomerAppointmentDto> findByFilterAndCustomerId(UUID customerId, StatusFilter filter, int page, int size) {
@@ -76,6 +108,7 @@ public class AppointmentAggregatorService {
                 .map(AppointmentResponseDto::volunteerId)
                 .collect(Collectors.toSet());
 
+        // error
         Map<UUID, PublicVolunteerDto> volunteerDtoMap = new HashMap<>();
         for (UUID id: volunteerIds) {
             try {
@@ -95,7 +128,7 @@ public class AppointmentAggregatorService {
                     UUID volunteerId = entry.getKey();
                     PublicVolunteerDto volunteer = volunteerDtoMap.get(volunteerId);
                     if (volunteer == null) {
-                        log.warn("Volunteer not found for id: {}", customerId);
+                        log.error("Volunteer not found for id: {}", customerId);
                         return Stream.empty();
                     }
                     return entry.getValue().stream()
@@ -110,37 +143,5 @@ public class AppointmentAggregatorService {
                         .thenComparing(dto -> dto.appointment().start()))
                 .toList();
         return response;
-    }
-
-    private List<VolunteerAppointmentDto> prepareVolunteerAppointmentDtoList(List<AppointmentResponseDto> appointments) {
-        Map<UUID, List<AppointmentResponseDto>> customerIdToAppointmentsMap = appointments.stream()
-                .collect(Collectors.groupingBy(AppointmentResponseDto::customerId));
-
-        Map<UUID, PublicCustomerResponseDto> customerDtoMap = customerService
-                .findAllByIds(customerIdToAppointmentsMap.keySet()).stream()
-                .collect(Collectors.toMap(PublicCustomerResponseDto::id, Function.identity()));
-
-        Map<UUID, String> customerAvatars = utils.findAllAvatarUrlByOwnerIdIn(customerDtoMap.keySet().stream().toList());
-
-        return customerIdToAppointmentsMap.entrySet().stream()
-                .flatMap(entry -> {
-                    UUID customerId = entry.getKey();
-                    PublicCustomerResponseDto customer = customerDtoMap.get(customerId);
-                    if (customer == null) {
-                        log.warn("Customer not found for id: {}", customerId);
-                        return Stream.empty();
-                    }
-                    return entry.getValue().stream()
-                            .map(appointment -> new VolunteerAppointmentDto(
-                                    appointment,
-                                    customerAvatars.get(customerId),
-                                    customer,
-                                    utils.findAllContactByOwnerId(customerId))
-                            );
-                })
-                .sorted(Comparator
-                        .comparing((VolunteerAppointmentDto dto) -> dto.appointment().date())
-                        .thenComparing(dto -> dto.appointment().start()))
-                .toList();
     }
 }

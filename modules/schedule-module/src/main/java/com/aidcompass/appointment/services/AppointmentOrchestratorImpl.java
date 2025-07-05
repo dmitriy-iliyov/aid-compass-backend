@@ -12,11 +12,14 @@ import com.aidcompass.appointment_duration.AppointmentDurationService;
 import com.aidcompass.exceptions.appointment.InvalidAttemptToCompleteException;
 import com.aidcompass.exceptions.appointment.InvalidAttemptToDeleteException;
 import com.aidcompass.exceptions.appointment.NotWorkingAtThisTimeException;
+import com.aidcompass.general.exceptions.models.BaseNotFoundException;
 import com.aidcompass.interval.models.dto.SystemIntervalCreatedDto;
 import com.aidcompass.appointment.models.enums.ValidationStatus;
 import com.aidcompass.interval.services.IntervalOrchestrator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -37,6 +40,7 @@ public class AppointmentOrchestratorImpl implements AppointmentOrchestrator {
     private final AppointmentOwnershipValidator ownershipValidator;
 
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public AppointmentResponseDto save(UUID customerId, AppointmentCreateDto dto) {
         Long duration = durationService.findByOwnerId(dto.volunteerId());
@@ -56,6 +60,7 @@ public class AppointmentOrchestratorImpl implements AppointmentOrchestrator {
         }
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public AppointmentResponseDto update(UUID customerId, AppointmentUpdateDto updateDto) {
         ownershipValidator.validateCustomerOwnership(customerId, updateDto.getId());
@@ -95,6 +100,7 @@ public class AppointmentOrchestratorImpl implements AppointmentOrchestrator {
         }
     }
 
+    @Transactional
     @Override
     public void complete(UUID participantId, Long id, String review) {
         AppointmentResponseDto dto = ownershipValidator.validateParticipantOwnership(participantId, id);
@@ -105,6 +111,7 @@ public class AppointmentOrchestratorImpl implements AppointmentOrchestrator {
         service.markCompletedById(id, review);
     }
 
+    @Transactional
     @Override
     public void cancel(UUID participantId, Long id) {
         AppointmentResponseDto dto = ownershipValidator.validateParticipantOwnership(participantId, id);
@@ -115,6 +122,7 @@ public class AppointmentOrchestratorImpl implements AppointmentOrchestrator {
         intervalOrchestrator.systemSave(dto.volunteerId(), new SystemIntervalCreatedDto(dto.start(), dto.end(), dto.date()));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public AppointmentResponseDto findById(UUID volunteerId, Long id) {
         ownershipValidator.validateParticipantOwnership(volunteerId, id);

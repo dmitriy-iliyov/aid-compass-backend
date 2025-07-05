@@ -1,10 +1,10 @@
-package com.aidcompass.api;
+package com.aidcompass;
 
-import com.aidcompass.AvatarService;
 import com.aidcompass.appointment.services.AppointmentService;
 import com.aidcompass.appointment_duration.AppointmentDurationService;
 import com.aidcompass.contact.core.models.dto.PrivateContactResponseDto;
 import com.aidcompass.contact.core.models.dto.PublicContactResponseDto;
+import com.aidcompass.contact.core.models.dto.system.SystemContactDto;
 import com.aidcompass.contact.core.services.ContactService;
 import com.aidcompass.general.exceptions.models.BaseNotFoundException;
 import com.aidcompass.interval.models.dto.NearestIntervalDto;
@@ -13,11 +13,13 @@ import com.aidcompass.interval.services.NearestIntervalService;
 import com.aidcompass.security.domain.user.services.UserOrchestrator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -64,11 +66,16 @@ public class AggregatorUtils {
         return contactService.findAllPublicByOwnerId(id);
     }
 
+    public Map<UUID, SystemContactDto> findPrimaryContactByOwnerIdIn(Set<UUID> ids) {
+        List<SystemContactDto> dtoList = contactService.findAllPrimaryByOwnerIdIn(ids);
+        return dtoList.stream().collect(Collectors.toMap(SystemContactDto::getOwnerId, Function.identity()));
+    }
+
     public List<PrivateContactResponseDto> findAllPrivateContactByOwnerId(UUID id) {
         return contactService.findAllPrivateByOwnerId(id);
     }
 
-    public void deleteAllAlignments(UUID id) {
+    public void deleteAllUserAlignments(UUID id) {
         try {
             avatarService.delete(id);
         } catch (BaseNotFoundException ignore) { }

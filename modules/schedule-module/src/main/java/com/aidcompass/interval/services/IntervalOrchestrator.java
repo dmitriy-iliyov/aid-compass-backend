@@ -3,6 +3,7 @@ package com.aidcompass.interval.services;
 import com.aidcompass.appointment.models.marker.AppointmentMarker;
 import com.aidcompass.appointment_duration.AppointmentDurationService;
 import com.aidcompass.exceptions.interval.IntervalIsInvalidException;
+import com.aidcompass.exceptions.interval.IntervalNotFoundByIdException;
 import com.aidcompass.exceptions.interval.IntervalTimeIsInvalidException;
 import com.aidcompass.interval.models.dto.IntervalCreateDto;
 import com.aidcompass.interval.models.dto.IntervalResponseDto;
@@ -12,6 +13,8 @@ import com.aidcompass.interval.validation.time.TimeValidator;
 import com.aidcompass.general.exceptions.models.BaseNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.time.LocalTime;
 import java.util.Comparator;
@@ -30,6 +33,7 @@ public class IntervalOrchestrator {
     private final TimeValidator timeValidator;
 
 
+    @Transactional
     public IntervalResponseDto save(UUID ownerId, IntervalCreateDto inputDto) {
         Long duration = appointmentDurationService.findByOwnerId(ownerId);
         LocalTime end = inputDto.start().plusMinutes(duration);
@@ -42,20 +46,21 @@ public class IntervalOrchestrator {
             throw new IntervalTimeIsInvalidException();
         }
 
-        try {
-            return service.findByOwnerIdAndStartAndDate(ownerId, dto.start(), dto.date());
-        } catch (BaseNotFoundException ignored) {}
-
-        IntervalResponseDto responseDto = service.save(ownerId, dto);
-        nearestService.replaceIfEarlier(ownerId, responseDto);
-        return responseDto;
+        IntervalResponseDto existedDto = service.findByOwnerIdAndStartAndDate(ownerId, dto.start(), dto.date());
+        if (existedDto != null) {
+            return existedDto;
+        }
+        existedDto = service.save(ownerId, dto);
+        nearestService.replaceIfEarlier(ownerId, existedDto);
+        return existedDto;
     }
 
+    @Transactional
     public void systemSave(UUID ownerId, SystemIntervalCreatedDto dto) {
-        try {
-            service.findByOwnerIdAndStartAndDate(ownerId, dto.start(), dto.date());
+        IntervalResponseDto existedDto = service.findByOwnerIdAndStartAndDate(ownerId, dto.start(), dto.date());
+        if (existedDto != null) {
             return;
-        } catch (BaseNotFoundException ignored) {}
+        }
         IntervalResponseDto responseDto = service.save(ownerId, dto);
         nearestService.replaceIfEarlier(ownerId, responseDto);
     }

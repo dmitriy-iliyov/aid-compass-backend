@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -28,6 +30,7 @@ public class UnifiedWorkDayService implements WorkDayService {
     private final AppointmentDurationService appointmentDurationService;
 
 
+    @Transactional(readOnly = true)
     @Override
     public List<String> findListOfTimes(UUID ownerId, LocalDate date) {
         Long duration = appointmentDurationService.findByOwnerId(ownerId);
@@ -47,6 +50,7 @@ public class UnifiedWorkDayService implements WorkDayService {
                 .toList();
     }
 
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
     @Override
     public Map<String, TimeInfo> findPrivateListOfTimes(UUID ownerId, LocalDate date) {
 
@@ -107,6 +111,7 @@ public class UnifiedWorkDayService implements WorkDayService {
                 ));
     }
 
+    @Transactional
     @Override
     public void delete(UUID ownerId, LocalDate date) {
         intervalService.deleteAllByOwnerIdAndDate(ownerId, date);

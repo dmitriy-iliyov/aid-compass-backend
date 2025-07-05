@@ -16,6 +16,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
@@ -69,6 +70,7 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
         );
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<IntervalResponseDto> findAllNearestByOwnerIdIn(List<UUID> ownerIds) {
         LocalDateTime now = LocalDateTime.now();
@@ -83,9 +85,7 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
     @Transactional(readOnly = true)
     @Override
     public IntervalResponseDto findByOwnerIdAndStartAndDate(UUID ownerId, LocalTime start, LocalDate date) {
-        return mapper.toDto(repository.findByOwnerIdAndStartAndDate(ownerId, start, date).orElseThrow(
-                IntervalNotFoundByIdException::new)
-        );
+        return mapper.toDto(repository.findByOwnerIdAndStartAndDate(ownerId, start, date).orElse(null));
     }
 
     @Cacheable(value = GlobalRedisConfig.INTERVALS_BY_DATE_CACHE_NAME, key = "#ownerId + ':' + #date")
@@ -114,7 +114,7 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
                     @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE_NAME, key = "#dto.volunteerId()"),
             }
     )
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public Set<IntervalResponseDto> cut(AppointmentMarker dto, LocalTime end, Long id) {
         IntervalEntity entity = repository.findById(id).orElseThrow(IntervalNotFoundByIdException::new);
@@ -187,6 +187,9 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
     @Override
     public List<Long> deleteBatchBeforeWeakStart(int batchSize) {
         LocalDate weakStart = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        return repository.deleteBatchBeforeDate(batchSize, weakStart);
+        log.info("START deleting intervals batch with weakStart={}, batchSize={}", weakStart, batchSize);
+        List<Long> deletedIds = repository.deleteBatchBeforeDate(batchSize, weakStart);
+        log.info("END deleting intervals, deleted id list={}", deletedIds);
+        return deletedIds;
     }
 }

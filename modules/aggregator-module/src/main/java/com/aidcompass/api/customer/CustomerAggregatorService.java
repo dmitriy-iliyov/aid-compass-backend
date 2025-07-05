@@ -1,10 +1,12 @@
 package com.aidcompass.api.customer;
 
-import com.aidcompass.api.AggregatorUtils;
+import com.aidcompass.AggregatorUtils;
 import com.aidcompass.customer.models.PrivateCustomerResponseDto;
 import com.aidcompass.customer.services.CustomerService;
+import com.aidcompass.general.exceptions.models.BaseNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -22,8 +24,9 @@ public class CustomerAggregatorService {
         return new CustomerPrivateProfileDto(url, fullDto, utils.findAllPrivateContactByOwnerId(id));
     }
 
+    @Transactional(noRollbackFor = BaseNotFoundException.class)
     public void delete(UUID id) {
-        utils.deleteAllAlignments(id);
+        utils.deleteAllUserAlignments(id);
         customerService.deleteById(id);
     }
 }

@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,7 +47,6 @@ public class ScheduleSystemController {
 
     @PostMapping("/appointments/batch/remind")
     public ResponseEntity<?> remindAppointmentBatch(@RequestBody @Valid BatchRequest batchRequest) {
-        System.out.println(batchRequest);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(notificationOrchestrator.remind(batchRequest));
