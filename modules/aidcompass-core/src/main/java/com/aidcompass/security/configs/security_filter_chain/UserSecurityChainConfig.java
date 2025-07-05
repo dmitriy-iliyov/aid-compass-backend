@@ -17,7 +17,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFilter;
@@ -69,9 +71,9 @@ public class UserSecurityChainConfig {
                 .securityMatcher("/api/**")
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(csrf -> csrf.csrfTokenRepository(csrfTokenRepository)
-                        .ignoringRequestMatchers("/api/auth/login", "/api/users", "/api/v1/contact", "/api/v1/contacts",
-                                                           "/api/confirmations/linked-email/request", "/api/confirmations/linked-email",
-                                                           "/api/csrf")
+                        .ignoringRequestMatchers("/api/auth/login", "/api/users", "/api/v1/contact",
+                                                           "/api/v1/contacts", "/api/confirmations/linked-email/request",
+                                                           "/api/confirmations/linked-email", "/api/csrf")
                         .csrfTokenRequestHandler(new XorCsrfTokenRequestAttributeHandler())
                         .sessionAuthenticationStrategy(((authentication, request, response) -> {}))
                 )
@@ -111,12 +113,16 @@ public class UserSecurityChainConfig {
                         .authenticationEntryPoint(authenticationEntryPoint)
                         .accessDeniedHandler(csrfAccessDeniedHandler)
                 )
-                .headers(headers ->
-                        headers.xssProtection(
-                                xss -> xss.headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK)
-                        ).contentSecurityPolicy(
-                                cps -> cps.policyDirectives("script-src 'self'")
+                .headers(headers -> headers
+                        .httpStrictTransportSecurity(
+                                sts -> sts.maxAgeInSeconds(31536000).includeSubDomains(true)
                         )
+                        .xssProtection(xss -> xss.disable())
+                        .contentSecurityPolicy(
+                                cps -> cps.policyDirectives("script-src 'self'; frame-ancestors 'none';")
+                        )
+                        .contentTypeOptions(Customizer.withDefaults()) //nosniff
+                        .frameOptions(xfo -> xfo.deny())
                 );
         return http.build();
     }
