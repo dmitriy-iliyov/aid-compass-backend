@@ -73,25 +73,6 @@ public class GlobalRedisConfig {
     }
 
     @Bean
-    public RedisCacheConfiguration withCacheNullValuesRedisConfiguration() {
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-        mapper.activateDefaultTyping(
-                BasicPolymorphicTypeValidator.builder().allowIfBaseType(Object.class).build(),
-                ObjectMapper.DefaultTyping.EVERYTHING, JsonTypeInfo.As.PROPERTY
-        );
-
-        return RedisCacheConfiguration.defaultCacheConfig()
-                .serializeKeysWith(RedisSerializationContext
-                        .SerializationPair.fromSerializer(new StringRedisSerializer()))
-                .serializeValuesWith(RedisSerializationContext.
-                        SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(mapper)));
-    }
-
-    @Bean
     public <K, V> RedisTemplate<K, V> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<K, V> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
@@ -101,8 +82,7 @@ public class GlobalRedisConfig {
 
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory  redisConnectionFactory,
-                                     @Qualifier("defaultRedisCacheConfiguration") RedisCacheConfiguration defaultConfig,
-                                     @Qualifier("withCacheNullValuesRedisConfiguration") RedisCacheConfiguration withCacheNullValuesRedisConfiguration) {
+                                     @Qualifier("defaultRedisCacheConfiguration") RedisCacheConfiguration defaultConfig) {
         return RedisCacheManager.builder(redisConnectionFactory)
                 .disableCreateOnMissingCache()
                 .withCacheConfiguration("doctors:public", defaultConfig)
