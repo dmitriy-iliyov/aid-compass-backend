@@ -32,10 +32,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
@@ -221,12 +218,17 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
                     .toList();
             redisTemplate.delete(toInvalidate);
         }
+        Set<String> toInvalidate = redisTemplate.keys(
+                GlobalRedisConfig.APPOINTMENTS_BY_DATE_AND_STATUS_CACHE + "::" + participantId + ":*:*");
+        if (toInvalidate != null && !toInvalidate.isEmpty()) {
+            redisTemplate.delete(toInvalidate);
+        }
     }
 
     // invalidate all caches ??
     @Transactional
     @Override
-    public List<Long> skipBatch(int batchSize) {
+    public List<Long> markBatchAsSkipped(int batchSize) {
         LocalDate dateLimit = LocalDate.now().minusDays(1);
 
         log.info("START marking appointments as skipped with batchSize={}, dateLimit={}", batchSize, dateLimit);

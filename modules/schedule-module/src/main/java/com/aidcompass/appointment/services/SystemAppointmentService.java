@@ -6,7 +6,7 @@ import com.aidcompass.general.contracts.dto.BatchResponse;
 import java.util.List;
 
 public interface SystemAppointmentService {
-    List<Long> skipBatch(int batchSize);
+    List<Long> markBatchAsSkipped(int batchSize);
 
     BatchResponse<AppointmentResponseDto> findBatchToRemind(int batchSize, int page);
 }

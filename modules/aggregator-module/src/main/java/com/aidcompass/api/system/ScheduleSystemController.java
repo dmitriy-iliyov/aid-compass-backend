@@ -41,7 +41,7 @@ public class ScheduleSystemController {
                                                            int batchSize) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(systemAppointmentService.skipBatch(batchSize));
+                .body(systemAppointmentService.markBatchAsSkipped(batchSize));
     }
 
     @PostMapping("/appointments/batch/remind")

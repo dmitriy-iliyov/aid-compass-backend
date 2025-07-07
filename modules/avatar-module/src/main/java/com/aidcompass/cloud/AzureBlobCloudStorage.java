@@ -71,6 +71,8 @@ public class AzureBlobCloudStorage implements CloudStorage {
     @Override
     public void delete(UUID userId) {
         BlobClient blobClient = blobContainerClient.getBlobClient(AVATAR_NAME_TEMPLATE.formatted(userId));
-        blobClient.delete();
+        if (blobClient.exists()) {
+            blobClient.delete();
+        }
     }
 }

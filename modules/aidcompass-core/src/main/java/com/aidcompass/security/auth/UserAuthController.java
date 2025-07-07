@@ -40,13 +40,11 @@ public class UserAuthController {
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_CUSTOMER', 'ROLE_DOCTOR', 'ROLE_JURIST', 'ROLE_ADMIN')")
     @GetMapping("/me")
     public ResponseEntity<?> me(@AuthenticationPrincipal TokenUserDetails principal) {
-        return ResponseEntity.ok()
-                .body(Map.of(
-                        "authority",
-                        principal.getAuthorities().stream()
-                                .findFirst()
-                                .get()
-                                .getAuthority())
-                );
+        if (userService.existsById(principal.getUserId())) {
+            return ResponseEntity.ok()
+                    .body(Map.of("authority", principal.getAuthorities().stream().findFirst().get().getAuthority()));
+        } else {
+            throw new UserNotFoundByIdException();
+        }
     }
 }

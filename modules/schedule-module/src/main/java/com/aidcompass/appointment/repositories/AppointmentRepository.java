@@ -36,20 +36,12 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
 
     @Modifying
     @Query(value = """
-        DELETE FROM AppointmentEntity a
-        WHERE a.customerId = :participant_id
-           OR a.volunteerId = :participant_id
+        DELETE FROM appointments
+        WHERE customer_id = :participant_id
+           OR volunteer_id = :participant_id
         RETURNING id
     """, nativeQuery = true)
     List<Long> deleteAllByParticipantId(@Param("participant_id") UUID participantId);
-
-    @Modifying
-    @Query("""
-        UPDATE AppointmentEntity a
-        SET a.status = :status
-        WHERE a.id = :id
-    """)
-    void updateStatus(@Param("id") Long id, @Param("status") AppointmentStatus status);
 
     @Modifying
     @Query(value = """

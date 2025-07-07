@@ -86,6 +86,9 @@ public class GlobalRedisConfig {
                                      @Qualifier("defaultRedisCacheConfiguration") RedisCacheConfiguration defaultConfig) {
         return RedisCacheManager.builder(redisConnectionFactory)
                 .disableCreateOnMissingCache()
+
+                .withCacheConfiguration("users:exists", defaultConfig.entryTtl(Duration.ofSeconds(3600)))
+
                 .withCacheConfiguration("doctors:public", defaultConfig)
                 .withCacheConfiguration("doctors:public:full", defaultConfig)
                 .withCacheConfiguration("doctors:spec", defaultConfig.entryTtl(Duration.ofSeconds(60)))

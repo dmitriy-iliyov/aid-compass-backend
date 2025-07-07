@@ -61,7 +61,6 @@ public class UserOrchestratorImpl implements UserOrchestrator {
         }
     }
 
-
     @Override
     public boolean existsById(UUID id) {
         return userService.existsById(id);

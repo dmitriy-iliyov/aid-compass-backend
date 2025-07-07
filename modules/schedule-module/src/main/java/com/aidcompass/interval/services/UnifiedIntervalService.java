@@ -176,14 +176,14 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
         repository.deleteAllByOwnerId(ownerId);
 
         // scan
-        redisTemplate.delete(
-                Objects.requireNonNull(
-                        redisTemplate.keys(GlobalRedisConfig.INTERVALS_BY_DATE_CACHE + ':' + ownerId + ":*"))
-        );
-        redisTemplate.delete(
-                Objects.requireNonNull(
-                        redisTemplate.keys(GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE + ':' + ownerId))
-        );
+        Set<String> toInvalidate = redisTemplate.keys(GlobalRedisConfig.INTERVALS_BY_DATE_CACHE + "::" + ownerId + ":*");
+        if (toInvalidate != null && !toInvalidate.isEmpty()) {
+            redisTemplate.delete(toInvalidate);
+        }
+        toInvalidate = redisTemplate.keys(GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE + "::" + ownerId);
+        if (toInvalidate != null && !toInvalidate.isEmpty()) {
+            redisTemplate.delete(toInvalidate);
+        }
     }
 
     @Transactional

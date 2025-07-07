@@ -14,8 +14,12 @@ import com.aidcompass.security.domain.user.models.UserEntity;
 import com.aidcompass.security.exceptions.illegal_input.IncorrectPasswordException;
 import com.aidcompass.security.exceptions.not_found.UserNotFoundByEmailException;
 import com.aidcompass.security.exceptions.not_found.UserNotFoundByIdException;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,6 +42,7 @@ public class UnifiedUserService implements UserService, UserDetailsService {
     private final AuthorityService authorityService;
     private final UserMapper mapper;
     private final PasswordEncoder passwordEncoder;
+    private final RedisTemplate<String, Object> redisTemplate;
 
 
     @Transactional(readOnly = true)
@@ -59,8 +64,8 @@ public class UnifiedUserService implements UserService, UserDetailsService {
         );
     }
 
-    @Override
     @Transactional
+    @Override
     public void save(SystemUserDto systemUserDto) {
         UserEntity savedUserEntity = repository.save(mapper.toEntity(systemUserDto));
         AuthorityEntity authorityEntity = authorityService.findByAuthority(Authority.ROLE_USER);
@@ -68,6 +73,7 @@ public class UnifiedUserService implements UserService, UserDetailsService {
         repository.save(savedUserEntity);
     }
 
+    @Cacheable(value = "users:exists", key = "#id")
     @Transactional(readOnly = true)
     @Override
     public boolean existsById(UUID id) {
@@ -80,8 +86,8 @@ public class UnifiedUserService implements UserService, UserDetailsService {
         return repository.existsByEmail(email);
     }
 
-    @Override
     @Transactional
+    @Override
     public UserResponseDto update(SystemUserUpdateDto dto) {
         UserEntity entity = repository.findById(dto.getId()).orElseThrow(
                 UserNotFoundByIdException::new
@@ -92,16 +98,16 @@ public class UnifiedUserService implements UserService, UserDetailsService {
         return mapper.toResponseDto(repository.save(entity));
     }
 
-    @Override
     @Transactional
+    @Override
     public void updatePasswordByEmail(String email, String password) {
         UserEntity userEntity = repository.findByEmail(email).orElseThrow(UserNotFoundByEmailException::new);
         userEntity.setPassword(passwordEncoder.encode(password));
         repository.save(userEntity);
     }
 
-    @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Override
     public void confirmByEmail(String email, Long emailId) {
         UserEntity userEntity = repository.findWithAuthorityByEmail(email).orElseThrow(UserNotFoundByEmailException::new);
         AuthorityEntity newAuthorityEntity = authorityService.findByAuthority(Authority.ROLE_USER);
@@ -115,7 +121,9 @@ public class UnifiedUserService implements UserService, UserDetailsService {
 
         userEntity.setAuthorities(authorityEntities);
         userEntity.setEmailId(emailId);
-        repository.save(userEntity);
+        userEntity = repository.save(userEntity);
+
+        redisTemplate.delete("users:exists::" + userEntity.getId());
     }
 
     @Transactional
@@ -171,20 +179,26 @@ public class UnifiedUserService implements UserService, UserDetailsService {
         return mapper.toSystemDtoList(repository.findAllByIdIn(ids));
     }
 
-    @Override
+    @CacheEvict(value = "users:exists", key = "#id")
     @Transactional
+    @Override
     public void deleteById(UUID id) {
         repository.deleteById(id);
     }
 
-    @Override
+    @CacheEvict(value = "users:exists", key = "#id")
     @Transactional
+    @Override
     public void deleteByPassword(UUID id, String password) {
         UserEntity userEntity = repository.findById(id).orElseThrow(UserNotFoundByIdException::new);
         if (passwordEncoder.matches(password, userEntity.getPassword())) {
             repository.deleteById(id);
             return;
         } throw new IncorrectPasswordException();
+    }
+
+    private void cleanCookie(HttpServletResponse response) {
+
     }
 
     @Override
