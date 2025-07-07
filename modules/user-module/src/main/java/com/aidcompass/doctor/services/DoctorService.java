@@ -6,12 +6,12 @@ import com.aidcompass.gender.Gender;
 import com.aidcompass.general.contracts.dto.PageResponse;
 import com.aidcompass.general.interfaces.PersistService;
 
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 
 public interface DoctorService extends PersistService<DoctorDto, PrivateDoctorResponseDto> {
-
-    boolean existsById(UUID id);
 
     long countByIsApproved(boolean approved);
 
@@ -24,6 +24,8 @@ public interface DoctorService extends PersistService<DoctorDto, PrivateDoctorRe
     FullPublicDoctorResponseDto findFullPublicById(UUID id);
 
     PageResponse<PublicDoctorResponseDto> findAllByNamesCombination(String firstName, String secondName, String lastName, int page, int size);
+
+    List<PublicDoctorResponseDto> findAllByIdIn(Set<UUID> ids);
 
     PageResponse<FullPrivateDoctorResponseDto> findAllUnapproved(int page, int size);
 

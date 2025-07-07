@@ -29,7 +29,7 @@ public class  AppointmentDurationServiceImpl implements AppointmentDurationServi
     private final CacheManager cacheManager;
 
 
-    @CachePut(value = GlobalRedisConfig.APPOINTMENT_DURATION_CACHE_NAME, key = "#ownerId")
+    @CachePut(value = GlobalRedisConfig.APPOINTMENT_DURATION_CACHE, key = "#ownerId")
     @Transactional
     @Override
     public Long set(UUID ownerId, Authority authority, Long duration) {
@@ -45,15 +45,15 @@ public class  AppointmentDurationServiceImpl implements AppointmentDurationServi
         return duration;
     }
 
-    @Cacheable(value = GlobalRedisConfig.APPOINTMENT_DURATION_CACHE_NAME, key = "#ownerId", unless = "#result == null")
+    @Cacheable(value = GlobalRedisConfig.APPOINTMENT_DURATION_CACHE, key = "#ownerId", unless = "#result == null")
     @Transactional(readOnly = true)
     @Override
     public Long findByOwnerId(UUID ownerId) {
-        Cache cache = cacheManager.getCache(GlobalRedisConfig.APPOINTMENT_DURATION_CACHE_NAME);
-        Number duration = Objects.requireNonNull(cache).get(ownerId, Number.class);
-        if (duration != null) {
-            return duration.longValue();
-        }
+//        Cache cache = cacheManager.getCache(GlobalRedisConfig.APPOINTMENT_DURATION_CACHE);
+//        Number duration = Objects.requireNonNull(cache).get(ownerId, Number.class);
+//        if (duration != null) {
+//            return duration.longValue();
+//        }
         return repository
                 .findByOwnerId(ownerId)
                 .orElseThrow(DurationNotFoundByOwnerIdException::new)
@@ -62,11 +62,11 @@ public class  AppointmentDurationServiceImpl implements AppointmentDurationServi
 
     @Transactional(readOnly = true)
     @Override
-    public Map<UUID, Long> findAllByOwnerIdIn(List<UUID> ownerIds) {
+    public Map<UUID, Long> findAllByOwnerIdIn(Set<UUID> ownerIds) {
         if (ownerIds.size() > 10) {
             throw new PassedListIsToLongException();
         }
-        Cache cache = cacheManager.getCache(GlobalRedisConfig.APPOINTMENT_DURATION_MAP_CACHE_NAME);
+        Cache cache = cacheManager.getCache(GlobalRedisConfig.APPOINTMENT_DURATION_MAP_CACHE);
         String hash = UuidUtils.hashUuidCollection(ownerIds);
         if (cache != null) {
             Map<String, String> fromCache = cache.get(hash, Map.class);
@@ -94,7 +94,7 @@ public class  AppointmentDurationServiceImpl implements AppointmentDurationServi
         return responseMap;
     }
 
-    @CacheEvict(value = GlobalRedisConfig.APPOINTMENT_DURATION_CACHE_NAME, key = "#ownerId")
+    @CacheEvict(value = GlobalRedisConfig.APPOINTMENT_DURATION_CACHE, key = "#ownerId")
     @Transactional(readOnly = true)
     @Override
     public void deleteByOwnerId(UUID ownerId) {

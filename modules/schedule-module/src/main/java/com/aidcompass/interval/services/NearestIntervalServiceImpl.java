@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -31,7 +28,7 @@ public class NearestIntervalServiceImpl implements NearestIntervalService {
 
 
     @Override
-    public Map<UUID, NearestIntervalDto> findAll(List<UUID> ownerIds) {
+    public Map<UUID, NearestIntervalDto> findAll(Set<UUID> ownerIds) {
         if (ownerIds.size() > 10) {
             throw new PassedListIsToLongException();
         }
@@ -40,7 +37,7 @@ public class NearestIntervalServiceImpl implements NearestIntervalService {
         List<UUID> localOwnerIds = new ArrayList<>(ownerIds);
         localOwnerIds.removeAll(response.keySet());
         if (!localOwnerIds.isEmpty()) {
-            List<IntervalResponseDto> nearestIntervalList = service.findAllNearestByOwnerIdIn(localOwnerIds);
+            List<IntervalResponseDto> nearestIntervalList = service.findAllNearestByOwnerIdIn(new HashSet<>(localOwnerIds));
             for (IntervalResponseDto interval: nearestIntervalList) {
                 response.put(interval.ownerId(), saveWithTtl(mapper.toEntity(interval)));
             }

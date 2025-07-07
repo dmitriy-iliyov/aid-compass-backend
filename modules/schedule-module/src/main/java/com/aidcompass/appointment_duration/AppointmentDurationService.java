@@ -4,6 +4,7 @@ import com.aidcompass.security.domain.authority.models.Authority;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public interface AppointmentDurationService {
@@ -11,7 +12,7 @@ public interface AppointmentDurationService {
 
     Long findByOwnerId(UUID ownerId);
 
-    Map<UUID, Long> findAllByOwnerIdIn(List<UUID> ownerId);
+    Map<UUID, Long> findAllByOwnerIdIn(Set<UUID> ownerId);
 
     void deleteByOwnerId(UUID ownerId);
 }

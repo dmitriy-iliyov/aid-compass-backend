@@ -1,11 +1,14 @@
 package com.aidcompass.security.domain.user.repositories;
 
 import com.aidcompass.security.domain.user.models.UserEntity;
+import com.aidcompass.security.domain.user.models.dto.SystemUserDto;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -20,4 +23,7 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
 
     @EntityGraph(attributePaths = {"authorities"})
     Optional<UserEntity> findWithAuthorityById(UUID id);
+
+    @EntityGraph(attributePaths = {"authorities"})
+    List<UserEntity> findAllByIdIn(Set<UUID> ids);
 }

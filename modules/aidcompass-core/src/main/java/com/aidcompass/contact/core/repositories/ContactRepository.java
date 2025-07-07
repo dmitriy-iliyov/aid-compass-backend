@@ -54,4 +54,7 @@ public interface ContactRepository extends JpaRepository<ContactEntity, Long> {
 
     @EntityGraph(attributePaths = {"typeEntity"})
     List<ContactEntity> findAllPrimaryByOwnerIdIn(Set<UUID> ids);
+
+    @EntityGraph(attributePaths = {"typeEntity"})
+    List<ContactEntity> findAllByOwnerIdIn(Set<UUID> ids);
 }

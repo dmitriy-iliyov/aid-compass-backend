@@ -4,6 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public interface AvatarService {
@@ -12,7 +13,7 @@ public interface AvatarService {
 
     String saveOrUpdateDefault(MultipartFile image);
 
-    Map<UUID, String> findAllUrlByOwnerIdIn(List<UUID> userIdList);
+    Map<UUID, String> findAllUrlByOwnerIdIn(Set<UUID> userIdList);
 
     String findUrlByUserId(UUID userId);
 

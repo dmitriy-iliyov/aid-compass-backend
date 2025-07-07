@@ -52,25 +52,25 @@ public class UnifiedWorkDayService implements WorkDayService {
 
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
     @Override
-    public Map<String, TimeInfo> findPrivateListOfTimes(UUID ownerId, LocalDate date) {
+    public Map<String, TimeDto> findPrivateListOfTimes(UUID ownerId, LocalDate date) {
 
         List<IntervalResponseDto> intervals = intervalService.findAllByOwnerIdAndDate(ownerId, date);
         List<AppointmentResponseDto> appointments =
                 appointmentService.findAllByVolunteerIdAndDateAndStatus(ownerId, date, AppointmentStatus.SCHEDULED);
 
-        Map<LocalTime, Pair<LocalTime, TimeInfo>> existsTimeMap = appointments.stream()
+        Map<LocalTime, Pair<LocalTime, TimeDto>> existsTimeMap = appointments.stream()
                 .collect(Collectors.toMap(
                         AppointmentResponseDto::start,
-                        appointment -> Pair.of(appointment.end(), new TimeInfo(appointment.id(), 2)))
+                        appointment -> Pair.of(appointment.end(), new TimeDto(appointment.id(), 2)))
                 );
         intervals.forEach(interval -> existsTimeMap.put(
                 interval.start(),
-                Pair.of(interval.end(), new TimeInfo(interval.id(), 1)))
+                Pair.of(interval.end(), new TimeDto(interval.id(), 1)))
         );
 
         List<LocalTime> times = existsTimeMap.keySet().stream().sorted().toList();
         Long duration = appointmentDurationService.findByOwnerId(ownerId);
-        Map<LocalTime, TimeInfo> resultMap = new LinkedHashMap<>();
+        Map<LocalTime, TimeDto> resultMap = new LinkedHashMap<>();
         LocalTime start = LocalTime.of(8, 0);
         LocalTime end = start.plusMinutes(duration);
         int i = 0;
@@ -81,10 +81,10 @@ public class UnifiedWorkDayService implements WorkDayService {
             if (i < times.size()) {
                 LocalTime eTime = times.get(i);
                 if (end.isBefore(eTime)) {
-                    resultMap.put(start, new TimeInfo(null, 0));
+                    resultMap.put(start, new TimeDto(null, 0));
                     start = end;
                 } else if (end.equals(eTime)) {
-                    resultMap.put(start, new TimeInfo(null, 0));
+                    resultMap.put(start, new TimeDto(null, 0));
                     resultMap.put(eTime, existsTimeMap.get(eTime).getRight());
                     start = existsTimeMap.get(eTime).getLeft();
                     i++;
@@ -94,7 +94,7 @@ public class UnifiedWorkDayService implements WorkDayService {
                     i++;
                 }
             } else {
-                resultMap.put(start, new TimeInfo(null, 0));
+                resultMap.put(start, new TimeDto(null, 0));
                 start = end;
             }
             end = start.plusMinutes(duration);

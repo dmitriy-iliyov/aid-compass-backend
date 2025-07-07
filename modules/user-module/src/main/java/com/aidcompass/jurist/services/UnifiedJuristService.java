@@ -30,10 +30,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -177,10 +174,21 @@ public class UnifiedJuristService implements JuristService, ProfileStatusUpdateS
         return fullMapper.toFullPublicDto(entity);
     }
 
+    @Cacheable(value = "jurists:count")
     @Transactional(readOnly = true)
     @Override
     public long countByIsApproved(boolean approved) {
         return repository.countByIsApproved(approved);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<PublicJuristResponseDto> findAllByIdIn(Set<UUID> ids) {
+        List<JuristEntity> entityList = repository.findAllByIdIn(ids);
+        return toPublicDtoList(
+                entityList,
+                loadSpecializations(new PageImpl<>(entityList))
+        );
     }
 
     @Transactional(readOnly = true)

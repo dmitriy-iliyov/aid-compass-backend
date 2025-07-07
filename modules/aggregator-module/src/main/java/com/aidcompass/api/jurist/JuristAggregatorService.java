@@ -4,6 +4,7 @@ import com.aidcompass.AggregatorUtils;
 import com.aidcompass.api.jurist.dto.JuristCardDto;
 import com.aidcompass.api.jurist.dto.JuristPrivateProfileDto;
 import com.aidcompass.api.jurist.dto.JuristPublicProfileDto;
+import com.aidcompass.contact.core.models.dto.PrivateContactResponseDto;
 import com.aidcompass.gender.Gender;
 import com.aidcompass.general.contracts.dto.PageResponse;
 import com.aidcompass.general.exceptions.models.BaseNotFoundException;
@@ -14,10 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -105,19 +103,21 @@ public class JuristAggregatorService {
 
     private List<JuristPrivateProfileDto> aggregateToPrivate(List<FullPrivateJuristResponseDto> dtoList) {
         List<JuristPrivateProfileDto> response = new ArrayList<>();
-        List<UUID> uuids = new ArrayList<>();
+        Set<UUID> uuids = new HashSet<>();
         for (FullPrivateJuristResponseDto dto : dtoList) {
             uuids.add(dto.jurist().baseDto().id());
         }
         Map<UUID, String> avatarUrls = utils.findAllAvatarUrlByOwnerIdIn(uuids);
         Map<UUID, Long> durations = utils.findAllDurationByOwnerIdIn(uuids);
+        Map<UUID, List<PrivateContactResponseDto>> contacts = utils.findAllPrivateContactByOwnerIdIn(uuids);
+
         for (FullPrivateJuristResponseDto dto : dtoList) {
             UUID id = dto.jurist().baseDto().id();
             response.add(
                     new JuristPrivateProfileDto(
                             avatarUrls.get(id),
                             dto,
-                            utils.findAllPrivateContactByOwnerId(id),
+                            contacts.get(id),
                             durations.get(id))
             );
         }
@@ -127,13 +127,14 @@ public class JuristAggregatorService {
 
     private List<JuristCardDto> aggregate(List<PublicJuristResponseDto> dtoList) {
         List<JuristCardDto> juristCardDtoList = new ArrayList<>();
-        List<UUID> uuids = new ArrayList<>();
+        Set<UUID> uuids = new HashSet<>();
         for (PublicJuristResponseDto dto : dtoList) {
             uuids.add(dto.id());
         }
         Map<UUID, String> avatarUrls = utils.findAllAvatarUrlByOwnerIdIn(uuids);
         Map<UUID, NearestIntervalDto> nearestIntervalDtoList = utils.findAllNearestByOwnerIdIn(uuids);
         Map<UUID, Long> durations = utils.findAllDurationByOwnerIdIn(uuids);
+
         for (PublicJuristResponseDto dto : dtoList) {
             juristCardDtoList.add(
                     new JuristCardDto(

@@ -6,7 +6,10 @@ import com.aidcompass.security.domain.user.models.dto.UserUpdateDto;
 import com.aidcompass.security.domain.authority.models.Authority;
 import com.aidcompass.security.domain.user.models.MemberUserDetails;
 import com.aidcompass.security.domain.user.models.dto.SystemUserUpdateDto;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface UserService {
@@ -28,6 +31,8 @@ public interface UserService {
     MemberUserDetails changeAuthorityById(UUID id, Authority authority);
 
     SystemUserDto systemFindById(UUID id);
+
+    List<SystemUserDto> findAllByIdIn(Set<UUID> ids);
 
     void deleteById(UUID id);
 

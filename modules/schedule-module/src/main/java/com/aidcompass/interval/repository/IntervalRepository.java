@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -47,7 +48,7 @@ public interface IntervalRepository extends JpaRepository<IntervalEntity, Long> 
         ) sub
         WHERE sub.rn = 1
     """, nativeQuery = true)
-    List<IntervalEntity> findAllNearestByOwnerIdIn(@Param("owner_ids") List<UUID> ownerIds,
+    List<IntervalEntity> findAllNearestByOwnerIdIn(@Param("owner_ids") Set<UUID> ownerIds,
                                                    @Param("start") LocalDate start,
                                                    @Param("end") LocalDate end);
 

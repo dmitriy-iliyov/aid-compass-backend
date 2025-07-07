@@ -42,7 +42,7 @@ public class UserOrchestratorImpl implements UserOrchestrator {
         UUID id = UuidFactory.generate();
         if (userService.existsById(id)) {
             id = UuidFactory.generate();
-            log.error("Id duplicated id: {}", id);
+            log.error("Id duplicated, id: {}", id);
         }
         synchronizationFacade.save(new SystemContactCreateDto(id, ContactType.EMAIL, dto.email()));
         unconfirmedUserService.save(id, dto);

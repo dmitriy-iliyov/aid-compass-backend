@@ -5,10 +5,11 @@ import com.aidcompass.interval.models.dto.NearestIntervalDto;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public interface NearestIntervalService {
-    Map<UUID, NearestIntervalDto> findAll(List<UUID> ownerIds);
+    Map<UUID, NearestIntervalDto> findAll(Set<UUID> ownerIds);
 
     NearestIntervalDto findByOwnerId(UUID ownerId);
 

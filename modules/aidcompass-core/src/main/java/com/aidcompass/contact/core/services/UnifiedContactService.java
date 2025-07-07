@@ -110,28 +110,6 @@ public class UnifiedContactService implements ContactService, SystemContactServi
         return mapper.toPrivateDtoList(repository.saveAll(entityList));
     }
 
-    @Transactional
-    @Override
-    public void confirmContactById(Long contactId) {
-        if (repository.confirmContactById(contactId) == 0) {
-            throw new ContactNotFoundByIdException();
-        }
-    }
-
-    @Transactional
-    @Override
-    public void markContactAsLinked(UUID ownerId, Long contactId) {
-        ContactEntity linkedEntity = repository.findByOwnerIdAndLinkedToAccount(ownerId, true)
-                .orElse(null);
-        if (linkedEntity != null) {
-            linkedEntity.setLinkedToAccount(false);
-            repository.save(linkedEntity);
-        }
-        ContactEntity newLinkedEntity = repository.findById(contactId).orElseThrow(ContactNotFoundByIdException::new);
-        newLinkedEntity.setLinkedToAccount(true);
-        repository.save(newLinkedEntity);
-    }
-
     @Cacheable(value = "exists", key="#typeEntity.type.toString() + ':' + #contact", condition = "#result == true")
     @Transactional(readOnly = true)
     @Override
@@ -153,17 +131,9 @@ public class UnifiedContactService implements ContactService, SystemContactServi
 
     @Transactional(readOnly = true)
     @Override
-    public List<PrivateContactResponseDto> findAllPrivateByOwnerId(UUID ownerId) {
-        List<ContactEntity> entityList = repository.findByOwnerId(ownerId);
-        return mapper.toPrivateDtoList(entityList);
-    }
-
-    @Cacheable(value = "public_contacts", key = "#ownerId.toString()")
-    @Transactional(readOnly = true)
-    @Override
-    public List<PublicContactResponseDto> findAllPublicByOwnerId(UUID ownerId) {
-        List<ContactEntity> entityList = repository.findByOwnerIdAndIsConfirmed(ownerId, true);
-        return mapper.toPublicDtoList(entityList);
+    public SystemContactDto findById(Long contactId) {
+        ContactEntity entity = repository.findWithTypeById(contactId).orElseThrow(ContactNotFoundByIdException::new);
+        return mapper.toSystemDto(entity);
     }
 
     @Cacheable(value = "primary_contacts", key = "#ownerId.toString()")
@@ -183,9 +153,25 @@ public class UnifiedContactService implements ContactService, SystemContactServi
 
     @Transactional(readOnly = true)
     @Override
-    public List<SystemContactDto> findAllPrimaryByOwnerIdIn(Set<UUID> ids) {
-        List<ContactEntity> entityList = repository.findAllPrimaryByOwnerIdIn(ids);
-        return mapper.toSystemDtoList(entityList);
+    public SystemContactDto findByContact(String contact) {
+        ContactEntity entity = repository.findByContact(contact)
+                .orElseThrow(ContactNotFoundByContactException::new);
+        return mapper.toSystemDto(entity);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<PrivateContactResponseDto> findAllPrivateByOwnerId(UUID ownerId) {
+        List<ContactEntity> entityList = repository.findByOwnerId(ownerId);
+        return mapper.toPrivateDtoList(entityList);
+    }
+
+    @Cacheable(value = "public_contacts", key = "#ownerId.toString()")
+    @Transactional(readOnly = true)
+    @Override
+    public List<PublicContactResponseDto> findAllPublicByOwnerId(UUID ownerId) {
+        List<ContactEntity> entityList = repository.findByOwnerIdAndIsConfirmed(ownerId, true);
+        return mapper.toPublicDtoList(entityList);
     }
 
     @Transactional(readOnly = true)
@@ -197,17 +183,43 @@ public class UnifiedContactService implements ContactService, SystemContactServi
 
     @Transactional(readOnly = true)
     @Override
-    public SystemContactDto findByContact(String contact) {
-        ContactEntity entity = repository.findByContact(contact)
-                .orElseThrow(ContactNotFoundByContactException::new);
-        return mapper.toSystemDto(entity);
+    public List<SystemContactDto> findAllPrimaryByOwnerIdIn(Set<UUID> ids) {
+        List<ContactEntity> entityList = repository.findAllPrimaryByOwnerIdIn(ids);
+        return mapper.toSystemDtoList(entityList);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public SystemContactDto findById(Long contactId) {
-        ContactEntity entity = repository.findWithTypeById(contactId).orElseThrow(ContactNotFoundByIdException::new);
-        return mapper.toSystemDto(entity);
+    public Map<UUID, List<PrivateContactResponseDto>> findAllPrivateContactByOwnerIdIn(Set<UUID> ids) {
+        List<ContactEntity> entityList = repository.findAllByOwnerIdIn(ids);
+        Map<UUID, List<PrivateContactResponseDto>> dtoMap = new HashMap<>();
+        for (ContactEntity entity: entityList) {
+            dtoMap.computeIfAbsent(entity.getOwnerId(), k -> new ArrayList<>(List.of(mapper.toPrivateDto(entity))))
+                    .add(mapper.toPrivateDto(entity));
+        }
+        return dtoMap;
+    }
+
+    @Transactional
+    @Override
+    public void confirmContactById(Long contactId) {
+        if (repository.confirmContactById(contactId) == 0) {
+            throw new ContactNotFoundByIdException();
+        }
+    }
+
+    @Transactional
+    @Override
+    public void markContactAsLinked(UUID ownerId, Long contactId) {
+        ContactEntity linkedEntity = repository.findByOwnerIdAndLinkedToAccount(ownerId, true)
+                .orElse(null);
+        if (linkedEntity != null) {
+            linkedEntity.setLinkedToAccount(false);
+            repository.save(linkedEntity);
+        }
+        ContactEntity newLinkedEntity = repository.findById(contactId).orElseThrow(ContactNotFoundByIdException::new);
+        newLinkedEntity.setLinkedToAccount(true);
+        repository.save(newLinkedEntity);
     }
 
     @Caching(evict = {

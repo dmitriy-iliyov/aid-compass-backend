@@ -6,13 +6,14 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @UtilityClass
 public class UuidUtils {
 
-    public static String hashUuidCollection(List<UUID> uuids) {
+    public static String hashUuidCollection(Set<UUID> uuids) {
         String joinedUuids = uuids.stream().distinct().map(UUID::toString).collect(Collectors.joining(","));
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");

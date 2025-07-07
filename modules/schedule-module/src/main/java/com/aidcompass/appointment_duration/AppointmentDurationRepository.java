@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -14,5 +15,5 @@ public interface AppointmentDurationRepository extends JpaRepository<Appointment
 
     void deleteByOwnerId(UUID ownerId);
 
-    List<AppointmentDurationEntity> findAllByOwnerIdIn(List<UUID> ownerIds);
+    List<AppointmentDurationEntity> findAllByOwnerIdIn(Set<UUID> ownerIds);
 }

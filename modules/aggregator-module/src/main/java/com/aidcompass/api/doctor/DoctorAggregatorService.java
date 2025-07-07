@@ -4,6 +4,7 @@ import com.aidcompass.AggregatorUtils;
 import com.aidcompass.api.doctor.dto.DoctorCardDto;
 import com.aidcompass.api.doctor.dto.DoctorPrivateProfileDto;
 import com.aidcompass.api.doctor.dto.DoctorPublicProfileDto;
+import com.aidcompass.contact.core.models.dto.PrivateContactResponseDto;
 import com.aidcompass.doctor.models.dto.*;
 import com.aidcompass.doctor.services.DoctorService;
 import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
@@ -15,10 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -101,7 +100,7 @@ public class DoctorAggregatorService {
     private List<DoctorCardDto> aggregate(List<PublicDoctorResponseDto> dtoList) {
         List<DoctorCardDto> doctorCardDtoList = new ArrayList<>();
 
-        List<UUID> uuids = new ArrayList<>();
+        Set<UUID> uuids = new HashSet<>();
         for (PublicDoctorResponseDto dto : dtoList) {
             uuids.add(dto.id());
         }
@@ -123,12 +122,13 @@ public class DoctorAggregatorService {
 
     private List<DoctorPrivateProfileDto> aggregateToPrivate(List<FullPrivateDoctorResponseDto> dtoList) {
         List<DoctorPrivateProfileDto> systemCardDtos = new ArrayList<>();
-        List<UUID> uuids = new ArrayList<>();
+        Set<UUID> uuids = new HashSet<>();
         for (FullPrivateDoctorResponseDto dto : dtoList) {
             uuids.add(dto.doctor().baseDto().id());
         }
         Map<UUID, String> avatarUrls = utils.findAllAvatarUrlByOwnerIdIn(uuids);
         Map<UUID, Long> durations = utils.findAllDurationByOwnerIdIn(uuids);
+        Map<UUID, List<PrivateContactResponseDto>> contacts = utils.findAllPrivateContactByOwnerIdIn(uuids);
 
         for (FullPrivateDoctorResponseDto dto : dtoList) {
             UUID id = dto.doctor().baseDto().id();
@@ -136,7 +136,7 @@ public class DoctorAggregatorService {
                     new DoctorPrivateProfileDto(
                             avatarUrls.get(id),
                             dto,
-                            utils.findAllPrivateContactByOwnerId(id),
+                            contacts.get(id),
                             durations.get(id))
             );
         }

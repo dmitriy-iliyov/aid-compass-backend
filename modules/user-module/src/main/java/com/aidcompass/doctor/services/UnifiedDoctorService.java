@@ -26,10 +26,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -108,12 +105,6 @@ public class UnifiedDoctorService implements DoctorService, ProfileStatusUpdateS
 
     @Transactional(readOnly = true)
     @Override
-    public boolean existsById(UUID id) {
-        return repository.existsById(id);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
     public PrivateDoctorResponseDto findPrivateById(UUID id) {
         DoctorEntity entity = repository.findWithSpecsAndProfileStatusById(id).orElseThrow(DoctorNotFoundByIdException::new);
         if (entity.getProfileStatusEntity().getProfileStatus() == ProfileStatus.COMPLETE && entity.isApproved()) {
@@ -149,10 +140,21 @@ public class UnifiedDoctorService implements DoctorService, ProfileStatusUpdateS
         return fullMapper.toFullPublicDto(entity);
     }
 
+    @Cacheable(value = "doctors:count")
     @Transactional(readOnly = true)
     @Override
     public long countByIsApproved(boolean approved) {
         return repository.countByIsApproved(approved);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<PublicDoctorResponseDto> findAllByIdIn(Set<UUID> ids) {
+        List<DoctorEntity> entityList = repository.findAllByIdIn(ids);
+        return toPublicDtoList(
+                entityList,
+                loadSpecializations(new PageImpl<>(entityList))
+        );
     }
 
     @Transactional(readOnly = true)

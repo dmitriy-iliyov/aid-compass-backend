@@ -5,7 +5,6 @@ import com.aidcompass.security.domain.user.models.dto.UserResponseDto;
 import com.aidcompass.security.domain.user.repositories.UserRepository;
 import com.aidcompass.security.domain.user.models.dto.UserUpdateDto;
 import com.aidcompass.security.domain.authority.models.Authority;
-import com.aidcompass.general.exceptions.models.BaseNotFoundException;
 import com.aidcompass.security.domain.authority.AuthorityService;
 import com.aidcompass.security.domain.authority.models.AuthorityEntity;
 import com.aidcompass.security.domain.user.mapper.UserMapper;
@@ -27,6 +26,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -163,6 +163,12 @@ public class UnifiedUserService implements UserService, UserDetailsService {
     public UserResponseDto findById(UUID id) {
         UserEntity userEntity = repository.findById(id).orElseThrow(UserNotFoundByIdException::new);
         return mapper.toResponseDto(userEntity);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<SystemUserDto> findAllByIdIn(Set<UUID> ids) {
+        return mapper.toSystemDtoList(repository.findAllByIdIn(ids));
     }
 
     @Override

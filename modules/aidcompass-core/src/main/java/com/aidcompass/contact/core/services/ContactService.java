@@ -8,6 +8,7 @@ import com.aidcompass.contact.core.models.dto.PublicContactResponseDto;
 import com.aidcompass.contact.core.models.dto.system.SystemContactDto;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,6 +28,8 @@ public interface ContactService {
 
     List<SystemContactDto> findAllPrimaryByOwnerIdIn(Set<UUID> ids);
 
+    Map<UUID, List<PrivateContactResponseDto>> findAllPrivateContactByOwnerIdIn(Set<UUID> ids);
+
     void markContactAsLinked(UUID ownerId, Long id);
 
     PrivateContactResponseDto update(UUID ownerId, ContactUpdateDto dto, ContactChangingListener callback);
@@ -34,5 +37,6 @@ public interface ContactService {
     List<PrivateContactResponseDto> updateAll(UUID ownerId, List<ContactUpdateDto> dtoList, ContactChangingListener callback);
 
     void deleteById(UUID ownerId, Long id);
+
     void deleteAll(UUID ownerId);
 }

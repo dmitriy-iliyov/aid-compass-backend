@@ -7,6 +7,7 @@ import com.aidcompass.appointment.models.dto.StatusFilter;
 import com.aidcompass.appointment.models.enums.AppointmentAgeType;
 import com.aidcompass.appointment.models.enums.AppointmentStatus;
 import com.aidcompass.general.contracts.dto.PageResponse;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,7 +23,7 @@ public interface AppointmentService {
     AppointmentResponseDto findById(Long id);
 
     PageResponse<AppointmentResponseDto> findAllByStatusFilter(UUID participantId, StatusFilter filter,
-                                                               int page, int size);
+                                                               int page, int size, boolean forVolunteer);
 
     List<AppointmentResponseDto> findAllByVolunteerIdAndDateAndStatus(UUID volunteerId, LocalDate date,
                                                                       AppointmentStatus status);

@@ -17,8 +17,6 @@ import com.aidcompass.exceptions.appointment.AppointmentOwnershipException;
 import com.aidcompass.appointment.models.AppointmentEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
@@ -51,10 +49,10 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
     @Caching(
             evict = {
                     @CacheEvict(
-                            value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_AND_STATUS_CACHE_NAME,
+                            value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_AND_STATUS_CACHE,
                             key = "#dto.volunteerId() + ':' + #dto.date() + ':SCHEDULED'"
                     ),
-                    @CacheEvict(value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_INTERVAL_CACHE_NAME, key = "#dto.volunteerId()")
+                    @CacheEvict(value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_INTERVAL_CACHE, key = "#dto.volunteerId()")
             }
     )
     @Transactional
@@ -68,11 +66,11 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
     @Caching(
             evict = {
                     @CacheEvict(
-                            value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_AND_STATUS_CACHE_NAME,
+                            value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_AND_STATUS_CACHE,
                             key = "#dto.getVolunteerId() + ':' + #dto.getDate() + ':SCHEDULED'"
                     ),
-                    @CacheEvict(value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_INTERVAL_CACHE_NAME, key = "#dto.getVolunteerId()"),
-                    @CacheEvict(value = GlobalRedisConfig.APPOINTMENTS_CACHE_NAME, key = "#dto.getId()")
+                    @CacheEvict(value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_INTERVAL_CACHE, key = "#dto.getVolunteerId()"),
+                    @CacheEvict(value = GlobalRedisConfig.APPOINTMENTS_CACHE, key = "#dto.getId()")
             }
     )
     @Transactional
@@ -90,7 +88,7 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
         throw new AppointmentOwnershipException();
     }
 
-    @Cacheable(value = GlobalRedisConfig.APPOINTMENTS_CACHE_NAME, key = "#id")
+    @Cacheable(value = GlobalRedisConfig.APPOINTMENTS_CACHE, key = "#id")
     @Transactional(readOnly = true)
     @Override
     public AppointmentResponseDto findById(Long id) {
@@ -100,12 +98,17 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
     @Transactional(readOnly = true)
     @Override
     public PageResponse<AppointmentResponseDto> findAllByStatusFilter(UUID participantId, StatusFilter filter,
-                                                                      int page, int size) {
+                                                                      int page, int size, boolean forVolunteer) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("date").and(Sort.by("start")).ascending());
 
         Specification<AppointmentEntity> specification = Specification
-                .where(AppointmentSpecifications.hasParticipantId(participantId))
-                .and(AppointmentSpecifications.hasStatuses(filter));
+                .where(AppointmentSpecifications.hasStatuses(filter));
+
+        if (forVolunteer) {
+            specification = specification.and(AppointmentSpecifications.hasVolunteerId(participantId));
+        } else {
+            specification = specification.and(AppointmentSpecifications.hasCustomerId(participantId));
+        }
 
         Page<AppointmentEntity> entityPage = repository.findAll(specification, pageable);
 
@@ -116,7 +119,7 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
     }
 
     @Cacheable(
-            value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_AND_STATUS_CACHE_NAME,
+            value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_AND_STATUS_CACHE,
             key = "#volunteerId + ':' + #date + ':' + #status"
     )
     @Transactional(readOnly = true)
@@ -126,7 +129,7 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
         return mapper.toDtoList(repository.findAllByVolunteerIdAndDateAndStatus(volunteerId, date, status));
     }
 
-    @Cacheable(value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_INTERVAL_CACHE_NAME, key = "#volunteerId")
+    @Cacheable(value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_INTERVAL_CACHE, key = "#volunteerId")
     @Transactional(readOnly = true)
     @Override
     public List<AppointmentResponseDto> findAllByVolunteerIdAndDateInterval(UUID volunteerId, LocalDate start, LocalDate end) {
@@ -134,8 +137,7 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
         return mapper.toDtoList(entityList);
     }
 
-    @CacheEvict(value = GlobalRedisConfig.APPOINTMENTS_CACHE_NAME, key = "#id")
-
+    @CacheEvict(value = GlobalRedisConfig.APPOINTMENTS_CACHE, key = "#id")
     @Transactional
     @Override
     public void markCompletedById(Long id, String review) {
@@ -145,12 +147,12 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
     @Caching(
             evict = {
                     @CacheEvict(
-                            value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_AND_STATUS_CACHE_NAME,
+                            value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_AND_STATUS_CACHE,
                             key = "#result.volunteerId() + ':' + #result.date() + ':' + #result.status()"
                     ),
-                    @CacheEvict(value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_INTERVAL_CACHE_NAME, key = "#result.volunteerId()")
+                    @CacheEvict(value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_INTERVAL_CACHE, key = "#result.volunteerId()")
             },
-            put = @CachePut(value = GlobalRedisConfig.APPOINTMENTS_CACHE_NAME, key = "#id")
+            put = @CachePut(value = GlobalRedisConfig.APPOINTMENTS_CACHE, key = "#id")
     )
     @Transactional
     @Override
@@ -164,10 +166,10 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
     @Caching(
             evict = {
                     @CacheEvict(
-                            value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_AND_STATUS_CACHE_NAME,
+                            value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_AND_STATUS_CACHE,
                             key = "#participantId + ':' + #date + ':CANCELED'"
                     ),
-                    @CacheEvict(value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_INTERVAL_CACHE_NAME, key = "#participantId")
+                    @CacheEvict(value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_INTERVAL_CACHE, key = "#participantId")
             }
     )
     @Transactional
@@ -180,12 +182,12 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
 //            value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_AND_STATUS_CACHE_NAME,
 //            password = "#participantId + ':' + #date + ':CANCELED'"
 //    ),
-    @CacheEvict(value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_INTERVAL_CACHE_NAME, key = "#participantId")
+    @CacheEvict(value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_INTERVAL_CACHE, key = "#participantId")
     @Transactional
     @Override
     public void deleteAll(UUID participantId) {
         List<Long> ids = repository.deleteAllByParticipantId(participantId);
-        Cache cache = cacheManager.getCache(GlobalRedisConfig.APPOINTMENTS_CACHE_NAME);
+        Cache cache = cacheManager.getCache(GlobalRedisConfig.APPOINTMENTS_CACHE);
         if (cache != null) {
             for (Long id: ids) {
                 cache.evict(id);
@@ -203,9 +205,13 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
     @Override
     public List<Long> markBatchAsSkipped(int batchSize) {
         LocalDate dateLimit = LocalDate.now().minusDays(1);
+
         log.info("START marking appointments as skipped with batchSize={}, dateLimit={}", batchSize, dateLimit);
+
         List<Long> markedIds = repository.markBatchAsSkipped(batchSize, dateLimit);
+
         log.info("END marking appointments, marked id list={}", markedIds);
+
         return markedIds;
     }
 
@@ -213,12 +219,16 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
     @Override
     public BatchResponse<AppointmentResponseDto> findBatchToRemind(int batchSize, int page) {
         LocalDate runDate = LocalDate.now().plusDays(1);
+
         log.info("START selecting appointments to remind with batchSize={}, page={}, runDate={}", batchSize, page, runDate);
+
         Slice<AppointmentEntity> slice = repository.findBatchToRemind(
                 runDate,
                 Pageable.ofSize(batchSize).withPage(page)
         );
+
         log.info("END selecting, hasNext={}", slice.hasNext());
+
         return new BatchResponse<>(
                 mapper.toDtoList(slice.getContent()),
                 slice.hasNext()

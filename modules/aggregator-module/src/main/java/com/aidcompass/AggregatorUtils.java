@@ -42,11 +42,11 @@ public class AggregatorUtils {
         }
     }
 
-    public Map<UUID, String> findAllAvatarUrlByOwnerIdIn(List<UUID> idList) {
+    public Map<UUID, String> findAllAvatarUrlByOwnerIdIn(Set<UUID> idList) {
         return avatarService.findAllUrlByOwnerIdIn(idList);
     }
 
-    public Map<UUID, NearestIntervalDto> findAllNearestByOwnerIdIn(List<UUID> idList) {
+    public Map<UUID, NearestIntervalDto> findAllNearestByOwnerIdIn(Set<UUID> idList) {
         return nearestIntervalService.findAll(idList);
     }
 
@@ -58,7 +58,7 @@ public class AggregatorUtils {
         }
     }
 
-    public Map<UUID, Long> findAllDurationByOwnerIdIn(List<UUID> ownerIds) {
+    public Map<UUID, Long> findAllDurationByOwnerIdIn(Set<UUID> ownerIds) {
         return durationService.findAllByOwnerIdIn(ownerIds);
     }
 
@@ -69,6 +69,10 @@ public class AggregatorUtils {
     public Map<UUID, SystemContactDto> findPrimaryContactByOwnerIdIn(Set<UUID> ids) {
         List<SystemContactDto> dtoList = contactService.findAllPrimaryByOwnerIdIn(ids);
         return dtoList.stream().collect(Collectors.toMap(SystemContactDto::getOwnerId, Function.identity()));
+    }
+
+    public Map<UUID, List<PrivateContactResponseDto>> findAllPrivateContactByOwnerIdIn(Set<UUID> ids) {
+        return contactService.findAllPrivateContactByOwnerIdIn(ids);
     }
 
     public List<PrivateContactResponseDto> findAllPrivateContactByOwnerId(UUID id) {

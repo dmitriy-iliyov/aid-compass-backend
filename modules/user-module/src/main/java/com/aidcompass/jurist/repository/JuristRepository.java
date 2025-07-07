@@ -11,7 +11,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -149,4 +151,7 @@ public interface JuristRepository extends JpaRepository<JuristEntity, UUID>,
     void updateProfileProgress(@Param("id") UUID id, @Param("profileProgressStep") int profileProgressStep);
 
     long countByIsApproved(boolean approved);
+
+    @EntityGraph(attributePaths = {"typeEntity"})
+    List<JuristEntity> findAllByIdIn(Set<UUID> ids);
 }

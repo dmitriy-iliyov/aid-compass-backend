@@ -7,6 +7,8 @@ import com.aidcompass.general.interfaces.PersistService;
 import com.aidcompass.jurist.models.dto.*;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -29,6 +31,8 @@ public interface JuristService extends PersistService<JuristDto, PrivateJuristRe
                                                                            String firstName, String secondName, String lastName,
                                                                            int page, int size);
 
+    List<PublicJuristResponseDto> findAllByIdIn(Set<UUID> ids);
+
     PageResponse<FullPrivateJuristResponseDto> findAllUnapproved(int page, int size);
 
     PageResponse<FullPrivateJuristResponseDto> findAllUnapprovedByNamesCombination(String firstName, String secondName,
@@ -36,7 +40,6 @@ public interface JuristService extends PersistService<JuristDto, PrivateJuristRe
 
     PageResponse<PublicJuristResponseDto> findAllApproved(int page, int size);
 
-    @Deprecated(forRemoval = true)
     PageResponse<PublicJuristResponseDto> findAllByFilter(String type, String specialization,
                                                           String firstName, String secondName,
                                                           String lastName, int page, int size);

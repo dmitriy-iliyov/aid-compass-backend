@@ -15,10 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.aidcompass.general.utils.uuid.UuidUtils.hashUuidCollection;
@@ -55,7 +52,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Transactional(readOnly = true)
     @Override
-    public Map<UUID, String> findAllUrlByOwnerIdIn(List<UUID> userIdList) {
+    public Map<UUID, String> findAllUrlByOwnerIdIn(Set<UUID> userIdList) {
         if (userIdList.size() > 10) {
             throw new PassedListIsToLongException();
         }

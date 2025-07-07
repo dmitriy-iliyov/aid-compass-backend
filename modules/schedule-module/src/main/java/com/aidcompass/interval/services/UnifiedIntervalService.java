@@ -38,9 +38,9 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
 
     @Caching(
             evict = {
-                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_CACHE_NAME,
+                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_CACHE,
                                 key = "#ownerId + ':' + #result.date()"),
-                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE_NAME, key = "#ownerId"),
+                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE, key = "#ownerId"),
             }
     )
     @Transactional
@@ -72,7 +72,7 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
 
     @Transactional(readOnly = true)
     @Override
-    public List<IntervalResponseDto> findAllNearestByOwnerIdIn(List<UUID> ownerIds) {
+    public List<IntervalResponseDto> findAllNearestByOwnerIdIn(Set<UUID> ownerIds) {
         LocalDateTime now = LocalDateTime.now();
         LocalDate start = now.toLocalDate().plusDays(1);
         if (now.toLocalTime().isAfter(LocalTime.of(10, 0))) {
@@ -88,7 +88,7 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
         return mapper.toDto(repository.findByOwnerIdAndStartAndDate(ownerId, start, date).orElse(null));
     }
 
-    @Cacheable(value = GlobalRedisConfig.INTERVALS_BY_DATE_CACHE_NAME, key = "#ownerId + ':' + #date")
+    @Cacheable(value = GlobalRedisConfig.INTERVALS_BY_DATE_CACHE, key = "#ownerId + ':' + #date")
     @Transactional(readOnly = true)
     @Override
     public List<IntervalResponseDto> findAllByOwnerIdAndDate(UUID ownerId, LocalDate date) {
@@ -98,7 +98,7 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
                 .toList();
     }
 
-    @Cacheable(value = GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE_NAME, key = "#ownerId")
+    @Cacheable(value = GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE, key = "#ownerId")
     @Transactional(readOnly = true)
     @Override
     public List<IntervalResponseDto> findAllByOwnerIdAndDateInterval(UUID ownerId, LocalDate start, LocalDate end) {
@@ -106,12 +106,11 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
         return mapper.toDtoList(entityList);
     }
 
-
     @Caching(
             evict = {
-                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_CACHE_NAME,
+                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_CACHE,
                             key = "#dto.volunteerId() + ':' + #dto.date()"),
-                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE_NAME, key = "#dto.volunteerId()"),
+                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE, key = "#dto.volunteerId()"),
             }
     )
     @Transactional(isolation = Isolation.REPEATABLE_READ)
@@ -141,9 +140,9 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
 
     @Caching(
             evict = {
-                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_CACHE_NAME,
+                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_CACHE,
                             key = "#result.ownerId() + ':' + #result.date()"),
-                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE_NAME, key = "#result.ownerId()"),
+                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE, key = "#result.ownerId()"),
             }
     )
     @Transactional
@@ -156,9 +155,9 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
 
     @Caching(
             evict = {
-                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_CACHE_NAME,
+                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_CACHE,
                             key = "#ownerId + ':' + #date"),
-                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE_NAME, key = "#ownerId"),
+                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE, key = "#ownerId"),
             }
     )
     @Transactional
@@ -175,11 +174,11 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
         // scan
         redisTemplate.delete(
                 Objects.requireNonNull(
-                        redisTemplate.keys(GlobalRedisConfig.INTERVALS_BY_DATE_CACHE_NAME + ':' + ownerId + ":*"))
+                        redisTemplate.keys(GlobalRedisConfig.INTERVALS_BY_DATE_CACHE + ':' + ownerId + ":*"))
         );
         redisTemplate.delete(
                 Objects.requireNonNull(
-                        redisTemplate.keys(GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE_NAME + ':' + ownerId))
+                        redisTemplate.keys(GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE + ':' + ownerId))
         );
     }
 

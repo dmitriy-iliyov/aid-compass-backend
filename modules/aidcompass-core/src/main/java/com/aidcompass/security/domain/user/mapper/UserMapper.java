@@ -11,6 +11,8 @@ import com.aidcompass.security.domain.authority.models.AuthorityMapper;
 import com.aidcompass.security.domain.user.models.dto.SystemUserUpdateDto;
 import org.mapstruct.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -45,4 +47,10 @@ public interface UserMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "password", qualifiedByName = "encodePassword", source = "password")
     void updateEntityFromDto(SystemUserUpdateDto dto, @MappingTarget UserEntity entity);
+
+    default List<SystemUserDto> toSystemDtoList(List<UserEntity> entityList) {
+        return entityList.stream()
+                .map(this::toSystemDto)
+                .toList();
+    }
 }

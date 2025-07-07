@@ -2,6 +2,7 @@ package com.aidcompass.doctor.repository;
 
 
 import com.aidcompass.doctor.models.DoctorEntity;
+import com.aidcompass.doctor.models.dto.PublicDoctorResponseDto;
 import com.aidcompass.doctor.specialization.models.DoctorSpecializationEntity;
 import com.aidcompass.gender.Gender;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;
@@ -14,7 +15,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -152,4 +155,7 @@ public interface DoctorRepository extends JpaRepository<DoctorEntity, UUID>,
                                         @Param("profileStatusEntity") ProfileStatusEntity profileStatusEntity);
 
     long countByIsApproved(boolean approved);
+
+
+    List<DoctorEntity> findAllByIdIn(Set<UUID> ids);
 }

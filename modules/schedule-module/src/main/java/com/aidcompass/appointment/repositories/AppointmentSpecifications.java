@@ -26,4 +26,12 @@ public class AppointmentSpecifications {
     public static Specification<AppointmentEntity> hasParticipantId(UUID id) {
         return (r, q, cb) -> cb.or(cb.equal(r.get("customerId"), id), cb.equal(r.get("volunteerId"), id));
     }
+
+    public static Specification<AppointmentEntity> hasVolunteerId(UUID volunteerId) {
+        return (r, q, cb) -> cb.equal(r.get("volunteerId"), volunteerId);
+    }
+
+    public static Specification<AppointmentEntity> hasCustomerId(UUID customerId) {
+        return (r, q, cb) -> cb.equal(r.get("customerId"), customerId);
+    }
 }

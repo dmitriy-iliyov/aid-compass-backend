@@ -11,12 +11,12 @@ import com.aidcompass.appointment.services.AppointmentOrchestrator;
 import com.aidcompass.appointment.services.AppointmentService;
 import com.aidcompass.customer.models.PublicCustomerResponseDto;
 import com.aidcompass.customer.services.CustomerService;
-import com.aidcompass.doctor.models.dto.PublicDoctorResponseDto;
 import com.aidcompass.doctor.services.DoctorService;
 import com.aidcompass.general.contracts.dto.PageResponse;
-import com.aidcompass.jurist.models.dto.PublicJuristResponseDto;
 import com.aidcompass.jurist.services.JuristService;
-import com.aidcompass.general.exceptions.models.BaseNotFoundException;
+import com.aidcompass.security.domain.authority.models.Authority;
+import com.aidcompass.security.domain.user.models.dto.SystemUserDto;
+import com.aidcompass.security.domain.user.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,8 @@ public class AppointmentAggregatorService {
     private final JuristService juristService;
     private final DtoMapper mapper;
     private final AggregatorUtils utils;
-    private final AppointmentService unifiedAppointmentService;
+    private final AppointmentService appointmentService;
+    private final UserService userService;
 
 
     public VolunteerAppointmentDto findFullAppointment(UUID volunteerId, Long id) {
@@ -50,9 +51,9 @@ public class AppointmentAggregatorService {
         );
     }
 
-    public PageResponse<VolunteerAppointmentDto> findByFilterAndVolunteerId(UUID customerId, StatusFilter filter, int page, int size) {
+    public PageResponse<VolunteerAppointmentDto> findByFilterAndVolunteerId(UUID volunteerId, StatusFilter filter, int page, int size) {
         PageResponse<AppointmentResponseDto> appointments =
-                unifiedAppointmentService.findAllByStatusFilter(customerId, filter, page, size);
+                appointmentService.findAllByStatusFilter(volunteerId, filter, page, size, true);
         return new PageResponse<>(
                 prepareVolunteerAppointmentDtoList(appointments.data()),
                 appointments.totalPage()
@@ -67,7 +68,7 @@ public class AppointmentAggregatorService {
                 .findAllByIds(customerIdToAppointmentsMap.keySet()).stream()
                 .collect(Collectors.toMap(PublicCustomerResponseDto::id, Function.identity()));
 
-        Map<UUID, String> customerAvatars = utils.findAllAvatarUrlByOwnerIdIn(customerDtoMap.keySet().stream().toList());
+        Map<UUID, String> customerAvatars = utils.findAllAvatarUrlByOwnerIdIn(customerDtoMap.keySet());
 
         return customerIdToAppointmentsMap.entrySet().stream()
                 .flatMap(entry -> {
@@ -93,7 +94,7 @@ public class AppointmentAggregatorService {
 
     public PageResponse<CustomerAppointmentDto> findByFilterAndCustomerId(UUID customerId, StatusFilter filter, int page, int size) {
         PageResponse<AppointmentResponseDto> appointments =
-                unifiedAppointmentService.findAllByStatusFilter(customerId, filter, page, size);
+                appointmentService.findAllByStatusFilter(customerId, filter, page, size, false);
         return new PageResponse<>(
                 prepareCustomerAppointmentDtoList(customerId, appointments.data()),
                 appointments.totalPage()
@@ -108,27 +109,37 @@ public class AppointmentAggregatorService {
                 .map(AppointmentResponseDto::volunteerId)
                 .collect(Collectors.toSet());
 
-        // error
-        Map<UUID, PublicVolunteerDto> volunteerDtoMap = new HashMap<>();
-        for (UUID id: volunteerIds) {
-            try {
-                PublicDoctorResponseDto doctor = doctorService.findPublicById(id);
-                volunteerDtoMap.put(id, mapper.toVolunteerDto(doctor));
-            } catch (BaseNotFoundException e) {
-                log.warn("Second not found exception, id {}", id);
-                PublicJuristResponseDto jurist = juristService.findPublicById(id);
-                volunteerDtoMap.put(id, mapper.toVolunteerDto(jurist));
+        List<SystemUserDto> userDtoMap = userService.findAllByIdIn(volunteerIds);
+        Map<UUID, SystemUserDto> doctorsMap = new HashMap<>();
+        Map<UUID, SystemUserDto> juristsMap = new HashMap<>();
+
+        for (SystemUserDto user: userDtoMap) {
+            if (user.authorities().contains(Authority.ROLE_DOCTOR)) {
+                doctorsMap.put(user.id(), user);
+            } else if (user.authorities().contains(Authority.ROLE_JURIST)) {
+                juristsMap.put(user.id(), user);
+            } else {
+                log.error(
+                        "Unexpected error when aggregate appointments for customer, user with id={} has authorities={}",
+                        user.id(), user.authorities()
+                );
             }
         }
 
-        Map<UUID, String> volunteerAvatars = utils.findAllAvatarUrlByOwnerIdIn(volunteerIds.stream().toList());
+        Map<UUID, PublicVolunteerDto> volunteerDtoMap = new HashMap<>();
+        doctorService.findAllByIdIn(doctorsMap.keySet())
+                .forEach(dto -> volunteerDtoMap.put(dto.id(), mapper.toVolunteerDto(dto)));
+        juristService.findAllByIdIn(juristsMap.keySet())
+                .forEach(dto -> volunteerDtoMap.put(dto.id(), mapper.toVolunteerDto(dto)));
 
-        List<CustomerAppointmentDto> response = customerIdToAppointmentsMap.entrySet().stream()
+        Map<UUID, String> volunteerAvatars = utils.findAllAvatarUrlByOwnerIdIn(volunteerIds);
+
+        return customerIdToAppointmentsMap.entrySet().stream()
                 .flatMap(entry -> {
                     UUID volunteerId = entry.getKey();
                     PublicVolunteerDto volunteer = volunteerDtoMap.get(volunteerId);
                     if (volunteer == null) {
-                        log.error("Volunteer not found for id: {}", customerId);
+                        log.error("Volunteer not found for customer with id: {}", customerId);
                         return Stream.empty();
                     }
                     return entry.getValue().stream()
@@ -142,6 +153,5 @@ public class AppointmentAggregatorService {
                         .comparing((CustomerAppointmentDto dto) -> dto.appointment().date())
                         .thenComparing(dto -> dto.appointment().start()))
                 .toList();
-        return response;
     }
 }
