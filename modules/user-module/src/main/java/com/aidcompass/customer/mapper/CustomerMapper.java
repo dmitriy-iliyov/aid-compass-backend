@@ -25,6 +25,8 @@ public interface CustomerMapper {
     @Mapping(source = "profileStatusEntity.profileStatus", target = "profileStatus")
     PrivateCustomerResponseDto toPrivateDto(CustomerEntity entity);
 
+    List<PrivateCustomerResponseDto> toPrivateDtoList(List<CustomerEntity> content);
+
     @Mapping(target = "gender", expression = "java(com.aidcompass.gender.Gender.toEnum(dto.getGender()))")
     void updateEntityFromDto(CustomerDto dto, @MappingTarget CustomerEntity entity);
 }

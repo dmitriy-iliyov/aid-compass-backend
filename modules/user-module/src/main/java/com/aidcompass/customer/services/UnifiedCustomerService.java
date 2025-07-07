@@ -1,12 +1,14 @@
 package com.aidcompass.customer.services;
 
-import com.aidcompass.customer.CustomerRepository;
+import com.aidcompass.customer.repository.CustomerRepository;
 import com.aidcompass.customer.mapper.CustomerMapper;
 import com.aidcompass.customer.models.CustomerEntity;
 import com.aidcompass.customer.models.CustomerDto;
 import com.aidcompass.customer.models.PrivateCustomerResponseDto;
 import com.aidcompass.customer.models.PublicCustomerResponseDto;
+import com.aidcompass.customer.repository.CustomerSpecifications;
 import com.aidcompass.detail.models.DetailEntity;
+import com.aidcompass.general.contracts.dto.PageResponse;
 import com.aidcompass.general.contracts.enums.ServiceType;
 import com.aidcompass.general.exceptions.customer.CustomerNotFoundByIdException;
 import com.aidcompass.general.exceptions.customer.CustomerNotFoundByUserIdException;
@@ -19,6 +21,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -107,17 +113,32 @@ public class UnifiedCustomerService implements CustomerService, ProfileStatusUpd
         return newProgress;
     }
 
-    @CacheEvict(value = "customers:private", key="#id")
-    @Transactional
-    @Override
-    public void deleteById(UUID id) {
-        repository.deleteById(id);
-    }
-
     @Cacheable(value = "customers:count")
     @Transactional(readOnly = true)
     @Override
     public long count() {
         return repository.count();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public PageResponse<PrivateCustomerResponseDto> findAllByNamesCombination(String firstName, String secondName,
+                                                                              String lastName, int page, int size) {
+        Specification<CustomerEntity> specification = Specification
+                .where(CustomerSpecifications.hasFirstName(firstName))
+                .and(CustomerSpecifications.hasSecondName(secondName))
+                .and(CustomerSpecifications.hasLastName(lastName));
+        Page<CustomerEntity> entityPage = repository.findAll(specification, PageRequest.of(page, size));
+        return new PageResponse<>(
+                mapper.toPrivateDtoList(entityPage.getContent()),
+                entityPage.getTotalPages()
+        );
+    }
+
+    @CacheEvict(value = "customers:private", key="#id")
+    @Transactional
+    @Override
+    public void deleteById(UUID id) {
+        repository.deleteById(id);
     }
 }
