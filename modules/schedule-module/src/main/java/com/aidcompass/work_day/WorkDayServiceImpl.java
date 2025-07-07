@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UnifiedWorkDayService implements WorkDayService {
+public class WorkDayServiceImpl implements WorkDayService {
 
     private final IntervalService intervalService;
     private final AppointmentService appointmentService;
@@ -32,7 +32,7 @@ public class UnifiedWorkDayService implements WorkDayService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<String> findListOfTimes(UUID ownerId, LocalDate date) {
+    public List<String> findAvailableDayTimes(UUID ownerId, LocalDate date) {
         Long duration = appointmentDurationService.findByOwnerId(ownerId);
         List<IntervalResponseDto> dtoList = intervalService.findAllByOwnerIdAndDate(ownerId, date);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -52,11 +52,12 @@ public class UnifiedWorkDayService implements WorkDayService {
 
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
     @Override
-    public Map<String, TimeDto> findPrivateListOfTimes(UUID ownerId, LocalDate date) {
+    public Map<String, TimeDto> findAllDayTimes(UUID ownerId, LocalDate date) {
 
         List<IntervalResponseDto> intervals = intervalService.findAllByOwnerIdAndDate(ownerId, date);
-        List<AppointmentResponseDto> appointments =
-                appointmentService.findAllByVolunteerIdAndDateAndStatus(ownerId, date, AppointmentStatus.SCHEDULED);
+        List<AppointmentResponseDto> appointments = appointmentService.findAllByVolunteerIdAndDateAndStatus(
+                ownerId, date, AppointmentStatus.SCHEDULED
+        );
 
         Map<LocalTime, Pair<LocalTime, TimeDto>> existsTimeMap = appointments.stream()
                 .collect(Collectors.toMap(
@@ -113,8 +114,8 @@ public class UnifiedWorkDayService implements WorkDayService {
 
     @Transactional
     @Override
-    public void delete(UUID ownerId, LocalDate date) {
-        intervalService.deleteAllByOwnerIdAndDate(ownerId, date);
-        appointmentService.markCanceledAllByDate(ownerId, date);
+    public void deleteAllByVolunteerIdAndDate(UUID volunteerId, LocalDate date) {
+        intervalService.deleteAllByOwnerIdAndDate(volunteerId, date);
+        appointmentService.markCanceledAllByDate(volunteerId, date);
     }
 }

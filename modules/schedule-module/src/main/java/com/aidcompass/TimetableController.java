@@ -23,17 +23,17 @@ public class TimetableController {
 
     @PreAuthorize("permitAll()")
     @GetMapping("/{owner_id}/month/dates")
-    public ResponseEntity<?> getMonthDates(@PathVariable("owner_id") UUID ownerId) {
+    public ResponseEntity<?> getAvailableMonthDates(@PathVariable("owner_id") UUID ownerId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findMonthDates(ownerId));
+                .body(service.findAvailableMonthDates(ownerId));
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_DOCTOR', 'ROLE_JURIST')")
     @GetMapping("/me/month/dates")
-    public ResponseEntity<?> getPrivateMonthDates(@AuthenticationPrincipal PrincipalDetails principal) {
+    public ResponseEntity<?> getAllMonthDates(@AuthenticationPrincipal PrincipalDetails principal) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findPrivateMonthDates(principal.getUserId()));
+                .body(service.findAllMonthDates(principal.getUserId()));
     }
 }

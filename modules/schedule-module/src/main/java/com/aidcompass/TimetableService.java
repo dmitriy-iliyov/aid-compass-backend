@@ -1,6 +1,6 @@
 package com.aidcompass;
 
-import com.aidcompass.appointment.services.AppointmentOrchestrator;
+import com.aidcompass.appointment.services.AppointmentService;
 import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.services.IntervalService;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +21,10 @@ import java.util.stream.Collectors;
 public class TimetableService {
 
     private final IntervalService intervalService;
-    private final AppointmentOrchestrator appointmentOrchestrator;
+    private final AppointmentService appointmentOrchestrator;
 
 
-    public List<LocalDate> findMonthDates(UUID ownerId) {
+    public List<LocalDate> findAvailableMonthDates(UUID volunteerId) {
         LocalDate currentDate = LocalDate.now();
         LocalDate end = currentDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).plusDays(27);
         LocalTime currentTime = LocalTime.now();
@@ -33,42 +33,32 @@ public class TimetableService {
         } else {
             currentDate = currentDate.plusDays(1);
         }
-        return toDateList(intervalService.findAllByOwnerIdAndDateInterval(ownerId, currentDate, end));
+        return intervalService.findMonthDatesByOwnerId(volunteerId, currentDate, end);
     }
 
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
-    public Map<LocalDate, Integer> findPrivateMonthDates(UUID ownerId) {
+    public Map<LocalDate, Integer> findAllMonthDates(UUID volunteerId) {
         LocalDate start = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate end = start.plusDays(27);
-        Map<LocalDate, Integer> monthInfo = new LinkedHashMap<>();
-        List<LocalDate> dates = toDateList(intervalService.findAllByOwnerIdAndDateInterval(ownerId, start, end));
-        List<LocalDate> appointmentDates = appointmentOrchestrator.findMonthDatesByOwnerIdAndCurrentDate(ownerId);
+        Map<LocalDate, Integer> monthDates = new LinkedHashMap<>();
+        List<LocalDate> intervals = intervalService.findMonthDatesByOwnerId(volunteerId, start, end);
+        List<LocalDate> appointmentDates = appointmentOrchestrator.findMonthDatesByVolunteerId(volunteerId, start, end);
         for (int i = 0; i < 28; i++) {
             LocalDate iDate = start.plusDays(i);
             if (appointmentDates.contains(iDate)) {
-                monthInfo.put(iDate, 2);
-            } else if (dates.contains(iDate)) {
-                monthInfo.put(iDate, 1);
+                monthDates.put(iDate, 2);
+            } else if (intervals.contains(iDate)) {
+                monthDates.put(iDate, 1);
             } else {
-                monthInfo.put(iDate, 0);
+                monthDates.put(iDate, 0);
             }
         }
-        return monthInfo.keySet().stream().sorted()
+        return monthDates.keySet().stream().sorted()
                 .collect(Collectors.toMap(
                         Function.identity(),
-                        monthInfo::get,
+                        monthDates::get,
                         (k1, k2) -> k2,
                         LinkedHashMap::new)
                 );
-    }
-
-    private List<LocalDate> toDateList(List<IntervalResponseDto> dtoList) {
-        Set<LocalDate> weakDateSet = new HashSet<>();
-        for (IntervalResponseDto intervalDto: dtoList) {
-            weakDateSet.add(intervalDto.date());
-        }
-        return weakDateSet.stream()
-                .sorted()
-                .toList();
     }
 }

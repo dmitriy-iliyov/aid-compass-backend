@@ -24,25 +24,25 @@ public class WorkDayController {
 
     @PreAuthorize("permitAll()")
     @GetMapping("/{owner_id}")
-    public ResponseEntity<?> getTimes(@PathVariable("owner_id") UUID ownerId,
-                                      @RequestParam("date")
-                                      @DateTimeFormat(pattern = "yyyy-MM-dd")
-                                      @NotNull(message = "Date shouldn't be null!")
-                                      LocalDate date) {
+    public ResponseEntity<?> getAvailableTimes(@PathVariable("owner_id") UUID ownerId,
+                                               @RequestParam("date")
+                                               @DateTimeFormat(pattern = "yyyy-MM-dd")
+                                               @NotNull(message = "Date shouldn't be null!")
+                                               LocalDate date) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findListOfTimes(ownerId, date));
+                .body(service.findAvailableDayTimes(ownerId, date));
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> getPrivateTimes(@AuthenticationPrincipal PrincipalDetails principal,
-                                             @RequestParam("date")
-                                             @DateTimeFormat(pattern = "yyyy-MM-dd")
-                                             @NotNull(message = "Date shouldn't be null!")
-                                             LocalDate date) {
+    public ResponseEntity<?> getAllTimes(@AuthenticationPrincipal PrincipalDetails principal,
+                                         @RequestParam("date")
+                                         @DateTimeFormat(pattern = "yyyy-MM-dd")
+                                         @NotNull(message = "Date shouldn't be null!")
+                                         LocalDate date) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findPrivateListOfTimes(principal.getUserId(), date));
+                .body(service.findAllDayTimes(principal.getUserId(), date));
     }
 
     @DeleteMapping("/me")
@@ -51,7 +51,7 @@ public class WorkDayController {
                                     @DateTimeFormat(pattern = "yyyy-MM-dd")
                                     @NotNull(message = "Date shouldn't be null!")
                                     LocalDate date) {
-        service.delete(principal.getUserId(), date);
+        service.deleteAllByVolunteerIdAndDate(principal.getUserId(), date);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
