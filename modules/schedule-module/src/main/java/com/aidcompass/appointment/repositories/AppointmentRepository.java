@@ -21,8 +21,9 @@ import java.util.UUID;
 public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Long>,
                                                JpaSpecificationExecutor<AppointmentEntity> {
 
-    List<AppointmentEntity> findAllByVolunteerIdAndDateAndStatus(UUID volunteerId, LocalDate date,
-                                                                 AppointmentStatus status);
+    List<AppointmentEntity> findAllByVolunteerIdAndDateAndStatus(UUID volunteerId, LocalDate date, AppointmentStatus status);
+
+    List<AppointmentEntity> findAllByCustomerIdAndDateAndStatus(UUID customerId, LocalDate date, AppointmentStatus status);
 
     @Query("""
         SELECT a FROM AppointmentEntity a
@@ -32,15 +33,6 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     List<AppointmentEntity> findAllByVolunteerIdAndDateInterval(@Param("volunteer_id") UUID volunteerId,
                                                                 @Param("start") LocalDate start,
                                                                 @Param("end") LocalDate end);
-
-    @Query("""
-        SELECT a FROM AppointmentEntity a
-        WHERE a.customerId = :customer_id
-        AND a.date BETWEEN :start AND :end
-    """)
-    List<AppointmentEntity> findAllByCustomerIdAndDateInterval(@Param("customer_id") UUID customerId,
-                                                               @Param("start") LocalDate start,
-                                                               @Param("end") LocalDate end);
 
     @Modifying
     @Query(value = """
@@ -54,33 +46,22 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     @Modifying
     @Query("""
         UPDATE AppointmentEntity a
-        SET a.status = :status, a.review = :review
-        WHERE a.id = :id
-    """)
-    void updateStatusAndSetReview(@Param("id") Long id, @Param("review") String review,
-                                  @Param("status") AppointmentStatus status);
-
-    @Modifying
-    @Query("""
-        UPDATE AppointmentEntity a
         SET a.status = :status
         WHERE a.id = :id
     """)
     void updateStatus(@Param("id") Long id, @Param("status") AppointmentStatus status);
 
-    boolean existsByCustomerIdAndDateAndStartAndStatus(UUID customerId, LocalDate date,
-                                                       LocalTime start, AppointmentStatus status);
-
     @Modifying
-    @Query("""
-        UPDATE AppointmentEntity a
-        SET a.status = :status
-        WHERE a.volunteerId = : participant_id
-        OR a.customerId = :participant_id
-        AND a.date = :date
-    """)
-    void updateAllStatus(@Param("participant_id") UUID participantId, @Param("date") LocalDate date,
-                         @Param("status") AppointmentStatus status);
+    @Query(value = """
+        UPDATE appointments
+        SET status = :status
+        WHERE (volunteer_id = :participant_id OR customer_id = :participant_id)
+          AND date = :date
+        RETURNING id
+    """, nativeQuery = true)
+    List<Long> updateAllStatus(@Param("participant_id") UUID participantId,
+                               @Param("date") LocalDate date,
+                               @Param("status") AppointmentStatus status);
 
     @Modifying(clearAutomatically = true)
     @Query(value = """
@@ -102,6 +83,4 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
         WHERE a.date = :scheduled_date 
     """)
     Slice<AppointmentEntity> findBatchToRemind(@Param("scheduled_date") LocalDate scheduledDate, Pageable pageable);
-
-    List<AppointmentEntity> findAllByCustomerIdAndDateAndStatus(UUID customerId, LocalDate date, AppointmentStatus status);
 }

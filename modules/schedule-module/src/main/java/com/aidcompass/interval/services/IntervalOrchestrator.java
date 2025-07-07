@@ -3,18 +3,15 @@ package com.aidcompass.interval.services;
 import com.aidcompass.appointment.models.marker.AppointmentMarker;
 import com.aidcompass.appointment_duration.AppointmentDurationService;
 import com.aidcompass.exceptions.interval.IntervalIsInvalidException;
-import com.aidcompass.exceptions.interval.IntervalNotFoundByIdException;
 import com.aidcompass.exceptions.interval.IntervalTimeIsInvalidException;
 import com.aidcompass.interval.models.dto.IntervalCreateDto;
 import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.models.dto.SystemIntervalCreatedDto;
 import com.aidcompass.interval.validation.ownership.IntervalOwnershipValidator;
 import com.aidcompass.interval.validation.time.TimeValidator;
-import com.aidcompass.general.exceptions.models.BaseNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.time.LocalTime;
 import java.util.Comparator;
@@ -65,13 +62,13 @@ public class IntervalOrchestrator {
         nearestService.replaceIfEarlier(ownerId, responseDto);
     }
 
-    public void cut(AppointmentMarker dto, LocalTime end, Long id) {
-        Set<IntervalResponseDto> resultDtoSet = service.cut(dto, end, id);
+    public void cut(AppointmentMarker dto, Long id) {
+        Set<IntervalResponseDto> resultDtoSet = service.cut(dto, id);
         List<IntervalResponseDto> resultDtoList = resultDtoSet.stream()
                 .sorted(Comparator.comparing(IntervalResponseDto::date)
                         .thenComparing(IntervalResponseDto::start))
                 .toList();
-        nearestService.replaceIfEarlier(dto.volunteerId(), resultDtoList.get(0));
+        nearestService.replaceIfEarlier(dto.getVolunteerId(), resultDtoList.get(0));
     }
 
     public void delete(UUID ownerId, Long id) {

@@ -7,18 +7,16 @@ import com.aidcompass.appointment.models.dto.StatusFilter;
 import com.aidcompass.appointment.models.enums.AppointmentAgeType;
 import com.aidcompass.appointment.models.enums.AppointmentStatus;
 import com.aidcompass.general.contracts.dto.PageResponse;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 public interface AppointmentService {
-    AppointmentResponseDto save(UUID customerId, LocalTime end, AppointmentCreateDto dto);
+    AppointmentResponseDto save(UUID customerId, AppointmentCreateDto dto);
 
-    Map<AppointmentAgeType, AppointmentResponseDto> update(UUID customerId, LocalTime end, AppointmentUpdateDto dto);
+    Map<AppointmentAgeType, AppointmentResponseDto> update(AppointmentUpdateDto dto);
 
     AppointmentResponseDto findById(Long id);
 
@@ -28,13 +26,13 @@ public interface AppointmentService {
     List<AppointmentResponseDto> findAllByVolunteerIdAndDateAndStatus(UUID volunteerId, LocalDate date,
                                                                       AppointmentStatus status);
 
-    List<AppointmentResponseDto> findAllByVolunteerIdAndDateInterval(UUID volunteerId, LocalDate start, LocalDate end);
+    List<LocalDate> findMonthDatesByVolunteerId(UUID volunteerId, LocalDate start, LocalDate end);
 
-    void markCompletedById(Long id, String review);
+    AppointmentResponseDto completeById(Long id, String review);
 
-    AppointmentResponseDto markCanceledById(Long id);
+    AppointmentResponseDto cancelById(Long id);
 
-    void markCanceledAllByDate(UUID participantId, LocalDate date);
+    void cancelAllByDate(UUID participantId, LocalDate date);
 
     void deleteAll(UUID participantId);
 

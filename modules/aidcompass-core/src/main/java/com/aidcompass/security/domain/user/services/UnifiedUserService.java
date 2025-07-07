@@ -68,14 +68,14 @@ public class UnifiedUserService implements UserService, UserDetailsService {
         repository.save(savedUserEntity);
     }
 
-    @Override
     @Transactional(readOnly = true)
+    @Override
     public boolean existsById(UUID id) {
         return repository.existsById(id);
     }
 
-    @Override
     @Transactional(readOnly = true)
+    @Override
     public boolean existsByEmail(String email) {
         return repository.existsByEmail(email);
     }

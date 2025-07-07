@@ -42,7 +42,7 @@ public class AppointmentAggregatorService {
 
 
     public VolunteerAppointmentDto findFullAppointment(UUID volunteerId, Long id) {
-        AppointmentResponseDto appointment = appointmentOrchestrator.findById(volunteerId, id);
+        AppointmentResponseDto appointment = appointmentOrchestrator.findByVolunteerIdAndId(volunteerId, id);
         return new VolunteerAppointmentDto(
                 appointment,
                 utils.findAvatarUrlByOwnerId(appointment.customerId()),

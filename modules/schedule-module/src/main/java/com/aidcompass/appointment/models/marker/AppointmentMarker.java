@@ -5,8 +5,9 @@ import java.time.LocalTime;
 import java.util.UUID;
 
 public interface AppointmentMarker {
-    LocalTime start();
-    LocalDate date();
-    UUID volunteerId();
+    LocalTime getStart();
+    LocalTime getEnd();
+    LocalDate getDate();
+    UUID getVolunteerId();
 }
 

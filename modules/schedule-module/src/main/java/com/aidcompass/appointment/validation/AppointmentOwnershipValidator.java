@@ -15,11 +15,12 @@ public class AppointmentOwnershipValidator {
     private final AppointmentService service;
 
 
-    public void validateCustomerOwnership(UUID customerId, Long appointmentId) {
+    public AppointmentResponseDto validateCustomerOwnership(UUID customerId, Long appointmentId) {
         AppointmentResponseDto dto = service.findById(appointmentId);
         if (!dto.customerId().equals(customerId)) {
             throw new AppointmentOwnershipException();
         }
+        return dto;
     }
 
     public AppointmentResponseDto validateParticipantOwnership(UUID participantId, Long appointmentId) {

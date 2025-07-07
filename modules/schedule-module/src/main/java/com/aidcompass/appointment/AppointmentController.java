@@ -55,22 +55,6 @@ public class AppointmentController {
                 .body(service.findById(id));
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_JURIST', 'ROLE_DOCTOR')")
-    @PatchMapping("/me/{id}/complete")
-    public ResponseEntity<?> complete(@AuthenticationPrincipal PrincipalDetails principle,
-                                      @PathVariable("id")
-                                      @Positive(message = "Id should be positive!")
-                                      Long id,
-                                      @RequestBody
-                                      @NotBlank(message = "Review shouldn't be empty or blank!")
-                                      @Size(max = 1000, message = "Review should be less then 1000 character!")
-                                      String review) {
-        orchestrator.complete(principle.getUserId(), id, review);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .build();
-    }
-
     @PreAuthorize("hasAuthority('ROLE_CUSTOMER')")
     @PutMapping("/me")
     public ResponseEntity<?> update(@AuthenticationPrincipal PrincipalDetails principle,
@@ -88,15 +72,29 @@ public class AppointmentController {
                 .build();
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_JURIST', 'ROLE_DOCTOR')")
+    @PatchMapping("/me/{id}/complete")
+    public ResponseEntity<?> complete(@AuthenticationPrincipal PrincipalDetails principle,
+                                      @PathVariable("id")
+                                      @Positive(message = "Id should be positive!")
+                                      Long id,
+                                      @RequestBody
+                                      @NotBlank(message = "Review shouldn't be empty or blank!")
+                                      @Size(max = 1000, message = "Review should be less then 1000 character!")
+                                      String review) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(orchestrator.complete(principle.getUserId(), id, review));
+    }
+
     @PreAuthorize("hasAnyAuthority('ROLE_CUSTOMER', 'ROLE_JURIST', 'ROLE_DOCTOR')")
     @PatchMapping("/me/{id}/cancel")
     public ResponseEntity<?> cancel(@AuthenticationPrincipal PrincipalDetails principle,
                                     @PathVariable("id")
                                     @Positive(message = "Id should be positive!")
                                     Long id) {
-        orchestrator.cancel(principle.getUserId(), id);
         return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
-                .build();
+                .status(HttpStatus.OK)
+                .body(orchestrator.cancel(principle.getUserId(), id));
     }
 }

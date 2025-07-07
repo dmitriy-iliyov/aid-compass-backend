@@ -37,6 +37,7 @@ public class GlobalRedisConfig {
     public static final String APPOINTMENT_DURATION_CACHE = "appointment:duration";
     public static final String APPOINTMENT_DURATION_MAP_CACHE = "appointment:duration:map";
     public static final String APPOINTMENTS_CACHE = "appointments";
+    public static final String APPOINTMENTS_KEY_TEMPLATE = "appointments::%s";
     public final static String APPOINTMENTS_BY_DATE_AND_STATUS_CACHE = "appointments:date";
     public final static String APPOINTMENTS_BY_DATE_INTERVAL_CACHE = "appointments:date_interval";
     public final static String CONF_TOKEN_KEY_TEMPLATE = "tkn:conf:";

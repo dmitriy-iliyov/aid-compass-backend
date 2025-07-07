@@ -130,6 +130,7 @@ public interface JuristRepository extends JpaRepository<JuristEntity, UUID>,
     Page<JuristEntity> findAllByGender(@Param("gender") Gender gender, Pageable pageable);
 
     @EntityGraph(attributePaths = {"profileStatusEntity", "typeEntity"})
+    @NonNull
     Page<JuristEntity> findAll(Specification<JuristEntity> specification, @NonNull Pageable pageable);
 
     @Modifying

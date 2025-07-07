@@ -194,8 +194,7 @@ public class UnifiedContactService implements ContactService, SystemContactServi
         List<ContactEntity> entityList = repository.findAllByOwnerIdIn(ids);
         Map<UUID, List<PrivateContactResponseDto>> dtoMap = new HashMap<>();
         for (ContactEntity entity: entityList) {
-            dtoMap.computeIfAbsent(entity.getOwnerId(), k -> new ArrayList<>(List.of(mapper.toPrivateDto(entity))))
-                    .add(mapper.toPrivateDto(entity));
+            dtoMap.computeIfAbsent(entity.getOwnerId(), k -> new ArrayList<>()).add(mapper.toPrivateDto(entity));
         }
         return dtoMap;
     }

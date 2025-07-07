@@ -3,7 +3,6 @@ package com.aidcompass.interval.services;
 import com.aidcompass.interval.models.dto.IntervalResponseDto;
 import com.aidcompass.interval.models.dto.NearestIntervalDto;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;

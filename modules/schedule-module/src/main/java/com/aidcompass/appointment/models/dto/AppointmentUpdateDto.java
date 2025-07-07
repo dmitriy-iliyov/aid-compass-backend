@@ -1,11 +1,11 @@
 package com.aidcompass.appointment.models.dto;
 
+import com.aidcompass.appointment.models.enums.AppointmentType;
 import com.aidcompass.appointment.models.marker.AppointmentMarker;
+import com.aidcompass.general.utils.validation.ValidEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -13,8 +13,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
-@Data
 @RequiredArgsConstructor
+@Data
 public class AppointmentUpdateDto implements AppointmentMarker {
 
         @NotNull(message = "Id shouldn't be null!")
@@ -33,19 +33,13 @@ public class AppointmentUpdateDto implements AppointmentMarker {
         @NotNull(message = "Appointment start time must not be null!")
         private final LocalTime start;
 
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+        private LocalTime end;
 
-        @Override
-        public LocalTime start() {
-                return this.start;
-        }
+        @ValidEnum(enumClass = AppointmentType.class, message = "Unsupported appointment type!")
+        private final String type;
 
-        @Override
-        public LocalDate date() {
-                return this.date;
-        }
-
-        @Override
-        public UUID volunteerId() {
-                return this.volunteerId;
-        }
+        @NotBlank(message = "Description shouldn't be empty or blank!")
+        @Size(max = 80, message = "Description should less than 40!")
+        private final String description;
 }

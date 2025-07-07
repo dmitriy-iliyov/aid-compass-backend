@@ -1,13 +1,9 @@
 twilo
 kafka
 UserUpdateValidator
-аппоинтменты
 рефрещ токен
 oauht
 повидомлення про запис
-повідомлення корустувача про запис за день до нього
-повідомлення про підтвердження спеціаліста
-апдейт апоинтмента админом
 
 //
 aid-compass-backend % docker build -f Dockerfile.jbr -t jbr-17.0.11 .

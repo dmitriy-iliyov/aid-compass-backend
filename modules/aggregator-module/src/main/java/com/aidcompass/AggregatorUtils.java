@@ -8,7 +8,7 @@ import com.aidcompass.contact.core.models.dto.system.SystemContactDto;
 import com.aidcompass.contact.core.services.ContactService;
 import com.aidcompass.general.exceptions.models.BaseNotFoundException;
 import com.aidcompass.interval.models.dto.NearestIntervalDto;
-import com.aidcompass.interval.services.IntervalDeleteService;
+import com.aidcompass.interval.services.IntervalService;
 import com.aidcompass.interval.services.NearestIntervalService;
 import com.aidcompass.security.domain.user.services.UserOrchestrator;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class AggregatorUtils {
     private final AppointmentDurationService durationService;
     private final ContactService contactService;
     private final UserOrchestrator userOrchestrator;
-    private final IntervalDeleteService intervalService;
+    private final IntervalService intervalService;
     private final AppointmentService appointmentService;
 
 

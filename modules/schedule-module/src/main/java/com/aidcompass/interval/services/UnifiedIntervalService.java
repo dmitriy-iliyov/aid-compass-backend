@@ -1,8 +1,8 @@
 package com.aidcompass.interval.services;
 
-import com.aidcompass.general.GlobalRedisConfig;
 import com.aidcompass.appointment.models.marker.AppointmentMarker;
 import com.aidcompass.exceptions.interval.IntervalNotFoundByIdException;
+import com.aidcompass.general.GlobalRedisConfig;
 import com.aidcompass.interval.mapper.IntervalMapper;
 import com.aidcompass.interval.models.IntervalEntity;
 import com.aidcompass.interval.models.dto.IntervalResponseDto;
@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -101,37 +102,40 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
     @Cacheable(value = GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE, key = "#ownerId")
     @Transactional(readOnly = true)
     @Override
-    public List<IntervalResponseDto> findAllByOwnerIdAndDateInterval(UUID ownerId, LocalDate start, LocalDate end) {
-        List<IntervalEntity> entityList = repository.findAllByOwnerIdAndDateInterval(ownerId, start, end);
-        return mapper.toDtoList(entityList);
+    public List<LocalDate> findMonthDatesByOwnerId(UUID ownerId, LocalDate start, LocalDate end) {
+        return repository.findAllByOwnerIdAndDateInterval(ownerId, start, end).stream()
+                .map(IntervalEntity::getDate)
+                .distinct()
+                .sorted()
+                .toList();
     }
 
     @Caching(
             evict = {
                     @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_CACHE,
-                            key = "#dto.volunteerId() + ':' + #dto.date()"),
-                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE, key = "#dto.volunteerId()"),
+                            key = "#dto.getVolunteerId() + ':' + #dto.getDate()"),
+                    @CacheEvict(value = GlobalRedisConfig.INTERVALS_BY_DATE_INTERVAL_CACHE, key = "#dto.getVolunteerId()"),
             }
     )
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
-    public Set<IntervalResponseDto> cut(AppointmentMarker dto, LocalTime end, Long id) {
+    public Set<IntervalResponseDto> cut(AppointmentMarker dto, Long id) {
         IntervalEntity entity = repository.findById(id).orElseThrow(IntervalNotFoundByIdException::new);
         IntervalResponseDto systemDto = mapper.toDto(entity);
 
         Set<IntervalResponseDto> responseDtoSet = new HashSet<>();
         SystemIntervalUpdateDto updateDto;
-        if (systemDto.start().equals(dto.start()) && systemDto.end().isAfter(end)) {
-            updateDto = new SystemIntervalUpdateDto(id, end, systemDto.end(), systemDto.date());
+        if (systemDto.start().equals(dto.getStart()) && systemDto.end().isAfter(dto.getEnd())) {
+            updateDto = new SystemIntervalUpdateDto(id, dto.getEnd(), systemDto.end(), systemDto.date());
             mapper.updateEntityFromDto(updateDto, entity);
             responseDtoSet.add(mapper.toDto(repository.save(entity)));
-        } else if (systemDto.end().equals(end) && systemDto.start().isBefore(dto.start())) {
-            updateDto = new SystemIntervalUpdateDto(id, systemDto.start(), dto.start(), systemDto.date());
+        } else if (systemDto.end().equals(dto.getEnd()) && systemDto.start().isBefore(dto.getStart())) {
+            updateDto = new SystemIntervalUpdateDto(id, systemDto.start(), dto.getStart(), systemDto.date());
             mapper.updateEntityFromDto(updateDto, entity);
             responseDtoSet.add(mapper.toDto(repository.save(entity)));
         } else {
-            updateDto = new SystemIntervalUpdateDto(id, systemDto.start(), dto.start(), systemDto.date());
-            IntervalEntity newIntervalEntity = new IntervalEntity(entity.getOwnerId(), end, systemDto.end(), systemDto.date());
+            updateDto = new SystemIntervalUpdateDto(id, systemDto.start(), dto.getStart(), systemDto.date());
+            IntervalEntity newIntervalEntity = new IntervalEntity(entity.getOwnerId(), dto.getEnd(), systemDto.end(), systemDto.date());
             mapper.updateEntityFromDto(updateDto, entity);
             responseDtoSet.addAll(mapper.toDtoList(repository.saveAll(List.of(entity, newIntervalEntity))));
         }
@@ -186,9 +190,13 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
     @Override
     public List<Long> deleteBatchBeforeWeakStart(int batchSize) {
         LocalDate weakStart = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+
         log.info("START deleting intervals batch with weakStart={}, batchSize={}", weakStart, batchSize);
+
         List<Long> deletedIds = repository.deleteBatchBeforeDate(batchSize, weakStart);
+
         log.info("END deleting intervals, deleted id list={}", deletedIds);
+
         return deletedIds;
     }
 }

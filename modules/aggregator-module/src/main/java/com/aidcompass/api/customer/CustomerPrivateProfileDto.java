@@ -12,7 +12,7 @@ public record CustomerPrivateProfileDto(
         String avatarUrl,
 
         @JsonProperty("customer_profile")
-        PrivateCustomerResponseDto fullDoctor,
+        PrivateCustomerResponseDto customer,
 
         @JsonProperty("contacts")
         List<PrivateContactResponseDto> contacts

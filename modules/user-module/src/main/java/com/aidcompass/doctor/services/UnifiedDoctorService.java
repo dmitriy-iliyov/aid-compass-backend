@@ -173,7 +173,6 @@ public class UnifiedDoctorService implements DoctorService, ProfileStatusUpdateS
     @Override
     public PageResponse<FullPrivateDoctorResponseDto> findAllUnapprovedByNamesCombination(String firstName, String secondName,
                                                                                           String lastName, int page, int size) {
-
         Page<DoctorEntity> entityPage = repository.findAllUnapprovedByNamesCombination(
                 new DoctorNamesCombination(firstName, secondName, lastName),
                 PageRequest.of(page, size, Sort.by("createdAt").descending())

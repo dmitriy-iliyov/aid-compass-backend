@@ -116,6 +116,6 @@ public class WorkDayServiceImpl implements WorkDayService {
     @Override
     public void deleteAllByVolunteerIdAndDate(UUID volunteerId, LocalDate date) {
         intervalService.deleteAllByOwnerIdAndDate(volunteerId, date);
-        appointmentService.markCanceledAllByDate(volunteerId, date);
+        appointmentService.cancelAllByDate(volunteerId, date);
     }
 }

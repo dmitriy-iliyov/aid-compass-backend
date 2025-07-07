@@ -5,10 +5,9 @@ import com.aidcompass.appointment.models.marker.AppointmentMarker;
 
 import java.util.UUID;
 
-public record AppointmentValidationInfoDto(
+public record AppointmentValidationInfo(
         ValidationStatus status,
         UUID customerId,
         AppointmentMarker dto,
         Long intervalId
-) {
-}
+) { }

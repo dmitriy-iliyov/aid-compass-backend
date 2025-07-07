@@ -1,14 +1,20 @@
 package com.aidcompass.api.customer;
 
 import com.aidcompass.AggregatorUtils;
+import com.aidcompass.contact.core.models.dto.PrivateContactResponseDto;
 import com.aidcompass.customer.models.PrivateCustomerResponseDto;
 import com.aidcompass.customer.services.CustomerService;
+import com.aidcompass.general.contracts.dto.PageResponse;
 import com.aidcompass.general.exceptions.models.BaseNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +34,28 @@ public class CustomerAggregatorService {
     public void delete(UUID id) {
         utils.deleteAllUserAlignments(id);
         customerService.deleteById(id);
+    }
+
+    public PageResponse<CustomerPrivateProfileDto> findAllByNamesCombination(String firstName, String secondName,
+                                                                              String lastName, int page, int size) {
+        PageResponse<PrivateCustomerResponseDto> dtoPage = customerService.findAllByNamesCombination(
+                firstName, secondName, lastName, page, size
+        );
+        Map<UUID, PrivateCustomerResponseDto> dtoMap = dtoPage.data().stream()
+                .collect(Collectors.toMap(PrivateCustomerResponseDto::id, Function.identity()));
+        Map<UUID, String> avatarMap = utils.findAllAvatarUrlByOwnerIdIn(dtoMap.keySet());
+        Map<UUID, List<PrivateContactResponseDto>> contactsMap = utils.findAllPrivateContactByOwnerIdIn(dtoMap.keySet());
+
+        return new PageResponse<>(
+                dtoMap.entrySet().stream()
+                        .map(dto -> new CustomerPrivateProfileDto(
+                                avatarMap.get(dto.getKey()),
+                                dto.getValue(),
+                                contactsMap.get(dto.getKey()))
+                        )
+                        .toList(),
+                dtoPage.totalPage()
+        );
     }
 }
 

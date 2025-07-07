@@ -14,11 +14,9 @@ public interface AppointmentOrchestrator {
 
     AppointmentResponseDto update(UUID customerId, AppointmentUpdateDto updateDto);
 
-    void complete(UUID participantId, Long id, String review);
+    AppointmentResponseDto complete(UUID participantId, Long id, String review);
 
-    void cancel(UUID participantId, Long id);
+    AppointmentResponseDto cancel(UUID participantId, Long id);
 
-    AppointmentResponseDto findById(UUID volunteerId, Long id);
-
-    List<LocalDate> findMonthDatesByOwnerIdAndCurrentDate(UUID ownerId);
+    AppointmentResponseDto findByVolunteerIdAndId(UUID volunteerId, Long id);
 }
