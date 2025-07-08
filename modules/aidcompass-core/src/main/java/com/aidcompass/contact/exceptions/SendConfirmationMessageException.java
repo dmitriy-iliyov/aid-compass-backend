@@ -1,4 +1,4 @@
-package com.aidcompass.contact.core.facades;
+package com.aidcompass.contact.exceptions;
 
 import com.aidcompass.general.exceptions.models.Exception;
 import com.aidcompass.general.exceptions.models.dto.ErrorDto;

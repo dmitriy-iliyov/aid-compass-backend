@@ -11,6 +11,8 @@ import com.aidcompass.general.exceptions.models.BaseNotFoundException;
 import com.aidcompass.interval.models.dto.NearestIntervalDto;
 import com.aidcompass.jurist.models.dto.*;
 import com.aidcompass.jurist.services.JuristService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,8 +97,8 @@ public class JuristAggregatorService {
     }
 
     @Transactional(noRollbackFor = BaseNotFoundException.class)
-    public void delete(UUID id) {
-        utils.deleteAllUserAlignments(id);
+    public void delete(UUID id, String password, HttpServletRequest request, HttpServletResponse response) {
+        utils.deleteAllUserAlignments(id, password, request, response);
         utils.deleteAllVolunteerAlignments(id);
         juristService.deleteById(id);
     }

@@ -11,6 +11,8 @@ import com.aidcompass.interval.models.dto.NearestIntervalDto;
 import com.aidcompass.interval.services.IntervalService;
 import com.aidcompass.interval.services.NearestIntervalService;
 import com.aidcompass.security.domain.user.services.UserOrchestrator;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -79,13 +81,13 @@ public class AggregatorUtils {
         return contactService.findAllPrivateByOwnerId(id);
     }
 
-    public void deleteAllUserAlignments(UUID id) {
+    public void deleteAllUserAlignments(UUID id, String password, HttpServletRequest request, HttpServletResponse response) {
         try {
             avatarService.delete(id);
         } catch (BaseNotFoundException ignore) { }
         contactService.deleteAll(id);
         appointmentService.deleteAll(id);
-        userOrchestrator.deleteById(id);
+        userOrchestrator.deleteByPassword(id, password, request, response);
     }
 
     public void deleteAllVolunteerAlignments(UUID id) {

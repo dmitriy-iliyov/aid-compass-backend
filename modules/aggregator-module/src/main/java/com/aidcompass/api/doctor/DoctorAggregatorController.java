@@ -4,10 +4,10 @@ import com.aidcompass.PrincipalDetails;
 import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.gender.Gender;
 import com.aidcompass.general.utils.validation.ValidEnum;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
+import com.aidcompass.security.domain.token.models.TokenUserDetails;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -122,9 +122,14 @@ public class DoctorAggregatorController {
     }
 
     @PreAuthorize("hasAuthority('ROLE_DOCTOR')")
-    @DeleteMapping("/me")
-    public ResponseEntity<?> delete(@AuthenticationPrincipal PrincipalDetails principal) {
-        service.delete(principal.getUserId());
+    @DeleteMapping("/me/{password}")
+    public ResponseEntity<?> delete(@AuthenticationPrincipal PrincipalDetails principal,
+                                    @PathVariable("password")
+                                    @NotBlank(message = "Password can't be empty or blank!")
+                                    @Size(min = 10, max = 22, message = "Password length must be greater than 10 and less than 22!")
+                                    String password,
+                                    HttpServletRequest request, HttpServletResponse response) {
+        service.delete(principal.getUserId(), password, request, response);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();

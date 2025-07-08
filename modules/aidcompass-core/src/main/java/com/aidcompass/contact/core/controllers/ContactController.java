@@ -97,8 +97,7 @@ public class ContactController {
 
     @PatchMapping("/batch")
     public ResponseEntity<List<PrivateContactResponseDto>> batchUpdate(@AuthenticationPrincipal TokenUserDetails principal,
-                                                                       @RequestBody
-                                                                       @Valid ContactUpdateDtoList wrappedContacts) {
+                                                                       @RequestBody @Valid ContactUpdateDtoList wrappedContacts) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(generalContactOrchestrator.updateAll(principal.getUserId(), wrappedContacts.contacts()));

@@ -22,11 +22,9 @@ import java.util.stream.Collectors;
 public class PermissionValidatorImpl implements PermissionValidator {
 
     private final SystemContactService service;
-
     private final ContactOwnershipValidator contactOwnershipValidator;
     private final ContactUniquenessValidator contactUniquenessValidator;
     private final FormatValidator formatValidator;
-
 
     /**
      * Validates a list of contact updates to ensure no permitted changes are made.

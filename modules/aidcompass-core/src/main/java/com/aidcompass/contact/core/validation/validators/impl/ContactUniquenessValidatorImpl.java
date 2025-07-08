@@ -17,20 +17,20 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ContactUniquenessValidatorImpl implements ContactUniquenessValidator {
 
-    private final ContactServiceSyncOrchestrator facade;
+    private final ContactServiceSyncOrchestrator orchestrator;
 
 
     @Override
     public boolean isEmailUnique(String email) {
         // check in userUnconfirmedRepo
-        return !facade.existsByContactTypeAndContact(ContactType.EMAIL, email);
+        return !orchestrator.existsByContactTypeAndContact(ContactType.EMAIL, email);
     }
 
     @Override
     public boolean isEmailUnique(String email, UUID ownerId) {
         try {
             // check in userUnconfirmedRepo
-            return facade.findByContact(email).getOwnerId() != ownerId;
+            return orchestrator.findByContact(email).getOwnerId() != ownerId;
         } catch (BaseNotFoundException e) {
             return true;
         }
@@ -39,7 +39,7 @@ public class ContactUniquenessValidatorImpl implements ContactUniquenessValidato
     @Override
     public boolean isPhoneNumberUnique(String phoneNumber, UUID ownerId) {
         try {
-            return facade.findByContact(phoneNumber).getOwnerId() != ownerId;
+            return orchestrator.findByContact(phoneNumber).getOwnerId() != ownerId;
         } catch (BaseNotFoundException e) {
             return true;
         }
@@ -47,7 +47,7 @@ public class ContactUniquenessValidatorImpl implements ContactUniquenessValidato
 
     @Override
     public boolean isPhoneNumberUnique(String phoneNumber) {
-        return !facade.existsByContactTypeAndContact(ContactType.PHONE_NUMBER, phoneNumber);
+        return !orchestrator.existsByContactTypeAndContact(ContactType.PHONE_NUMBER, phoneNumber);
     }
 
     /**

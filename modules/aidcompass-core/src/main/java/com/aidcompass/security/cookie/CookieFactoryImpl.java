@@ -7,6 +7,7 @@ import com.aidcompass.security.domain.token.models.TokenType;
 import com.aidcompass.security.domain.token.serializing.TokenSerializer;
 import com.aidcompass.security.domain.user.models.MemberUserDetails;
 import jakarta.servlet.http.Cookie;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -14,18 +15,12 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 @Component
+@RequiredArgsConstructor
 public class CookieFactoryImpl implements CookieFactory {
 
     private final TokenFactory tokenFactory;
     private final TokenSerializer tokenSerializer;
 
-
-    public CookieFactoryImpl(TokenFactory tokenFactory,
-                             TokenSerializer tokenSerializer
-    ) {
-        this.tokenFactory = tokenFactory;
-        this.tokenSerializer = tokenSerializer;
-    }
 
     @Override
     public Cookie generateAuthCookie(Authentication authentication) {

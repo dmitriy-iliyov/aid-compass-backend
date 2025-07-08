@@ -16,8 +16,6 @@ public interface SystemContactService {
 
     boolean existsByTypeEntityAndContact(ContactTypeEntity typeEntity, String contact);
 
-    boolean isContactConfirmed(Long contactId);
-
     SystemContactDto findById(Long contactId);
 
     SystemContactDto findByContact(String contact);

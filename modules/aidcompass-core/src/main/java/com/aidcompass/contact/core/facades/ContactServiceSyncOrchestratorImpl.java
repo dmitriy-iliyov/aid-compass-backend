@@ -48,9 +48,7 @@ public class ContactServiceSyncOrchestratorImpl implements ContactServiceSyncOrc
     public Long confirmContact(SystemConfirmationRequestDto requestDto) {
         SystemContactDto systemDto = unconfirmedContactService.findById(requestDto.contact());
         systemDto.setConfirmed(true);
-        log.info("contact from cache: " + systemDto);
         systemDto = systemContactService.save(systemDto);
-        log.info("save to db: " + systemDto);
         unconfirmedContactService.deleteById(systemDto.getContact());
         return systemDto.getId();
     }

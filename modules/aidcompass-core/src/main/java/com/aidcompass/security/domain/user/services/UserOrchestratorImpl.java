@@ -13,6 +13,9 @@ import com.aidcompass.general.exceptions.models.BaseNotFoundException;
 import com.aidcompass.security.domain.user.models.dto.SystemUserUpdateDto;
 import com.aidcompass.general.utils.uuid.UuidFactory;
 import com.aidcompass.security.exceptions.not_found.EmailNotFoundException;
+import com.aidcompass.security.handlers.UserDeleteHandler;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
@@ -35,6 +38,7 @@ public class UserOrchestratorImpl implements UserOrchestrator {
     private final UnconfirmedUserService unconfirmedUserService;
     private final ContactServiceSyncOrchestrator synchronizationFacade;
     private final Validator validator;
+    private final UserDeleteHandler userDeleteHandler;
 
 
     @Override
@@ -110,7 +114,8 @@ public class UserOrchestratorImpl implements UserOrchestrator {
     }
 
     @Override
-    public void deleteByPassword(UUID id, String password) {
+    public void deleteByPassword(UUID id, String password, HttpServletRequest request, HttpServletResponse response) {
         userService.deleteByPassword(id, password);
+        userDeleteHandler.handle(request, response);
     }
 }

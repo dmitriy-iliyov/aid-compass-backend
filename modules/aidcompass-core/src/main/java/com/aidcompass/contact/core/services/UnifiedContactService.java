@@ -51,12 +51,6 @@ public class UnifiedContactService implements ContactService, SystemContactServi
         ContactEntity entity = mapper.toEntity(dto);
         entity.setTypeEntity(typeEntity);
         entity.setOwnerId(ownerId);
-        //
-        if (dto.type().equals(ContactType.PHONE_NUMBER)) {
-            entity.setConfirmed(true);
-        }
-        entity.setPrimary(true);
-        //
         entity = repository.save(entity);
         this.notifyAboutProgress(typeEntity.getType(), ownerId);
         return mapper.toPrivateDto(entity);
@@ -115,12 +109,6 @@ public class UnifiedContactService implements ContactService, SystemContactServi
     @Override
     public boolean existsByTypeEntityAndContact(ContactTypeEntity typeEntity, String contact) {
         return repository.existsByTypeEntityAndContact(typeEntity, contact);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public boolean isContactConfirmed(Long contactId) {
-        return repository.isContactConfirmed(contactId);
     }
 
     @Transactional(readOnly = true)
@@ -207,6 +195,10 @@ public class UnifiedContactService implements ContactService, SystemContactServi
         }
     }
 
+    public void markContactAsPrimary() {
+
+    }
+
     @Transactional
     @Override
     public void markContactAsLinked(UUID ownerId, Long contactId) {
@@ -248,12 +240,6 @@ public class UnifiedContactService implements ContactService, SystemContactServi
     public SystemContactDto update(SystemContactUpdateDto dto) {
         ContactEntity entity = repository.findWithTypeById(dto.id()).orElseThrow(ContactNotFoundByIdException::new);
         boolean isConfirmed = entity.getContact().equals(dto.contact()) && entity.isConfirmed();
-        //
-        if (dto.type().equals(ContactType.PHONE_NUMBER)) {
-            isConfirmed = true;
-        }
-        entity.setPrimary(true);
-        //
         mapper.updateEntityFromDto(dto, entity, isConfirmed);
         return mapper.toSystemDto(repository.save(entity));
     }
@@ -282,12 +268,6 @@ public class UnifiedContactService implements ContactService, SystemContactServi
             ContactEntity entity = entityMap.get(dto.id());
             resultEntityList.add(entity);
             boolean isConfirmed = entity.getContact().equals(dto.contact()) && entity.isConfirmed();
-            //
-            if (dto.type().equals(ContactType.PHONE_NUMBER)) {
-                isConfirmed = true;
-            }
-            entity.setPrimary(true);
-            //
             mapper.updateEntityFromDto(dto, entity, isConfirmed);
             if (!isConfirmed) {
                 listener.callback(dto);

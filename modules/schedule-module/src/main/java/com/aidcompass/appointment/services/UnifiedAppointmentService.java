@@ -1,6 +1,7 @@
 package com.aidcompass.appointment.services;
 
-import com.aidcompass.general.GlobalRedisConfig;
+import com.aidcompass.appointment.mapper.AppointmentMapper;
+import com.aidcompass.appointment.models.AppointmentEntity;
 import com.aidcompass.appointment.models.dto.AppointmentCreateDto;
 import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
 import com.aidcompass.appointment.models.dto.AppointmentUpdateDto;
@@ -9,15 +10,12 @@ import com.aidcompass.appointment.models.enums.AppointmentAgeType;
 import com.aidcompass.appointment.models.enums.AppointmentStatus;
 import com.aidcompass.appointment.repositories.AppointmentRepository;
 import com.aidcompass.appointment.repositories.AppointmentSpecifications;
-import com.aidcompass.appointment.mapper.AppointmentMapper;
+import com.aidcompass.exceptions.appointment.AppointmentNotFoundByIdException;
+import com.aidcompass.general.GlobalRedisConfig;
 import com.aidcompass.general.contracts.dto.BatchResponse;
 import com.aidcompass.general.contracts.dto.PageResponse;
-import com.aidcompass.exceptions.appointment.AppointmentNotFoundByIdException;
-import com.aidcompass.appointment.models.AppointmentEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -27,11 +25,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
 
@@ -203,10 +198,6 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
         }
     }
 
-//    @CacheEvict(
-//            value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_AND_STATUS_CACHE_NAME,
-//            password = "#participantId + ':' + #date + ':CANCELED'"
-//    ),
     @CacheEvict(value = GlobalRedisConfig.APPOINTMENTS_BY_DATE_INTERVAL_CACHE, key = "#participantId")
     @Transactional
     @Override

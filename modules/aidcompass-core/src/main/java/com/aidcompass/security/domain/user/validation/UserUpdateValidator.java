@@ -4,7 +4,7 @@ package com.aidcompass.security.domain.user.validation;
 import com.aidcompass.AccountResourceConfirmationService;
 import com.aidcompass.ContactType;
 import com.aidcompass.contact.core.facades.ContactServiceSyncOrchestrator;
-import com.aidcompass.contact.core.facades.SendConfirmationMessageException;
+import com.aidcompass.contact.exceptions.SendConfirmationMessageException;
 import com.aidcompass.contact.core.facades.SystemContactFacade;
 import com.aidcompass.contact.core.models.dto.system.SystemContactUpdateDto;
 import com.aidcompass.security.domain.user.services.UserOrchestrator;

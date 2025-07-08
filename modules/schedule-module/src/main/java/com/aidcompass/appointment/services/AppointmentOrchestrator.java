@@ -5,8 +5,6 @@ import com.aidcompass.appointment.models.dto.AppointmentCreateDto;
 import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
 import com.aidcompass.appointment.models.dto.AppointmentUpdateDto;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
 public interface AppointmentOrchestrator {

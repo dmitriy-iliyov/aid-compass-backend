@@ -197,10 +197,6 @@ public class UnifiedUserService implements UserService, UserDetailsService {
         } throw new IncorrectPasswordException();
     }
 
-    private void cleanCookie(HttpServletResponse response) {
-
-    }
-
     @Override
     public SystemUserUpdateDto mapToUpdateDto(UserUpdateDto userUpdateDto) {
         return mapper.toSystemUpdateDto(userUpdateDto);

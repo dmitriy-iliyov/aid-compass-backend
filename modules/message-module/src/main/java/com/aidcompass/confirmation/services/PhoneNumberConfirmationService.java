@@ -45,6 +45,7 @@ public class PhoneNumberConfirmationService implements ResourceConfirmationServi
 
     @Override
     public void sendConfirmationMessage(String resource, Long resourceId) throws Exception {
+        System.out.println("sending");
         String code = CodeFactory.generate();
         confirmationRepository.save(KEY_TEMPLATE.formatted(code), resourceId.toString(), TOKEN_TTL);
         messageService.sendMessage(MessageFactory.resourceConfirmation(resource, code));
@@ -54,7 +55,6 @@ public class PhoneNumberConfirmationService implements ResourceConfirmationServi
     public void validateConfirmationToken(String token) {
         String resourceId = confirmationRepository.findAndDeleteByToken(KEY_TEMPLATE.formatted(token))
                 .orElseThrow(InvalidConfirmationTokenException::new);
-
         systemContactFacade.confirmContactById(Long.valueOf(resourceId));
     }
 }

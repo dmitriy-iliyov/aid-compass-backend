@@ -1,11 +1,11 @@
 package com.aidcompass.appointment_duration;
 
-import com.aidcompass.general.GlobalRedisConfig;
 import com.aidcompass.appointment_duration.models.AppointmentDurationEntity;
 import com.aidcompass.exceptions.appointment_duration.DurationNotFoundByOwnerIdException;
+import com.aidcompass.general.GlobalRedisConfig;
 import com.aidcompass.general.exceptions.models.PassedListIsToLongException;
-import com.aidcompass.schedule_filling_progress.ScheduleProgressService;
 import com.aidcompass.general.utils.uuid.UuidUtils;
+import com.aidcompass.schedule_filling_progress.ScheduleProgressService;
 import com.aidcompass.security.domain.authority.models.Authority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.Cache;

@@ -6,6 +6,8 @@ import com.aidcompass.security.domain.user.models.dto.SystemUserDto;
 import com.aidcompass.security.domain.user.models.dto.UserRegistrationDto;
 import com.aidcompass.security.domain.user.models.dto.UserResponseDto;
 import com.aidcompass.security.domain.user.models.dto.UserUpdateDto;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.UUID;
 
@@ -29,5 +31,5 @@ public interface UserOrchestrator {
 
     void deleteById(UUID id);
 
-    void deleteByPassword(UUID id, String password);
+    void deleteByPassword(UUID id, String password, HttpServletRequest request, HttpServletResponse response);
 }

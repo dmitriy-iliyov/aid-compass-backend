@@ -12,6 +12,8 @@ import com.aidcompass.gender.Gender;
 import com.aidcompass.general.contracts.dto.PageResponse;
 import com.aidcompass.general.exceptions.models.BaseNotFoundException;
 import com.aidcompass.interval.models.dto.NearestIntervalDto;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,8 +93,8 @@ public class DoctorAggregatorService {
     }
 
     @Transactional(noRollbackFor = BaseNotFoundException.class)
-    public void delete(UUID id) {
-        utils.deleteAllUserAlignments(id);
+    public void delete(UUID id, String password, HttpServletRequest request, HttpServletResponse response) {
+        utils.deleteAllUserAlignments(id, password, request, response);
         utils.deleteAllVolunteerAlignments(id);
         doctorService.deleteById(id);
     }

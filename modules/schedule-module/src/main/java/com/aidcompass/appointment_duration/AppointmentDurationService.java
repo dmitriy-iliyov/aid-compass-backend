@@ -2,7 +2,6 @@ package com.aidcompass.appointment_duration;
 
 import com.aidcompass.security.domain.authority.models.Authority;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;

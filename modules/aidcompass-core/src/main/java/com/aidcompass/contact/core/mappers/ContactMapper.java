@@ -49,6 +49,7 @@ public interface ContactMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(source = "isConfirmedParam", target = "confirmed")
     @Mapping(target = "linkedToAccount", expression = "java(true)")
+    @Mapping(source = "dto.isPrimary", target = "primary")
     void updateEntityFromDto(SystemContactUpdateDto dto, @MappingTarget ContactEntity entity, boolean isConfirmedParam);
 
     @Mapping(source = "primary", target = "primary")

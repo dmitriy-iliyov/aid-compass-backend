@@ -6,6 +6,8 @@ import com.aidcompass.customer.models.PrivateCustomerResponseDto;
 import com.aidcompass.customer.services.CustomerService;
 import com.aidcompass.general.contracts.dto.PageResponse;
 import com.aidcompass.general.exceptions.models.BaseNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +33,8 @@ public class CustomerAggregatorService {
     }
 
     @Transactional(noRollbackFor = BaseNotFoundException.class)
-    public void delete(UUID id) {
-        utils.deleteAllUserAlignments(id);
+    public void delete(UUID id, String password, HttpServletRequest request, HttpServletResponse response) {
+        utils.deleteAllUserAlignments(id, password, request, response);
         customerService.deleteById(id);
     }
 

@@ -7,6 +7,8 @@ import com.aidcompass.security.domain.user.models.dto.UserRegistrationDto;
 import com.aidcompass.security.domain.user.models.dto.UserResponseDto;
 import com.aidcompass.security.domain.user.models.dto.UserUpdateDto;
 import com.aidcompass.security.domain.token.models.TokenUserDetails;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -63,21 +65,14 @@ public class UserController {
                 .build();
     }
 
-    @DeleteMapping("/me")
-    public ResponseEntity<?> delete(@AuthenticationPrincipal TokenUserDetails principal) {
-        userOrchestrator.deleteById(principal.getUserId());
-        return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
-                .build();
-    }
-
     @DeleteMapping("/me/{password}")
     public ResponseEntity<?> deleteByPassword(@AuthenticationPrincipal TokenUserDetails principal,
                                               @PathVariable("password")
                                               @NotBlank(message = "Password can't be empty or blank!")
                                               @Size(min = 10, max = 22, message = "Password length must be greater than 10 and less than 22!")
-                                              String password) {
-        userOrchestrator.deleteByPassword(principal.getUserId(), password);
+                                              String password,
+                                              HttpServletRequest request, HttpServletResponse response) {
+        userOrchestrator.deleteByPassword(principal.getUserId(), password, request, response);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();

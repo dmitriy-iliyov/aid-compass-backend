@@ -107,7 +107,6 @@ public class ConfirmationController {
                                                 @RequestParam("code")
                                                 @NotBlank(message = "Token shouldn't be blank or empty!") String code) {
         accountConfService.validateConfirmationToken(code);
-        // forward
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .build();

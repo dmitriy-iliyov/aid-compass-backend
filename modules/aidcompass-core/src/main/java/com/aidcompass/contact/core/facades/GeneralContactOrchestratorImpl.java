@@ -10,6 +10,7 @@ import com.aidcompass.contact.core.models.markers.CreateDto;
 import com.aidcompass.contact.core.services.ContactService;
 import com.aidcompass.contact.core.validation.validators.CountValidator;
 import com.aidcompass.contact.core.validation.validators.PermissionValidator;
+import com.aidcompass.contact.exceptions.SendConfirmationMessageException;
 import com.aidcompass.contact.exceptions.invalid_input.BaseInvalidContactDeleteException;
 import com.aidcompass.contact.exceptions.invalid_input.BaseInvalidContactUpdateException;
 import com.aidcompass.contact.exceptions.invalid_input.InvalidAttemptMarkAsLinkedException;
