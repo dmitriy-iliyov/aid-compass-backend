@@ -21,7 +21,7 @@ public interface IntervalService {
 
     List<IntervalResponseDto> findAllNearestByOwnerIdIn(Set<UUID> ownerIds);
 
-    IntervalResponseDto findByOwnerIdAndStartAndDate(UUID ownerId, LocalTime start, LocalDate date);
+    IntervalResponseDto findByOwnerIdAndStartAndDate(UUID ownerId, LocalDate date, LocalTime start);
 
     IntervalResponseDto findById(Long id);
 

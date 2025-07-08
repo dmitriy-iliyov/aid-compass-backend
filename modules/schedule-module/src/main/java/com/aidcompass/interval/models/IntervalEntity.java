@@ -17,21 +17,21 @@ import java.util.UUID;
 public class IntervalEntity {
 
     @Id
-    @SequenceGenerator(name = "w_i_seq", sequenceName = "w_i_seq", initialValue = 1, allocationSize = 50)
+    @SequenceGenerator(name = "w_i_seq", sequenceName = "w_i_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "w_i_seq")
     private Long id;
 
     @Column(name = "owner_id", nullable = false, updatable = false)
     private UUID ownerId;
 
+    @Column(name = "date", nullable = false)
+    private LocalDate date;
+
     @Column(name = "start_t", nullable = false)
     private LocalTime start;
 
     @Column(name = "end_t", nullable = false )
     private LocalTime end;
-
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
 
 
     public IntervalEntity(UUID ownerId, LocalTime start, LocalTime end, LocalDate date) {

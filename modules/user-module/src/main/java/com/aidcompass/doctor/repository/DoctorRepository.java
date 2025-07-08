@@ -29,6 +29,7 @@ public interface DoctorRepository extends JpaRepository<DoctorEntity, UUID>,
     @Query("UPDATE DoctorEntity d SET d.isApproved = true WHERE d.id = :id")
     void approveById(@Param("id") UUID id);
 
+
     @Query("SELECT d FROM DoctorEntity d JOIN FETCH d.profileStatusEntity WHERE d.id = :id")
     Optional<DoctorEntity> findWithProfileStatusById(@Param("id") UUID id);
 
@@ -136,6 +137,7 @@ public interface DoctorRepository extends JpaRepository<DoctorEntity, UUID>,
     )
     Page<DoctorEntity> findAllByGender(@Param("gender") Gender gender, Pageable pageable);
 
+
     @Modifying
     @Query("""
                 UPDATE DoctorEntity d
@@ -143,6 +145,7 @@ public interface DoctorRepository extends JpaRepository<DoctorEntity, UUID>,
                 WHERE d.id = :id
     """)
     void updateProfileProgress(@Param("id") UUID id, @Param("increment") int i);
+
 
     @Modifying
     @Query("""
@@ -153,6 +156,7 @@ public interface DoctorRepository extends JpaRepository<DoctorEntity, UUID>,
     """)
     void updateProgressAndProfileStatus(@Param("id") UUID id, @Param("increment") int increment,
                                         @Param("profileStatusEntity") ProfileStatusEntity profileStatusEntity);
+
 
     long countByIsApproved(boolean approved);
 

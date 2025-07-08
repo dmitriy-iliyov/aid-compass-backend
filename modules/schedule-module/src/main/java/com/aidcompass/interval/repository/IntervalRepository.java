@@ -35,9 +35,7 @@ public interface IntervalRepository extends JpaRepository<IntervalEntity, Long> 
 
     Optional<IntervalEntity> findFirstByOwnerIdAndDateBetweenOrderByDateAscStartAsc(UUID ownerId, LocalDate start, LocalDate end);
 
-    boolean existsByOwnerIdAndStartAndDate(UUID ownerId, LocalTime start, LocalDate date);
-
-    Optional<IntervalEntity> findByOwnerIdAndStartAndDate(UUID ownerId, LocalTime start, LocalDate date);
+    Optional<IntervalEntity> findByOwnerIdAndDateAndStart(UUID ownerId, LocalDate date, LocalTime start);
 
     @Query(value = """
         SELECT * FROM (

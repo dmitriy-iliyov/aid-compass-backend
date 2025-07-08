@@ -234,12 +234,13 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
     @Transactional(readOnly = true)
     @Override
     public BatchResponse<AppointmentResponseDto> findBatchToRemind(int batchSize, int page) {
-        LocalDate runDate = LocalDate.now().plusDays(1);
+        LocalDate scheduledData = LocalDate.now().plusDays(1);
 
-        log.info("START selecting appointments to remind with batchSize={}, page={}, runDate={}", batchSize, page, runDate);
+        log.info("START selecting appointments to remind with batchSize={}, page={}, scheduledData={}", batchSize, page, scheduledData);
 
         Slice<AppointmentEntity> slice = repository.findBatchToRemind(
-                runDate,
+                scheduledData,
+                AppointmentStatus.SCHEDULED,
                 Pageable.ofSize(batchSize).withPage(page)
         );
 

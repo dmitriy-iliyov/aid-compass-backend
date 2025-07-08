@@ -5,6 +5,7 @@ import com.aidcompass.jurist.models.JuristEntity;
 import com.aidcompass.jurist.specialization.mapper.JuristSpecializationMapper;
 import com.aidcompass.jurist.specialization.models.JuristSpecialization;
 import com.aidcompass.jurist.specialization.models.JuristSpecializationEntity;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ public class JuristSpecializationService {
 
     private final JuristSpecializationRepository repository;
     private final JuristSpecializationMapper mapper;
+    private final ObjectMapper objectMapper;
 
 
     @Transactional
@@ -25,7 +27,6 @@ public class JuristSpecializationService {
         repository.saveAll(entityList);
     }
 
-    //cache
     @Transactional(readOnly = true)
     public JuristSpecializationEntity findEntityBySpecialization(JuristSpecialization specialization) {
         if (specialization == null) {
@@ -45,17 +46,15 @@ public class JuristSpecializationService {
     }
 
     @Transactional(readOnly = true)
-    public Map<UUID, List<JuristSpecialization>> findAllByJuristIds(List<UUID> ids) {
-        List<JuristSpecializationEntity> entityList = repository.findAllByJuristIds(ids);
-        Map<UUID, List<JuristSpecialization>> specializationsByJuristId = new HashMap<>();
-        for (JuristSpecializationEntity spec : entityList) {
-            for (JuristEntity jurist : spec.getJurists()) {
-                UUID juristId = jurist.getId();
-                specializationsByJuristId
-                        .computeIfAbsent(juristId, k -> new ArrayList<>())
-                        .add(spec.getSpecialization());
-            }
+    public Map<UUID, List<JuristSpecialization>> findAllByJuristIdIn(List<UUID> ids) {
+        List<Object[]> pairList = repository.findAllPairsByJuristIdIn(ids);
+        Map<UUID, List<JuristSpecialization>> specializationsMap = new HashMap<>();
+        for (Object[] pair: pairList) {
+            UUID id = (UUID) pair[0];
+            JuristSpecializationEntity specializationEntity = (JuristSpecializationEntity) pair[1];
+            specializationsMap.computeIfAbsent(id, k -> new ArrayList<>())
+                              .add(specializationEntity.getSpecialization());
         }
-        return specializationsByJuristId;
+        return specializationsMap;
     }
 }

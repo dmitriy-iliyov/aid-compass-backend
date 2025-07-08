@@ -84,8 +84,8 @@ public class UnifiedIntervalService implements IntervalService, SystemIntervalSe
 
     @Transactional(readOnly = true)
     @Override
-    public IntervalResponseDto findByOwnerIdAndStartAndDate(UUID ownerId, LocalTime start, LocalDate date) {
-        return mapper.toDto(repository.findByOwnerIdAndStartAndDate(ownerId, start, date).orElse(null));
+    public IntervalResponseDto findByOwnerIdAndStartAndDate(UUID ownerId, LocalDate date, LocalTime start) {
+        return mapper.toDto(repository.findByOwnerIdAndDateAndStart(ownerId, date, start).orElse(null));
     }
 
     @Cacheable(value = GlobalRedisConfig.INTERVALS_BY_DATE_CACHE, key = "#ownerId + ':' + #date")

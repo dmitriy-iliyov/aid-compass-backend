@@ -367,7 +367,7 @@ public class UnifiedJuristService implements JuristService, ProfileStatusUpdateS
 
     private Map<UUID, List<JuristSpecialization>> loadSpecializations(Page<JuristEntity> entityPage) {
         List<UUID> ids = entityPage.stream().map(JuristEntity::getId).toList();
-        return specializationService.findAllByJuristIds(ids);
+        return specializationService.findAllByJuristIdIn(ids);
     }
 
     private List<PublicJuristResponseDto> toPublicDtoList(List<JuristEntity> juristEntityList,

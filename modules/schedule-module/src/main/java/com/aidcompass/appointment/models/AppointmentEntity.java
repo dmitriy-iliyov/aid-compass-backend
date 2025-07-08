@@ -20,7 +20,7 @@ import java.util.UUID;
 public class AppointmentEntity {
 
     @Id
-    @SequenceGenerator(name = "app_seq", sequenceName = "app_seq", initialValue = 1, allocationSize = 50)
+    @SequenceGenerator(name = "app_seq", sequenceName = "app_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "app_seq")
     private Long id;
 

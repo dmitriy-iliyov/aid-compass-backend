@@ -268,7 +268,7 @@ public class UnifiedDoctorService implements DoctorService, ProfileStatusUpdateS
 
     private Map<UUID, List<DoctorSpecialization>> loadSpecializations(Page<DoctorEntity> page) {
         List<UUID> ids = page.stream().map(DoctorEntity::getId).toList();
-        return specializationService.findAllByDoctorsIds(ids);
+        return specializationService.findAllByDoctorIdIn(ids);
     }
 
     private List<PublicDoctorResponseDto> toPublicDtoList(List<DoctorEntity> entityList,

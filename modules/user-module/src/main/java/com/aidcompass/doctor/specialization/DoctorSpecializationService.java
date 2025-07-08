@@ -42,15 +42,14 @@ public class DoctorSpecializationService {
     }
 
     @Transactional(readOnly = true)
-    public Map<UUID, List<DoctorSpecialization>> findAllByDoctorsIds(List<UUID> ids) {
-        List<DoctorSpecializationEntity> specializationEntityList = repository.findAllByDoctorIds(ids);
+    public Map<UUID, List<DoctorSpecialization>> findAllByDoctorIdIn(List<UUID> ids) {
+        List<Object[]> pairs = repository.findAllPairsByDoctorIdIn(ids);
         Map<UUID, List<DoctorSpecialization>> resultMap = new LinkedHashMap<>();
-        for (DoctorSpecializationEntity entity: specializationEntityList) {
-            for (DoctorEntity doctor: entity.getDoctors()) {
-                UUID id = doctor.getId();
-                resultMap.computeIfAbsent(id, k -> new ArrayList<>())
-                                .add(entity.getSpecialization());
-            }
+        for (Object[] pair: pairs) {
+            UUID id = (UUID) pair[0];
+            DoctorSpecializationEntity specializationEntity = (DoctorSpecializationEntity) pair[1];
+            resultMap.computeIfAbsent(id, k -> new ArrayList<>())
+                     .add(specializationEntity.getSpecialization());
         }
         return resultMap;
     }

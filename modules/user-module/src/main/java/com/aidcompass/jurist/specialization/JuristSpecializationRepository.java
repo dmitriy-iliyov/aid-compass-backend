@@ -17,10 +17,10 @@ public interface JuristSpecializationRepository extends JpaRepository<JuristSpec
     Optional<JuristSpecializationEntity> findBySpecialization(JuristSpecialization specialization);
 
     @Query("""
-                SELECT s FROM JuristSpecializationEntity s
+                SELECT j.id, s FROM JuristSpecializationEntity s
                 JOIN FETCH s.jurists j
                 WHERE j.id IN :ids
     """)
-    List<JuristSpecializationEntity> findAllByJuristIds(@Param("ids") List<UUID> juristIds);
+    List<Object[]> findAllPairsByJuristIdIn(@Param("ids") List<UUID> ids);
 
 }

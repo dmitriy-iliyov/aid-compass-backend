@@ -36,8 +36,8 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     @Modifying
     @Query(value = """
         DELETE FROM appointments
-        WHERE customer_id = :participant_id
-           OR volunteer_id = :participant_id
+        WHERE volunteer_id = :participant_id
+           OR customer_id = :participant_id
         RETURNING id
     """, nativeQuery = true)
     List<Long> deleteAllByParticipantId(@Param("participant_id") UUID participantId);
@@ -58,8 +58,8 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     @Query(value = """
         WITH to_update AS (
             SELECT id FROM appointments
-            WHERE status = 0 
-            AND date < :date_limit
+            WHERE date < :date_limit 
+            AND status = 0
             LIMIT :batch_size
         )
         UPDATE appointments
@@ -71,7 +71,9 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
 
     @Query(value = """
         SELECT a FROM AppointmentEntity a
-        WHERE a.date = :scheduled_date 
+        WHERE a.date = :scheduled_date
+        AND a.status = :status
     """)
-    Slice<AppointmentEntity> findBatchToRemind(@Param("scheduled_date") LocalDate scheduledDate, Pageable pageable);
+    Slice<AppointmentEntity> findBatchToRemind(@Param("scheduled_date") LocalDate scheduledDate,
+                                               @Param("status") AppointmentStatus status, Pageable pageable);
 }

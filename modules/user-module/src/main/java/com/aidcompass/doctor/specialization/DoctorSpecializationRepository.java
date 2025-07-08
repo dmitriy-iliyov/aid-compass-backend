@@ -13,12 +13,13 @@ import java.util.UUID;
 
 @Repository
 public interface DoctorSpecializationRepository extends JpaRepository<DoctorSpecializationEntity, Integer> {
+
     Optional<DoctorSpecializationEntity> findBySpecialization(DoctorSpecialization specialization);
 
     @Query("""
-        SELECT ds FROM DoctorSpecializationEntity ds
+        SELECT d.id, ds FROM DoctorSpecializationEntity ds
         JOIN FETCH ds.doctors d
         WHERE d.id IN :ids
     """)
-    List<DoctorSpecializationEntity> findAllByDoctorIds(@Param("ids") List<UUID> ids);
+    List<Object[]> findAllPairsByDoctorIdIn(@Param("ids") List<UUID> ids);
 }

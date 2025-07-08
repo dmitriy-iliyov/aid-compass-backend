@@ -17,7 +17,7 @@ import java.util.UUID;
 public class ContactEntity {
 
     @Id
-    @SequenceGenerator(name = "cont_seq", sequenceName = "cont_seq", initialValue = 1, allocationSize = 20)
+    @SequenceGenerator(name = "cont_seq", sequenceName = "cont_seq", allocationSize = 20)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cont_seq")
     private Long id;
 
@@ -45,23 +45,6 @@ public class ContactEntity {
 
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
-
-
-    public ContactEntity(UUID ownerId,
-                         ContactTypeEntity typeEntity,
-                         String contact,
-                         boolean isPrimary,
-                         boolean isConfirmed,
-                         boolean isLinkedToAccount, Instant createdAt, Instant updatedAt) {
-        this.ownerId = ownerId;
-        this.typeEntity = typeEntity;
-        this.contact = contact;
-        this.isPrimary = isPrimary;
-        this.isConfirmed = isConfirmed;
-        this.isLinkedToAccount = isLinkedToAccount;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
 
 
     @PrePersist

@@ -43,7 +43,7 @@ public class IntervalOrchestrator {
             throw new IntervalTimeIsInvalidException();
         }
 
-        IntervalResponseDto existedDto = service.findByOwnerIdAndStartAndDate(ownerId, dto.start(), dto.date());
+        IntervalResponseDto existedDto = service.findByOwnerIdAndStartAndDate(ownerId, dto.date(), dto.start());
         if (existedDto != null) {
             return existedDto;
         }
@@ -54,7 +54,7 @@ public class IntervalOrchestrator {
 
     @Transactional
     public void systemSave(UUID ownerId, SystemIntervalCreatedDto dto) {
-        IntervalResponseDto existedDto = service.findByOwnerIdAndStartAndDate(ownerId, dto.start(), dto.date());
+        IntervalResponseDto existedDto = service.findByOwnerIdAndStartAndDate(ownerId, dto.date(), dto.start());
         if (existedDto != null) {
             return;
         }
