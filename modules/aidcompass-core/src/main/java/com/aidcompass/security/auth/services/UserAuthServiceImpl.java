@@ -53,7 +53,7 @@ public class UserAuthServiceImpl implements UserAuthService {
                 .toList();
 
         response.addCookie(cookieFactory.generateInfoCookie(Authority.valueOf(authorityList.get(0))));
-        csrfAuthenticationStrategy.onAuthentication(authentication, request, response);
+        csrfAuthenticationStrategy.onAuthentication(request, response);
     }
 
     @Override

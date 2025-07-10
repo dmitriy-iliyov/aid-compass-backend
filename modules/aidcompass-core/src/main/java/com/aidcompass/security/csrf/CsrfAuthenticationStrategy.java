@@ -16,7 +16,7 @@ public class CsrfAuthenticationStrategy {
     private final CsrfTokenRepository csrfTokenRepository;
 
 
-    public void onAuthentication(Authentication authentication, HttpServletRequest request, HttpServletResponse response) throws SessionAuthenticationException {
+    public void onAuthentication(HttpServletRequest request, HttpServletResponse response) throws SessionAuthenticationException {
         CsrfToken csrfToken = csrfTokenRepository.generateToken(request);
         csrfTokenRepository.saveToken(csrfToken, request, response);
     }
