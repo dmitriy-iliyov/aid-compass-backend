@@ -2,7 +2,6 @@ package com.aidcompass.doctor.repository;
 
 
 import com.aidcompass.doctor.models.DoctorEntity;
-import com.aidcompass.doctor.models.dto.PublicDoctorResponseDto;
 import com.aidcompass.doctor.specialization.models.DoctorSpecializationEntity;
 import com.aidcompass.gender.Gender;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;

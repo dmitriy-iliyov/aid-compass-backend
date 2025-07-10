@@ -1,7 +1,6 @@
 package com.aidcompass.jurist.specialization;
 
 import com.aidcompass.general.exceptions.jurist.JuristSpecializationEntityNotFoundBySpecializationException;
-import com.aidcompass.jurist.models.JuristEntity;
 import com.aidcompass.jurist.specialization.mapper.JuristSpecializationMapper;
 import com.aidcompass.jurist.specialization.models.JuristSpecialization;
 import com.aidcompass.jurist.specialization.models.JuristSpecializationEntity;

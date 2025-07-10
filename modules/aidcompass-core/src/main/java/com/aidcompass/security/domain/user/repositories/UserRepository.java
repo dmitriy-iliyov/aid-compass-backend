@@ -1,7 +1,6 @@
 package com.aidcompass.security.domain.user.repositories;
 
 import com.aidcompass.security.domain.user.models.UserEntity;
-import com.aidcompass.security.domain.user.models.dto.SystemUserDto;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

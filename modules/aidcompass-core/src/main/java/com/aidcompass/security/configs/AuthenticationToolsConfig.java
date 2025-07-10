@@ -1,7 +1,7 @@
 package com.aidcompass.security.configs;
 
-import com.aidcompass.security.handlers.CookieAuthenticationEntryPoint;
 import com.aidcompass.security.domain.token.TokenUserDetailsService;
+import com.aidcompass.security.handlers.CookieAuthenticationEntryPoint;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Qualifier;

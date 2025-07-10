@@ -2,15 +2,15 @@ package com.aidcompass.jurist.controllers;
 
 
 import com.aidcompass.PrincipalDetails;
-import com.aidcompass.detail.models.PrivateDetailResponseDto;
-import com.aidcompass.general.interfaces.PersistFacade;
 import com.aidcompass.detail.DetailService;
 import com.aidcompass.detail.models.DetailDto;
+import com.aidcompass.detail.models.PrivateDetailResponseDto;
 import com.aidcompass.general.contracts.enums.ServiceType;
+import com.aidcompass.general.interfaces.PersistFacade;
+import com.aidcompass.general.utils.validation.ValidEnum;
 import com.aidcompass.jurist.models.dto.JuristDto;
 import com.aidcompass.jurist.models.dto.PrivateJuristResponseDto;
 import com.aidcompass.jurist.services.JuristService;
-import com.aidcompass.general.utils.validation.ValidEnum;
 import com.aidcompass.jurist.specialization.models.JuristSpecialization;
 import com.aidcompass.jurist.specialization.models.JuristType;
 import jakarta.servlet.http.HttpServletResponse;

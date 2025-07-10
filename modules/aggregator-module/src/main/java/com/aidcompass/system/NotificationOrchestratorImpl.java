@@ -1,9 +1,9 @@
 package com.aidcompass.system;
 
-import com.aidcompass.contact.core.models.dto.PublicContactResponseDto;
-import com.aidcompass.general.contracts.NotificationOrchestrator;
 import com.aidcompass.appointment.models.dto.AppointmentResponseDto;
 import com.aidcompass.appointment.services.SystemAppointmentService;
+import com.aidcompass.contact.core.models.dto.PublicContactResponseDto;
+import com.aidcompass.general.contracts.NotificationOrchestrator;
 import com.aidcompass.general.contracts.dto.BaseSystemVolunteerDto;
 import com.aidcompass.general.contracts.dto.BatchRequest;
 import com.aidcompass.general.contracts.dto.BatchResponse;
@@ -12,14 +12,8 @@ import com.aidcompass.information.InformationService;
 import com.aidcompass.information.dto.AppointmentDto;
 import com.aidcompass.information.dto.AppointmentReminderDto;
 import com.aidcompass.information.dto.UserDto;
-import com.aidcompass.system.models.EventType;
-import com.aidcompass.system.models.KafkaMessage;
-import com.aidcompass.system.models.UserType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;

@@ -3,9 +3,7 @@ package com.aidcompass.security.domain.service;
 import com.aidcompass.security.domain.BaseUserDetails;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.UUID;

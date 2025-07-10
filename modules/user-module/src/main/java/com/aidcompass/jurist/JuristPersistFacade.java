@@ -1,9 +1,9 @@
 package com.aidcompass.jurist;
 
-import com.aidcompass.general.interfaces.PersistFacade;
-import com.aidcompass.general.interfaces.PersistService;
 import com.aidcompass.detail.PersistEmptyDetailService;
 import com.aidcompass.detail.models.DetailEntity;
+import com.aidcompass.general.interfaces.PersistFacade;
+import com.aidcompass.general.interfaces.PersistService;
 import com.aidcompass.jurist.models.dto.JuristDto;
 import com.aidcompass.jurist.models.dto.PrivateJuristResponseDto;
 import com.aidcompass.security.auth.services.UserAuthService;

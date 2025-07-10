@@ -1,9 +1,9 @@
 package com.aidcompass.contact.core.services;
 
-import com.aidcompass.contact.core.models.dto.system.SystemContactDto;
-import com.aidcompass.contact.core.models.dto.system.SystemContactUpdateDto;
 import com.aidcompass.ContactType;
 import com.aidcompass.contact.contact_type.models.ContactTypeEntity;
+import com.aidcompass.contact.core.models.dto.system.SystemContactDto;
+import com.aidcompass.contact.core.models.dto.system.SystemContactUpdateDto;
 
 import java.util.List;
 import java.util.UUID;

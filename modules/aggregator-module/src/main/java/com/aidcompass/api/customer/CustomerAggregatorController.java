@@ -1,7 +1,6 @@
 package com.aidcompass.api.customer;
 
 import com.aidcompass.PrincipalDetails;
-import com.aidcompass.security.domain.token.models.TokenUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotBlank;

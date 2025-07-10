@@ -5,7 +5,9 @@ import com.aidcompass.api.doctor.dto.DoctorCardDto;
 import com.aidcompass.api.doctor.dto.DoctorPrivateProfileDto;
 import com.aidcompass.api.doctor.dto.DoctorPublicProfileDto;
 import com.aidcompass.contact.core.models.dto.PrivateContactResponseDto;
-import com.aidcompass.doctor.models.dto.*;
+import com.aidcompass.doctor.models.dto.FullPrivateDoctorResponseDto;
+import com.aidcompass.doctor.models.dto.FullPublicDoctorResponseDto;
+import com.aidcompass.doctor.models.dto.PublicDoctorResponseDto;
 import com.aidcompass.doctor.services.DoctorService;
 import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.gender.Gender;
@@ -19,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

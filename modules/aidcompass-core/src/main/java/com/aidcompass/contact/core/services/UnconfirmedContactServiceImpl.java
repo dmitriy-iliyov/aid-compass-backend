@@ -1,9 +1,9 @@
 package com.aidcompass.contact.core.services;
 
 import com.aidcompass.contact.core.mappers.UnconfirmedContactMapper;
-import com.aidcompass.contact.core.models.entity.UnconfirmedContactEntity;
 import com.aidcompass.contact.core.models.dto.system.SystemContactCreateDto;
 import com.aidcompass.contact.core.models.dto.system.SystemContactDto;
+import com.aidcompass.contact.core.models.entity.UnconfirmedContactEntity;
 import com.aidcompass.contact.core.repositories.UnconfirmedContactRepository;
 import com.aidcompass.contact.exceptions.not_found.UnconfirmedContactNotFoundByIdException;
 import lombok.RequiredArgsConstructor;

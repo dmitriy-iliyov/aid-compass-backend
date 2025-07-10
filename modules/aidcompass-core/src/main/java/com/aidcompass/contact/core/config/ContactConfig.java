@@ -1,7 +1,10 @@
 package com.aidcompass.contact.core.config;
 
 import com.aidcompass.contact.core.services.SystemContactService;
-import com.aidcompass.contact.core.validation.validators.*;
+import com.aidcompass.contact.core.validation.validators.ContactOwnershipValidator;
+import com.aidcompass.contact.core.validation.validators.ContactUniquenessValidator;
+import com.aidcompass.contact.core.validation.validators.FormatValidator;
+import com.aidcompass.contact.core.validation.validators.PermissionValidator;
 import com.aidcompass.contact.core.validation.validators.impl.PermissionValidatorImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

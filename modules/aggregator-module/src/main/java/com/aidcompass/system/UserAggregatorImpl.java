@@ -9,16 +9,18 @@ import com.aidcompass.customer.models.PublicCustomerResponseDto;
 import com.aidcompass.customer.services.CustomerService;
 import com.aidcompass.doctor.models.dto.PublicDoctorResponseDto;
 import com.aidcompass.doctor.services.DoctorService;
+import com.aidcompass.information.dto.UserDto;
 import com.aidcompass.jurist.models.dto.PublicJuristResponseDto;
 import com.aidcompass.jurist.services.JuristService;
 import com.aidcompass.system.exception.UnsupportedUserTypeException;
-import com.aidcompass.information.dto.UserDto;
 import com.aidcompass.system.models.UserType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service

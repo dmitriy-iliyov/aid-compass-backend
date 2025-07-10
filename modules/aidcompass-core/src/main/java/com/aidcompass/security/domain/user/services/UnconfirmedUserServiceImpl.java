@@ -1,10 +1,10 @@
 package com.aidcompass.security.domain.user.services;
 
-import com.aidcompass.security.domain.user.repositories.UnconfirmedUserRepository;
-import com.aidcompass.security.domain.user.models.dto.SystemUserDto;
-import com.aidcompass.security.domain.user.models.dto.UserRegistrationDto;
 import com.aidcompass.security.domain.user.mapper.UserMapper;
 import com.aidcompass.security.domain.user.models.UnconfirmedUserEntity;
+import com.aidcompass.security.domain.user.models.dto.SystemUserDto;
+import com.aidcompass.security.domain.user.models.dto.UserRegistrationDto;
+import com.aidcompass.security.domain.user.repositories.UnconfirmedUserRepository;
 import com.aidcompass.security.exceptions.not_found.UnconfirmedUserNotFoundByEmailException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

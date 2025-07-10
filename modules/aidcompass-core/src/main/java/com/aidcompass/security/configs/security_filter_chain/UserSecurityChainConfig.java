@@ -2,14 +2,14 @@ package com.aidcompass.security.configs.security_filter_chain;
 
 
 import com.aidcompass.security.converters.CookieJwtAuthenticationConverter;
-import com.aidcompass.security.handlers.CsrfAccessDeniedHandler;
+import com.aidcompass.security.domain.token.TokenUserDetailsService;
+import com.aidcompass.security.domain.token.serializing.TokenDeserializer;
 import com.aidcompass.security.handlers.CookieAuthenticationEntryPoint;
+import com.aidcompass.security.handlers.CsrfAccessDeniedHandler;
 import com.aidcompass.security.handlers.authentication.DefaultAuthenticationFailureHandler;
 import com.aidcompass.security.handlers.authentication.DefaultAuthenticationSuccessHandler;
 import com.aidcompass.security.handlers.logout.DeactivatingTokenLogoutHandler;
 import com.aidcompass.security.handlers.logout.LogoutSuccessHandlerImpl;
-import com.aidcompass.security.domain.token.TokenUserDetailsService;
-import com.aidcompass.security.domain.token.serializing.TokenDeserializer;
 import com.aidcompass.security.xss.XssFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +19,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFilter;
@@ -27,7 +26,6 @@ import org.springframework.security.web.authentication.logout.CookieClearingLogo
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
-import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration

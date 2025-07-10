@@ -1,9 +1,9 @@
 package com.aidcompass.security.auth.services;
 
 import com.aidcompass.security.auth.dto.AuthRequest;
-import com.aidcompass.security.domain.authority.models.Authority;
 import com.aidcompass.security.cookie.CookieFactory;
 import com.aidcompass.security.csrf.CsrfAuthenticationStrategy;
+import com.aidcompass.security.domain.authority.models.Authority;
 import com.aidcompass.security.domain.user.models.MemberUserDetails;
 import com.aidcompass.security.domain.user.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;

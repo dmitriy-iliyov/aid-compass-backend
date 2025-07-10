@@ -1,9 +1,9 @@
 package com.aidcompass.doctor.models;
 
 import com.aidcompass.detail.models.DetailEntity;
+import com.aidcompass.doctor.specialization.models.DoctorSpecializationEntity;
 import com.aidcompass.gender.Gender;
 import com.aidcompass.gender.GenderConverter;
-import com.aidcompass.doctor.specialization.models.DoctorSpecializationEntity;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;
 import jakarta.persistence.*;
 import lombok.*;

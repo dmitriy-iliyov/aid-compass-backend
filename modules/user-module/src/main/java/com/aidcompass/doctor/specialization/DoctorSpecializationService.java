@@ -1,6 +1,5 @@
 package com.aidcompass.doctor.specialization;
 
-import com.aidcompass.doctor.models.DoctorEntity;
 import com.aidcompass.doctor.specialization.mapper.DoctorSpecializationMapper;
 import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.doctor.specialization.models.DoctorSpecializationEntity;

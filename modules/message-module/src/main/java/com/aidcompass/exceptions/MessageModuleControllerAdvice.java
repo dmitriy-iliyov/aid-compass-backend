@@ -1,8 +1,8 @@
 package com.aidcompass.exceptions;
 
 import com.aidcompass.general.exceptions.BaseControllerAdvice;
-import com.aidcompass.general.exceptions.models.dto.ErrorDto;
 import com.aidcompass.general.exceptions.mapper.ExceptionMapper;
+import com.aidcompass.general.exceptions.models.dto.ErrorDto;
 import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;

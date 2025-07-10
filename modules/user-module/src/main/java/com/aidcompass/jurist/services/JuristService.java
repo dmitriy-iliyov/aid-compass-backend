@@ -5,7 +5,6 @@ import com.aidcompass.general.contracts.dto.BaseSystemVolunteerDto;
 import com.aidcompass.general.contracts.dto.PageResponse;
 import com.aidcompass.general.interfaces.PersistService;
 import com.aidcompass.jurist.models.dto.*;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;

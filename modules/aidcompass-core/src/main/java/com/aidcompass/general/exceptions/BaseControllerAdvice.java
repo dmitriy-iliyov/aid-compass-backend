@@ -1,13 +1,10 @@
 package com.aidcompass.general.exceptions;
 
-import com.aidcompass.general.exceptions.models.BaseInternalServerException;
-import com.aidcompass.general.exceptions.models.BaseInvalidInputException;
-import com.aidcompass.general.exceptions.models.BaseInvalidInputExceptionList;
-import com.aidcompass.general.exceptions.models.BaseNotFoundException;
+import com.aidcompass.general.exceptions.mapper.ExceptionMapper;
 import com.aidcompass.general.exceptions.models.Exception;
+import com.aidcompass.general.exceptions.models.*;
 import com.aidcompass.general.exceptions.models.dto.ErrorDto;
 import com.aidcompass.general.exceptions.models.dto.ExceptionResponseDto;
-import com.aidcompass.general.exceptions.mapper.ExceptionMapper;
 import com.aidcompass.general.utils.ErrorUtils;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import io.lettuce.core.RedisConnectionException;

@@ -1,10 +1,10 @@
 package com.aidcompass.contact.core.facades;
 
 
+import com.aidcompass.ContactType;
 import com.aidcompass.contact.core.models.dto.system.SystemConfirmationRequestDto;
 import com.aidcompass.contact.core.models.dto.system.SystemContactCreateDto;
 import com.aidcompass.contact.core.models.dto.system.SystemContactDto;
-import com.aidcompass.ContactType;
 
 public interface ContactServiceSyncOrchestrator {
 

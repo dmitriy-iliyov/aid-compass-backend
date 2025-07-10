@@ -4,7 +4,6 @@ import com.aidcompass.PrincipalDetails;
 import com.aidcompass.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.gender.Gender;
 import com.aidcompass.general.utils.validation.ValidEnum;
-import com.aidcompass.security.domain.token.models.TokenUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.*;

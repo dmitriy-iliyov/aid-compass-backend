@@ -1,7 +1,7 @@
 package com.aidcompass.contact.core.validation.annotation;
 
-import com.aidcompass.contact.core.models.dto.ContactCreateDto;
 import com.aidcompass.ContactType;
+import com.aidcompass.contact.core.models.dto.ContactCreateDto;
 import com.aidcompass.contact.core.validation.validators.FormatValidator;
 import com.aidcompass.contact.core.validation.validators.impl.ContactUniquenessValidatorImpl;
 import jakarta.validation.ConstraintValidator;

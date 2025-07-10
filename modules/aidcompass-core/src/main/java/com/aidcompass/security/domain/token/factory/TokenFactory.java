@@ -1,8 +1,8 @@
 package com.aidcompass.security.domain.token.factory;
 
+import com.aidcompass.security.domain.BaseUserDetails;
 import com.aidcompass.security.domain.token.models.Token;
 import com.aidcompass.security.domain.token.models.TokenType;
-import com.aidcompass.security.domain.BaseUserDetails;
 
 import java.time.Duration;
 

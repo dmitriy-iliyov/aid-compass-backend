@@ -1,7 +1,7 @@
 package com.aidcompass.security.configs;
 
-import com.aidcompass.security.domain.token.factory.TokenFactoryImpl;
 import com.aidcompass.security.domain.token.factory.TokenFactory;
+import com.aidcompass.security.domain.token.factory.TokenFactoryImpl;
 import com.aidcompass.security.domain.token.serializing.TokenDeserializer;
 import com.aidcompass.security.domain.token.serializing.TokenDeserializerImpl;
 import com.aidcompass.security.domain.token.serializing.TokenSerializer;

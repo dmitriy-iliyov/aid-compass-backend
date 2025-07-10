@@ -1,7 +1,6 @@
 package com.aidcompass.security.domain.token.models;
 
 import com.aidcompass.PrincipalDetails;
-import com.aidcompass.security.domain.BaseUserDetails;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

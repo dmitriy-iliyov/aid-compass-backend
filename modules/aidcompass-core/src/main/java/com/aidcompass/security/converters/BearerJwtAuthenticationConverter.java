@@ -1,9 +1,9 @@
 package com.aidcompass.security.converters;
 
-import com.aidcompass.security.exceptions.BearerJwtAuthorizationException;
 import com.aidcompass.security.domain.token.models.Token;
 import com.aidcompass.security.domain.token.models.TokenType;
 import com.aidcompass.security.domain.token.serializing.TokenDeserializer;
+import com.aidcompass.security.exceptions.BearerJwtAuthorizationException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

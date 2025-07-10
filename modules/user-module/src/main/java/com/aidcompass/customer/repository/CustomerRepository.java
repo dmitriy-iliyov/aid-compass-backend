@@ -1,7 +1,6 @@
 package com.aidcompass.customer.repository;
 
 import com.aidcompass.customer.models.CustomerEntity;
-import com.aidcompass.jurist.models.JuristEntity;
 import com.aidcompass.profile_status.models.ProfileStatusEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

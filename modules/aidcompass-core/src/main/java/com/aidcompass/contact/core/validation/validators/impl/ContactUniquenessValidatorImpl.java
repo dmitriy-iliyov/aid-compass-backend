@@ -1,9 +1,9 @@
 package com.aidcompass.contact.core.validation.validators.impl;
 
-import com.aidcompass.contact.core.facades.ContactServiceSyncOrchestrator;
-import com.aidcompass.contact.core.validation.validators.ContactUniquenessValidator;
 import com.aidcompass.ContactType;
+import com.aidcompass.contact.core.facades.ContactServiceSyncOrchestrator;
 import com.aidcompass.contact.core.models.markers.UpdateDto;
+import com.aidcompass.contact.core.validation.validators.ContactUniquenessValidator;
 import com.aidcompass.general.exceptions.models.BaseNotFoundException;
 import com.aidcompass.general.exceptions.models.dto.ErrorDto;
 import lombok.RequiredArgsConstructor;

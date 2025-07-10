@@ -2,14 +2,14 @@ package com.aidcompass.contact.core.facades;
 
 
 import com.aidcompass.ContactType;
+import com.aidcompass.contact.contact_type.ContactTypeService;
+import com.aidcompass.contact.contact_type.models.ContactTypeEntity;
 import com.aidcompass.contact.core.models.dto.system.SystemConfirmationRequestDto;
 import com.aidcompass.contact.core.models.dto.system.SystemContactCreateDto;
 import com.aidcompass.contact.core.models.dto.system.SystemContactDto;
 import com.aidcompass.contact.core.services.SystemContactService;
 import com.aidcompass.contact.core.services.UnconfirmedContactService;
 import com.aidcompass.contact.core.validation.validators.CountValidator;
-import com.aidcompass.contact.contact_type.ContactTypeService;
-import com.aidcompass.contact.contact_type.models.ContactTypeEntity;
 import com.aidcompass.contact.exceptions.invalid_input.EmailIsInUseException;
 import com.aidcompass.contact.exceptions.invalid_input.NotEnoughSpaseForNewContactExceptionBase;
 import com.aidcompass.general.exceptions.models.BaseNotFoundException;

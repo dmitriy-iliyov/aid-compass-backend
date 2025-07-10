@@ -2,7 +2,6 @@ package com.aidcompass.security.auth;
 
 import com.aidcompass.security.auth.dto.ServiceAuthRequest;
 import com.aidcompass.security.auth.services.SystemAuthService;
-import com.aidcompass.security.auth.services.SystemAuthServiceImpl;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;

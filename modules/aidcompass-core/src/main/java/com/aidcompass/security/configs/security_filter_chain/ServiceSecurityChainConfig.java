@@ -1,11 +1,11 @@
 package com.aidcompass.security.configs.security_filter_chain;
 
 import com.aidcompass.security.converters.BearerJwtAuthenticationConverter;
+import com.aidcompass.security.domain.token.serializing.TokenDeserializer;
 import com.aidcompass.security.handlers.BearerAccessDeniedHandler;
 import com.aidcompass.security.handlers.BearerAuthenticationEntryPoint;
 import com.aidcompass.security.handlers.authentication.DefaultAuthenticationFailureHandler;
 import com.aidcompass.security.handlers.authentication.DefaultAuthenticationSuccessHandler;
-import com.aidcompass.security.domain.token.serializing.TokenDeserializer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

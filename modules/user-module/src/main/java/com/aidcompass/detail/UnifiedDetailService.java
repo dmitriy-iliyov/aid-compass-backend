@@ -1,13 +1,13 @@
 package com.aidcompass.detail;
 
 import com.aidcompass.detail.mapper.DetailMapper;
-import com.aidcompass.detail.models.DetailEntity;
 import com.aidcompass.detail.models.DetailDto;
+import com.aidcompass.detail.models.DetailEntity;
 import com.aidcompass.detail.models.PrivateDetailResponseDto;
+import com.aidcompass.general.contracts.ProfileStatusUpdateFacade;
 import com.aidcompass.general.contracts.enums.ServiceType;
 import com.aidcompass.general.exceptions.UserAlreadyExistException;
 import com.aidcompass.general.exceptions.detail.DetailEntityNotFoundByUserIdException;
-import com.aidcompass.general.contracts.ProfileStatusUpdateFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;

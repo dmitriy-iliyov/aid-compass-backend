@@ -1,11 +1,11 @@
 package com.aidcompass.doctor;
 
-import com.aidcompass.doctor.models.dto.PrivateDoctorResponseDto;
-import com.aidcompass.general.interfaces.PersistFacade;
-import com.aidcompass.general.interfaces.PersistService;
 import com.aidcompass.detail.PersistEmptyDetailService;
 import com.aidcompass.detail.models.DetailEntity;
 import com.aidcompass.doctor.models.dto.DoctorDto;
+import com.aidcompass.doctor.models.dto.PrivateDoctorResponseDto;
+import com.aidcompass.general.interfaces.PersistFacade;
+import com.aidcompass.general.interfaces.PersistService;
 import com.aidcompass.security.auth.services.UserAuthService;
 import com.aidcompass.security.domain.authority.models.Authority;
 import jakarta.servlet.http.HttpServletResponse;

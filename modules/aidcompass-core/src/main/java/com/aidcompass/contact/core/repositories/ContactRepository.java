@@ -1,8 +1,8 @@
 package com.aidcompass.contact.core.repositories;
 
-import com.aidcompass.contact.core.models.entity.ContactEntity;
-import com.aidcompass.contact.contact_type.models.ContactTypeEntity;
 import com.aidcompass.ContactType;
+import com.aidcompass.contact.contact_type.models.ContactTypeEntity;
+import com.aidcompass.contact.core.models.entity.ContactEntity;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

@@ -2,9 +2,9 @@ package com.aidcompass.jurist.services;
 
 
 import com.aidcompass.detail.models.DetailEntity;
+import com.aidcompass.gender.Gender;
 import com.aidcompass.general.contracts.dto.BaseSystemVolunteerDto;
 import com.aidcompass.general.contracts.dto.PageResponse;
-import com.aidcompass.gender.Gender;
 import com.aidcompass.general.contracts.enums.ServiceType;
 import com.aidcompass.general.exceptions.jurist.FullJuristNotFoundException;
 import com.aidcompass.general.exceptions.jurist.JuristNotFoundByIdException;
@@ -12,7 +12,6 @@ import com.aidcompass.jurist.mapper.FullJuristMapper;
 import com.aidcompass.jurist.mapper.JuristMapper;
 import com.aidcompass.jurist.models.JuristEntity;
 import com.aidcompass.jurist.models.dto.*;
-import com.aidcompass.jurist.models.dto.JuristDto;
 import com.aidcompass.jurist.repository.JuristRepository;
 import com.aidcompass.jurist.specialization.JuristSpecializationService;
 import com.aidcompass.jurist.specialization.JuristTypeService;

@@ -1,11 +1,11 @@
 package com.aidcompass.customer.services;
 
-import com.aidcompass.customer.repository.CustomerRepository;
 import com.aidcompass.customer.mapper.CustomerMapper;
-import com.aidcompass.customer.models.CustomerEntity;
 import com.aidcompass.customer.models.CustomerDto;
+import com.aidcompass.customer.models.CustomerEntity;
 import com.aidcompass.customer.models.PrivateCustomerResponseDto;
 import com.aidcompass.customer.models.PublicCustomerResponseDto;
+import com.aidcompass.customer.repository.CustomerRepository;
 import com.aidcompass.customer.repository.CustomerSpecifications;
 import com.aidcompass.detail.models.DetailEntity;
 import com.aidcompass.general.contracts.dto.PageResponse;
@@ -23,7 +23,6 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

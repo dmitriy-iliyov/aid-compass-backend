@@ -1,19 +1,19 @@
 package com.aidcompass.contact.core.services;
 
-import com.aidcompass.contact.core.facades.ContactChangingListener;
-import com.aidcompass.contact.core.models.dto.ContactCreateDto;
-import com.aidcompass.contact.core.models.dto.ContactUpdateDto;
-import com.aidcompass.contact.core.repositories.ContactRepository;
-import com.aidcompass.contact.core.mappers.ContactMapper;
-import com.aidcompass.contact.core.models.entity.ContactEntity;
+import com.aidcompass.ContactType;
 import com.aidcompass.contact.contact_filling_progress.ContactProgressService;
 import com.aidcompass.contact.contact_type.ContactTypeService;
+import com.aidcompass.contact.contact_type.models.ContactTypeEntity;
+import com.aidcompass.contact.core.facades.ContactChangingListener;
+import com.aidcompass.contact.core.mappers.ContactMapper;
+import com.aidcompass.contact.core.models.dto.ContactCreateDto;
+import com.aidcompass.contact.core.models.dto.ContactUpdateDto;
 import com.aidcompass.contact.core.models.dto.PrivateContactResponseDto;
 import com.aidcompass.contact.core.models.dto.PublicContactResponseDto;
 import com.aidcompass.contact.core.models.dto.system.SystemContactDto;
 import com.aidcompass.contact.core.models.dto.system.SystemContactUpdateDto;
-import com.aidcompass.contact.contact_type.models.ContactTypeEntity;
-import com.aidcompass.ContactType;
+import com.aidcompass.contact.core.models.entity.ContactEntity;
+import com.aidcompass.contact.core.repositories.ContactRepository;
 import com.aidcompass.contact.exceptions.invalid_input.InvalidAttemptChangeLastPrimaryException;
 import com.aidcompass.contact.exceptions.not_found.ContactNotFoundByContactException;
 import com.aidcompass.contact.exceptions.not_found.ContactNotFoundByIdException;

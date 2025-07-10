@@ -1,7 +1,7 @@
 package com.aidcompass.customer.mapper;
 
-import com.aidcompass.customer.models.CustomerEntity;
 import com.aidcompass.customer.models.CustomerDto;
+import com.aidcompass.customer.models.CustomerEntity;
 import com.aidcompass.customer.models.PrivateCustomerResponseDto;
 import com.aidcompass.customer.models.PublicCustomerResponseDto;
 import org.mapstruct.*;

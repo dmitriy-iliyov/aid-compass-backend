@@ -1,7 +1,7 @@
 package com.aidcompass.security.domain.authority;
 
-import com.aidcompass.security.domain.authority.models.AuthorityEntity;
 import com.aidcompass.security.domain.authority.models.Authority;
+import com.aidcompass.security.domain.authority.models.AuthorityEntity;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;

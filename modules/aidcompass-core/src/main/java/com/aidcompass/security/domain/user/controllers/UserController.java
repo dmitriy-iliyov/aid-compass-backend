@@ -2,11 +2,11 @@ package com.aidcompass.security.domain.user.controllers;
 
 
 import com.aidcompass.AccountResourceConfirmationService;
-import com.aidcompass.security.domain.user.services.UserOrchestrator;
+import com.aidcompass.security.domain.token.models.TokenUserDetails;
 import com.aidcompass.security.domain.user.models.dto.UserRegistrationDto;
 import com.aidcompass.security.domain.user.models.dto.UserResponseDto;
 import com.aidcompass.security.domain.user.models.dto.UserUpdateDto;
-import com.aidcompass.security.domain.token.models.TokenUserDetails;
+import com.aidcompass.security.domain.user.services.UserOrchestrator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

@@ -1,12 +1,11 @@
 package com.aidcompass.security.domain.user.services;
 
-import com.aidcompass.security.domain.user.models.dto.SystemUserDto;
-import com.aidcompass.security.domain.user.models.dto.UserResponseDto;
-import com.aidcompass.security.domain.user.models.dto.UserUpdateDto;
 import com.aidcompass.security.domain.authority.models.Authority;
 import com.aidcompass.security.domain.user.models.MemberUserDetails;
+import com.aidcompass.security.domain.user.models.dto.SystemUserDto;
 import com.aidcompass.security.domain.user.models.dto.SystemUserUpdateDto;
-import org.springframework.transaction.annotation.Transactional;
+import com.aidcompass.security.domain.user.models.dto.UserResponseDto;
+import com.aidcompass.security.domain.user.models.dto.UserUpdateDto;
 
 import java.util.List;
 import java.util.Set;

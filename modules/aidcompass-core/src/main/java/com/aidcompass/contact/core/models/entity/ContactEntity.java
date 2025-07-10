@@ -2,7 +2,9 @@ package com.aidcompass.contact.core.models.entity;
 
 import com.aidcompass.contact.contact_type.models.ContactTypeEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.time.Instant;

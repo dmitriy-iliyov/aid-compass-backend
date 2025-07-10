@@ -1,8 +1,8 @@
 package com.aidcompass.contact.core.models.dto;
 
-import com.aidcompass.contact.core.validation.annotation.Contact;
 import com.aidcompass.ContactType;
 import com.aidcompass.contact.core.models.markers.UpdateDto;
+import com.aidcompass.contact.core.validation.annotation.Contact;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -1,7 +1,7 @@
 package com.aidcompass.contact.core.validation.validators.impl;
 
-import com.aidcompass.contact.core.validation.validators.FormatValidator;
 import com.aidcompass.ContactType;
+import com.aidcompass.contact.core.validation.validators.FormatValidator;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;

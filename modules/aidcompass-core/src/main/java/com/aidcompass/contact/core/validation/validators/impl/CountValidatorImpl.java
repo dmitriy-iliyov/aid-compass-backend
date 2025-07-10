@@ -1,9 +1,9 @@
 package com.aidcompass.contact.core.validation.validators.impl;
 
+import com.aidcompass.ContactType;
 import com.aidcompass.contact.core.models.markers.CreateDto;
 import com.aidcompass.contact.core.services.SystemContactService;
 import com.aidcompass.contact.core.validation.validators.CountValidator;
-import com.aidcompass.ContactType;
 import com.aidcompass.contact.exceptions.invalid_input.InvalidContactTypeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

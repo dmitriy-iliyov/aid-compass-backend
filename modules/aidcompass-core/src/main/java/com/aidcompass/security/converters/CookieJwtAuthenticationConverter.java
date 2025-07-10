@@ -1,10 +1,10 @@
 package com.aidcompass.security.converters;
 
 
-import com.aidcompass.security.exceptions.CookieJwtAuthorizationException;
 import com.aidcompass.security.domain.token.models.Token;
 import com.aidcompass.security.domain.token.models.TokenType;
 import com.aidcompass.security.domain.token.serializing.TokenDeserializer;
+import com.aidcompass.security.exceptions.CookieJwtAuthorizationException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

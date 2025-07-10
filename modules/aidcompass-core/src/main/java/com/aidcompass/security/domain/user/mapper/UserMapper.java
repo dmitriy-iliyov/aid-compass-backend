@@ -1,17 +1,12 @@
 package com.aidcompass.security.domain.user.mapper;
 
 
+import com.aidcompass.security.domain.authority.models.AuthorityMapper;
 import com.aidcompass.security.domain.user.models.UnconfirmedUserEntity;
 import com.aidcompass.security.domain.user.models.UserEntity;
-import com.aidcompass.security.domain.user.models.dto.SystemUserDto;
-import com.aidcompass.security.domain.user.models.dto.UserRegistrationDto;
-import com.aidcompass.security.domain.user.models.dto.UserResponseDto;
-import com.aidcompass.security.domain.user.models.dto.UserUpdateDto;
-import com.aidcompass.security.domain.authority.models.AuthorityMapper;
-import com.aidcompass.security.domain.user.models.dto.SystemUserUpdateDto;
+import com.aidcompass.security.domain.user.models.dto.*;
 import org.mapstruct.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

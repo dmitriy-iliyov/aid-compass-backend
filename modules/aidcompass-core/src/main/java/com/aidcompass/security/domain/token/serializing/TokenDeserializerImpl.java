@@ -1,8 +1,8 @@
 package com.aidcompass.security.domain.token.serializing;
 
-import com.aidcompass.security.exceptions.illegal_input.TokenExpired;
 import com.aidcompass.security.domain.token.models.Token;
 import com.aidcompass.security.domain.token.models.TokenType;
+import com.aidcompass.security.exceptions.illegal_input.TokenExpired;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;

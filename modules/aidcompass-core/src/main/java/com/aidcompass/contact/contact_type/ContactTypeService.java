@@ -1,8 +1,8 @@
 package com.aidcompass.contact.contact_type;
 
+import com.aidcompass.ContactType;
 import com.aidcompass.contact.contact_type.models.ContactTypeDto;
 import com.aidcompass.contact.contact_type.models.ContactTypeEntity;
-import com.aidcompass.ContactType;
 
 import java.util.List;
 

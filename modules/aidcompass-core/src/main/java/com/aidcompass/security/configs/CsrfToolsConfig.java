@@ -1,9 +1,9 @@
 package com.aidcompass.security.configs;
 
-import com.aidcompass.security.handlers.CsrfAccessDeniedHandler;
+import com.aidcompass.security.csrf.CsrfAuthenticationStrategy;
 import com.aidcompass.security.csrf.CsrfMasker;
 import com.aidcompass.security.csrf.CsrfMaskerImpl;
-import com.aidcompass.security.csrf.CsrfAuthenticationStrategy;
+import com.aidcompass.security.handlers.CsrfAccessDeniedHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;

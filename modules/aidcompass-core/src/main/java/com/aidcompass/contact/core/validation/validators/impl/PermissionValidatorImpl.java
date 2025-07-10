@@ -1,8 +1,8 @@
 package com.aidcompass.contact.core.validation.validators.impl;
 
 import com.aidcompass.contact.core.models.dto.ContactUpdateDto;
-import com.aidcompass.contact.core.models.markers.UpdateDto;
 import com.aidcompass.contact.core.models.dto.system.SystemContactDto;
+import com.aidcompass.contact.core.models.markers.UpdateDto;
 import com.aidcompass.contact.core.services.SystemContactService;
 import com.aidcompass.contact.core.validation.validators.ContactOwnershipValidator;
 import com.aidcompass.contact.core.validation.validators.ContactUniquenessValidator;

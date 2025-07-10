@@ -2,10 +2,9 @@ package com.aidcompass.security.auth;
 
 import com.aidcompass.security.auth.dto.AuthRequest;
 import com.aidcompass.security.auth.services.UserAuthService;
-import com.aidcompass.security.auth.services.UserAuthServiceImpl;
-import com.aidcompass.security.exceptions.not_found.UserNotFoundByIdException;
 import com.aidcompass.security.domain.token.models.TokenUserDetails;
 import com.aidcompass.security.domain.user.services.UserService;
+import com.aidcompass.security.exceptions.not_found.UserNotFoundByIdException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
