@@ -1,6 +1,7 @@
 package com.aidcompass.message_services;
 
-import com.aidcompass.message_services.models.MessageDto;
+import com.aidcompass.message.message_services.EmailMessageService;
+import com.aidcompass.message.message_services.models.MessageDto;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.BeforeEach;

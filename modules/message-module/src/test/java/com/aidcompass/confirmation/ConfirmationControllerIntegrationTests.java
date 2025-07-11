@@ -1,6 +1,6 @@
 //package com.aidcompass.confirmation;
 //
-//import com.aidcompass.AccountResourceConfirmationService;
+//import com.aidcompass.contracts.AccountResourceConfirmationService;
 //import com.aidcompass.exceptions.MessageModuleControllerAdvice;
 //import com.aidcompass.exceptions.models.InvalidConfirmationTokenException;
 //import com.aidcompass.mapper.ExceptionMapperImpl;
