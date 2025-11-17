@@ -1,8 +1,8 @@
 package com.aidcompass.schedule.appointment.models.dto;
 
+import com.aidcompass.core.general.utils.validation.ValidEnum;
 import com.aidcompass.schedule.appointment.models.enums.AppointmentType;
 import com.aidcompass.schedule.appointment.models.marker.AppointmentMarker;
-import com.aidcompass.core.general.utils.validation.ValidEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.*;

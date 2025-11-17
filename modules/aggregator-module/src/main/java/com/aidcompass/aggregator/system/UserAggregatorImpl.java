@@ -1,19 +1,19 @@
 package com.aidcompass.aggregator.system;
 
 import com.aidcompass.aggregator.AggregatorUtils;
+import com.aidcompass.aggregator.system.exception.UnsupportedUserTypeException;
+import com.aidcompass.aggregator.system.models.UserType;
 import com.aidcompass.contracts.ContactType;
 import com.aidcompass.core.contact.core.models.dto.PublicContactResponseDto;
 import com.aidcompass.core.contact.core.models.dto.system.SystemContactDto;
 import com.aidcompass.core.contact.core.services.ContactService;
+import com.aidcompass.message.information.dto.UserDto;
 import com.aidcompass.users.customer.models.PublicCustomerResponseDto;
 import com.aidcompass.users.customer.services.CustomerService;
 import com.aidcompass.users.doctor.models.dto.PublicDoctorResponseDto;
 import com.aidcompass.users.doctor.services.DoctorService;
-import com.aidcompass.message.information.dto.UserDto;
 import com.aidcompass.users.jurist.models.dto.PublicJuristResponseDto;
 import com.aidcompass.users.jurist.services.JuristService;
-import com.aidcompass.aggregator.system.exception.UnsupportedUserTypeException;
-import com.aidcompass.aggregator.system.models.UserType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

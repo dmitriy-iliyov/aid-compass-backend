@@ -2,10 +2,10 @@ package com.aidcompass.aggregator.api.customer;
 
 import com.aidcompass.aggregator.AggregatorUtils;
 import com.aidcompass.core.contact.core.models.dto.PrivateContactResponseDto;
-import com.aidcompass.users.customer.models.PrivateCustomerResponseDto;
-import com.aidcompass.users.customer.services.CustomerService;
 import com.aidcompass.core.general.contracts.dto.PageResponse;
 import com.aidcompass.core.general.exceptions.models.BaseNotFoundException;
+import com.aidcompass.users.customer.models.PrivateCustomerResponseDto;
+import com.aidcompass.users.customer.services.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

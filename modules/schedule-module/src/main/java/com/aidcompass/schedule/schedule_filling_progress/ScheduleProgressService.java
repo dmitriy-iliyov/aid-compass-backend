@@ -1,9 +1,9 @@
 package com.aidcompass.schedule.schedule_filling_progress;
 
+import com.aidcompass.core.security.domain.authority.models.Authority;
 import com.aidcompass.schedule.exceptions.profile_progress.ProgressEntityNotFoundByUserIdException;
 import com.aidcompass.schedule.schedule_filling_progress.models.ScheduleFilledEvent;
 import com.aidcompass.schedule.schedule_filling_progress.models.ScheduleProgressEntity;
-import com.aidcompass.core.security.domain.authority.models.Authority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;

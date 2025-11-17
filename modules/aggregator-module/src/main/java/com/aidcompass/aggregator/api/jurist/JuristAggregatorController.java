@@ -1,8 +1,8 @@
 package com.aidcompass.aggregator.api.jurist;
 
 import com.aidcompass.contracts.PrincipalDetails;
-import com.aidcompass.users.gender.Gender;
 import com.aidcompass.core.general.utils.validation.ValidEnum;
+import com.aidcompass.users.gender.Gender;
 import com.aidcompass.users.jurist.specialization.models.JuristSpecialization;
 import com.aidcompass.users.jurist.specialization.models.JuristType;
 import jakarta.servlet.http.HttpServletRequest;

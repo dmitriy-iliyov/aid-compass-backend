@@ -1,5 +1,6 @@
 package com.aidcompass.users.doctor.mapper;
 
+import com.aidcompass.core.general.contracts.dto.BaseSystemVolunteerDto;
 import com.aidcompass.users.detail.mapper.DetailMapper;
 import com.aidcompass.users.doctor.models.DoctorEntity;
 import com.aidcompass.users.doctor.models.dto.DoctorDto;
@@ -8,7 +9,6 @@ import com.aidcompass.users.doctor.models.dto.PublicDoctorResponseDto;
 import com.aidcompass.users.doctor.specialization.mapper.DoctorSpecializationMapper;
 import com.aidcompass.users.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.users.doctor.specialization.models.DoctorSpecializationEntity;
-import com.aidcompass.core.general.contracts.dto.BaseSystemVolunteerDto;
 import com.aidcompass.users.general.dto.BasePrivateVolunteerDto;
 import org.mapstruct.*;
 

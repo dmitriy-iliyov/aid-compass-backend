@@ -1,7 +1,7 @@
 package com.aidcompass.aggregator.api.doctor.dto;
 
-import com.aidcompass.users.doctor.models.dto.PublicDoctorResponseDto;
 import com.aidcompass.schedule.interval.models.dto.NearestIntervalDto;
+import com.aidcompass.users.doctor.models.dto.PublicDoctorResponseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record DoctorCardDto(

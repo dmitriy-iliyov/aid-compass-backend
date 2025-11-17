@@ -1,19 +1,19 @@
 package com.aidcompass.users.doctor.services;
 
 
+import com.aidcompass.core.general.contracts.dto.PageResponse;
+import com.aidcompass.core.general.contracts.enums.ServiceType;
 import com.aidcompass.users.detail.models.DetailEntity;
 import com.aidcompass.users.doctor.mapper.DoctorMapper;
 import com.aidcompass.users.doctor.mapper.FullDoctorMapper;
 import com.aidcompass.users.doctor.models.DoctorEntity;
+import com.aidcompass.users.doctor.models.dto.*;
 import com.aidcompass.users.doctor.repository.DoctorNamesCombination;
 import com.aidcompass.users.doctor.repository.DoctorRepository;
 import com.aidcompass.users.doctor.specialization.DoctorSpecializationService;
 import com.aidcompass.users.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.users.doctor.specialization.models.DoctorSpecializationEntity;
 import com.aidcompass.users.gender.Gender;
-import com.aidcompass.core.general.contracts.dto.PageResponse;
-import com.aidcompass.core.general.contracts.enums.ServiceType;
-import com.aidcompass.users.doctor.models.dto.*;
 import com.aidcompass.users.general.exceptions.doctor.DoctorNotFoundByIdException;
 import com.aidcompass.users.general.exceptions.doctor.FullDoctorNotFoundException;
 import com.aidcompass.users.profile_status.ProfileConfig;

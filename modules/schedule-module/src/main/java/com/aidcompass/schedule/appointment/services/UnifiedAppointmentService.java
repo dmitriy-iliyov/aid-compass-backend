@@ -1,5 +1,8 @@
 package com.aidcompass.schedule.appointment.services;
 
+import com.aidcompass.core.general.GlobalRedisConfig;
+import com.aidcompass.core.general.contracts.dto.BatchResponse;
+import com.aidcompass.core.general.contracts.dto.PageResponse;
 import com.aidcompass.schedule.appointment.mapper.AppointmentMapper;
 import com.aidcompass.schedule.appointment.models.AppointmentEntity;
 import com.aidcompass.schedule.appointment.models.dto.AppointmentCreateDto;
@@ -11,9 +14,6 @@ import com.aidcompass.schedule.appointment.models.enums.AppointmentStatus;
 import com.aidcompass.schedule.appointment.repositories.AppointmentRepository;
 import com.aidcompass.schedule.appointment.repositories.AppointmentSpecifications;
 import com.aidcompass.schedule.exceptions.appointment.AppointmentNotFoundByIdException;
-import com.aidcompass.core.general.GlobalRedisConfig;
-import com.aidcompass.core.general.contracts.dto.BatchResponse;
-import com.aidcompass.core.general.contracts.dto.PageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;

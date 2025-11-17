@@ -1,8 +1,8 @@
 package com.aidcompass.users.doctor.services;
 
+import com.aidcompass.core.general.contracts.dto.BaseSystemVolunteerDto;
 import com.aidcompass.users.doctor.mapper.DoctorMapper;
 import com.aidcompass.users.doctor.repository.DoctorRepository;
-import com.aidcompass.core.general.contracts.dto.BaseSystemVolunteerDto;
 import com.aidcompass.users.general.exceptions.doctor.DoctorNotFoundByIdException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

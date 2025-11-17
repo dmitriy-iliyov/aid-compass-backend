@@ -1,7 +1,7 @@
 package com.aidcompass.schedule.appointment.services;
 
-import com.aidcompass.schedule.appointment.models.dto.AppointmentResponseDto;
 import com.aidcompass.core.general.contracts.dto.BatchResponse;
+import com.aidcompass.schedule.appointment.models.dto.AppointmentResponseDto;
 
 import java.util.List;
 

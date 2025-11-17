@@ -1,8 +1,8 @@
 package com.aidcompass.message.confirmation.services;
 
 import com.aidcompass.contracts.ContactType;
-import com.aidcompass.message.confirmation.repositories.ConfirmationRepository;
 import com.aidcompass.core.contact.core.facades.SystemContactFacade;
+import com.aidcompass.message.confirmation.repositories.ConfirmationRepository;
 import com.aidcompass.message.exceptions.models.InvalidConfirmationTokenException;
 import com.aidcompass.message.message_services.MessageFactory;
 import com.aidcompass.message.message_services.MessageService;

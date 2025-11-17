@@ -1,8 +1,8 @@
 package com.aidcompass.aggregator.api.appointment;
 
 import com.aidcompass.contracts.PrincipalDetails;
-import com.aidcompass.schedule.appointment.models.dto.StatusFilter;
 import com.aidcompass.core.security.domain.authority.models.Authority;
+import com.aidcompass.schedule.appointment.models.dto.StatusFilter;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;

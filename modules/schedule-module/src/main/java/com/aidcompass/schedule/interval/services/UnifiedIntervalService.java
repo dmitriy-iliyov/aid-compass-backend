@@ -1,8 +1,8 @@
 package com.aidcompass.schedule.interval.services;
 
+import com.aidcompass.core.general.GlobalRedisConfig;
 import com.aidcompass.schedule.appointment.models.marker.AppointmentMarker;
 import com.aidcompass.schedule.exceptions.interval.IntervalNotFoundByIdException;
-import com.aidcompass.core.general.GlobalRedisConfig;
 import com.aidcompass.schedule.interval.mapper.IntervalMapper;
 import com.aidcompass.schedule.interval.models.IntervalEntity;
 import com.aidcompass.schedule.interval.models.dto.IntervalResponseDto;

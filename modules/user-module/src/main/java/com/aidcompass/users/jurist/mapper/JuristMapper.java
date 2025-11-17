@@ -1,7 +1,7 @@
 package com.aidcompass.users.jurist.mapper;
 
-import com.aidcompass.users.detail.mapper.DetailMapper;
 import com.aidcompass.core.general.contracts.dto.BaseSystemVolunteerDto;
+import com.aidcompass.users.detail.mapper.DetailMapper;
 import com.aidcompass.users.general.dto.BasePrivateVolunteerDto;
 import com.aidcompass.users.jurist.models.JuristEntity;
 import com.aidcompass.users.jurist.models.dto.JuristDto;

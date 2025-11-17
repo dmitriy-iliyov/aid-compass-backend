@@ -1,9 +1,9 @@
 package com.aidcompass.users.customer.services;
 
+import com.aidcompass.core.general.contracts.dto.PageResponse;
 import com.aidcompass.users.customer.models.CustomerDto;
 import com.aidcompass.users.customer.models.PrivateCustomerResponseDto;
 import com.aidcompass.users.customer.models.PublicCustomerResponseDto;
-import com.aidcompass.core.general.contracts.dto.PageResponse;
 
 import java.util.List;
 import java.util.Set;

@@ -1,7 +1,7 @@
 package com.aidcompass.aggregator.api.appointment.dto;
 
-import com.aidcompass.schedule.appointment.models.dto.AppointmentResponseDto;
 import com.aidcompass.core.contact.core.models.dto.PublicContactResponseDto;
+import com.aidcompass.schedule.appointment.models.dto.AppointmentResponseDto;
 import com.aidcompass.users.customer.models.PublicCustomerResponseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

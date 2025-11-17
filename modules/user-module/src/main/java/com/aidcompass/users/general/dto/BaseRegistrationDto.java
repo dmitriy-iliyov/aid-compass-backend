@@ -1,7 +1,7 @@
 package com.aidcompass.users.general.dto;
 
-import com.aidcompass.users.gender.Gender;
 import com.aidcompass.core.general.utils.validation.ValidEnum;
+import com.aidcompass.users.gender.Gender;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

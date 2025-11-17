@@ -1,7 +1,7 @@
 package com.aidcompass.users.jurist.models.dto;
 
-import com.aidcompass.users.general.dto.BaseVolunteerRegistrationDto;
 import com.aidcompass.core.general.utils.validation.ValidEnum;
+import com.aidcompass.users.general.dto.BaseVolunteerRegistrationDto;
 import com.aidcompass.users.jurist.specialization.models.JuristSpecialization;
 import com.aidcompass.users.jurist.specialization.models.JuristType;
 import com.fasterxml.jackson.annotation.JsonCreator;

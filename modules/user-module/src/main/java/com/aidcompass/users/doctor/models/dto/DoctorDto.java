@@ -1,8 +1,8 @@
 package com.aidcompass.users.doctor.models.dto;
 
+import com.aidcompass.core.general.utils.validation.ValidEnum;
 import com.aidcompass.users.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.users.general.dto.BaseVolunteerRegistrationDto;
-import com.aidcompass.core.general.utils.validation.ValidEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;

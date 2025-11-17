@@ -1,17 +1,17 @@
 package com.aidcompass.aggregator;
 
 import com.aidcompass.avatar.AvatarService;
-import com.aidcompass.schedule.appointment.services.AppointmentService;
-import com.aidcompass.schedule.appointment_duration.AppointmentDurationService;
 import com.aidcompass.core.contact.core.models.dto.PrivateContactResponseDto;
 import com.aidcompass.core.contact.core.models.dto.PublicContactResponseDto;
 import com.aidcompass.core.contact.core.models.dto.system.SystemContactDto;
 import com.aidcompass.core.contact.core.services.ContactService;
 import com.aidcompass.core.general.exceptions.models.BaseNotFoundException;
+import com.aidcompass.core.security.domain.user.services.UserOrchestrator;
+import com.aidcompass.schedule.appointment.services.AppointmentService;
+import com.aidcompass.schedule.appointment_duration.AppointmentDurationService;
 import com.aidcompass.schedule.interval.models.dto.NearestIntervalDto;
 import com.aidcompass.schedule.interval.services.IntervalService;
 import com.aidcompass.schedule.interval.services.NearestIntervalService;
-import com.aidcompass.core.security.domain.user.services.UserOrchestrator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

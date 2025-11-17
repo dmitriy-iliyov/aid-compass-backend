@@ -1,11 +1,11 @@
 package com.aidcompass.users.detail;
 
+import com.aidcompass.core.general.contracts.ProfileStatusUpdateFacade;
+import com.aidcompass.core.general.contracts.enums.ServiceType;
 import com.aidcompass.users.detail.mapper.DetailMapper;
 import com.aidcompass.users.detail.models.DetailDto;
 import com.aidcompass.users.detail.models.DetailEntity;
 import com.aidcompass.users.detail.models.PrivateDetailResponseDto;
-import com.aidcompass.core.general.contracts.ProfileStatusUpdateFacade;
-import com.aidcompass.core.general.contracts.enums.ServiceType;
 import com.aidcompass.users.general.exceptions.UserAlreadyExistException;
 import com.aidcompass.users.general.exceptions.detail.DetailEntityNotFoundByUserIdException;
 import lombok.RequiredArgsConstructor;

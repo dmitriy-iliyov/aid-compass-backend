@@ -2,12 +2,12 @@ package com.aidcompass.users.jurist.controllers;
 
 
 import com.aidcompass.contracts.PrincipalDetails;
+import com.aidcompass.core.general.contracts.enums.ServiceType;
+import com.aidcompass.core.general.utils.validation.ValidEnum;
 import com.aidcompass.users.detail.DetailService;
 import com.aidcompass.users.detail.models.DetailDto;
 import com.aidcompass.users.detail.models.PrivateDetailResponseDto;
-import com.aidcompass.core.general.contracts.enums.ServiceType;
 import com.aidcompass.users.general.interfaces.PersistFacade;
-import com.aidcompass.core.general.utils.validation.ValidEnum;
 import com.aidcompass.users.jurist.models.dto.JuristDto;
 import com.aidcompass.users.jurist.models.dto.PrivateJuristResponseDto;
 import com.aidcompass.users.jurist.services.JuristService;

@@ -1,8 +1,8 @@
 package com.aidcompass.aggregator.api.system;
 
-import com.aidcompass.schedule.appointment.services.SystemAppointmentService;
 import com.aidcompass.core.general.contracts.NotificationOrchestrator;
 import com.aidcompass.core.general.contracts.dto.BatchRequest;
+import com.aidcompass.schedule.appointment.services.SystemAppointmentService;
 import com.aidcompass.schedule.interval.services.SystemIntervalService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;

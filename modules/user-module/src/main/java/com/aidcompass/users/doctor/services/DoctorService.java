@@ -1,9 +1,9 @@
 package com.aidcompass.users.doctor.services;
 
+import com.aidcompass.core.general.contracts.dto.PageResponse;
 import com.aidcompass.users.doctor.models.dto.*;
 import com.aidcompass.users.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.users.gender.Gender;
-import com.aidcompass.core.general.contracts.dto.PageResponse;
 import com.aidcompass.users.general.interfaces.PersistService;
 
 import java.util.List;

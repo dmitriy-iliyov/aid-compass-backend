@@ -5,7 +5,6 @@ import com.aidcompass.core.security.domain.authority.models.AuthorityMapper;
 import com.aidcompass.core.security.domain.user.models.UnconfirmedUserEntity;
 import com.aidcompass.core.security.domain.user.models.UserEntity;
 import com.aidcompass.core.security.domain.user.models.dto.*;
-import com.aidcompass.core.security.domain.user.models.dto.*;
 import org.mapstruct.*;
 
 import java.util.List;

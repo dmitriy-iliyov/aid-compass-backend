@@ -1,7 +1,5 @@
 package com.aidcompass.aggregator.system;
 
-import com.aidcompass.schedule.appointment.models.dto.AppointmentResponseDto;
-import com.aidcompass.schedule.appointment.services.SystemAppointmentService;
 import com.aidcompass.core.contact.core.models.dto.PublicContactResponseDto;
 import com.aidcompass.core.general.contracts.NotificationOrchestrator;
 import com.aidcompass.core.general.contracts.dto.BaseSystemVolunteerDto;
@@ -12,6 +10,8 @@ import com.aidcompass.message.information.InformationService;
 import com.aidcompass.message.information.dto.AppointmentDto;
 import com.aidcompass.message.information.dto.AppointmentReminderDto;
 import com.aidcompass.message.information.dto.UserDto;
+import com.aidcompass.schedule.appointment.models.dto.AppointmentResponseDto;
+import com.aidcompass.schedule.appointment.services.SystemAppointmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

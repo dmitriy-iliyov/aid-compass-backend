@@ -1,12 +1,12 @@
 package com.aidcompass.schedule.appointment.services;
 
+import com.aidcompass.core.general.contracts.dto.PageResponse;
 import com.aidcompass.schedule.appointment.models.dto.AppointmentCreateDto;
 import com.aidcompass.schedule.appointment.models.dto.AppointmentResponseDto;
 import com.aidcompass.schedule.appointment.models.dto.AppointmentUpdateDto;
 import com.aidcompass.schedule.appointment.models.dto.StatusFilter;
 import com.aidcompass.schedule.appointment.models.enums.AppointmentAgeType;
 import com.aidcompass.schedule.appointment.models.enums.AppointmentStatus;
-import com.aidcompass.core.general.contracts.dto.PageResponse;
 
 import java.time.LocalDate;
 import java.util.List;

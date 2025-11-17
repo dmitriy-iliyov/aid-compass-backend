@@ -1,13 +1,13 @@
 package com.aidcompass.users.jurist;
 
+import com.aidcompass.core.security.auth.services.UserAuthService;
+import com.aidcompass.core.security.domain.authority.models.Authority;
 import com.aidcompass.users.detail.PersistEmptyDetailService;
 import com.aidcompass.users.detail.models.DetailEntity;
 import com.aidcompass.users.general.interfaces.PersistFacade;
 import com.aidcompass.users.general.interfaces.PersistService;
 import com.aidcompass.users.jurist.models.dto.JuristDto;
 import com.aidcompass.users.jurist.models.dto.PrivateJuristResponseDto;
-import com.aidcompass.core.security.auth.services.UserAuthService;
-import com.aidcompass.core.security.domain.authority.models.Authority;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

@@ -1,8 +1,8 @@
 package com.aidcompass.schedule.interval.services;
 
-import com.aidcompass.schedule.exceptions.interval.NearestIntervalNotFoundByOwnerIdException;
 import com.aidcompass.core.general.exceptions.models.BaseNotFoundException;
 import com.aidcompass.core.general.exceptions.models.PassedListIsToLongException;
+import com.aidcompass.schedule.exceptions.interval.NearestIntervalNotFoundByOwnerIdException;
 import com.aidcompass.schedule.interval.mapper.NearestIntervalMapper;
 import com.aidcompass.schedule.interval.models.NearestIntervalEntity;
 import com.aidcompass.schedule.interval.models.dto.IntervalResponseDto;

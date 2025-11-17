@@ -1,19 +1,19 @@
 package com.aidcompass.core.security.domain.user.services;
 
-import com.aidcompass.core.security.domain.user.mapper.UserMapper;
-import com.aidcompass.core.security.domain.user.models.UserEntity;
 import com.aidcompass.core.security.domain.authority.AuthorityService;
 import com.aidcompass.core.security.domain.authority.models.Authority;
 import com.aidcompass.core.security.domain.authority.models.AuthorityEntity;
+import com.aidcompass.core.security.domain.user.mapper.UserMapper;
 import com.aidcompass.core.security.domain.user.models.MemberUserDetails;
+import com.aidcompass.core.security.domain.user.models.UserEntity;
 import com.aidcompass.core.security.domain.user.models.dto.SystemUserDto;
 import com.aidcompass.core.security.domain.user.models.dto.SystemUserUpdateDto;
 import com.aidcompass.core.security.domain.user.models.dto.UserResponseDto;
 import com.aidcompass.core.security.domain.user.models.dto.UserUpdateDto;
 import com.aidcompass.core.security.domain.user.repositories.UserRepository;
-import com.aidcompass.security.exceptions.illegal_input.IncorrectPasswordException;
 import com.aidcompass.core.security.exceptions.not_found.UserNotFoundByEmailException;
 import com.aidcompass.core.security.exceptions.not_found.UserNotFoundByIdException;
+import com.aidcompass.security.exceptions.illegal_input.IncorrectPasswordException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.cache.annotation.CacheEvict;

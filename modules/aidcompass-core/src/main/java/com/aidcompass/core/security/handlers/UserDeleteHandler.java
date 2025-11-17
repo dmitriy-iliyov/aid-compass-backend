@@ -1,7 +1,7 @@
 package com.aidcompass.core.security.handlers;
 
-import com.aidcompass.core.security.handlers.logout.DeactivatingTokenLogoutHandler;
 import com.aidcompass.core.security.domain.token.TokenUserDetailsService;
+import com.aidcompass.core.security.handlers.logout.DeactivatingTokenLogoutHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

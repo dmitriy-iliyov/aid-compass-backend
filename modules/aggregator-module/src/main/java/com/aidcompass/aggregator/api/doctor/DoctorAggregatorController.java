@@ -1,9 +1,9 @@
 package com.aidcompass.aggregator.api.doctor;
 
 import com.aidcompass.contracts.PrincipalDetails;
+import com.aidcompass.core.general.utils.validation.ValidEnum;
 import com.aidcompass.users.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.users.gender.Gender;
-import com.aidcompass.core.general.utils.validation.ValidEnum;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.*;

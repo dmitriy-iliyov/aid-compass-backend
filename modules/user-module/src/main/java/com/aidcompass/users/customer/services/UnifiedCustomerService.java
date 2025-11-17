@@ -1,5 +1,7 @@
 package com.aidcompass.users.customer.services;
 
+import com.aidcompass.core.general.contracts.dto.PageResponse;
+import com.aidcompass.core.general.contracts.enums.ServiceType;
 import com.aidcompass.users.customer.mapper.CustomerMapper;
 import com.aidcompass.users.customer.models.CustomerDto;
 import com.aidcompass.users.customer.models.CustomerEntity;
@@ -8,8 +10,6 @@ import com.aidcompass.users.customer.models.PublicCustomerResponseDto;
 import com.aidcompass.users.customer.repository.CustomerRepository;
 import com.aidcompass.users.customer.repository.CustomerSpecifications;
 import com.aidcompass.users.detail.models.DetailEntity;
-import com.aidcompass.core.general.contracts.dto.PageResponse;
-import com.aidcompass.core.general.contracts.enums.ServiceType;
 import com.aidcompass.users.general.exceptions.customer.CustomerNotFoundByIdException;
 import com.aidcompass.users.general.exceptions.customer.CustomerNotFoundByUserIdException;
 import com.aidcompass.users.profile_status.ProfileConfig;

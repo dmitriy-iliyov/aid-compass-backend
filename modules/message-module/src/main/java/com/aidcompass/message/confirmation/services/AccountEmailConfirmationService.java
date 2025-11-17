@@ -2,12 +2,12 @@ package com.aidcompass.message.confirmation.services;
 
 
 import com.aidcompass.contracts.AccountResourceConfirmationService;
+import com.aidcompass.core.security.domain.user.services.UserOrchestrator;
 import com.aidcompass.message.confirmation.repositories.ConfirmationRepository;
 import com.aidcompass.message.exceptions.models.InvalidConfirmationTokenException;
 import com.aidcompass.message.exceptions.models.SendConfirmationMessageException;
 import com.aidcompass.message.message_services.MessageFactory;
 import com.aidcompass.message.message_services.MessageService;
-import com.aidcompass.core.security.domain.user.services.UserOrchestrator;
 import com.aidcompass.message.utils.CodeFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
