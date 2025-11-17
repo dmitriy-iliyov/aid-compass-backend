@@ -1,9 +1,1 @@
-twilo
-kafka
-UserUpdateValidator
-рефрещ токен
-oauht
-повидомлення про запис
-
-//
 aid-compass-backend % docker build -f Dockerfile.jbr -t jbr-17.0.11 .
