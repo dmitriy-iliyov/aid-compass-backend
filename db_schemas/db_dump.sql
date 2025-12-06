@@ -8029,7 +8029,6 @@ ALTER TABLE ONLY public.doctors
 ALTER TABLE ONLY public.customers
     ADD CONSTRAINT fktjdeeb5ywj8i2e40jcqw56leh FOREIGN KEY (detail_id) REFERENCES public.user_details(id);
 
-
 --
 -- PostgreSQL database dump complete
 --
