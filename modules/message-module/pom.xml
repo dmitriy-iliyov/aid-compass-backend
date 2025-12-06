@@ -8,6 +8,7 @@
         <groupId>com.aidcompass</groupId>
         <artifactId>aid-compass-backend</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>message-module</artifactId>

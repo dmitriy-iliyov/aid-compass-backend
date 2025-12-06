@@ -1,4 +1,4 @@
-package com.aidcompass.users.general.interfaces;
+package com.aidcompass.users.general;
 
 import jakarta.servlet.http.HttpServletResponse;
 

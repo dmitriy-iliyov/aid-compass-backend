@@ -3,7 +3,7 @@ package com.aidcompass.users.customer.services;
 import com.aidcompass.users.customer.models.CustomerDto;
 import com.aidcompass.users.customer.models.PrivateCustomerResponseDto;
 import com.aidcompass.users.detail.models.DetailEntity;
-import com.aidcompass.users.general.interfaces.PersistService;
+import com.aidcompass.users.general.PersistService;
 
 import java.util.UUID;
 

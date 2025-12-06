@@ -3,7 +3,7 @@ package com.aidcompass.users.jurist.services;
 import com.aidcompass.core.general.contracts.dto.BaseSystemVolunteerDto;
 import com.aidcompass.core.general.contracts.dto.PageResponse;
 import com.aidcompass.users.gender.Gender;
-import com.aidcompass.users.general.interfaces.PersistService;
+import com.aidcompass.users.general.PersistService;
 import com.aidcompass.users.jurist.models.dto.*;
 
 import java.util.List;

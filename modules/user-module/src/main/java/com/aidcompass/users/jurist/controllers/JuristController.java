@@ -7,7 +7,7 @@ import com.aidcompass.core.general.utils.validation.ValidEnum;
 import com.aidcompass.users.detail.DetailService;
 import com.aidcompass.users.detail.models.DetailDto;
 import com.aidcompass.users.detail.models.PrivateDetailResponseDto;
-import com.aidcompass.users.general.interfaces.PersistFacade;
+import com.aidcompass.users.general.PersistFacade;
 import com.aidcompass.users.jurist.models.dto.JuristDto;
 import com.aidcompass.users.jurist.models.dto.PrivateJuristResponseDto;
 import com.aidcompass.users.jurist.services.JuristService;

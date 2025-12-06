@@ -33,7 +33,6 @@ public class GlobalRedisConfig {
     @Value("${spring.data.redis.port}")
     private int port;
 
-
     public static final String APPOINTMENT_DURATION_CACHE = "appointment:duration";
     public static final String APPOINTMENT_DURATION_MAP_CACHE = "appointment:duration:map";
     public static final String APPOINTMENTS_CACHE = "appointments";
@@ -43,7 +42,6 @@ public class GlobalRedisConfig {
     public final static String CONF_TOKEN_KEY_TEMPLATE = "tkn:conf:";
     public final static String INTERVALS_BY_DATE_CACHE = "intervals:date";
     public final static String INTERVALS_BY_DATE_INTERVAL_CACHE = "intervals:date_interval";
-
 
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {

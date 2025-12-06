@@ -8,11 +8,10 @@
         <groupId>com.aidcompass</groupId>
         <artifactId>aid-compass-backend</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>avatar-module</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -37,12 +36,6 @@
             <groupId>com.azure</groupId>
             <artifactId>azure-storage-blob</artifactId>
             <version>12.25.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.28</version>
         </dependency>
     </dependencies>
 </project>

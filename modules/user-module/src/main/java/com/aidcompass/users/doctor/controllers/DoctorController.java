@@ -11,7 +11,7 @@ import com.aidcompass.users.doctor.models.dto.DoctorDto;
 import com.aidcompass.users.doctor.models.dto.PrivateDoctorResponseDto;
 import com.aidcompass.users.doctor.services.DoctorService;
 import com.aidcompass.users.doctor.specialization.models.DoctorSpecialization;
-import com.aidcompass.users.general.interfaces.PersistFacade;
+import com.aidcompass.users.general.PersistFacade;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
