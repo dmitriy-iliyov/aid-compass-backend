@@ -7,6 +7,7 @@ RUN mvn clean package -pl app -am -DskipTests
 FROM jbr-17.0.11 AS final
 WORKDIR /app
 COPY --from=build /app/app/target/*.jar app.jar
+COPY app/src/main/resources/ssl ./ssl
 EXPOSE 8443
 ENTRYPOINT ["java", "-jar", "app.jar"]
 CMD []

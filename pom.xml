@@ -75,7 +75,6 @@
             <version>2.21.1</version>
         </dependency>
 
-
         <!-- redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -144,6 +143,7 @@
             <artifactId>lombok-mapstruct-binding</artifactId>
             <version>0.2.0</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -193,6 +193,19 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
+        <!-- migrations -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>11.10.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <version>11.10.0</version>
         </dependency>
     </dependencies>
 
