@@ -5,11 +5,10 @@ import com.aidcompass.aggregator.api.appointment.AppointmentAggregatorService;
 import com.aidcompass.aggregator.api.customer.CustomerAggregatorService;
 import com.aidcompass.aggregator.api.doctor.DoctorAggregatorService;
 import com.aidcompass.aggregator.api.jurist.JuristAggregatorService;
+import com.aidcompass.core.general.contracts.dto.PageRequest;
 import com.aidcompass.schedule.appointment.models.dto.StatusFilter;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
+import com.aidcompass.users.general.dto.NameFilter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,164 +30,53 @@ public class AdminAggregatorController {
 
 
     @GetMapping("/doctors/unapproved/cards")
-    public ResponseEntity<?> getUnapprovedDoctors(@RequestParam(value = "page", defaultValue = "0")
-                                                  @PositiveOrZero(message = "Page should be positive!")
-                                                  int page,
-                                                  @RequestParam(value = "size", defaultValue = "10")
-                                                  @Min(value = 10, message = "Size must be at least 10!")
-                                                  int size) {
+    public ResponseEntity<?> getUnapprovedDoctors(@ModelAttribute @Valid PageRequest page) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(doctorAggregatorService.findAllUnapproved(page, size));
+                .body(doctorAggregatorService.findAllUnapproved(page));
     }
 
     @GetMapping("/jurists/unapproved/cards")
-    public ResponseEntity<?> getUnapprovedJurists(@RequestParam(value = "page", defaultValue = "0")
-                                                  @PositiveOrZero(message = "Page should be positive!")
-                                                  int page,
-                                                  @RequestParam(value = "size", defaultValue = "10")
-                                                  @Min(value = 10, message = "Size must be at least 10!")
-                                                  int size) {
+    public ResponseEntity<?> getUnapprovedJurists(@ModelAttribute @Valid PageRequest page) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(juristAggregatorService.findAllUnapproved(page, size));
+                .body(juristAggregatorService.findAllUnapproved(page));
     }
 
     @GetMapping("/doctors/unapproved/cards/names")
-    public ResponseEntity<?> getUnapprovedDoctorsByNames(@RequestParam(value = "first_name", required = false)
-                                                         @Size(min = 2, max = 20,
-                                                                 message = "Should has lengths from 2 to 20 characters!")
-                                                         @Pattern(
-                                                                 regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
-                                                                 message = "First name should contain only Ukrainian!"
-                                                         )
-                                                         String firstName,
-
-                                                         @RequestParam(value = "second_name", required = false)
-                                                         @Size(min = 2, max = 20,
-                                                                 message = "Should has lengths from 2 to 20 characters!")
-                                                         @Pattern(
-                                                                 regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
-                                                                 message = "Second name should contain only Ukrainian!"
-                                                         )
-                                                         String secondName,
-
-                                                         @RequestParam(value = "last_name", required = false)
-                                                         @Size(min = 2, max = 20,
-                                                                 message = "Should has lengths from 2 to 20 characters!")
-                                                         @Pattern(
-                                                                 regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
-                                                                 message = "Last name should contain only Ukrainian!"
-                                                         )
-                                                         String lastName,
-
-                                                         @RequestParam(value = "page", defaultValue = "0")
-                                                         @PositiveOrZero(message = "Page should be positive!")
-                                                         int page,
-                                                         @RequestParam(value = "size", defaultValue = "10")
-                                                         @Min(value = 10, message = "Size must be at least 10!")
-                                                         int size) {
+    public ResponseEntity<?> getUnapprovedDoctorsByNames(@ModelAttribute @Valid NameFilter filter) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(doctorAggregatorService.findAllUnapprovedByNamesCombination(firstName, secondName, lastName, page, size));
+                .body(doctorAggregatorService.findAllUnapprovedByNamesCombination(filter));
     }
 
     @GetMapping("/jurists/unapproved/cards/names")
-    public ResponseEntity<?> getUnapprovedJuristsByNames(@RequestParam(value = "first_name", required = false)
-                                                         @Size(min = 2, max = 20,
-                                                                 message = "Should has lengths from 2 to 20 characters!")
-                                                         @Pattern(
-                                                                 regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
-                                                                 message = "First name should contain only Ukrainian!"
-                                                         )
-                                                         String firstName,
-
-                                                         @RequestParam(value = "second_name", required = false)
-                                                         @Size(min = 2, max = 20,
-                                                                 message = "Should has lengths from 2 to 20 characters!")
-                                                         @Pattern(
-                                                                 regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
-                                                                 message = "Second name should contain only Ukrainian!"
-                                                         )
-                                                         String secondName,
-
-                                                         @RequestParam(value = "last_name", required = false)
-                                                         @Size(min = 2, max = 20,
-                                                                 message = "Should has lengths from 2 to 20 characters!")
-                                                         @Pattern(
-                                                                 regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
-                                                                 message = "Last name should contain only Ukrainian!"
-                                                         )
-                                                         String lastName,
-
-                                                         @RequestParam(value = "page", defaultValue = "0")
-                                                         @PositiveOrZero(message = "Page should be positive!")
-                                                         int page,
-                                                         @RequestParam(value = "size", defaultValue = "10")
-                                                         @Min(value = 10, message = "Size must be at least 10!")
-                                                         int size) {
+    public ResponseEntity<?> getUnapprovedJuristsByNames(@ModelAttribute @Valid NameFilter filter) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(juristAggregatorService.findAllUnapprovedByNamesCombination(firstName, secondName, lastName, page, size));
+                .body(juristAggregatorService.findAllUnapprovedByNamesCombination(filter));
     }
 
     @GetMapping("/{participant_id}/appointments")
     public ResponseEntity<?> getParticipantAppointments(@PathVariable("participant_id")
                                                         UUID participantId,
+                                                        @ModelAttribute @Valid StatusFilter filter,
                                                         @RequestParam("for_volunteer")
-                                                        boolean forVolunteer,
-                                                        @RequestParam(value = "scheduled", defaultValue = "false")
-                                                        boolean scheduled,
-                                                        @RequestParam(value = "completed", defaultValue = "false")
-                                                        boolean completed,
-                                                        @RequestParam(value = "canceled", defaultValue = "false")
-                                                        boolean canceled,
-                                                        @RequestParam(value = "page", defaultValue = "0")
-                                                        @PositiveOrZero(message = "Page should be positive!")
-                                                        int page,
-                                                        @RequestParam(value = "size", defaultValue = "10")
-                                                        @Min(value = 10, message = "Size must be at least 10!")
-                                                        int size) {
-        StatusFilter filter = new StatusFilter(scheduled, canceled, completed);
+                                                        boolean forVolunteer) {
         if (forVolunteer) {
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(appointmentAggregatorService.findByFilterAndVolunteerId(participantId, filter, page, size));
+                    .body(appointmentAggregatorService.findByFilterAndVolunteerId(participantId, filter));
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(appointmentAggregatorService.findByFilterAndCustomerId(participantId, filter, page, size));
+                .body(appointmentAggregatorService.findByFilterAndCustomerId(participantId, filter));
     }
 
     @GetMapping("/customers/names")
-    public ResponseEntity<?> findByNameCombination(@RequestParam(value = "first_name", required = false)
-                                                   @Size(min = 2, max = 20,
-                                                           message = "Should has lengths from 2 to 20 characters!")
-                                                   @Pattern(regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
-                                                           message = "First name should contain only Ukrainian!")
-                                                   String firstName,
-                                                   @RequestParam(value = "second_name", required = false)
-                                                   @Size(min = 2, max = 20,
-                                                           message = "Should has lengths from 2 to 20 characters!")
-                                                   @Pattern(regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
-                                                           message = "Second name should contain only Ukrainian!")
-                                                   String secondName,
-
-                                                   @RequestParam(value = "last_name", required = false)
-                                                   @Size(min = 2, max = 20,
-                                                           message = "Should has lengths from 2 to 20 characters!")
-                                                   @Pattern(regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
-                                                           message = "Last name should contain only Ukrainian!")
-                                                   String lastName,
-
-                                                   @RequestParam(value = "page", defaultValue = "0")
-                                                   @PositiveOrZero(message = "Page should be positive!")
-                                                   int page,
-                                                   @RequestParam(value = "size", defaultValue = "10")
-                                                   @Min(value = 10, message = "Size must be at least 10!")
-                                                   int size) {
+    public ResponseEntity<?> findByNameCombination(@ModelAttribute @Valid NameFilter filter) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(customerAggregatorService.findAllByNamesCombination(firstName, secondName, lastName, page, size));
+                .body(customerAggregatorService.findAllByNamesCombination(filter));
     }
 }

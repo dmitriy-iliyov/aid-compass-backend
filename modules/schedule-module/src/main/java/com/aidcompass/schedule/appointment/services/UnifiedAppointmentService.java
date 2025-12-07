@@ -88,9 +88,8 @@ public class UnifiedAppointmentService implements AppointmentService, SystemAppo
 
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<AppointmentResponseDto> findAllByStatusFilter(UUID participantId, StatusFilter filter,
-                                                                      int page, int size, boolean forVolunteer) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("date").and(Sort.by("start")).ascending());
+    public PageResponse<AppointmentResponseDto> findAllByStatusFilter(UUID participantId, StatusFilter filter, boolean forVolunteer) {
+        Pageable pageable = PageRequest.of(filter.getPage(), filter.getSize(), Sort.by("date").and(Sort.by("start")).ascending());
 
         Specification<AppointmentEntity> specification = Specification
                 .where(AppointmentSpecifications.hasStatuses(filter));

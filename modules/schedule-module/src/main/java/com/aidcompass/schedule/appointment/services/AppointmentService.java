@@ -20,8 +20,7 @@ public interface AppointmentService {
 
     AppointmentResponseDto findById(Long id);
 
-    PageResponse<AppointmentResponseDto> findAllByStatusFilter(UUID participantId, StatusFilter filter,
-                                                               int page, int size, boolean forVolunteer);
+    PageResponse<AppointmentResponseDto> findAllByStatusFilter(UUID participantId, StatusFilter filter, boolean forVolunteer);
 
     List<AppointmentResponseDto> findAllByVolunteerIdAndDateAndStatus(UUID volunteerId, LocalDate date,
                                                                       AppointmentStatus status);

@@ -14,6 +14,7 @@ import com.aidcompass.users.doctor.specialization.DoctorSpecializationService;
 import com.aidcompass.users.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.users.doctor.specialization.models.DoctorSpecializationEntity;
 import com.aidcompass.users.gender.Gender;
+import com.aidcompass.users.general.dto.NameFilter;
 import com.aidcompass.users.general.exceptions.doctor.DoctorNotFoundByIdException;
 import com.aidcompass.users.general.exceptions.doctor.FullDoctorNotFoundException;
 import com.aidcompass.users.profile_status.ProfileConfig;
@@ -159,9 +160,9 @@ public class UnifiedDoctorService implements DoctorService, ProfileStatusUpdateS
 
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<FullPrivateDoctorResponseDto> findAllUnapproved(int page, int size) {
+    public PageResponse<FullPrivateDoctorResponseDto> findAllUnapproved(com.aidcompass.core.general.contracts.dto.PageRequest page) {
         Page<DoctorEntity> entityPage = repository.findAllByApprovedFalse(
-                PageRequest.of(page, size, Sort.by("createdAt").descending())
+                PageRequest.of(page.getPage(), page.getSize(), Sort.by("createdAt").descending())
         );
         return new PageResponse<>(
                 this.toFullPrivateDto(entityPage.getContent(), this.loadSpecializations(entityPage)),
@@ -171,11 +172,10 @@ public class UnifiedDoctorService implements DoctorService, ProfileStatusUpdateS
 
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<FullPrivateDoctorResponseDto> findAllUnapprovedByNamesCombination(String firstName, String secondName,
-                                                                                          String lastName, int page, int size) {
+    public PageResponse<FullPrivateDoctorResponseDto> findAllUnapprovedByNamesCombination(NameFilter filter) {
         Page<DoctorEntity> entityPage = repository.findAllUnapprovedByNamesCombination(
-                new DoctorNamesCombination(firstName, secondName, lastName),
-                PageRequest.of(page, size, Sort.by("createdAt").descending())
+                new DoctorNamesCombination(filter.getFirstName(), filter.getSecondName(), filter.getLastName()),
+                PageRequest.of(filter.getPage(), filter.getSize(), Sort.by("createdAt").descending())
         );
         return new PageResponse<>(
                 this.toFullPrivateDto(entityPage.getContent(), this.loadSpecializations(entityPage)),
@@ -185,14 +185,14 @@ public class UnifiedDoctorService implements DoctorService, ProfileStatusUpdateS
 
     @Cacheable(
             value = "doctors:approve",
-            key = "#page + ':' + #size",
-            condition = "#page < 3 && #size == 10"
+            key = "#page.getPage() + ':' + #page.getSize()",
+            condition = "#page.getPage() < 3 && #page.getSize() == 10"
     )
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<PublicDoctorResponseDto> findAllApproved(int page, int size) {
+    public PageResponse<PublicDoctorResponseDto> findAllApproved(com.aidcompass.core.general.contracts.dto.PageRequest page) {
         Page<DoctorEntity> entityPage = repository.findAllByApprovedTrue(
-                Pageable.ofSize(size).withPage(page)
+                Pageable.ofSize(page.getSize()).withPage(page.getPage())
         );
         return new PageResponse<>(
                 this.toPublicDtoList(entityPage.getContent(), this.loadSpecializations(entityPage)),
@@ -202,17 +202,16 @@ public class UnifiedDoctorService implements DoctorService, ProfileStatusUpdateS
 
     @Cacheable(
             value = "doctors:spec",
-            key = "#specialization.name() + ':' + #page + ':' + #size",
-            condition = "#page == 0 && #size == 10"
+            key = "#filter.getSpecialization() + ':' + #filter.getPage() + ':' + #filter.getSize()",
+            condition = "#filter.getPage() == 0 && #filter.getSize() == 10"
     )
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<PublicDoctorResponseDto> findAllBySpecialization(DoctorSpecialization specialization,
-                                                                         int page, int size) {
-        DoctorSpecializationEntity entity = specializationService.findEntityBySpecialization(specialization);
+    public PageResponse<PublicDoctorResponseDto> findAllBySpecialization(DoctorSpecializationFilter filter) {
+        DoctorSpecializationEntity entity = specializationService.findEntityBySpecialization(filter.getSpecialization());
         Page<DoctorEntity> entityPage = repository.findAllBySpecialization(
                 entity,
-                Pageable.ofSize(size).withPage(page)
+                Pageable.ofSize(filter.getSize()).withPage(filter.getPage())
         );
         return new PageResponse<>(
                 this.toPublicDtoList(entityPage.getContent(), this.loadSpecializations(entityPage)),
@@ -222,16 +221,16 @@ public class UnifiedDoctorService implements DoctorService, ProfileStatusUpdateS
 
     @Cacheable(
             value = "doctors:name",
-            key = "#firstName + ':' + #secondName + ':' + #lastName + ':' + #page + ':' + #size",
-            condition = "#page == 0 && #size == 10"
+            key = "#filter.getFirstName() + ':' + #filter.getSecondName() + ':' + #filter.getLastName() + ':' + #filter.getPage() + ':' + #filter.getSize()",
+            condition = "#filter.getPage() == 0 && #filter.getSize() == 10"
     )
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<PublicDoctorResponseDto> findAllByNamesCombination(String firstName, String secondName,
-                                                                           String lastName, int page, int size) {
-        DoctorNamesCombination specification = new DoctorNamesCombination(firstName, secondName, lastName);
+    public PageResponse<PublicDoctorResponseDto> findAllByNamesCombination(NameFilter filter) {
+        System.out.println(filter);
+        DoctorNamesCombination specification = new DoctorNamesCombination(filter.getFirstName(), filter.getSecondName(), filter.getLastName());
         Page<DoctorEntity> entityPage = repository.findAllByNamesCombination(
-                specification, Pageable.ofSize(size).withPage(page)
+                specification, Pageable.ofSize(filter.getSize()).withPage(filter.getPage())
         );
         return new PageResponse<>(
                 this.toPublicDtoList(entityPage.getContent(), this.loadSpecializations(entityPage)),
@@ -241,13 +240,13 @@ public class UnifiedDoctorService implements DoctorService, ProfileStatusUpdateS
 
     @Cacheable(
             value = "doctors:gender",
-            key = "#gender + ':' + #page + ':' + #size",
-            condition = "#page < 3 && #size == 10"
+            key = "#gender + ':' + #page.getPage() + ':' + #page.getSize()",
+            condition = "#page.getPage() < 3 && #page.getSize() == 10"
     )
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<PublicDoctorResponseDto> findAllByGender(Gender gender, int page, int size) {
-        Page<DoctorEntity> entityPage = repository.findAllByGender(gender, Pageable.ofSize(size).withPage(page));
+    public PageResponse<PublicDoctorResponseDto> findAllByGender(Gender gender, com.aidcompass.core.general.contracts.dto.PageRequest page) {
+        Page<DoctorEntity> entityPage = repository.findAllByGender(gender, Pageable.ofSize(page.getSize()).withPage(page.getPage()));
         return new PageResponse<>(
                 this.toPublicDtoList(entityPage.getContent(), this.loadSpecializations(entityPage)),
                 entityPage.getTotalPages()

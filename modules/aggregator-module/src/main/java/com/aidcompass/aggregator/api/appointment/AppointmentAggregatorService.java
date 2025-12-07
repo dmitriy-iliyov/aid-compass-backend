@@ -51,9 +51,9 @@ public class AppointmentAggregatorService {
         );
     }
 
-    public PageResponse<VolunteerAppointmentDto> findByFilterAndVolunteerId(UUID volunteerId, StatusFilter filter, int page, int size) {
+    public PageResponse<VolunteerAppointmentDto> findByFilterAndVolunteerId(UUID volunteerId, StatusFilter filter) {
         PageResponse<AppointmentResponseDto> appointments =
-                appointmentService.findAllByStatusFilter(volunteerId, filter, page, size, true);
+                appointmentService.findAllByStatusFilter(volunteerId, filter, true);
         return new PageResponse<>(
                 prepareVolunteerAppointmentDtoList(appointments.data()),
                 appointments.totalPage()
@@ -92,9 +92,9 @@ public class AppointmentAggregatorService {
                 .toList();
     }
 
-    public PageResponse<CustomerAppointmentDto> findByFilterAndCustomerId(UUID customerId, StatusFilter filter, int page, int size) {
+    public PageResponse<CustomerAppointmentDto> findByFilterAndCustomerId(UUID customerId, StatusFilter filter) {
         PageResponse<AppointmentResponseDto> appointments =
-                appointmentService.findAllByStatusFilter(customerId, filter, page, size, false);
+                appointmentService.findAllByStatusFilter(customerId, filter, false);
         return new PageResponse<>(
                 prepareCustomerAppointmentDtoList(customerId, appointments.data()),
                 appointments.totalPage()

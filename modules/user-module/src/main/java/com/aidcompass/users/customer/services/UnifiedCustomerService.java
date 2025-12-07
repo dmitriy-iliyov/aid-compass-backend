@@ -10,6 +10,7 @@ import com.aidcompass.users.customer.models.PublicCustomerResponseDto;
 import com.aidcompass.users.customer.repository.CustomerRepository;
 import com.aidcompass.users.customer.repository.CustomerSpecifications;
 import com.aidcompass.users.detail.models.DetailEntity;
+import com.aidcompass.users.general.dto.NameFilter;
 import com.aidcompass.users.general.exceptions.customer.CustomerNotFoundByIdException;
 import com.aidcompass.users.general.exceptions.customer.CustomerNotFoundByUserIdException;
 import com.aidcompass.users.profile_status.ProfileConfig;
@@ -121,13 +122,12 @@ public class UnifiedCustomerService implements CustomerService, ProfileStatusUpd
 
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<PrivateCustomerResponseDto> findAllByNamesCombination(String firstName, String secondName,
-                                                                              String lastName, int page, int size) {
+    public PageResponse<PrivateCustomerResponseDto> findAllByNamesCombination(NameFilter filter) {
         Specification<CustomerEntity> specification = Specification
-                .where(CustomerSpecifications.hasFirstName(firstName))
-                .and(CustomerSpecifications.hasSecondName(secondName))
-                .and(CustomerSpecifications.hasLastName(lastName));
-        Page<CustomerEntity> entityPage = repository.findAll(specification, PageRequest.of(page, size));
+                .where(CustomerSpecifications.hasFirstName(filter.getFirstName()))
+                .and(CustomerSpecifications.hasSecondName(filter.getSecondName()))
+                .and(CustomerSpecifications.hasLastName(filter.getLastName()));
+        Page<CustomerEntity> entityPage = repository.findAll(specification, PageRequest.of(filter.getPage(), filter.getSize()));
         return new PageResponse<>(
                 mapper.toPrivateDtoList(entityPage.getContent()),
                 entityPage.getTotalPages()

@@ -6,6 +6,7 @@ import com.aidcompass.core.general.contracts.dto.PageResponse;
 import com.aidcompass.core.general.contracts.enums.ServiceType;
 import com.aidcompass.users.detail.models.DetailEntity;
 import com.aidcompass.users.gender.Gender;
+import com.aidcompass.users.general.dto.NameFilter;
 import com.aidcompass.users.general.exceptions.jurist.FullJuristNotFoundException;
 import com.aidcompass.users.general.exceptions.jurist.JuristNotFoundByIdException;
 import com.aidcompass.users.jurist.mapper.FullJuristMapper;
@@ -192,9 +193,9 @@ public class UnifiedJuristService implements JuristService, ProfileStatusUpdateS
 
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<FullPrivateJuristResponseDto> findAllUnapproved(int page, int size) {
+    public PageResponse<FullPrivateJuristResponseDto> findAllUnapproved(com.aidcompass.core.general.contracts.dto.PageRequest page) {
         Page<JuristEntity> entityPage = repository.findAllByApprovedFalse(
-                PageRequest.of(page, size, Sort.by("createdAt").descending())
+                PageRequest.of(page.getPage(), page.getSize(), Sort.by("createdAt").descending())
         );
         return new PageResponse<>(
                 this.toFullPrivateDto(entityPage.getContent(), this.loadSpecializations(entityPage)),
@@ -204,17 +205,16 @@ public class UnifiedJuristService implements JuristService, ProfileStatusUpdateS
 
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<FullPrivateJuristResponseDto> findAllUnapprovedByNamesCombination(String firstName, String secondName,
-                                                                                          String lastName, int page, int size) {
+    public PageResponse<FullPrivateJuristResponseDto> findAllUnapprovedByNamesCombination(NameFilter filter) {
         Specification<JuristEntity> specification = Specification
-                .where(hasFirstName(firstName))
-                .and(hasSecondName(secondName))
-                .and(hasLastName(lastName))
+                .where(hasFirstName(filter.getFirstName()))
+                .and(hasSecondName(filter.getSecondName()))
+                .and(hasLastName(filter.getLastName()))
                 .and(hasNotApproval());
 
         Page<JuristEntity> entityPage = repository.findAll(
                 specification,
-                PageRequest.of(page, size, Sort.by("createdAt").descending())
+                PageRequest.of(filter.getPage(), filter.getSize(), Sort.by("createdAt").descending())
         );
         return new PageResponse<>(
                 this.toFullPrivateDto(entityPage.getContent(), this.loadSpecializations(entityPage)),
@@ -224,14 +224,14 @@ public class UnifiedJuristService implements JuristService, ProfileStatusUpdateS
 
     @Cacheable(
             value = "jurists:approve",
-            key = "#page + ':' + #size",
-            condition = "#page < 3 && #size == 10"
+            key = "#page.getPage() + ':' + #page.getSize()",
+            condition = "#page.getPage() < 3 && #page.getSize() == 10"
     )
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<PublicJuristResponseDto> findAllApproved(int page, int size) {
+    public PageResponse<PublicJuristResponseDto> findAllApproved(com.aidcompass.core.general.contracts.dto.PageRequest page) {
         Page<JuristEntity> entityPage = repository.findAllByApprovedTrue(
-                Pageable.ofSize(size).withPage(page)
+                Pageable.ofSize(page.getSize()).withPage(page.getPage())
         );
         return new PageResponse<>(
                 this.toPublicDtoList(entityPage.getContent(), this.loadSpecializations(entityPage)),
@@ -241,21 +241,20 @@ public class UnifiedJuristService implements JuristService, ProfileStatusUpdateS
 
     @Cacheable(
             value = "jurists:spec",
-            key = "((#type == null) ? 'null' : #type) + ':' +" +
-                  " ((#specialization == null) ? 'null' : #specialization) + ':' + #page + ':' + #size",
-            condition = "#page == 0 && #size == 10"
+            key = "((#filter.getType() == null) ? 'null' : #filter.getType()) + ':' +" +
+                  " ((#filter.getSpecialization() == null) ? 'null' : #filter.getSpecialization()) + ':' + #filter.getPage() + ':' + #filter.getSize()",
+            condition = "#filter.getPage() == 0 && #filter.getSize() == 10"
     )
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<PublicJuristResponseDto> findAllByTypeAndSpecialization(String type, String specialization,
-                                                                                int page, int size) {
+    public PageResponse<PublicJuristResponseDto> findAllByTypeAndSpecialization(JuristSpecializationFilter filter) {
         JuristTypeEntity typeEntity = null;
         JuristSpecializationEntity specializationEntity = null;
-        if (type != null) {
-            typeEntity = typeService.findEntityByType(JuristType.toEnum(type));
+        if (filter.getType() != null) {
+            typeEntity = typeService.findEntityByType(filter.getType());
         }
-        if (specialization != null) {
-            specializationEntity = specializationService.findEntityBySpecialization(JuristSpecialization.toEnum(specialization));
+        if (filter.getSpecialization() != null) {
+            specializationEntity = specializationService.findEntityBySpecialization(filter.getSpecialization());
         }
 
         Specification<JuristEntity> specification = Specification
@@ -264,7 +263,7 @@ public class UnifiedJuristService implements JuristService, ProfileStatusUpdateS
                 .and(hasApproval())
                 .and(hasCompletedProfile());
 
-        Page<JuristEntity> entityPage = repository.findAll(specification, Pageable.ofSize(size).withPage(page));
+        Page<JuristEntity> entityPage = repository.findAll(specification, Pageable.ofSize(filter.getSize()).withPage(filter.getPage()));
 
         return new PageResponse<>(
                 this.toPublicDtoList(entityPage.getContent(), this.loadSpecializations(entityPage)),
@@ -274,28 +273,25 @@ public class UnifiedJuristService implements JuristService, ProfileStatusUpdateS
 
     @Cacheable(
             value = "jurists:name",
-            key = "#type + ':' + #firstName + ':' + #secondName + ':' + #lastName + ':' + #page + ':' + #size",
-            condition = "#page == 0 && #size == 10"
+            key = "#filter.getType() + ':' + #filter.getFirstName() + ':' + #filter.getSecondName() + ':' + #filter.getLastName() + ':' + #filter.getPage() + ':' + #filter.getSize()",
+            condition = "#filter.getPage() == 0 && #filter.getSize() == 10"
     )
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<PublicJuristResponseDto> findAllByTypeAndNamesCombination(String type,
-                                                                                  String firstName, String secondName,
-                                                                                  String lastName, int page, int size) {
+    public PageResponse<PublicJuristResponseDto> findAllByTypeAndNamesCombination(JuristNameFilter filter) {
         JuristTypeEntity typeEntity = null;
-        if (type != null) {
-            typeEntity = typeService.findEntityByType(JuristType.toEnum(type));
+        if (filter.getType() != null) {
+            typeEntity = typeService.findEntityByType(filter.getType());
         }
-
         Specification<JuristEntity> specification = Specification
                 .where(hasType(typeEntity))
-                .and(hasFirstName(firstName))
-                .and(hasSecondName(secondName))
-                .and(hasLastName(lastName))
+                .and(hasFirstName(filter.getFirstName()))
+                .and(hasSecondName(filter.getSecondName()))
+                .and(hasLastName(filter.getLastName()))
                 .and(hasApproval())
                 .and(hasCompletedProfile());
 
-        Page<JuristEntity> entityPage = repository.findAll(specification, Pageable.ofSize(size).withPage(page));
+        Page<JuristEntity> entityPage = repository.findAll(specification, Pageable.ofSize(filter.getSize()).withPage(filter.getPage()));
 
         return new PageResponse<>(
                 this.toPublicDtoList(entityPage.getContent(), this.loadSpecializations(entityPage)),
@@ -339,13 +335,13 @@ public class UnifiedJuristService implements JuristService, ProfileStatusUpdateS
 
     @Cacheable(
             value = "jurists:gender",
-            key = "#gender + ':' + #page + ':' + #size",
-            condition = "#page < 3 && #size == 10"
+            key = "#gender + ':' + #page.getPage() + ':' + #page.getSize()",
+            condition = "#page.getPage() < 3 && #page.getSize() == 10"
     )
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<PublicJuristResponseDto> findAllByGender(Gender gender, int page, int size) {
-        Page<JuristEntity> entityPage = repository.findAllByGender(gender, Pageable.ofSize(size).withPage(page));
+    public PageResponse<PublicJuristResponseDto> findAllByGender(Gender gender, com.aidcompass.core.general.contracts.dto.PageRequest page) {
+        Page<JuristEntity> entityPage = repository.findAllByGender(gender, Pageable.ofSize(page.getSize()).withPage(page.getPage()));
         return new PageResponse<>(
                 this.toPublicDtoList(entityPage.getContent(), this.loadSpecializations(entityPage)),
                 entityPage.getTotalPages()

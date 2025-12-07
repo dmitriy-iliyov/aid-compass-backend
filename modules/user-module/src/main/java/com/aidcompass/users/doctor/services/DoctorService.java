@@ -1,10 +1,11 @@
 package com.aidcompass.users.doctor.services;
 
+import com.aidcompass.core.general.contracts.dto.PageRequest;
 import com.aidcompass.core.general.contracts.dto.PageResponse;
 import com.aidcompass.users.doctor.models.dto.*;
-import com.aidcompass.users.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.users.gender.Gender;
 import com.aidcompass.users.general.PersistService;
+import com.aidcompass.users.general.dto.NameFilter;
 
 import java.util.List;
 import java.util.Set;
@@ -23,20 +24,19 @@ public interface DoctorService extends PersistService<DoctorDto, PrivateDoctorRe
 
     FullPublicDoctorResponseDto findFullPublicById(UUID id);
 
-    PageResponse<PublicDoctorResponseDto> findAllByNamesCombination(String firstName, String secondName, String lastName, int page, int size);
+    PageResponse<PublicDoctorResponseDto> findAllByNamesCombination(NameFilter filter);
 
     List<PublicDoctorResponseDto> findAllByIdIn(Set<UUID> ids);
 
-    PageResponse<FullPrivateDoctorResponseDto> findAllUnapproved(int page, int size);
+    PageResponse<FullPrivateDoctorResponseDto> findAllUnapproved(PageRequest page);
 
-    PageResponse<FullPrivateDoctorResponseDto> findAllUnapprovedByNamesCombination(String firstName, String secondName,
-                                                                                   String lastName, int page, int size);
+    PageResponse<FullPrivateDoctorResponseDto> findAllUnapprovedByNamesCombination(NameFilter filter);
 
-    PageResponse<PublicDoctorResponseDto> findAllApproved(int page, int size);
+    PageResponse<PublicDoctorResponseDto> findAllApproved(PageRequest page);
 
-    PageResponse<PublicDoctorResponseDto> findAllBySpecialization(DoctorSpecialization specialization, int page, int size);
+    PageResponse<PublicDoctorResponseDto> findAllBySpecialization(DoctorSpecializationFilter filter);
 
-    PageResponse<PublicDoctorResponseDto> findAllByGender(Gender gender, int page, int size);
+    PageResponse<PublicDoctorResponseDto> findAllByGender(Gender gender, PageRequest page);
 
     PrivateDoctorResponseDto update(UUID id, DoctorDto doctorUpdateDto);
 

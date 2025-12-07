@@ -5,13 +5,13 @@ import com.aidcompass.aggregator.api.jurist.dto.JuristCardDto;
 import com.aidcompass.aggregator.api.jurist.dto.JuristPrivateProfileDto;
 import com.aidcompass.aggregator.api.jurist.dto.JuristPublicProfileDto;
 import com.aidcompass.core.contact.core.models.dto.PrivateContactResponseDto;
+import com.aidcompass.core.general.contracts.dto.PageRequest;
 import com.aidcompass.core.general.contracts.dto.PageResponse;
 import com.aidcompass.core.general.exceptions.models.BaseNotFoundException;
 import com.aidcompass.schedule.interval.models.dto.NearestIntervalDto;
 import com.aidcompass.users.gender.Gender;
-import com.aidcompass.users.jurist.models.dto.FullPrivateJuristResponseDto;
-import com.aidcompass.users.jurist.models.dto.FullPublicJuristResponseDto;
-import com.aidcompass.users.jurist.models.dto.PublicJuristResponseDto;
+import com.aidcompass.users.general.dto.NameFilter;
+import com.aidcompass.users.jurist.models.dto.*;
 import com.aidcompass.users.jurist.services.JuristService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -43,55 +43,49 @@ public class JuristAggregatorService {
         return new JuristPrivateProfileDto(url, fullDto, utils.findAllPrivateContactByOwnerId(id), appointmentDuration);
     }
 
-    public PageResponse<JuristCardDto> findAllApproved(int page, int size) {
-        PageResponse<PublicJuristResponseDto> pageResponse = juristService.findAllApproved(page, size);
+    public PageResponse<JuristCardDto> findAllApproved(PageRequest page) {
+        PageResponse<PublicJuristResponseDto> pageResponse = juristService.findAllApproved(page);
         return new PageResponse<>(
                 this.aggregate(pageResponse.data()),
                 pageResponse.totalPage()
         );
     }
 
-    public PageResponse<JuristCardDto> findAllByTypeAndSpecialization(String type, String specialization,
-                                                                      int page, int size) {
-        PageResponse<PublicJuristResponseDto> pageResponse = juristService.findAllByTypeAndSpecialization(type, specialization, page, size);
+    public PageResponse<JuristCardDto> findAllByTypeAndSpecialization(JuristSpecializationFilter filter) {
+        PageResponse<PublicJuristResponseDto> pageResponse = juristService.findAllByTypeAndSpecialization(filter);
         return new PageResponse<>(
                 this.aggregate(pageResponse.data()),
                 pageResponse.totalPage()
         );
     }
 
-    public PageResponse<JuristCardDto> findAllByNamesCombination(String type,
-                                                                 String firstName, String secondName, String lastName,
-                                                                 int page, int size) {
-        PageResponse<PublicJuristResponseDto> pageResponse = juristService.findAllByTypeAndNamesCombination(
-                type, firstName, secondName, lastName, page, size
-        );
+    public PageResponse<JuristCardDto> findAllByNamesCombination(JuristNameFilter filter) {
+        PageResponse<PublicJuristResponseDto> pageResponse = juristService.findAllByTypeAndNamesCombination(filter);
         return new PageResponse<>(
                 this.aggregate(pageResponse.data()),
                 pageResponse.totalPage()
         );
     }
 
-    public PageResponse<JuristCardDto> findAllByGender(Gender gender, int page, int size) {
-        PageResponse<PublicJuristResponseDto> pageResponse = juristService.findAllByGender(gender, page, size);
+    public PageResponse<JuristCardDto> findAllByGender(Gender gender, PageRequest page) {
+        PageResponse<PublicJuristResponseDto> pageResponse = juristService.findAllByGender(gender, page);
         return new PageResponse<>(
                 aggregate(pageResponse.data()),
                 pageResponse.totalPage()
         );
     }
 
-    public PageResponse<JuristPrivateProfileDto> findAllUnapproved(int page, int size) {
-        PageResponse<FullPrivateJuristResponseDto> jurists = juristService.findAllUnapproved(page, size);
+    public PageResponse<JuristPrivateProfileDto> findAllUnapproved(PageRequest page) {
+        PageResponse<FullPrivateJuristResponseDto> jurists = juristService.findAllUnapproved(page);
         return new PageResponse<>(
                 aggregateToPrivate(jurists.data()),
                 jurists.totalPage()
         );
     }
 
-    public PageResponse<JuristPrivateProfileDto> findAllUnapprovedByNamesCombination(String firstName, String secondName,
-                                                                                     String lastName,int page, int size) {
+    public PageResponse<JuristPrivateProfileDto> findAllUnapprovedByNamesCombination(NameFilter filter) {
         PageResponse<FullPrivateJuristResponseDto> jurists = juristService
-                .findAllUnapprovedByNamesCombination(firstName, secondName, lastName, page, size);
+                .findAllUnapprovedByNamesCombination(filter);
         return new PageResponse<>(
                 aggregateToPrivate(jurists.data()),
                 jurists.totalPage()

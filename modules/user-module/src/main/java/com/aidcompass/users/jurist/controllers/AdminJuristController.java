@@ -2,9 +2,9 @@ package com.aidcompass.users.jurist.controllers;
 
 import com.aidcompass.core.general.contracts.NotificationOrchestrator;
 import com.aidcompass.core.general.contracts.dto.BaseSystemVolunteerDto;
+import com.aidcompass.core.general.contracts.dto.PageRequest;
 import com.aidcompass.users.jurist.services.JuristService;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,15 +31,10 @@ public class AdminJuristController {
     }
 
     @GetMapping("/unapproved")
-    public ResponseEntity<?> getAllUnapproved(@RequestParam(value = "page", defaultValue = "0")
-                                              @PositiveOrZero(message = "Page should be positive!")
-                                              int page,
-                                              @RequestParam(value = "size", defaultValue = "10")
-                                              @Min(value = 10, message = "Size must be at least 10!")
-                                              int size) {
+    public ResponseEntity<?> getAllUnapproved(@ModelAttribute @Valid PageRequest page) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findAllUnapproved(page, size));
+                .body(service.findAllUnapproved(page));
     }
 
     @PatchMapping("/approve/{id}")

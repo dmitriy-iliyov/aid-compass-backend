@@ -1,13 +1,16 @@
 package com.aidcompass.aggregator.api.jurist;
 
 import com.aidcompass.contracts.PrincipalDetails;
+import com.aidcompass.core.general.contracts.dto.PageRequest;
 import com.aidcompass.core.general.utils.validation.ValidEnum;
 import com.aidcompass.users.gender.Gender;
-import com.aidcompass.users.jurist.specialization.models.JuristSpecialization;
-import com.aidcompass.users.jurist.specialization.models.JuristType;
+import com.aidcompass.users.jurist.models.dto.JuristNameFilter;
+import com.aidcompass.users.jurist.models.dto.JuristSpecializationFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.constraints.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,91 +44,34 @@ public class JuristAggregatorController {
     }
 
     @GetMapping("/cards")
-    public ResponseEntity<?> getAllApproved(@RequestParam(value = "page", defaultValue = "0")
-                                            @PositiveOrZero(message = "Page should be positive!")
-                                            int page,
-                                            @RequestParam(value = "size", defaultValue = "10")
-                                            @Min(value = 10, message = "Size must be at least 10!")
-                                            int size) {
+    public ResponseEntity<?> getAllApproved(@ModelAttribute @Valid PageRequest page) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findAllApproved(page, size));
+                .body(service.findAllApproved(page));
     }
 
     @GetMapping("/cards/filter")
-    public ResponseEntity<?> getJuristsByTypeAndSpecialization(@RequestParam(value = "type", required = false)
-                                                               @ValidEnum(enumClass = JuristType.class,
-                                                                          nullable = true,
-                                                                          message = "Unsupported jurist type!")
-                                                               String type,
-                                                               @RequestParam(value = "specialization", required = false)
-                                                               @ValidEnum(enumClass = JuristSpecialization.class,
-                                                                          nullable = true,
-                                                                          message = "Unsupported jurist specialization!")
-                                                               String specialization,
-                                                               @RequestParam(value = "page", defaultValue = "0")
-                                                               @PositiveOrZero(message = "Page should be positive!")
-                                                               int page,
-                                                               @RequestParam(value = "size", defaultValue = "10")
-                                                               @Min(value = 10, message = "Size must be at least 10!")
-                                                               int size) {
+    public ResponseEntity<?> getJuristsByTypeAndSpecialization(@ModelAttribute @Valid JuristSpecializationFilter filter) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findAllByTypeAndSpecialization(type, specialization, page, size));
+                .body(service.findAllByTypeAndSpecialization(filter));
     }
 
     @GetMapping("/cards/names")
-    public ResponseEntity<?> getAllJuristsByNamesCombination(@RequestParam(value = "type", required = false)
-                                                             @ValidEnum(enumClass = JuristType.class,
-                                                                        nullable = true,
-                                                                        message = "Unsupported jurist type!")
-                                                             String type,
-
-                                                             @RequestParam(value = "first_name", required = false)
-                                                             @Size(min = 2, max = 20,
-                                                                     message = "Should has lengths from 2 to 20 characters!")
-                                                             @Pattern(regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
-                                                                     message = "First name should contain only Ukrainian!")
-                                                             String firstName,
-
-                                                             @RequestParam(value = "second_name", required = false)
-                                                             @Size(min = 2, max = 20,
-                                                                     message = "Should has lengths from 2 to 20 characters!")
-                                                             @Pattern(regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
-                                                                     message = "Second name should contain only Ukrainian!")
-                                                             String secondName,
-
-                                                             @RequestParam(value = "last_name", required = false)
-                                                             @Size(min = 2, max = 20,
-                                                                     message = "Should has lengths from 2 to 20 characters!")
-                                                             @Pattern(regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
-                                                                     message = "Last name should contain only Ukrainian!")
-                                                             String lastName,
-
-                                                             @RequestParam(value = "page", defaultValue = "0")
-                                                             @PositiveOrZero(message = "Page should be positive!")
-                                                             int page,
-                                                             @RequestParam(value = "size", defaultValue = "10")
-                                                             @Min(value = 10, message = "Size must be at least 10!")
-                                                             int size) {
+    public ResponseEntity<?> getAllJuristsByNamesCombination(@ModelAttribute @Valid JuristNameFilter filter) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findAllByNamesCombination(type, firstName, secondName, lastName, page, size));
+                .body(service.findAllByNamesCombination(filter));
     }
 
     @GetMapping("/cards/gender/{gender}")
     public ResponseEntity<?> getAllByGender(@PathVariable("gender")
                                             @ValidEnum(enumClass = Gender.class, message = "Unsupported gender!")
                                             String gender,
-                                            @RequestParam(value = "page", defaultValue = "0")
-                                            @PositiveOrZero(message = "Page should be positive!")
-                                            int page,
-                                            @RequestParam(value = "size", defaultValue = "10")
-                                            @Min(value = 10, message = "Size must be at least 10!")
-                                            int size) {
+                                            @ModelAttribute @Valid PageRequest page) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findAllByGender(Gender.toEnum(gender), page, size));
+                .body(service.findAllByGender(Gender.toEnum(gender), page));
     }
 
     @PreAuthorize("hasAuthority('ROLE_JURIST')")

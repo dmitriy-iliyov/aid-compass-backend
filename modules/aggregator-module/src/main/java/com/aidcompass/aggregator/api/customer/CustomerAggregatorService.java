@@ -6,6 +6,7 @@ import com.aidcompass.core.general.contracts.dto.PageResponse;
 import com.aidcompass.core.general.exceptions.models.BaseNotFoundException;
 import com.aidcompass.users.customer.models.PrivateCustomerResponseDto;
 import com.aidcompass.users.customer.services.CustomerService;
+import com.aidcompass.users.general.dto.NameFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -38,11 +39,8 @@ public class CustomerAggregatorService {
         customerService.deleteById(id);
     }
 
-    public PageResponse<CustomerPrivateProfileDto> findAllByNamesCombination(String firstName, String secondName,
-                                                                              String lastName, int page, int size) {
-        PageResponse<PrivateCustomerResponseDto> dtoPage = customerService.findAllByNamesCombination(
-                firstName, secondName, lastName, page, size
-        );
+    public PageResponse<CustomerPrivateProfileDto> findAllByNamesCombination(NameFilter filter) {
+        PageResponse<PrivateCustomerResponseDto> dtoPage = customerService.findAllByNamesCombination(filter);
         Map<UUID, PrivateCustomerResponseDto> dtoMap = dtoPage.data().stream()
                 .collect(Collectors.toMap(PrivateCustomerResponseDto::id, Function.identity()));
         Map<UUID, String> avatarMap = utils.findAllAvatarUrlByOwnerIdIn(dtoMap.keySet());

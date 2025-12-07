@@ -4,6 +4,7 @@ import com.aidcompass.core.general.contracts.dto.PageResponse;
 import com.aidcompass.users.customer.models.CustomerDto;
 import com.aidcompass.users.customer.models.PrivateCustomerResponseDto;
 import com.aidcompass.users.customer.models.PublicCustomerResponseDto;
+import com.aidcompass.users.general.dto.NameFilter;
 
 import java.util.List;
 import java.util.Set;
@@ -23,6 +24,5 @@ public interface CustomerService extends CustomerPersistService {
 
     void deleteById(UUID id);
 
-    PageResponse<PrivateCustomerResponseDto> findAllByNamesCombination(String firstName, String secondName, String lastName,
-                                                                       int page, int size);
+    PageResponse<PrivateCustomerResponseDto> findAllByNamesCombination(NameFilter filter);
 }

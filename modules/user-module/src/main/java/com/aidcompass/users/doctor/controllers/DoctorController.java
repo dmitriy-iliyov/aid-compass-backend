@@ -2,22 +2,19 @@ package com.aidcompass.users.doctor.controllers;
 
 
 import com.aidcompass.contracts.PrincipalDetails;
+import com.aidcompass.core.general.contracts.dto.PageRequest;
 import com.aidcompass.core.general.contracts.enums.ServiceType;
-import com.aidcompass.core.general.utils.validation.ValidEnum;
 import com.aidcompass.users.detail.DetailService;
 import com.aidcompass.users.detail.models.DetailDto;
 import com.aidcompass.users.detail.models.PrivateDetailResponseDto;
 import com.aidcompass.users.doctor.models.dto.DoctorDto;
+import com.aidcompass.users.doctor.models.dto.DoctorSpecializationFilter;
 import com.aidcompass.users.doctor.models.dto.PrivateDoctorResponseDto;
 import com.aidcompass.users.doctor.services.DoctorService;
-import com.aidcompass.users.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.users.general.PersistFacade;
+import com.aidcompass.users.general.dto.NameFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -86,39 +83,10 @@ public class DoctorController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllByNamesCombination(@RequestParam(value = "first_name", required = false)
-                                                      @Size(min = 2, max = 20, message = "Should has lengths from 2 to 20 characters!")
-                                                      @Pattern(
-                                                              regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
-                                                              message = "First name should contain only Ukrainian!"
-                                                      )
-                                                      String firstName,
-
-                                                      @RequestParam(value = "second_name", required = false)
-                                                      @Size(min = 2, max = 20, message = "Should has lengths from 2 to 20 characters!")
-                                                      @Pattern(
-                                                              regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
-                                                              message = "Second name should contain only Ukrainian!"
-                                                      )
-                                                      String secondName,
-
-                                                      @RequestParam(value = "last_name", required = false)
-                                                      @Size(min = 2, max = 20, message = "Should has lengths from 2 to 20 characters!")
-                                                      @Pattern(
-                                                              regexp = "^[а-яА-ЯєЄїЇіІґҐ]{2,20}$",
-                                                              message = "Last name should contain only Ukrainian!"
-                                                      )
-                                                      String lastName,
-
-                                                      @RequestParam(value = "page", defaultValue = "0")
-                                                      @PositiveOrZero(message = "Page should be positive!")
-                                                      int page,
-                                                      @RequestParam(value = "size", defaultValue = "10")
-                                                      @Min(value = 10, message = "Size must be at least 10!")
-                                                      int size) {
+    public ResponseEntity<?> getAllByNamesCombination(@ModelAttribute @Valid NameFilter filter) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(doctorService.findAllByNamesCombination(firstName, secondName, lastName, page, size));
+                .body(doctorService.findAllByNamesCombination(filter));
     }
 
     @PreAuthorize("hasAuthority('ROLE_DOCTOR')")
@@ -156,34 +124,17 @@ public class DoctorController {
     }
 
     @GetMapping("/approved")
-    public ResponseEntity<?> getAllApproved(@RequestParam(value = "page", defaultValue = "0")
-                                            @PositiveOrZero(message = "Page should be positive!")
-                                            int page,
-                                            @RequestParam(value = "size", defaultValue = "10")
-                                            @Min(value = 10, message = "Size must be at least 10!")
-                                            int size) {
+    public ResponseEntity<?> getAllApproved(@ModelAttribute @Valid PageRequest page) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(doctorService.findAllApproved(page, size));
+                .body(doctorService.findAllApproved(page));
     }
 
     @GetMapping("/approved/{specialization}")
-    public ResponseEntity<?> getAllBySpecialization(@PathVariable("specialization")
-                                                    @ValidEnum(enumClass = DoctorSpecialization.class,
-                                                               message = "Unsupported doctor specialization!")
-                                                    String specialization,
-                                                    @RequestParam(value = "page", defaultValue = "0")
-                                                    @PositiveOrZero(message = "Page should be positive!")
-                                                    int page,
-                                                    @RequestParam(value = "size", defaultValue = "10")
-                                                    @Min(value = 10, message = "Size must be at least 10!")
-                                                    int size) {
+    public ResponseEntity<?> getAllBySpecialization(@ModelAttribute @Valid DoctorSpecializationFilter filter) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(doctorService.findAllBySpecialization(
-                                DoctorSpecialization.toEnum(specialization),
-                                page, size)
-                );
+                .body(doctorService.findAllBySpecialization(filter));
     }
 
     @PreAuthorize("hasAuthority('ROLE_DOCTOR')")

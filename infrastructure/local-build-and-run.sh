@@ -35,6 +35,9 @@ mkdir -p "$BACKEND_STATIC_DIR"
 
 cp -r "../${FRONTEND_DIR}/dist/aid-compass-frontend/browser/" "${BACKEND_STATIC_DIR}"
 
+echo ">>>   build jbr-17.0.11 image"
+docker build -f infrastructure/Dockerfile.jbr -t jbr-17.0.11 infrastructure
+
 echo ">>>   build and run infrastructure"
 docker compose -f infrastructure/docker-compose.yaml -p aid-compass up -d
 

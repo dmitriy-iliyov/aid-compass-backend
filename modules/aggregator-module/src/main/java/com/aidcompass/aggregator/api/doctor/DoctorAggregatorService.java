@@ -5,15 +5,17 @@ import com.aidcompass.aggregator.api.doctor.dto.DoctorCardDto;
 import com.aidcompass.aggregator.api.doctor.dto.DoctorPrivateProfileDto;
 import com.aidcompass.aggregator.api.doctor.dto.DoctorPublicProfileDto;
 import com.aidcompass.core.contact.core.models.dto.PrivateContactResponseDto;
+import com.aidcompass.core.general.contracts.dto.PageRequest;
 import com.aidcompass.core.general.contracts.dto.PageResponse;
 import com.aidcompass.core.general.exceptions.models.BaseNotFoundException;
 import com.aidcompass.schedule.interval.models.dto.NearestIntervalDto;
+import com.aidcompass.users.doctor.models.dto.DoctorSpecializationFilter;
 import com.aidcompass.users.doctor.models.dto.FullPrivateDoctorResponseDto;
 import com.aidcompass.users.doctor.models.dto.FullPublicDoctorResponseDto;
 import com.aidcompass.users.doctor.models.dto.PublicDoctorResponseDto;
 import com.aidcompass.users.doctor.services.DoctorService;
-import com.aidcompass.users.doctor.specialization.models.DoctorSpecialization;
 import com.aidcompass.users.gender.Gender;
+import com.aidcompass.users.general.dto.NameFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -44,49 +46,48 @@ public class DoctorAggregatorService {
         return new DoctorPrivateProfileDto(url, fullDto, utils.findAllPrivateContactByOwnerId(id), appointmentDuration);
     }
 
-    public PageResponse<DoctorCardDto> findAllApproved(int page, int size) {
-        PageResponse<PublicDoctorResponseDto> pageResponse = doctorService.findAllApproved(page, size);
+    public PageResponse<DoctorCardDto> findAllApproved(PageRequest page) {
+        PageResponse<PublicDoctorResponseDto> pageResponse = doctorService.findAllApproved(page);
         return new PageResponse<>(
                 this.aggregate(pageResponse.data()),
                 pageResponse.totalPage()
         );
     }
 
-    public PageResponse<DoctorPrivateProfileDto> findAllUnapproved(int page, int size) {
-        PageResponse<FullPrivateDoctorResponseDto> doctors = doctorService.findAllUnapproved(page, size);
+    public PageResponse<DoctorPrivateProfileDto> findAllUnapproved(PageRequest page) {
+        PageResponse<FullPrivateDoctorResponseDto> doctors = doctorService.findAllUnapproved(page);
         return new PageResponse<>(
                 this.aggregateToPrivate(doctors.data()),
                 doctors.totalPage()
         );
     }
 
-    public PageResponse<DoctorPrivateProfileDto> findAllUnapprovedByNamesCombination(String firstName, String secondName,
-                                                                                     String lastName,int page, int size) {
-        PageResponse<FullPrivateDoctorResponseDto> doctors = doctorService.findAllUnapprovedByNamesCombination(firstName, secondName, lastName, page, size);
+    public PageResponse<DoctorPrivateProfileDto> findAllUnapprovedByNamesCombination(NameFilter filter) {
+        PageResponse<FullPrivateDoctorResponseDto> doctors = doctorService.findAllUnapprovedByNamesCombination(filter);
         return new PageResponse<>(
                 this.aggregateToPrivate(doctors.data()),
                 doctors.totalPage()
         );
     }
 
-    public PageResponse<DoctorCardDto> findAllApprovedBySpecialization(DoctorSpecialization doctorSpecialization, int page, int size) {
-        PageResponse<PublicDoctorResponseDto> pageResponse = doctorService.findAllBySpecialization(doctorSpecialization, page, size);
+    public PageResponse<DoctorCardDto> findAllApprovedBySpecialization(DoctorSpecializationFilter filter) {
+        PageResponse<PublicDoctorResponseDto> pageResponse = doctorService.findAllBySpecialization(filter);
         return new PageResponse<>(
                 this.aggregate(pageResponse.data()),
                 pageResponse.totalPage()
         );
     }
 
-    public PageResponse<DoctorCardDto> findAllByNamesCombination(String firstName, String secondName, String lastName, int page, int size) {
-        PageResponse<PublicDoctorResponseDto> pageResponse = doctorService.findAllByNamesCombination(firstName, secondName, lastName, page, size);
+    public PageResponse<DoctorCardDto> findAllByNamesCombination(NameFilter filter) {
+        PageResponse<PublicDoctorResponseDto> pageResponse = doctorService.findAllByNamesCombination(filter);
         return new PageResponse<>(
                 this.aggregate(pageResponse.data()),
                 pageResponse.totalPage()
         );
     }
 
-    public PageResponse<DoctorCardDto> findAllByGender(Gender gender, int page, int size) {
-        PageResponse<PublicDoctorResponseDto> pageResponse = doctorService.findAllByGender(gender, page, size);
+    public PageResponse<DoctorCardDto> findAllByGender(Gender gender, PageRequest page) {
+        PageResponse<PublicDoctorResponseDto> pageResponse = doctorService.findAllByGender(gender, page);
         return new PageResponse<>(
                 aggregate(pageResponse.data()),
                 pageResponse.totalPage()

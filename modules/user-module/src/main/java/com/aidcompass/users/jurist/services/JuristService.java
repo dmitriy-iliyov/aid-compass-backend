@@ -1,9 +1,11 @@
 package com.aidcompass.users.jurist.services;
 
 import com.aidcompass.core.general.contracts.dto.BaseSystemVolunteerDto;
+import com.aidcompass.core.general.contracts.dto.PageRequest;
 import com.aidcompass.core.general.contracts.dto.PageResponse;
 import com.aidcompass.users.gender.Gender;
 import com.aidcompass.users.general.PersistService;
+import com.aidcompass.users.general.dto.NameFilter;
 import com.aidcompass.users.jurist.models.dto.*;
 
 import java.util.List;
@@ -23,27 +25,23 @@ public interface JuristService extends PersistService<JuristDto, PrivateJuristRe
 
     FullPublicJuristResponseDto findFullPublicById(UUID id);
 
-    PageResponse<PublicJuristResponseDto> findAllByTypeAndSpecialization(String type, String specialization,
-                                                                         int page, int size);
+    PageResponse<PublicJuristResponseDto> findAllByTypeAndSpecialization(JuristSpecializationFilter filter);
 
-    PageResponse<PublicJuristResponseDto> findAllByTypeAndNamesCombination(String type,
-                                                                           String firstName, String secondName, String lastName,
-                                                                           int page, int size);
+    PageResponse<PublicJuristResponseDto> findAllByTypeAndNamesCombination(JuristNameFilter filter);
 
     List<PublicJuristResponseDto> findAllByIdIn(Set<UUID> ids);
 
-    PageResponse<FullPrivateJuristResponseDto> findAllUnapproved(int page, int size);
+    PageResponse<FullPrivateJuristResponseDto> findAllUnapproved(PageRequest page);
 
-    PageResponse<FullPrivateJuristResponseDto> findAllUnapprovedByNamesCombination(String firstName, String secondName,
-                                                                                   String lastName, int page, int size);
+    PageResponse<FullPrivateJuristResponseDto> findAllUnapprovedByNamesCombination(NameFilter filter);
 
-    PageResponse<PublicJuristResponseDto> findAllApproved(int page, int size);
+    PageResponse<PublicJuristResponseDto> findAllApproved(PageRequest page);
 
     PageResponse<PublicJuristResponseDto> findAllByFilter(String type, String specialization,
                                                           String firstName, String secondName,
                                                           String lastName, int page, int size);
 
-    PageResponse<PublicJuristResponseDto> findAllByGender(Gender gender, int page, int size);
+    PageResponse<PublicJuristResponseDto> findAllByGender(Gender gender, PageRequest page);
 
     PrivateJuristResponseDto update(UUID id, JuristDto dto);
 

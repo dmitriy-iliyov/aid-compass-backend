@@ -13,9 +13,9 @@ public class AppointmentSpecifications {
 
     public static Specification<AppointmentEntity> hasStatuses(StatusFilter filter) {
         List<AppointmentStatus> statuses = new ArrayList<>();
-        if (filter.scheduled()) statuses.add(AppointmentStatus.SCHEDULED);
-        if (filter.completed()) statuses.add(AppointmentStatus.COMPLETED);
-        if (filter.canceled())  statuses.add(AppointmentStatus.CANCELED);
+        if (filter.getScheduled()) statuses.add(AppointmentStatus.SCHEDULED);
+        if (filter.getCompleted()) statuses.add(AppointmentStatus.COMPLETED);
+        if (filter.getCanceled())  statuses.add(AppointmentStatus.CANCELED);
 
         if (statuses.isEmpty()) {
             return Specification.where(null);
