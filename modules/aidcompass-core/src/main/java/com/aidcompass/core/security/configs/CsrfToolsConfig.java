@@ -29,7 +29,7 @@ public class CsrfToolsConfig {
                 .domain(null)
                 .httpOnly(true)
                 .secure(true)
-                .sameSite("None")
+                .sameSite("Strict")
                 .build());
         return csrfTokenRepository;
     }

@@ -35,7 +35,7 @@ public class CookieFactoryImpl implements CookieFactory {
         cookie.setDomain(null);
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
-        cookie.setAttribute("SameSite", "None");
+        cookie.setAttribute("SameSite", "Strict");
         cookie.setMaxAge((int) ChronoUnit.SECONDS.between(Instant.now(), token.getExpiresAt()));
 
         return cookie;
