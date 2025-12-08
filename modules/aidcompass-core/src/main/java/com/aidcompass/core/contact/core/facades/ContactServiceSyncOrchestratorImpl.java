@@ -55,7 +55,7 @@ public class ContactServiceSyncOrchestratorImpl implements ContactServiceSyncOrc
 
     @Override
     public boolean existsByContactTypeAndContact(ContactType type, String contact) {
-        ContactTypeEntity typeEntity = typeService.findByType(type);
+        ContactTypeEntity typeEntity = typeService.getReferenceByType(type);
         return systemContactService.existsByTypeEntityAndContact(typeEntity, contact) || unconfirmedContactService.existsById(contact);
     }
 

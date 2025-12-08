@@ -10,5 +10,5 @@ public interface ContactTypeService {
 
     List<ContactTypeDto> saveAll(List<ContactType> contactTypeList);
 
-    ContactTypeEntity findByType(ContactType type);
+    ContactTypeEntity getReferenceByType(ContactType type);
 }

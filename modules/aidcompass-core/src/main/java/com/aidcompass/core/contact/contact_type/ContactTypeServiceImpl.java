@@ -25,10 +25,9 @@ public class ContactTypeServiceImpl implements ContactTypeService {
         return mapper.toDtoList(repository.saveAll(mapper.toEntityList(contactTypeList)));
     }
 
-    //cache
     @Transactional(readOnly = true)
     @Override
-    public ContactTypeEntity findByType(ContactType type) {
-        return repository.findByType(type).orElseThrow(ContactTypeNotFoundByTypeException::new);
+    public ContactTypeEntity getReferenceByType(ContactType type) {
+        return repository.getReferenceByType(type);
     }
 }

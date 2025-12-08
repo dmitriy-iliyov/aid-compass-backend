@@ -47,7 +47,7 @@ public class UnifiedContactService implements ContactService, SystemContactServi
     @Transactional
     @Override
     public PrivateContactResponseDto save(UUID ownerId, ContactCreateDto dto) {
-        ContactTypeEntity typeEntity = typeService.findByType(dto.type());
+        ContactTypeEntity typeEntity = typeService.getReferenceByType(dto.type());
         ContactEntity entity = mapper.toEntity(dto);
         entity.setTypeEntity(typeEntity);
         entity.setOwnerId(ownerId);
@@ -60,7 +60,7 @@ public class UnifiedContactService implements ContactService, SystemContactServi
     @Transactional
     @Override
     public SystemContactDto save(SystemContactDto dto) {
-        ContactTypeEntity typeEntity = typeService.findByType(dto.getType());
+        ContactTypeEntity typeEntity = typeService.getReferenceByType(dto.getType());
         ContactEntity entity = mapper.toEntity(dto);
         entity.setTypeEntity(typeEntity);
         entity = repository.save(entity);
