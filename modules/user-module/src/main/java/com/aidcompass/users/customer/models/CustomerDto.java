@@ -5,10 +5,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
 @Getter
+@ToString(callSuper = true)
 public class CustomerDto extends BaseRegistrationDto {
 
         @JsonProperty("birthday_date")
