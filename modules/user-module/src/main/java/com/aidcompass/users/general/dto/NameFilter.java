@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.beans.ConstructorProperties;
-
 @EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter

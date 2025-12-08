@@ -1,7 +1,8 @@
 package com.aidcompass.core.general.contracts.dto;
 
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
