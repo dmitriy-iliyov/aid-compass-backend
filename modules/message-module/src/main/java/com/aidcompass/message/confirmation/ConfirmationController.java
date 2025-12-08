@@ -33,22 +33,22 @@ public class ConfirmationController {
 
     @Operation(summary = "Request confirmation code.")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Token successfully created."),
+            @ApiResponse(responseCode = "201", description = "Code successfully created."),
             @ApiResponse(responseCode = "400", description = "Bad Request - Invalid input.")
     })
     @PreAuthorize("hasAnyAuthority('ROLE_DOCTOR', 'ROLE_JURIST', 'ROLE_CUSTOMER')")
     @PostMapping("/request")
-    public ResponseEntity<?> getToken(@Parameter(description = "resource")
+    public ResponseEntity<?> getCode(@Parameter(description = "resource")
                                       @RequestParam("resource")
                                       @NotBlank(message = "Resource shouldn't be blank or empty!")
                                       String resource,
 
-                                      @Parameter(description = "resource_id")
+                                     @Parameter(description = "resource_id")
                                       @RequestParam("resource_id")
                                       @Positive(message = "Resource id should be positive!")
                                       Long resourceId,
 
-                                      @Parameter(description = "resource_type")
+                                     @Parameter(description = "resource_type")
                                       @RequestParam("resource_type")
                                       @ValidEnum(enumClass = ContactType.class, message = "Resource type should be valid!")
                                       String type) throws Exception {
@@ -61,21 +61,20 @@ public class ConfirmationController {
 
     @Operation(summary = "Confirm resource by code.")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Token successfully validated."),
+            @ApiResponse(responseCode = "204", description = "Code successfully validated."),
             @ApiResponse(responseCode = "400", description = "Bad Request - Invalid code or resource type.")
     })
     @PreAuthorize("hasAnyAuthority('ROLE_DOCTOR', 'ROLE_JURIST', 'ROLE_CUSTOMER')")
     @PostMapping("/resource")
     public ResponseEntity<?> confirmResource(@Parameter(description = "code")
-                                             @RequestParam("token")
-                                             @NotBlank(message = "Token shouldn't be blank or empty!")
-                                             String token,
-
+                                             @RequestParam("code")
+                                             @NotBlank(message = "Code shouldn't be blank or empty!")
+                                             String code,
                                              @Parameter(description = "resource_type")
                                              @RequestParam("resource_type")
                                              @ValidEnum(enumClass = ContactType.class, message = "Resource type should be valid!")
                                              String type) {
-        contactConfFacade.validateConfirmationToken(token, ContactType.valueOf(type));
+        contactConfFacade.validateConfirmationCode(code, ContactType.valueOf(type));
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
@@ -83,14 +82,13 @@ public class ConfirmationController {
 
     @Operation(summary = "Request confirmation code for linked email")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Token successfully created"),
+            @ApiResponse(responseCode = "201", description = "Code successfully created"),
             @ApiResponse(responseCode = "400", description = "Bad Request - Invalid email format")
     })
     @PostMapping("/linked-email/request")
-    public ResponseEntity<?> getTokenForLinkedEmail(@Parameter(description = "email")
-                                                    @RequestParam("email")
-                                                    @NotBlank(message = "Email shouldn't be blank or empty!")
-                                                    @Email(message = "Email should be valid!") String email) throws Exception {
+    public ResponseEntity<?> getCodeForLinkedEmail(@Parameter(description = "email") @RequestParam("email")
+                                                   @NotBlank(message = "Email shouldn't be blank or empty!")
+                                                   @Email(message = "Email should be valid!") String email) throws Exception {
         accountConfService.sendConfirmationMessage(email);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -108,8 +106,8 @@ public class ConfirmationController {
     @PostMapping("/linked-email")
     public ResponseEntity<?> confirmLinkedEmail(@Parameter(description = "code")
                                                 @RequestParam("code")
-                                                @NotBlank(message = "Token shouldn't be blank or empty!") String code) {
-        accountConfService.validateConfirmationToken(code);
+                                                @NotBlank(message = "Code shouldn't be blank or empty!") String code) {
+        accountConfService.validateConfirmationCode(code);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .build();

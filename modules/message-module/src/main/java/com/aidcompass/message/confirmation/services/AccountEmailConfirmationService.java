@@ -49,7 +49,7 @@ public class AccountEmailConfirmationService implements AccountResourceConfirmat
     }
 
     @Override
-    public void validateConfirmationToken(String token) {
+    public void validateConfirmationCode(String token) {
         String email = confirmationRepository.findAndDeleteByToken(KEY_TEMPLATE.formatted(token)).orElseThrow(
                 InvalidConfirmationTokenException::new
         );

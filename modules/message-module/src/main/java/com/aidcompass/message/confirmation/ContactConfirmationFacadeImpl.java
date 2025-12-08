@@ -32,7 +32,7 @@ public class ContactConfirmationFacadeImpl implements ContactConfirmationFacade 
     }
 
     @Override
-    public void validateConfirmationToken(String token, ContactType type) {
+    public void validateConfirmationCode(String token, ContactType type) {
         this.services.get(type.toString())
                 .validateConfirmationToken(token);
     }
