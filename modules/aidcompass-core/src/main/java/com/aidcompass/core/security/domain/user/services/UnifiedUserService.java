@@ -16,6 +16,8 @@ import com.aidcompass.core.security.exceptions.not_found.UserNotFoundByIdExcepti
 import com.aidcompass.security.exceptions.illegal_input.IncorrectPasswordException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -41,7 +43,7 @@ public class UnifiedUserService implements UserService, UserDetailsService {
     private final AuthorityService authorityService;
     private final UserMapper mapper;
     private final PasswordEncoder passwordEncoder;
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final CacheManager cacheManager;
 
 
     @Transactional(readOnly = true)
@@ -72,11 +74,21 @@ public class UnifiedUserService implements UserService, UserDetailsService {
         repository.save(savedUserEntity);
     }
 
-    @Cacheable(value = "users:exists", key = "#id")
     @Transactional(readOnly = true)
     @Override
     public boolean existsById(UUID id) {
-        return repository.existsById(id);
+        Cache cache = cacheManager.getCache("users:exists");
+        if (cache != null) {
+            Boolean exists = cache.get(id.toString(), Boolean.class);
+            if (exists != null && exists) {
+                return Boolean.TRUE;
+            }
+        }
+        boolean exists = repository.existsById(id);
+        if (exists && cache != null) {
+            cache.put(id.toString(), Boolean.TRUE);
+        }
+        return exists;
     }
 
     @Transactional(readOnly = true)
@@ -122,7 +134,10 @@ public class UnifiedUserService implements UserService, UserDetailsService {
         userEntity.setEmailId(emailId);
         userEntity = repository.save(userEntity);
 
-        redisTemplate.delete("users:exists::" + userEntity.getId());
+        Cache cache = cacheManager.getCache("users:exists");
+        if (cache != null) {
+            cache.put(userEntity.getId(), Boolean.TRUE);
+        }
     }
 
     @Transactional
