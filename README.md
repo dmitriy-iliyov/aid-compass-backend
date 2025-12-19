@@ -71,7 +71,7 @@ Each module encapsulates a specific business domain while sharing common infrast
   - role-based access control;
   - authentication-related user data.
 
-## Non-functional Requirements
+## Non-functional requirements
 
 ### Authentication & Security
 
