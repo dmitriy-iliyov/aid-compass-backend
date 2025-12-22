@@ -4,7 +4,6 @@ COPY pom.xml .
 COPY . .
 RUN mvn clean package -pl app -am -DskipTests
 
-#FROM jbr-17.0.11 AS final
 FROM eclipse-temurin:17.0.11_9-jdk-focal AS final
 WORKDIR /app
 COPY --from=build /app/app/target/*.jar app.jar
