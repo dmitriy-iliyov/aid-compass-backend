@@ -130,7 +130,9 @@ Copy the generated static files to the backend:
 
 ```bash
 cp -r dist/aid-compass-frontend/browser/* aid-compass-backend/app/src/main/resources/static/
+```
 Build and start the backend and infrastructure:
+```bash
 docker compose build
 docker compose up -d
 ```
