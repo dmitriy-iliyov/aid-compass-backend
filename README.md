@@ -1,7 +1,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/dmitriy-iliyov/aid-compass-backend/badge)](https://www.codefactor.io/repository/github/dmitriy-iliyov/aid-compass-backend)
 ![Java](https://img.shields.io/badge/Java-17-007396?logo=openjdk)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.4-6DB33F?logo=springboot)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16+-336791?logo=postgresql)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16.1-336791?logo=postgresql)
 ![Redis](https://img.shields.io/badge/Redis-7+-DC382D?logo=redis)
 ![Prometheus](https://img.shields.io/badge/Prometheus-Metrics-E6522C?logo=prometheus)
 ![Grafana](https://img.shields.io/badge/Grafana-Dashboards-F46800?logo=grafana)
