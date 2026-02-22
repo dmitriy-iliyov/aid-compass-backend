@@ -1,0 +1,540 @@
+{
+  "info": {
+    "_postman_id": "7406a4d9-b0fa-4f4c-ae0b-ab543bae035a",
+    "name": "aid-compass-2",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "31061267"
+  },
+  "item": [
+    {
+      "name": "/users",
+      "item": [
+        {
+          "name": "test(to del)",
+          "item": [
+            {
+              "name": "del uncf user",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/users/uncf/",
+                  "protocol": "{{PROTOCOL}}",
+                  "host": [
+                    "{{DST_HOST}}"
+                  ],
+                  "path": [
+                    "api",
+                    "users",
+                    "uncf",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "/",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"Ігор Чурков Іванович\",\n    \"email\": \"dori_email@example.com\",\n    \"password\": \"securePass130\",\n    \"number\": \"+380675325202\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/users",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/{id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/users/11",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "users",
+                "11"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/{id}",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"Ігор Чурко Іванович\",\n    \"email\": \"dori_email@example.com\",\n    \"password\": \"securePass130\",\n    \"number\": \"+380675325202\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/users/11",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "users",
+                "11"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/{email}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/users/dori_email@example.com",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "users",
+                "dori_email@example.com"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/users",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "/user-appointments",
+      "item": [
+        {
+          "name": "/{id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/user-appointments/11",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "user-appointments",
+                "11"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "/doctors",
+      "item": [
+        {
+          "name": "/{id}",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"Ігор Чурко Іванович\",\n    \"email\": \"docttoridze831_email@example.com\",\n    \"password\": \"securePass130\",\n    \"number\": \"+380456789365\",\n    \"licenseNumber\": \"LICENSE0f8\",\n    \"specialization\": \"Neurology\",\n    \"yearsOfExperience\": 11,\n    \"address\": \"90 Nerve Blvd, Neuro Village, Country\",\n    \"achievements\": \"Innovator in Neurology 2019\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/doctors/11",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "doctors",
+                "11"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/{username}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/doctors/Ігор Чурко Іванович",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "doctors",
+                "Ігор Чурко Іванович"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/{id}",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"Ігор Чурко Іванович\",\n    \"email\": \"docttoridze831_email@example.com\",\n    \"password\": \"securePass130\",\n    \"number\": \"+380645670098\",\n    \"licenseNumber\": \"LICENSE0f8\",\n    \"specialization\": \"_\",\n    \"yearsOfExperience\": 11,\n    \"address\": \"90 Nerve Blvd, Neuro Village, Country\",\n    \"achievements\": \"Innovator in Neurology 2019\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/doctors/6",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "doctors",
+                "6"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/{id}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/doctors/3",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "doctors",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/approve/{id}",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/doctors/approve/6",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "doctors",
+                "approve",
+                "6"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/unapproved",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/doctors/unapproved",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "doctors",
+                "unapproved"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/approved/{specialization}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/doctors/approved/Neurologist",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "doctors",
+                "approved",
+                "Neurologist"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "/doctor-appointments",
+      "item": [
+        {
+          "name": "/",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"appointmentDate\": \"2024-11-20T15:30:00Z\",\n    \"topic\": \"Annual Check-Up\",\n    \"description\": \"Routine annual health check.\",\n    \"userId\": 11,\n    \"doctorId\": 6\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/doctor-appointments",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "doctor-appointments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/{id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/doctor-appointments/3",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "doctor-appointments",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/doctor/{id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/doctor-appointments/doctor/6",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "doctor-appointments",
+                "doctor",
+                "6"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/{id}",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"appointmentDate\": \"2024-11-20T15:30:00Z\",\n    \"topic\": \"Annual Check-Up\",\n    \"description\": \"Routine annual health check.\",\n    \"userId\": 4,\n    \"doctorId\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/doctor-appointments/1",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "doctor-appointments",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/{id}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/doctor-appointments/1",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "doctor-appointments",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "health-check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/contacts/health-check",
+          "protocol": "{{PROTOCOL}}",
+          "host": [
+            "{{DST_HOST}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "contacts",
+            "health-check"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "test",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/contacts/test?t=email",
+          "protocol": "{{PROTOCOL}}",
+          "host": [
+            "{{DST_HOST}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "contacts",
+            "test"
+          ],
+          "query": [
+            {
+              "key": "t",
+              "value": "email"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "PROTOCOL",
+      "value": "https",
+      "type": "string"
+    },
+    {
+      "key": "DST_HOST",
+      "value": "localhost:8443",
+      "type": "string"
+    }
+  ]
+}

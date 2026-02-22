@@ -1,0 +1,2185 @@
+{
+  "info": {
+    "_postman_id": "e8161cf8-ce6a-4e1d-8cec-192c01a250cb",
+    "name": "aid-compass",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "31061267"
+  },
+  "item": [
+    {
+      "name": "doctor",
+      "item": [
+        {
+          "name": "/api/v1/doctors/approved/{specialization}",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "/api/v1/doctors/{id}",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"first_name\": \"Ільйов\",\n    \"second_name\":\"Дмитро\",\n    \"last_name\": \"Андорійович\",\n    \"specializations\": [\"DENTIST\", \"LAWYER\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/doctors/e7b6cbbd-4e3d-5f20-b8a2-1f3f22d5f5e7?return_body=true",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "doctors",
+                "e7b6cbbd-4e3d-5f20-b8a2-1f3f22d5f5e7"
+              ],
+              "query": [
+                {
+                  "key": "return_body",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/api/v1/doctors/{id}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/doctors/e7b6cbbd-4e3d-5f20-b8a2-1f3f22d5f5e7",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "doctors",
+                "e7b6cbbd-4e3d-5f20-b8a2-1f3f22d5f5e7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "doc full private",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/doctors/e7b6cbbd-4a3d-4f20-b8a2-1f3f22d5f5e7/private/full",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "doctors",
+                "e7b6cbbd-4a3d-4f20-b8a2-1f3f22d5f5e7",
+                "private",
+                "full"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "upd doc",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/doctors/e7b6cbbd-4e3d-5f20-b8a2-1f3f22d5f5e7",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "doctors",
+                "e7b6cbbd-4e3d-5f20-b8a2-1f3f22d5f5e7"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "jurist",
+      "item": [
+        {
+          "name": "/api/v1/jurists/{id}",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"first_name\": \"Ільйов\",\n    \"second_name\":\"Олег\",\n    \"last_name\": \"Андорійович\",\n    \"specialization\": \"LAWYER\",\n    \"specialization_detail\": \"details of my spec\",\n    \"working_experience\": \"12\",\n    \"gender\": \"MALE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/jurists/e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7?return_body=true&page=0&size=10",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "jurists",
+                "e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7"
+              ],
+              "query": [
+                {
+                  "key": "return_body",
+                  "value": "true"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/api/v1/jurists/{id}/public",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/jurists/e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7/public",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "jurists",
+                "e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7",
+                "public"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "jur by spec",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/jurists/approved/LAWYER?page=0&size=10",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "jurists",
+                "approved",
+                "LAWYER"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "jur approve",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"page\": \"0\",\n    \"size\": \"2\"\n}"
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/admin/v1/jurists/approve/e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "v1",
+                "jurists",
+                "approve",
+                "e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get by name",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"page\": \"0\",\n    \"size\": \"10\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/jurists?first_name=Ільйов&page=0&size=10",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "jurists"
+              ],
+              "query": [
+                {
+                  "key": "first_name",
+                  "value": "Ільйов"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "jur detail",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gender\": \"MALE\",\n  \"working_experience\": 14,\n  \"about_myself\": \"Experienced jurist with a passion for justice and law.\",\n  \"address\": \"123 Main Street, Springfield\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/jurists/e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7/detail",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "jurists",
+                "e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7",
+                "detail"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get unprv jur",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/jurists/unapproved?page=0&size=10",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "jurists",
+                "unapproved"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get  public full",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/jurists/e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7/public/full",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "jurists",
+                "e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7",
+                "public",
+                "full"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get  private full",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/jurists/e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7/private/full",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "jurists",
+                "e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7",
+                "private",
+                "full"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get apprv jur",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/jurists/approved?page=0&size=10",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "jurists",
+                "approved"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get private",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/jurists/e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7/private",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "jurists",
+                "e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7",
+                "private"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "del jur",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"page\": \"0\",\n    \"size\": \"2\"\n}"
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/jurists/e7b6cbbd-4a3d-4f20-b8a2-1f3f22d5f5e7",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "jurists",
+                "e7b6cbbd-4a3d-4f20-b8a2-1f3f22d5f5e7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "апдейт",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"page\": \"0\",\n    \"size\": \"2\"\n}"
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/jurists/e7b6cbbd-4a3d-4f20-b8a2-1f3f22d5f5e7",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "jurists",
+                "e7b6cbbd-4a3d-4f20-b8a2-1f3f22d5f5e7"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "timetable",
+      "item": [
+        {
+          "name": "app_d",
+          "item": [
+            {
+              "name": "set duration",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"first_name\": \"Ільйов\",\n    \"second_name\":\"Дмитро\",\n    \"last_name\": \"Андорійович\",\n    \"specializations\": [\"DENTIST\", \"LAWYER\"]\n}"
+                },
+                "url": {
+                  "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/appointment/duration/",
+                  "protocol": "{{PROTOCOL}}",
+                  "host": [
+                    "{{DST_HOST}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "appointment",
+                    "duration",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "пуе вгк",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/appointment/duration/e7b6cbbd-4e3d-5f20-b8a2-1f3f22d5f5e7",
+                  "protocol": "{{PROTOCOL}}",
+                  "host": [
+                    "{{DST_HOST}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "appointment",
+                    "duration",
+                    "e7b6cbbd-4e3d-5f20-b8a2-1f3f22d5f5e7"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "appointment",
+          "item": [
+            {
+              "name": "create appointment",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-XSRF_TOKEN",
+                    "value": "67Sp0QDQsAdEoo6fRjNERhhKsEIecRBcem9tHKpWdkqb-Ph52I3N4WSxgDZpwbevIB5wcX19nXsnECdxGFYPLpthFHysnctI",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"date\": \"2025-06-22\",\n  \"start\": \"09:00\",\n  \"type\": \"ONLINE\",\n  \"description\": \"Discussion on upcoming tasks and scheduling.\",\n  \"volunteerId\": \"01977e79-fc3d-7e26-94be-b6531796eb62\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/appointments/me/schedule",
+                  "protocol": "{{PROTOCOL}}",
+                  "host": [
+                    "{{DST_HOST}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "appointments",
+                    "me",
+                    "schedule"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "upd appointment",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 1,\n  \"volunteer_id\": \"019722ee-6089-793b-9def-a281331b0559\",\n  \"date\": \"2025-06-08\",\n  \"start\": \"09:30\",\n  \"end\": \"10:00\",\n  \"topic\": \"біль у животі!\",\n  \"description\": \"тделалі\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/appointments/019722ee-6089-793b-9def-a281341b0553",
+                  "protocol": "{{PROTOCOL}}",
+                  "host": [
+                    "{{DST_HOST}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "appointments",
+                    "019722ee-6089-793b-9def-a281341b0553"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get appointment",
+              "request": {
+                "method": "GET",
+                "header": []
+              },
+              "response": []
+            },
+            {
+              "name": "del appointm",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": 42,\n  \"volunteer_id\": \"019722ee-6089-793b-9def-a281331b0559\",\n  \"date\": \"2025-07-01\",\n  \"start\": \"10:00\",\n  \"end\": \"11:30\",\n  \"topic\": \"біль у животі!\",\n  \"description\": \"тделалі\"\n}"
+                },
+                "url": {
+                  "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/appointments/e7b6cbbd-4a3d-4f20-b8a2-1f3f22d4f5e3/21",
+                  "protocol": "{{PROTOCOL}}",
+                  "host": [
+                    "{{DST_HOST}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "appointments",
+                    "e7b6cbbd-4a3d-4f20-b8a2-1f3f22d4f5e3",
+                    "21"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "complete",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/appointments/me/74/complete",
+                  "protocol": "{{PROTOCOL}}",
+                  "host": [
+                    "{{DST_HOST}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "appointments",
+                    "me",
+                    "74",
+                    "complete"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "work_int",
+          "item": [
+            {
+              "name": "create interval",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"start\": \"13:00\",\n  \"end\": \"15:30\",\n  \"date\": \"2025-06-08\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/intervals/019722ee-6089-793b-9def-a281331b0550?return_body=true",
+                  "protocol": "{{PROTOCOL}}",
+                  "host": [
+                    "{{DST_HOST}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "intervals",
+                    "019722ee-6089-793b-9def-a281331b0550"
+                  ],
+                  "query": [
+                    {
+                      "key": "return_body",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "upd interval",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"id\": 13,\n    \"owner_id\": \"019722ee-6089-793b-9def-a281331b0559\",\n    \"start\": \"09:10\",\n    \"end\": \"10:00\",\n    \"date\": \"2025-06-07\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/intervals/019722ee-6089-793b-9def-a281331b0559?return_body=true",
+                  "protocol": "{{PROTOCOL}}",
+                  "host": [
+                    "{{DST_HOST}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "intervals",
+                    "019722ee-6089-793b-9def-a281331b0559"
+                  ],
+                  "query": [
+                    {
+                      "key": "return_body",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get intrvl",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/intervals/1",
+                  "protocol": "{{PROTOCOL}}",
+                  "host": [
+                    "{{DST_HOST}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "intervals",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "del interval",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/intervals/019722ee-6089-793b-9def-a281331b0559/107",
+                  "protocol": "{{PROTOCOL}}",
+                  "host": [
+                    "{{DST_HOST}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "intervals",
+                    "019722ee-6089-793b-9def-a281331b0559",
+                    "107"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get nearest",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/intervals/nearest/019722ee-6089-793b-9def-a281331b0559",
+                  "protocol": "{{PROTOCOL}}",
+                  "host": [
+                    "{{DST_HOST}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "intervals",
+                    "nearest",
+                    "019722ee-6089-793b-9def-a281331b0559"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "work_day",
+          "item": [
+            {
+              "name": "day",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"date\": \"2025-06-01\",\n  \"work_intervals\": [\n    {\n      \"start\": \"09:00\",\n      \"end\": \"12:00\",\n      \"date\": \"2025-06-01\"\n    },\n    {\n      \"start\": \"13:00\",\n      \"end\": \"15:00\",\n      \"date\": \"2025-06-01\"\n    },\n    {\n      \"start\": \"16:00\",\n      \"end\": \"18:00\",\n      \"date\": \"2025-06-01\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/days/e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7",
+                  "protocol": "{{PROTOCOL}}",
+                  "host": [
+                    "{{DST_HOST}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "days",
+                    "e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get day",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/days/01974214-0df9-793b-b5e0-b62fcc8e9a4e?date=2025-06-11",
+                  "protocol": "{{PROTOCOL}}",
+                  "host": [
+                    "{{DST_HOST}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "days",
+                    "01974214-0df9-793b-b5e0-b62fcc8e9a4e"
+                  ],
+                  "query": [
+                    {
+                      "key": "date",
+                      "value": "2025-06-11"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "del day",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/days/019722ee-6089-793b-9def-a281331b0559?date=2025-06-03",
+                  "protocol": "{{PROTOCOL}}",
+                  "host": [
+                    "{{DST_HOST}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "days",
+                    "019722ee-6089-793b-9def-a281331b0559"
+                  ],
+                  "query": [
+                    {
+                      "key": "date",
+                      "value": "2025-06-03"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "days full",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/days/019741de-5ced-7a75-a2be-c6c06fdfadb6?date=2025-06-10",
+                  "protocol": "{{PROTOCOL}}",
+                  "host": [
+                    "{{DST_HOST}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "days",
+                    "019741de-5ced-7a75-a2be-c6c06fdfadb6"
+                  ],
+                  "query": [
+                    {
+                      "key": "date",
+                      "value": "2025-06-10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "month dates by id",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"first_name\": \"Ільйов\",\n    \"second_name\":\"Дмитро\",\n    \"last_name\": \"Андорійович\",\n    \"specializations\": [\"DENTIST\", \"LAWYER\"]\n}"
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/timetable/{id}/month/dates",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "timetable",
+                "{id}",
+                "month",
+                "dates"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "full day",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "private month dates",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"oksana.kryva502@gmail.com\",\n    \"password\": \"rootpassword\"\n}"
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/timetable/me/month/dates",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "timetable",
+                "me",
+                "month",
+                "dates"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "test system delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/system/v1/intervals/past/batch?batch_size=10",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "system",
+                "v1",
+                "intervals",
+                "past",
+                "batch"
+              ],
+              "query": [
+                {
+                  "key": "batch_size",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "customer",
+      "item": [
+        {
+          "name": "create  cust",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"first_name\": \"Олег\",\n    \"second_name\":\"Андорійович\",\n    \"last_name\": \"seinfwo\",\n    \"birthday_date\": \"2004-02-16\",\n    \"gender\": \"MALE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/customers/e7b6cbbd-4a3d-4f20-b8a2-1f3f22d4f5e3?return_body=true",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "e7b6cbbd-4a3d-4f20-b8a2-1f3f22d4f5e3"
+              ],
+              "query": [
+                {
+                  "key": "return_body",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get cstnmr",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/router/users/e7b6cbbd-4a3d-4f20-b8a2-1f3f22d4f5e3",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "router",
+                "users",
+                "e7b6cbbd-4a3d-4f20-b8a2-1f3f22d4f5e3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "upd customer",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"first_name\": \"Ільйов\",\n    \"second_name\":\"Олег\",\n    \"last_name\": \"Андрійович\",\n    \"birthday_date\": \"2004-02-16\",\n    \"gender\": \"FEMALE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/router/users/e7b6cbbd-4a3d-4f20-b8a2-1f3f22d4f5e3?role=ROLE_CUSTOMER",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "router",
+                "users",
+                "e7b6cbbd-4a3d-4f20-b8a2-1f3f22d4f5e3"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "ROLE_CUSTOMER"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete customer",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/customers/e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "item": [
+        {
+          "name": "contacts all",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "create doctor",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "message",
+      "item": [
+        {
+          "name": "confirm email",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/confirmations/linked-email?token=508173",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "confirmations",
+                "linked-email"
+              ],
+              "query": [
+                {
+                  "key": "token",
+                  "value": "508173"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "recovery",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/password-recovery/request?resource=dmitriy.iliyov@gmail.com",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "password-recovery",
+                "request"
+              ],
+              "query": [
+                {
+                  "key": "resource",
+                  "value": "dmitriy.iliyov@gmail.com"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "recover",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"password\": \"negrskiypassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/password-recovery/recover?token=442910",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "password-recovery",
+                "recover"
+              ],
+              "query": [
+                {
+                  "key": "token",
+                  "value": "442910"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "conf resource",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "avatars",
+      "item": [
+        {
+          "name": "set avatar",
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "45192baf-e62f-43a8-b0bd-0984218a7daf",
+                  "src": "/Users/sayner/Pictures/pinterest_imgs/file.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/avatars/0197471e-e2fa-77b3-b1c4-2caffd0b03fd",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "avatars",
+                "0197471e-e2fa-77b3-b1c4-2caffd0b03fd"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "del avatar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/avatars/019722ee-6089-793b-9def-a281331b0559",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "avatars",
+                "019722ee-6089-793b-9def-a281331b0559"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get av",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/avatars/url/019722ee-6089-793b-9def-a281331b0550",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "avatars",
+                "url",
+                "019722ee-6089-793b-9def-a281331b0550"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "set default",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/avatars",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "avatars"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "aggregator",
+      "item": [
+        {
+          "name": "profile public",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"first_name\": \"Ільйов\",\n    \"second_name\":\"Дмитро\",\n    \"last_name\": \"Андорійович\",\n    \"specializations\": [\"DENTIST\", \"LAWYER\"]\n}"
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/aggregator/doctors/01975015-89ff-7102-9543-5606815f2213/profile",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "aggregator",
+                "doctors",
+                "01975015-89ff-7102-9543-5606815f2213",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "cards",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"first_name\": \"Ільйов\",\n    \"second_name\":\"Дмитро\",\n    \"last_name\": \"Андорійович\",\n    \"specializations\": [\"DENTIST\", \"LAWYER\"]\n}"
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/aggregator/doctors/cards",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "aggregator",
+                "doctors",
+                "cards"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "cards/specs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/aggregator/doctors/cards/Алерголог",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "aggregator",
+                "doctors",
+                "cards",
+                "Алерголог"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "cards names",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/aggregator/jurists/cards/names?second_name=Владислав",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "aggregator",
+                "jurists",
+                "cards",
+                "names"
+              ],
+              "query": [
+                {
+                  "key": "second_name",
+                  "value": "Владислав"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "appointments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/aggregator/volunteers/01974cbd-3e10-7eee-b816-22316e75ae67/appointments",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "aggregator",
+                "volunteers",
+                "01974cbd-3e10-7eee-b816-22316e75ae67",
+                "appointments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "profile private",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/aggregator/customers/0197478b-93e7-71dc-8d1b-ef77446b3036/profile/private",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "aggregator",
+                "customers",
+                "0197478b-93e7-71dc-8d1b-ef77446b3036",
+                "profile",
+                "private"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "del all",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-XSRF-TOKEN",
+                "value": "oj5l4Hsima4l0_-VXohR4Ufh7Pvw4YZTnWmYYrYlxDtHDI8kxl1c0UoV_88I48n3aqVl1HHWwcOT0eJ-qFH-W4RD91pyaLgU",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"first_name\": \"Ільйов\",\n    \"second_name\":\"Дмитро\",\n    \"last_name\": \"Андорійович\",\n    \"specializations\": [\"DENTIST\", \"LAWYER\"]\n}"
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/aggregator/doctors/me",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "aggregator",
+                "doctors",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "appointments v2",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "grnder",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"dmitriy.iliyov@gmail.com\",\n    \"password\": \"s2kr49password\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/users",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get user",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/users/user/019733a4-cc05-7eec-b9ea-043f2c584abf",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "user",
+                "019733a4-cc05-7eec-b9ea-043f2c584abf"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update user",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-XSRF-TOKEN",
+                "value": "kNWC7-4ccTWl5g5crPMdnI_kCkz9t2rDyZ3xZR6p6FTDtarYoeTh1t8pRFOI3jo6zt4prL3SJy3Fhg7u-ajGUn_Ljjanjcu8",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"dmitriy.iliyov32@gmail.com\",\n    \"password\": \"rootpassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/users/user/019733a4-cc05-7eec-b9ea-043f2c584abf",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "user",
+                "019733a4-cc05-7eec-b9ea-043f2c584abf"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete user",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"dmitriy.iliyov2@gmail.com\",\n    \"password\": \"s2kr49password\"\n}"
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/users/user/0197338e-b0c9-72b2-9a27-3797d5d79bec",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "user",
+                "0197338e-b0c9-72b2-9a27-3797d5d79bec"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "info",
+      "item": [
+        {
+          "name": "New Request",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/info/v1/jurists-specialization",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "info",
+                "v1",
+                "jurists-specialization"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "router",
+      "item": [
+        {
+          "name": "update user",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"first_name\": \"Ільйов\",\n    \"second_name\":\"Олег\",\n    \"last_name\": \"Андорійович\",\n    \"specialization\": \"LAWYER\",\n    \"specialization_detail\": \"details of my spec\",\n    \"working_experience\": \"12\",\n    \"gender\": \"FEMALE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/router/users/e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7?role=ROLE_JURIST",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "router",
+                "users",
+                "e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "ROLE_JURIST"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete user",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/router/users/e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7?role=ROLE_JURIST",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "router",
+                "users",
+                "e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "ROLE_JURIST"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update details",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"about_myself\": \"Experienced jurist with a passion for justice and law.\",\n  \"address\": \"123 Main Street, Springfield\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/router/users/e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7/detail?role=ROLE_JURIST",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "router",
+                "users",
+                "e7b6cbbd-4a3d-4f20-b8a3-1f3f22d5f5e7",
+                "detail"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "ROLE_JURIST"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"dmitriy.iliyov@gmail.com\",\n    \"password\": \"rootpassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/auth/login",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/auth/logout",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/auth/me",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get csrf",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "get service token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"service_name\": \"schedule-task-service\",\n    \"service_key\": \"secret_service_key\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/system/v1/auth/login",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "system",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get token",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwMTk3ZDE1Yy1lMzQ5LTdjN2QtOWM5Ni0zOTc2MTBmNTVjYzEiLCJzdWIiOiJhYTc3MjM3OS1kYmViLTQ1Y2UtYWI2Ny1iMzRhMjQ5ZTA5YzgiLCJpYXQiOjE3NTE1NjQyMTUsImV4cCI6MTc1MTczNzAxNSwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdLCJ0eXBlIjoiU0VSVklDRSJ9.C38k83ojqFp3bNWx9UywzDEnts-Tq093KZJuoBHlvGg",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/system/v1/auth/token",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "system",
+                "v1",
+                "auth",
+                "token"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "contacts",
+      "item": [
+        {
+          "name": "upd contacts",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "X-XSRF-TOKEN",
+                "value": "kzdOMzVjtpI67d81GWKBlzC9J5zCJ5CFk8nxvl0GWXhVJDTX91R3AgRU0PMX3elXLU-1ogaKCqShF_SopvGXh29gahlgQAPn",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"contacts\" : [\n            {\n            \"id\": 202,\n            \"type\": \"PHONE_NUMBER\",\n            \"contact\": \"+3800674979597\",\n            \"is_primary\": false        \n            }\n        ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}/api/v1/contacts/batch",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "contacts",
+                "batch"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "item": [
+        {
+          "name": "customers",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "appointments",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "upd appointment",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{PROTOCOL}}://{{DST_HOST}}//api/admin/v1/appointments/01977e79-f146-7970-be87-46500bbd6779",
+              "protocol": "{{PROTOCOL}}",
+              "host": [
+                "{{DST_HOST}}"
+              ],
+              "path": [
+                "",
+                "api",
+                "admin",
+                "v1",
+                "appointments",
+                "01977e79-f146-7970-be87-46500bbd6779"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "actuator",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/system/actuator/prometheus",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "system",
+            "actuator",
+            "prometheus"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "PROTOCOL",
+      "value": "https",
+      "type": "string"
+    },
+    {
+      "key": "DST_HOST",
+      "value": "localhost:8443",
+      "type": "string"
+    }
+  ]
+}
