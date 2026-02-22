@@ -77,9 +77,9 @@ Each module encapsulates a specific business domain while sharing common infrast
 ### Authentication & Security
 
 - **Web authentication** is based on JWT tokens stored in HTTP cookies, providing stateless authentication while remaining browser-friendly.
-- CSRF protection is enabled for all state-changing HTTP requests.  
+- **CSRF protection** is enabled for all state-changing HTTP requests.  
   CSRF tokens are validated on write operations to prevent cross-site request forgery attacks.
-- XSS protection is implemented via request filtering and input sanitization.  
+- **XSS protection** is implemented via request filtering and input sanitization.  
   All incoming data used in state-changing operations is validated and escaped to prevent injection of malicious scripts.
 - **Internal services** (such as the task scheduler service and Prometheus scraper) authenticate using Basic Authentication, simplifying secure service-to-service communication.
 - Role-based access control (RBAC) is enforced at the API and service levels.
